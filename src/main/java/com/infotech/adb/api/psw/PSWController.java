@@ -1,11 +1,7 @@
 package com.infotech.adb.api.psw;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.infotech.adb.dto.AccountDetailDTO;
 import com.infotech.adb.dto.RequestParameter;
-import com.infotech.adb.dto.RestrictedCommoditiesDTO;
-import com.infotech.adb.dto.RestrictedCountiesDTO;
-import com.infotech.adb.dto.RestrictedSuppliersDTO;
 import com.infotech.adb.model.entity.LogRequest;
 import com.infotech.adb.service.LogRequestService;
 import com.infotech.adb.util.CustomResponse;
@@ -13,6 +9,7 @@ import com.infotech.adb.util.ResponseUtility;
 import io.swagger.annotations.Api;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,44 +30,44 @@ public class PSWController {
 
     private static final ResourceBundle messageBundle = ResourceBundle.getBundle("messages");
 
-    @RequestMapping(value = "/update/paymentmodes", method = RequestMethod.POST)
+    @RequestMapping(value = "/update/payment/modes", method = RequestMethod.POST)
     public CustomResponse getAccountDetails(HttpServletRequest request,
-                                            @RequestBody RequestParameter<AccountDetailDTO> requestBody) {
+                                            @RequestBody ResponseUtility.APIResponse requestBody) {
 
-        CustomResponse customResponse = ResponseUtility.createdResponse(null, 200,
-                messageBundle.getString("payment.modes.updated"), requestBody);
-
-        return customResponse;
+        return getCustomResponse(requestBody, messageBundle.getString("payment.modes.updated"));
     }
 
     @RequestMapping(value = "/update/negative/countries", method = RequestMethod.POST)
     public CustomResponse getNegativeCountriesList(HttpServletRequest request,
-                                            @RequestBody RequestParameter<RestrictedCountiesDTO> requestBody) {
+                                            @RequestBody ResponseUtility.APIResponse requestBody) {
 
-        CustomResponse customResponse = ResponseUtility.createdResponse(null, 200,
-                messageBundle.getString("negative.countries.updated"), requestBody);
-
-        return customResponse;
+        return getCustomResponse(requestBody, messageBundle.getString("negative.countries.updated"));
     }
 
-    @RequestMapping(value = "/account/negative/commodities", method = RequestMethod.POST)
+    @RequestMapping(value = "/update/negative/commodities", method = RequestMethod.POST)
     public CustomResponse getNegativeCommoditiesList(HttpServletRequest request,
-                                                   @RequestBody RequestParameter<RestrictedCommoditiesDTO> requestBody) {
+                                                   @RequestBody ResponseUtility.APIResponse requestBody) {
 
-        CustomResponse customResponse = ResponseUtility.createdResponse(null, 200,
-                messageBundle.getString("negative.commodities.updated"), requestBody);
-
-        return customResponse;
+        return getCustomResponse(requestBody, messageBundle.getString("negative.commodities.updated"));
     }
 
-    @RequestMapping(value = "/account/negative/suppliers", method = RequestMethod.POST)
+    @RequestMapping(value = "/updates/negative/suppliers", method = RequestMethod.POST)
     public CustomResponse getNegativeSuppliersList(HttpServletRequest request,
-                                                     @RequestBody RequestParameter<RestrictedSuppliersDTO> requestBody) {
+                                                     @RequestBody ResponseUtility.APIResponse requestBody) {
 
-        CustomResponse customResponse = ResponseUtility.createdResponse(null, 200,
-                messageBundle.getString("negative.suppliers.updated"), requestBody);
+        return getCustomResponse(requestBody, messageBundle.getString("negative.suppliers.updated"));
+    }
 
-        return customResponse;
+    private CustomResponse getCustomResponse(ResponseUtility.APIResponse requestBody, String message) {
+        String receiver = requestBody.getReceiverId();
+        requestBody.setReceiverId(requestBody.getSenderId());
+        requestBody.setSenderId(receiver);
+        requestBody.getMessage().setCode(200);
+        requestBody.getMessage().setDescription(message);
+        requestBody.setData(null);
+        CustomResponse customResponse2 = CustomResponse.status(HttpStatus.CREATED)
+                .body(requestBody);
+        return customResponse2;
     }
 
     private void saveLogRequest(String messageName, String messageType, RequestParameter requestBody, ZonedDateTime requestTime, ResponseUtility.APIResponse responseBody) throws JsonProcessingException {

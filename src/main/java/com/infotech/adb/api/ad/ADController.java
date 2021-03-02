@@ -15,13 +15,11 @@ import com.infotech.adb.model.entity.LogRequest;
 import com.infotech.adb.service.ADService;
 import com.infotech.adb.service.AccountService;
 import com.infotech.adb.service.LogRequestService;
-import com.infotech.adb.util.AppUtility;
-import com.infotech.adb.util.CustomResponse;
-import com.infotech.adb.util.HttpClient;
-import com.infotech.adb.util.ResponseUtility;
+import com.infotech.adb.util.*;
 import io.swagger.annotations.Api;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -55,7 +53,6 @@ public class ADController {
             throws CustomException, DataValidationException, NoDataFoundException, JsonProcessingException {
 
         ZonedDateTime requestTime = ZonedDateTime.now();
-
         // TODO validate request common parameters
         if (AppUtility.isEmpty(requestBody.getMessageId())) {
             throw new DataValidationException(messageBundle.getString("id.not.found"));
@@ -153,7 +150,7 @@ public class ADController {
         return customResponse;
     }
 
-    @RequestMapping(value = "/update/account/detail", method = RequestMethod.GET)
+    @RequestMapping(value = "/update/payment/modes", method = RequestMethod.POST)
     public CustomResponse updateAccountDetails(HttpServletRequest request,
                                             @RequestBody RequestParameter<IBANVerificationRequest> requestBody)
             throws CustomException, DataValidationException, NoDataFoundException, JsonProcessingException {
@@ -168,13 +165,13 @@ public class ADController {
                 accountDetail == null ? messageBundle.getString("account.details.not.shared") :
                         messageBundle.getString("account.details.shared"), requestBody);
 
-        ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
+        CustomResponse customResponse2 = requestPSWAPI("/update/payment/modes", request, customResponse);
 
-        saveLogRequest("MSG6: Update Payment Modes", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
-        return customResponse;
+        saveLogRequest("MSG6: Update Payment Modes", RequestMethod.POST.name(),(ResponseUtility.APIResponse) customResponse.getBody(), requestTime,(ResponseUtility.APIResponse) customResponse2.getBody());
+        return customResponse2;
     }
 
-    @RequestMapping(value = "/update/negative/countries", method = RequestMethod.GET)
+    @RequestMapping(value = "/update/negative/countries", method = RequestMethod.POST)
     public CustomResponse updateNegativeCountriesList(HttpServletRequest request,
                                                    @RequestBody RequestParameter<IBANVerificationRequest> requestBody)
             throws CustomException, DataValidationException, NoDataFoundException, JsonProcessingException {
@@ -189,13 +186,13 @@ public class ADController {
                 accountDetail == null ? messageBundle.getString("negative.countries.not.shared") :
                         messageBundle.getString("negative.countries.shared"), requestBody);
 
-        ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
+        CustomResponse customResponse2 = requestPSWAPI("/update/negative/countries", request, customResponse);
 
-        saveLogRequest("MSG7: Update Negative Countries List", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
-        return customResponse;
+//        saveLogRequest("MSG6: Update Payment Modes", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
+        return customResponse2;
     }
 
-    @RequestMapping(value = "/update/negative/commodities", method = RequestMethod.GET)
+    @RequestMapping(value = "/update/negative/commodities", method = RequestMethod.POST)
     public CustomResponse updateNegativeCommoditiesList(HttpServletRequest request,
                                                      @RequestBody RequestParameter<IBANVerificationRequest> requestBody)
             throws CustomException, DataValidationException, NoDataFoundException, JsonProcessingException {
@@ -210,13 +207,13 @@ public class ADController {
                 accountDetail == null ? messageBundle.getString("negative.commodities.not.shared") :
                         messageBundle.getString("negative.commodities.shared"), requestBody);
 
-        ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
+        CustomResponse customResponse2 = requestPSWAPI("/update/negative/commodities", request, customResponse);
 
-        saveLogRequest("MSG8: Update Negative Commodities List", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
-        return customResponse;
+//        saveLogRequest("MSG6: Update Payment Modes", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
+        return customResponse2;
     }
 
-    @RequestMapping(value = "/update/negative/suppliers", method = RequestMethod.GET)
+    @RequestMapping(value = "/update/negative/suppliers", method = RequestMethod.POST)
     public CustomResponse updateNegativeSuppliersList(HttpServletRequest request,
                                                    @RequestBody RequestParameter<IBANVerificationRequest> requestBody)
             throws CustomException, DataValidationException, NoDataFoundException, JsonProcessingException {
@@ -230,10 +227,20 @@ public class ADController {
                 accountDetail == null ? messageBundle.getString("negative.suppliers.not.shared") :
                         messageBundle.getString("negative.suppliers.shared"), requestBody);
 
-        ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
+        CustomResponse customResponse2 = requestPSWAPI("/update/negative/suppliers", request, customResponse);
 
-        saveLogRequest("MSG9: Update Negative Suppliers ", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
-        return customResponse;
+//        saveLogRequest("MSG6: Update Payment Modes", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
+        return customResponse2;
+    }
+
+    private CustomResponse requestPSWAPI(String uri,HttpServletRequest request, CustomResponse customResponse) {
+        ResponseUtility.APIResponse requestBodyPSW = (ResponseUtility.APIResponse) customResponse.getBody();
+
+        ResponseUtility.APIResponse responseBodyPSW = HTTPClientUtils.postRequest(uri, request.getHeader("Authorization2"),
+                requestBodyPSW);
+        CustomResponse customResponse2 = CustomResponse.status(HttpStatus.CREATED)
+                .body(responseBodyPSW);
+        return customResponse2;
     }
 
     private AccountDetail getAccountDetail(@RequestBody RequestParameter<IBANVerificationRequest> requestBody) throws DataValidationException, CustomException {
@@ -250,7 +257,23 @@ public class ADController {
         return accountDetail;
     }
 
-    private void saveLogRequest(String messageName, String messageType, RequestParameter requestBody, ZonedDateTime requestTime, ResponseUtility.APIResponse responseBody) throws JsonProcessingException {
+    private void saveLogRequest(String messageName, String messageType, RequestParameter requestBody,
+                                ZonedDateTime requestTime, ResponseUtility.APIResponse responseBody) throws JsonProcessingException {
+        LogRequest logRequest = new LogRequest();
+        logRequest.setMsgIdentifier(messageName);
+        logRequest.setRequestMethod(messageType);
+        logRequest.setRequestPayload(requestBody.toJson());
+        logRequest.setResponsePayload(responseBody.toJson());
+        logRequest.setRequestTime(requestTime);
+        logRequest.setResponseTime(ZonedDateTime.now());
+        logRequest.setCreatedOn(ZonedDateTime.now());
+        logRequest.setResponseCode(responseBody.getMessage().getCode());
+        logRequest.setResponseMessage(responseBody.getMessage().getDescription());
+        logRequestService.createLogRequest(logRequest);
+    }
+
+    private void saveLogRequest(String messageName, String messageType, ResponseUtility.APIResponse requestBody,
+                                ZonedDateTime requestTime, ResponseUtility.APIResponse responseBody) throws JsonProcessingException {
         LogRequest logRequest = new LogRequest();
         logRequest.setMsgIdentifier(messageName);
         logRequest.setRequestMethod(messageType);
