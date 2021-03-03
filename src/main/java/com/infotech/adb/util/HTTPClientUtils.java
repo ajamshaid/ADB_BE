@@ -1,5 +1,6 @@
 package com.infotech.adb.util;
 
+import com.infotech.adb.dto.RequestParameter;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -47,9 +48,9 @@ public class HTTPClientUtils {
 //        return postRequest(uri,token,requestParameter);
 //    }
 
-    public static ResponseUtility.APIResponse postRequest(String uri, String token, ResponseUtility.APIResponse responseBody) {
+    public static ResponseUtility.APIResponse postRequest(String uri, String token, RequestParameter requestParameter) {
         HttpHeaders headers = getHeaders(token);
-        HttpEntity<ResponseUtility.APIResponse> request = new HttpEntity<>(responseBody, headers);
+        HttpEntity<RequestParameter> request = new HttpEntity<>(requestParameter, headers);
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<ResponseUtility.APIResponse> response = restTemplate.postForEntity(baseUrl + uri, request, ResponseUtility.APIResponse.class);
         return response.getBody();

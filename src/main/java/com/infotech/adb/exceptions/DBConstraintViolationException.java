@@ -18,7 +18,6 @@ public class DBConstraintViolationException extends org.springframework.dao.Data
 	public DBConstraintViolationException(String message, Throwable cause) {
 		super(message, cause);
 		this.message = message;
-		
 	}
 
 	@Override

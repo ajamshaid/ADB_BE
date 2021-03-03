@@ -109,6 +109,6 @@ public class LogRequestController {
         }
         return ResponseUtility.deleteSuccessResponse(null, messageBundle.getString("logRequest.deleted.success"));
     }
-
-
 }
+
+

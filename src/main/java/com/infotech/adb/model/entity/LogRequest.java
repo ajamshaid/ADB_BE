@@ -28,10 +28,10 @@ public class LogRequest extends BaseEntity {
     @Column(name = "REQUEST_METHOD", nullable = false)
     private String requestMethod;
 
-    @Column(name = "REQUEST_PAYLOAD", length = 2000)
+    @Column(name = "REQUEST_PAYLOAD", length = 4000)
     private String requestPayload;
 
-    @Column(name = "RESPONSE_PAYLOAD", length = 2000)
+    @Column(name = "RESPONSE_PAYLOAD", length = 4000)
     private String responsePayload;
 
     @Column(name = "REQUEST_TIME", columnDefinition = "TIMESTAMP DEFAULT NOW()")

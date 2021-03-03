@@ -34,7 +34,7 @@ import java.util.ResourceBundle;
 @RequestMapping("/ad")
 @Log4j2
 @Api(tags = "reference")
-public class ADController {
+public class TPController {
 
     @Autowired
     private ADService adService;
@@ -152,7 +152,7 @@ public class ADController {
 
     @RequestMapping(value = "/update/payment/modes", method = RequestMethod.POST)
     public CustomResponse updateAccountDetails(HttpServletRequest request,
-                                            @RequestBody RequestParameter<IBANVerificationRequest> requestBody)
+                                            @RequestBody RequestParameter requestBody)
             throws CustomException, DataValidationException, NoDataFoundException, JsonProcessingException {
 
         HttpClient.updatePaymentModes();
@@ -164,8 +164,8 @@ public class ADController {
         CustomResponse customResponse = ResponseUtility.buildResponseObject(accountDetail, new AccountDetailDTO(), 200,
                 accountDetail == null ? messageBundle.getString("account.details.not.shared") :
                         messageBundle.getString("account.details.shared"), requestBody);
-
-        CustomResponse customResponse2 = requestPSWAPI("/update/payment/modes", request, customResponse);
+        requestBody.setData(accountDetail);
+        CustomResponse customResponse2 = requestPSWAPI("/update/payment/modes", request, requestBody);
 
         saveLogRequest("MSG6: Update Payment Modes", RequestMethod.POST.name(),(ResponseUtility.APIResponse) customResponse.getBody(), requestTime,(ResponseUtility.APIResponse) customResponse2.getBody());
         return customResponse2;
@@ -173,7 +173,7 @@ public class ADController {
 
     @RequestMapping(value = "/update/negative/countries", method = RequestMethod.POST)
     public CustomResponse updateNegativeCountriesList(HttpServletRequest request,
-                                                   @RequestBody RequestParameter<IBANVerificationRequest> requestBody)
+                                                   @RequestBody RequestParameter requestBody)
             throws CustomException, DataValidationException, NoDataFoundException, JsonProcessingException {
 
         HttpClient.updateNegativeCountries();
@@ -182,11 +182,12 @@ public class ADController {
 
         // TODO validate request common parameters
         AccountDetail accountDetail = getAccountDetail(requestBody);
+        requestBody.setData(accountDetail);
         CustomResponse customResponse = ResponseUtility.buildResponseObject(accountDetail, new RestrictedCountiesDTO(), 200,
                 accountDetail == null ? messageBundle.getString("negative.countries.not.shared") :
                         messageBundle.getString("negative.countries.shared"), requestBody);
 
-        CustomResponse customResponse2 = requestPSWAPI("/update/negative/countries", request, customResponse);
+        CustomResponse customResponse2 = requestPSWAPI("/update/negative/countries", request, requestBody);
 
 //        saveLogRequest("MSG6: Update Payment Modes", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
         return customResponse2;
@@ -194,7 +195,7 @@ public class ADController {
 
     @RequestMapping(value = "/update/negative/commodities", method = RequestMethod.POST)
     public CustomResponse updateNegativeCommoditiesList(HttpServletRequest request,
-                                                     @RequestBody RequestParameter<IBANVerificationRequest> requestBody)
+                                                     @RequestBody RequestParameter requestBody)
             throws CustomException, DataValidationException, NoDataFoundException, JsonProcessingException {
 
         HttpClient.updateNegativeCommodities();
@@ -203,11 +204,12 @@ public class ADController {
 
         // TODO validate request common parameters
         AccountDetail accountDetail = getAccountDetail(requestBody);
+        requestBody.setData(accountDetail);
         CustomResponse customResponse = ResponseUtility.buildResponseObject(accountDetail, new RestrictedCommoditiesDTO(), 200,
                 accountDetail == null ? messageBundle.getString("negative.commodities.not.shared") :
                         messageBundle.getString("negative.commodities.shared"), requestBody);
 
-        CustomResponse customResponse2 = requestPSWAPI("/update/negative/commodities", request, customResponse);
+        CustomResponse customResponse2 = requestPSWAPI("/update/negative/commodities", request, requestBody);
 
 //        saveLogRequest("MSG6: Update Payment Modes", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
         return customResponse2;
@@ -215,7 +217,7 @@ public class ADController {
 
     @RequestMapping(value = "/update/negative/suppliers", method = RequestMethod.POST)
     public CustomResponse updateNegativeSuppliersList(HttpServletRequest request,
-                                                   @RequestBody RequestParameter<IBANVerificationRequest> requestBody)
+                                                   @RequestBody RequestParameter requestBody)
             throws CustomException, DataValidationException, NoDataFoundException, JsonProcessingException {
 
         HttpClient.updateNegativeSupplier();
@@ -227,30 +229,29 @@ public class ADController {
                 accountDetail == null ? messageBundle.getString("negative.suppliers.not.shared") :
                         messageBundle.getString("negative.suppliers.shared"), requestBody);
 
-        CustomResponse customResponse2 = requestPSWAPI("/update/negative/suppliers", request, customResponse);
+        CustomResponse customResponse2 = requestPSWAPI("/update/negative/suppliers", request, requestBody);
 
 //        saveLogRequest("MSG6: Update Payment Modes", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
         return customResponse2;
     }
 
-    private CustomResponse requestPSWAPI(String uri,HttpServletRequest request, CustomResponse customResponse) {
-        ResponseUtility.APIResponse requestBodyPSW = (ResponseUtility.APIResponse) customResponse.getBody();
+    private CustomResponse requestPSWAPI(String uri,HttpServletRequest request, RequestParameter requestParameter) {
 
         ResponseUtility.APIResponse responseBodyPSW = HTTPClientUtils.postRequest(uri, request.getHeader("Authorization2"),
-                requestBodyPSW);
+                requestParameter);
         CustomResponse customResponse2 = CustomResponse.status(HttpStatus.CREATED)
                 .body(responseBodyPSW);
         return customResponse2;
     }
 
-    private AccountDetail getAccountDetail(@RequestBody RequestParameter<IBANVerificationRequest> requestBody) throws DataValidationException, CustomException {
+    private AccountDetail getAccountDetail(RequestParameter<IBANVerificationRequest> requestBody) throws DataValidationException, CustomException {
         // TODO validate request common parameters
         if (AppUtility.isEmpty(requestBody.getMessageId())) {
             throw new DataValidationException(messageBundle.getString("id.not.found"));
         }
         AccountDetail accountDetail = null;
         try {
-            accountDetail = adService.getAccountByIban(requestBody);
+            accountDetail = adService.getAccountByIban(requestBody.getData());
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e, null);
         }
