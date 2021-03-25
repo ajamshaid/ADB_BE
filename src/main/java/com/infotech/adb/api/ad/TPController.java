@@ -15,7 +15,11 @@ import com.infotech.adb.model.entity.LogRequest;
 import com.infotech.adb.service.ADService;
 import com.infotech.adb.service.AccountService;
 import com.infotech.adb.service.LogRequestService;
-import com.infotech.adb.util.*;
+import com.infotech.adb.util.AppUtility;
+import com.infotech.adb.util.CustomResponse;
+import com.infotech.adb.util.HTTPClientUtils;
+import com.infotech.adb.util.HttpClient;
+import com.infotech.adb.util.ResponseUtility;
 import io.swagger.annotations.Api;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +37,7 @@ import java.util.ResourceBundle;
 @RestController
 @RequestMapping("/ad")
 @Log4j2
-@Api(tags = "reference")
+@Api(tags = "@TP")
 public class TPController {
 
     @Autowired
@@ -70,7 +74,8 @@ public class TPController {
 
         ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
 
-        saveLogRequest("MSG1: Verify Profile", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
+//        saveLogRequest("MSG1: Verify Profile", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
+        saveLogRequest("Verify Trader Profile", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
         return customResponse;
     }
 
@@ -90,7 +95,8 @@ public class TPController {
 
         ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
 
-        saveLogRequest("MSG2: Account Details", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
+//        saveLogRequest("MSG2: Account Details", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
+        saveLogRequest("Account Details and Payment Modes", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
         return customResponse;
     }
 
@@ -109,7 +115,8 @@ public class TPController {
 
         ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
 
-        saveLogRequest("MSG3: Negative List Countries", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
+//        saveLogRequest("MSG3: Negative List Countries", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
+        saveLogRequest("Negative List Countries", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
         return customResponse;
     }
 
@@ -128,7 +135,8 @@ public class TPController {
 
         ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
 
-        saveLogRequest("MSG4: Negative List Commodities", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
+//        saveLogRequest("MSG4: Negative List Commodities", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
+        saveLogRequest("Negative List Commodities", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
         return customResponse;
     }
 
@@ -146,101 +154,96 @@ public class TPController {
 
         ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
 
-        saveLogRequest("MSG5: Negative List Suppliers", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
+//        saveLogRequest("MSG5: Negative List Suppliers", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
+        saveLogRequest("Negative List Suppliers", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
         return customResponse;
     }
 
     @RequestMapping(value = "/update/payment/modes", method = RequestMethod.POST)
     public CustomResponse updateAccountDetails(HttpServletRequest request,
-                                            @RequestBody RequestParameter requestBody)
+                                            @RequestBody RequestParameter<IBANVerificationRequest> requestBody)
             throws CustomException, DataValidationException, NoDataFoundException, JsonProcessingException {
 
         HttpClient.updatePaymentModes();
 
         ZonedDateTime requestTime = ZonedDateTime.now();
 
-        // TODO validate request common parameters
         AccountDetail accountDetail = getAccountDetail(requestBody);
-        CustomResponse customResponse = ResponseUtility.buildResponseObject(accountDetail, new AccountDetailDTO(), 200,
-                accountDetail == null ? messageBundle.getString("account.details.not.shared") :
-                        messageBundle.getString("account.details.shared"), requestBody);
-        requestBody.setData(accountDetail);
-        CustomResponse customResponse2 = requestPSWAPI("/update/payment/modes", request, requestBody);
+        RequestParameter pswRequestPayload = requestBody.newRequestParameter();
+        pswRequestPayload.setData(new RestrictedSuppliersDTO().convertToNewDTO(accountDetail,false));
 
-        saveLogRequest("MSG6: Update Payment Modes", RequestMethod.POST.name(),(ResponseUtility.APIResponse) customResponse.getBody(), requestTime,(ResponseUtility.APIResponse) customResponse2.getBody());
+        CustomResponse customResponse2 = requestPSWAPI("/update/payment/modes", request, pswRequestPayload);
+
+//        saveLogRequest("MSG6: Update Payment Modes", RequestMethod.POST.name(), requestBody, requestTime,(ResponseUtility.APIResponse) customResponse2.getBody());
+        saveLogRequest("Update Payment Modes With PSW by AD", RequestMethod.POST.name(), requestBody, requestTime,(ResponseUtility.APIResponse) customResponse2.getBody());
         return customResponse2;
     }
 
     @RequestMapping(value = "/update/negative/countries", method = RequestMethod.POST)
     public CustomResponse updateNegativeCountriesList(HttpServletRequest request,
-                                                   @RequestBody RequestParameter requestBody)
+                                                   @RequestBody RequestParameter<IBANVerificationRequest> requestBody)
             throws CustomException, DataValidationException, NoDataFoundException, JsonProcessingException {
 
         HttpClient.updateNegativeCountries();
 
         ZonedDateTime requestTime = ZonedDateTime.now();
 
-        // TODO validate request common parameters
         AccountDetail accountDetail = getAccountDetail(requestBody);
-        requestBody.setData(accountDetail);
-        CustomResponse customResponse = ResponseUtility.buildResponseObject(accountDetail, new RestrictedCountiesDTO(), 200,
-                accountDetail == null ? messageBundle.getString("negative.countries.not.shared") :
-                        messageBundle.getString("negative.countries.shared"), requestBody);
+        RequestParameter pswRequestPayload = requestBody.newRequestParameter();
+        pswRequestPayload.setData(new RestrictedSuppliersDTO().convertToNewDTO(accountDetail,false));
 
-        CustomResponse customResponse2 = requestPSWAPI("/update/negative/countries", request, requestBody);
+        CustomResponse customResponse2 = requestPSWAPI("/update/negative/countries", request, pswRequestPayload);
 
-//        saveLogRequest("MSG6: Update Payment Modes", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
+//        saveLogRequest("MSG7: Update Negative Countries", RequestMethod.POST.name(), requestBody, requestTime,(ResponseUtility.APIResponse) customResponse2.getBody());
+        saveLogRequest("Update Negative Countries With PSW by AD", RequestMethod.POST.name(), requestBody, requestTime,(ResponseUtility.APIResponse) customResponse2.getBody());
+
         return customResponse2;
     }
 
     @RequestMapping(value = "/update/negative/commodities", method = RequestMethod.POST)
     public CustomResponse updateNegativeCommoditiesList(HttpServletRequest request,
-                                                     @RequestBody RequestParameter requestBody)
+                                                     @RequestBody RequestParameter<IBANVerificationRequest> requestBody)
             throws CustomException, DataValidationException, NoDataFoundException, JsonProcessingException {
 
         HttpClient.updateNegativeCommodities();
 
         ZonedDateTime requestTime = ZonedDateTime.now();
 
-        // TODO validate request common parameters
         AccountDetail accountDetail = getAccountDetail(requestBody);
-        requestBody.setData(accountDetail);
-        CustomResponse customResponse = ResponseUtility.buildResponseObject(accountDetail, new RestrictedCommoditiesDTO(), 200,
-                accountDetail == null ? messageBundle.getString("negative.commodities.not.shared") :
-                        messageBundle.getString("negative.commodities.shared"), requestBody);
+        RequestParameter pswRequestPayload = requestBody.newRequestParameter();
+        pswRequestPayload.setData(new RestrictedSuppliersDTO().convertToNewDTO(accountDetail,false));
 
-        CustomResponse customResponse2 = requestPSWAPI("/update/negative/commodities", request, requestBody);
+        CustomResponse customResponse2 = requestPSWAPI("/update/negative/commodities", request, pswRequestPayload);
 
-//        saveLogRequest("MSG6: Update Payment Modes", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
+//        saveLogRequest("MSG8: Update Negative Commodities", RequestMethod.POST.name(), requestBody, requestTime,(ResponseUtility.APIResponse) customResponse2.getBody());
+        saveLogRequest("Update Negative Commodities With PSW by AD", RequestMethod.POST.name(), requestBody, requestTime,(ResponseUtility.APIResponse) customResponse2.getBody());
         return customResponse2;
     }
 
     @RequestMapping(value = "/update/negative/suppliers", method = RequestMethod.POST)
     public CustomResponse updateNegativeSuppliersList(HttpServletRequest request,
-                                                   @RequestBody RequestParameter requestBody)
+                                                   @RequestBody RequestParameter<IBANVerificationRequest> requestBody)
             throws CustomException, DataValidationException, NoDataFoundException, JsonProcessingException {
 
         HttpClient.updateNegativeSupplier();
 
         ZonedDateTime requestTime = ZonedDateTime.now();
         AccountDetail accountDetail = getAccountDetail(requestBody);
+        RequestParameter pswRequestPayload = requestBody.newRequestParameter();
+        pswRequestPayload.setData(new RestrictedSuppliersDTO().convertToNewDTO(accountDetail,false));
 
-        CustomResponse customResponse = ResponseUtility.buildResponseObject(accountDetail, new RestrictedSuppliersDTO(), 200,
-                accountDetail == null ? messageBundle.getString("negative.suppliers.not.shared") :
-                        messageBundle.getString("negative.suppliers.shared"), requestBody);
+        CustomResponse customResponse2 = requestPSWAPI("/update/negative/suppliers", request, pswRequestPayload);
 
-        CustomResponse customResponse2 = requestPSWAPI("/update/negative/suppliers", request, requestBody);
-
-//        saveLogRequest("MSG6: Update Payment Modes", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
+//        saveLogRequest("MSG9: Update Negative Supplier", RequestMethod.POST.name(), requestBody, requestTime,(ResponseUtility.APIResponse) customResponse2.getBody());
+        saveLogRequest("Update Negative Supplier With PSW by AD", RequestMethod.POST.name(), requestBody, requestTime,(ResponseUtility.APIResponse) customResponse2.getBody());
         return customResponse2;
     }
 
-    private CustomResponse requestPSWAPI(String uri,HttpServletRequest request, RequestParameter requestParameter) {
+    private CustomResponse requestPSWAPI(String uri, HttpServletRequest request, RequestParameter requestParameter) {
 
-        ResponseUtility.APIResponse responseBodyPSW = HTTPClientUtils.postRequest(uri, request.getHeader("Authorization2"),
+        ResponseUtility.APIResponse responseBodyPSW = HTTPClientUtils.postRequest(uri, request.getHeader("Authorization"),
                 requestParameter);
-        CustomResponse customResponse2 = CustomResponse.status(HttpStatus.CREATED)
-                .body(responseBodyPSW);
+        CustomResponse customResponse2 = CustomResponse.status(HttpStatus.CREATED).body(responseBodyPSW);
         return customResponse2;
     }
 
@@ -261,21 +264,8 @@ public class TPController {
     private void saveLogRequest(String messageName, String messageType, RequestParameter requestBody,
                                 ZonedDateTime requestTime, ResponseUtility.APIResponse responseBody) throws JsonProcessingException {
         LogRequest logRequest = new LogRequest();
-        logRequest.setMsgIdentifier(messageName);
-        logRequest.setRequestMethod(messageType);
-        logRequest.setRequestPayload(requestBody.toJson());
-        logRequest.setResponsePayload(responseBody.toJson());
-        logRequest.setRequestTime(requestTime);
-        logRequest.setResponseTime(ZonedDateTime.now());
-        logRequest.setCreatedOn(ZonedDateTime.now());
-        logRequest.setResponseCode(responseBody.getMessage().getCode());
-        logRequest.setResponseMessage(responseBody.getMessage().getDescription());
-        logRequestService.createLogRequest(logRequest);
-    }
-
-    private void saveLogRequest(String messageName, String messageType, ResponseUtility.APIResponse requestBody,
-                                ZonedDateTime requestTime, ResponseUtility.APIResponse responseBody) throws JsonProcessingException {
-        LogRequest logRequest = new LogRequest();
+        logRequest.setReceiverId(requestBody.getReceiverId());
+        logRequest.setSenderId(requestBody.getSenderId());
         logRequest.setMsgIdentifier(messageName);
         logRequest.setRequestMethod(messageType);
         logRequest.setRequestPayload(requestBody.toJson());

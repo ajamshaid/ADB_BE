@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 public interface BaseDTO<D, E> extends Serializable {
 
-    public E convertToEntity();
+    public E convertToEntity() throws JsonProcessingException;
 
     public void convertToDTO(E entity, boolean partialFill);
 

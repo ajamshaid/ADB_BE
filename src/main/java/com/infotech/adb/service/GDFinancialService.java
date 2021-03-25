@@ -44,6 +44,14 @@ public class GDFinancialService {
         return null;
     }
 
+    public GDFinancial getGDFinancialByGDNumber(String gdNumber, String gdType) {
+        log.info("getGDFinancialById method called..");
+        if (!AppUtility.isEmpty(gdNumber)) {
+            return gdFinancialRepository.findByGdNumberAndGdType(gdNumber, gdType);
+        }
+        return null;
+    }
+
     public GDFinancial createGDFinancial(GDFinancial gdFinancial) {
         log.info("createGDFinancial method called..");
         return gdFinancialRepository.save(gdFinancial);

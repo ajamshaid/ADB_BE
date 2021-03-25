@@ -21,7 +21,7 @@ import java.util.ResourceBundle;
 @RestController
 @RequestMapping("/psw")
 @Log4j2
-@Api(tags = "reference")
+@Api(tags = "PSW")
 public class PSWController {
 
     @Autowired
@@ -33,35 +33,48 @@ public class PSWController {
     public CustomResponse getAccountDetails(HttpServletRequest request,
                                             @RequestBody RequestParameter requestBody) {
 
-        return getCustomResponse(requestBody, messageBundle.getString("payment.modes.updated"));
+        return getCustomResponse(requestBody, messageBundle.getString("account.details.shared"));
     }
 
     @RequestMapping(value = "/update/negative/countries", method = RequestMethod.POST)
     public CustomResponse getNegativeCountriesList(HttpServletRequest request,
                                             @RequestBody RequestParameter requestBody) {
 
-        return getCustomResponse(requestBody, messageBundle.getString("negative.countries.updated"));
+        return getCustomResponse(requestBody, messageBundle.getString("negative.countries.shared"));
     }
 
     @RequestMapping(value = "/update/negative/commodities", method = RequestMethod.POST)
     public CustomResponse getNegativeCommoditiesList(HttpServletRequest request,
                                                    @RequestBody RequestParameter requestBody) {
 
-        return getCustomResponse(requestBody, messageBundle.getString("negative.commodities.updated"));
+        return getCustomResponse(requestBody, messageBundle.getString("negative.commodities.shared"));
     }
 
-    @RequestMapping(value = "/updates/negative/suppliers", method = RequestMethod.POST)
+    @RequestMapping(value = "/update/negative/suppliers", method = RequestMethod.POST)
     public CustomResponse getNegativeSuppliersList(HttpServletRequest request,
                                                      @RequestBody RequestParameter requestBody) {
 
-        return getCustomResponse(requestBody, messageBundle.getString("negative.suppliers.updated"));
+        return getCustomResponse(requestBody, messageBundle.getString("negative.suppliers.shared"));
     }
 
+    @RequestMapping(value = "/bca/information", method = RequestMethod.POST)
+    public CustomResponse bcaInformation(HttpServletRequest request,
+                                                   @RequestBody RequestParameter requestBody) {
+
+        return getCustomResponse(requestBody, messageBundle.getString("bca.information.updated"));
+    }
+
+
+    @RequestMapping(value = "/financial/transaction", method = RequestMethod.POST)
+    public CustomResponse financialTransaction(HttpServletRequest request,
+                                         @RequestBody RequestParameter requestBody) {
+
+        return getCustomResponse(requestBody, messageBundle.getString("negative.suppliers.shared"));
+    }
+
+    //    5.2.3. Message 3 – Sharing of BCA Information
+
     private CustomResponse getCustomResponse(RequestParameter requestBody, String message) {
-//        String receiver = requestBody.getReceiverId();
-//        requestBody.setReceiverId(requestBody.getSenderId());
-//        requestBody.setSenderId(receiver);
-//        requestBody.setData(null);
         return ResponseUtility.createdResponse(null, 200, message, requestBody);
     }
 

@@ -44,9 +44,10 @@ public class SwaggerConfig {
                 .responseModel(new ModelRef("Result")).build());
 
         return new Docket(DocumentationType.SWAGGER_2)
-//                    .tags(new Tag("um", "user management"),
-//                new Tag("reference", "reference objects"),
-//                            new Tag("reference.region", "reference region objects"))
+                    .tags(new Tag("GD", "Goods Declaration"),
+                new Tag("@TP", "Trader Profile"),
+                new Tag("Logs", "Log Requests"),
+                            new Tag("PSW", "PSW APIz"))
                 .select()
 //                .apis(RequestHandlerSelectors.any())
                 .apis(RequestHandlerSelectors.basePackage("com.infotech.adb.api"))
@@ -107,8 +108,8 @@ public class SwaggerConfig {
     }
 
     private ApiInfo apiInfo() {
-        return new ApiInfoBuilder().title("Authorized Dealer Broker").description("Data transfer between Switch between " +
-                "Pakistan Single Window and authorized dealer")
+        return new ApiInfoBuilder().title("AD Broker").description("Data transfer Switch between " +
+                "Pakistan Single Window and authorized dealers")
                 .termsOfServiceUrl("https://www.infotechgroup.com")
                 .contact(new Contact("InfoTech Group", "https://www.infotechgroup.com/",
                         "info@infotechgroup.com"))

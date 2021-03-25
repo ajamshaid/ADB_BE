@@ -22,7 +22,7 @@ public class LogRequestService {
     public List<LogRequest> getAllLogRequests(Boolean isSuspended) {
         log.info("getAllLogRequests method called..");
         if (AppUtility.isEmpty(isSuspended)) {
-            return logRequestRepository.findAll();
+            return logRequestRepository.findAllByOrderByIdDesc();
         } else {
             return logRequestRepository.findAll();
         }

@@ -60,8 +60,8 @@ public class ResponseUtility {
             this.message = message;
             this.messageId = requestParameter.getMessageId();
             this.timestamp = requestParameter.getTimestamp();
-            this.senderId = requestParameter.getReceiverId();
-            this.receiverId = requestParameter.getSenderId();
+            this.senderId = requestParameter.getSenderId();
+            this.receiverId = requestParameter.getReceiverId();
             this.processingCode = requestParameter.getProcessingCode();
             this.methodId = requestParameter.getMethodId();
             this.signature = requestParameter.getSignature();
@@ -162,7 +162,7 @@ public class ResponseUtility {
             if (exc.getCause() instanceof ConstraintViolationException) {
                 ConstraintViolationException constraintException = (ConstraintViolationException) exc.getCause();
 
-                if (!AppUtility.isEmpty(constraintException.getConstraintName()) && constraintException.getConstraintName().toUpperCase().contains(constraintName.toUpperCase())) {
+                if (!AppUtility.isEmpty(constraintException.getConstraintName())) {
 
                     value = value + " already exist!";
                     if (constraintException.getCause() instanceof SQLIntegrityConstraintViolationException) {

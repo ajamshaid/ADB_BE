@@ -13,4 +13,5 @@ import java.util.Optional;
 @Repository
 public interface LogRequestRepository extends JpaRepository<LogRequest, Long> {
 
+    List<LogRequest> findAllByOrderByIdDesc();
 }

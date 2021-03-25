@@ -29,4 +29,16 @@ public class RequestParameter<T> {
         ObjectWriter objectWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
         return objectWriter.writeValueAsString(this);
     }
+
+    public RequestParameter newRequestParameter(){
+        RequestParameter newRParameter = new RequestParameter();
+        newRParameter.messageId=this.messageId;
+        newRParameter.timestamp=this.timestamp;
+        newRParameter.senderId=this.senderId;
+        newRParameter.receiverId=this.receiverId;
+        newRParameter.processingCode=this.processingCode;
+        newRParameter.methodId=this.methodId;
+        newRParameter.signature=this.signature;
+        return newRParameter;
+    }
 }

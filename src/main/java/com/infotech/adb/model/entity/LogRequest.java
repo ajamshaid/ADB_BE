@@ -7,7 +7,6 @@ import lombok.EqualsAndHashCode;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.sql.Timestamp;
 import java.time.ZonedDateTime;
 
 @EqualsAndHashCode(callSuper = false)
@@ -39,6 +38,12 @@ public class LogRequest extends BaseEntity {
 
     @Column(name = "RESPONSE_TIME", columnDefinition = "TIMESTAMP DEFAULT NOW()")
     private ZonedDateTime responseTime;
+
+    @Column(name = "SENDER_ID", nullable = false)
+    private String senderId;
+
+    @Column(name = "RECEIVER_ID", nullable = false)
+    private String receiverId;
 
     public LogRequest() {
     }

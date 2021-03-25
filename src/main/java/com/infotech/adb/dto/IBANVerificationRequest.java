@@ -12,4 +12,5 @@ public class IBANVerificationRequest {
     private String iban;
     private String email;
     private String mobileNumber;
+    private String gdNumber;
 }

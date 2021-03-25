@@ -18,8 +18,11 @@ public class GDFinancial extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "GD_NUMBER",unique=true)
+    @Column(name = "GD_NUMBER", unique=true)
     private String gdNumber;
+
+    @Column(name = "GD_TYPE")
+    private String gdType;
 
     @Column(name = "GD_OBJECT", length = 4000)
     private String gdfObjectJson;

@@ -11,6 +11,8 @@ import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @SuppressWarnings(value = {"rawtypes"})
@@ -24,6 +26,12 @@ public class AppUtility {
     public static String formatedDate(Date date) {
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
         return sdf.format(date);
+    }
+
+    public static String formatZonedDateTime(String format, ZonedDateTime zonedDateTime){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+        return formatter.format(zonedDateTime);
+
     }
 
     public static Timestamp getCurrentTimeStamp() {

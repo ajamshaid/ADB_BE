@@ -11,4 +11,6 @@ import org.springframework.stereotype.Repository;
 public interface GDFinancialRepository extends JpaRepository<GDFinancial, Long> {
 
     GDFinancial findByGdNumber(String gdNumber);
+
+    GDFinancial findByGdNumberAndGdType(String gdNumber, String gdType);
 }

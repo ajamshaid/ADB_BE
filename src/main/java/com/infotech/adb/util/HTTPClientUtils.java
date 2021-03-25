@@ -2,7 +2,6 @@ package com.infotech.adb.util;
 
 import com.infotech.adb.dto.RequestParameter;
 import org.apache.commons.codec.binary.Base64;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -15,8 +14,8 @@ import java.nio.charset.Charset;
 public class HTTPClientUtils {
     public static final String AUTHORIZATION = "Authorization";
 
-    @Value("${app.base.url}")
-    private static String baseUrl;
+//    @Value("${app.base.url}")
+    private static String BASE_URL = "http://localhost:8081/adb/psw";
 
 
     private static ResponseUtility.APIResponse getRequest(String uri, String token) {
@@ -52,7 +51,7 @@ public class HTTPClientUtils {
         HttpHeaders headers = getHeaders(token);
         HttpEntity<RequestParameter> request = new HttpEntity<>(requestParameter, headers);
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<ResponseUtility.APIResponse> response = restTemplate.postForEntity(baseUrl + uri, request, ResponseUtility.APIResponse.class);
+        ResponseEntity<ResponseUtility.APIResponse> response = restTemplate.postForEntity(BASE_URL + uri, request, ResponseUtility.APIResponse.class);
         return response.getBody();
     }
 
