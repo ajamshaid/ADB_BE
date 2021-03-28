@@ -32,7 +32,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .inMemory()
                 .withClient("adb")
                 .secret(new BCryptPasswordEncoder().encode("adb"))
-                .authorizedGrantTypes("password", "refresh_token")
+                .authorizedGrantTypes("password", "client_credentials", "refresh_token")
                 .scopes("read", "write", "trust")
                 .accessTokenValiditySeconds(86400)
                 .refreshTokenValiditySeconds(86400);

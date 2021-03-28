@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public interface AccountDetailRepository extends JpaRepository<AccountDetail, Long> {
 
-   Optional<AccountDetail> findByIbanAndEmailAndMobileNumber(String iban, String emailAddress, String mobileNumber);
+   AccountDetail findByIbanAndEmailAndMobileNumberAndNtn(String iban, String emailAddress, String mobileNumber,String ntn);
 
    AccountDetail findByIban(String iban);
 }

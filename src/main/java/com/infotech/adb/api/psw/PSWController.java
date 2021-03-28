@@ -1,18 +1,21 @@
 package com.infotech.adb.api.psw;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.infotech.adb.api.consumer.PSWClient;
 import com.infotech.adb.dto.RequestParameter;
 import com.infotech.adb.model.entity.LogRequest;
 import com.infotech.adb.service.LogRequestService;
+import com.infotech.adb.util.AppConstants;
 import com.infotech.adb.util.CustomResponse;
 import com.infotech.adb.util.ResponseUtility;
 import io.swagger.annotations.Api;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.ZonedDateTime;
@@ -27,7 +30,21 @@ public class PSWController {
     @Autowired
     private LogRequestService logRequestService;
 
+//    @Autowired
+//    private PSWClient pswClient ;
+
     private static final ResourceBundle messageBundle = ResourceBundle.getBundle("messages");
+
+    @RequestMapping(value = "/token", method = RequestMethod.GET)
+    public CustomResponse getToken(@RequestParam String userName, @RequestParam String password) {
+        log.info("Test .. PSW AccessToken");
+
+        log.info("----Going to Call PSW API Service of Token Using HTTP Client......");
+        String token = "Hard Coded";// pswClient.getAuthrizationToken(userName,password);
+        //String token = pswClient.getAuthrizationToken("info@ad.com","Mudassir2017");
+
+        return   ResponseUtility.successResponse(token,"Token Fetched Successfully");
+    }
 
     @RequestMapping(value = "/update/payment/modes", method = RequestMethod.POST)
     public CustomResponse getAccountDetails(HttpServletRequest request,
@@ -75,7 +92,7 @@ public class PSWController {
     //    5.2.3. Message 3 – Sharing of BCA Information
 
     private CustomResponse getCustomResponse(RequestParameter requestBody, String message) {
-        return ResponseUtility.createdResponse(null, 200, message, requestBody);
+        return ResponseUtility.createdResponse(null, AppConstants.PSWResponseCodes.OK, message, requestBody);
     }
 
     private void saveLogRequest(String messageName, String messageType, RequestParameter requestBody, ZonedDateTime requestTime, ResponseUtility.APIResponse responseBody) throws JsonProcessingException {

@@ -9,6 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class IBANVerificationRequest {
 
+    private String ntn;
     private String iban;
     private String email;
     private String mobileNumber;

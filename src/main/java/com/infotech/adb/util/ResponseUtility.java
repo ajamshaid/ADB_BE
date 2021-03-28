@@ -4,14 +4,11 @@ package com.infotech.adb.util;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.infotech.adb.dto.AccountDetailDTO;
 import com.infotech.adb.dto.BaseDTO;
-import com.infotech.adb.dto.IBANVerificationRequest;
 import com.infotech.adb.dto.RequestParameter;
 import com.infotech.adb.exceptions.CustomException;
 import com.infotech.adb.exceptions.DBConstraintViolationException;
 import com.infotech.adb.exceptions.NoDataFoundException;
-import com.infotech.adb.model.entity.AccountDetail;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,7 +33,7 @@ public class ResponseUtility {
     @AllArgsConstructor
     @Data
     public static class Message {
-        private Integer code;
+        private String code;
         private String description;
     }
 
@@ -112,10 +109,21 @@ public class ResponseUtility {
       @return
     */
     @SuppressWarnings("rawtypes")
-    public static CustomResponse createdResponse(Object data, Integer code, String responseMessage,
+    public static CustomResponse createdResponse(Object data, String code, String responseMessage,
                                                  RequestParameter requestParameter) {
         return CustomResponse
                 .status(HttpStatus.CREATED)
+                .body(buildAPIResponse(data, new Message( code,
+                        AppUtility.isEmpty(responseMessage)
+                                ? messageBundle.getString("generic.success")
+                                : responseMessage
+                ), requestParameter));
+    }
+
+    public static CustomResponse successAPIRepsone(Object data, String code, String responseMessage,
+                                                 RequestParameter requestParameter) {
+        return CustomResponse
+                .status(HttpStatus.OK)
                 .body(buildAPIResponse(data, new Message( code,
                         AppUtility.isEmpty(responseMessage)
                                 ? messageBundle.getString("generic.success")
@@ -220,7 +228,7 @@ public class ResponseUtility {
     public static CustomResponse successResponse(Object data, String responseMessage) {
         return CustomResponse
                 .status(HttpStatus.OK)
-                .body(buildAPIResponse(data, new Message( 200,
+                .body(buildAPIResponse(data, new Message( AppConstants.PSWResponseCodes.OK,
                         AppUtility.isEmpty(responseMessage)
                                 ? messageBundle.getString("generic.success")
                                 : responseMessage
@@ -249,16 +257,15 @@ public class ResponseUtility {
 
     public static <B, E> CustomResponse buildResponseObject(Optional<E> entityObject, BaseDTO<B, E> baseObject, int responseCode, String responseMsg, RequestParameter requestBody) {
         if (!AppUtility.isEmpty(entityObject))
-            return ResponseUtility.createdResponse(baseObject.convertToNewDTO(entityObject.get(), false),responseCode,responseMsg,requestBody);
+            return ResponseUtility.createdResponse(baseObject.convertToNewDTO(entityObject.get(), false),""+responseCode,responseMsg,requestBody);
         throw new NoDataFoundException();
     }
 
     public static <B, E> CustomResponse buildResponseObject(E entityObject, BaseDTO<B, E> baseObject, int responseCode, String responseMsg, RequestParameter requestBody) {
         if (!AppUtility.isEmpty(entityObject))
-            return ResponseUtility.createdResponse(baseObject.convertToNewDTO(entityObject,false),responseCode,responseMsg,requestBody);
+            return ResponseUtility.createdResponse(baseObject.convertToNewDTO(entityObject,false),""+responseCode,responseMsg,requestBody);
         throw new NoDataFoundException();
     }
-
     /**
      * Generate generic response for single Object data
      *
@@ -282,7 +289,7 @@ public class ResponseUtility {
     public static CustomResponse deleteSuccessResponse(Object data, String responseMessage) {
         return CustomResponse
                 .status(HttpStatus.ACCEPTED)
-                .body(buildAPIResponse(data, new Message( 200,
+                .body(buildAPIResponse(data, new Message( AppConstants.PSWResponseCodes.OK,
                         AppUtility.isEmpty(responseMessage)
                                 ? messageBundle.getString("generic.success")
                                 : responseMessage

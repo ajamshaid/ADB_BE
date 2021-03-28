@@ -56,11 +56,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/adb/oauth/token").permitAll()
+                .antMatchers("/oauth/token").permitAll()
                 .anyRequest().authenticated()
                 .and().exceptionHandling();
 
-//        http.csrf().disable().authorizeRequests().antMatchers("/**").permitAll().anyRequest().anonymous();
+     //  http.csrf().disable().authorizeRequests().antMatchers("/**").permitAll().anyRequest().anonymous();
 
     }
 

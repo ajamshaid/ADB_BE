@@ -19,7 +19,7 @@ public class LogRequest extends BaseEntity {
     @Column(name = "RESPONSE_MESSAGE", nullable = false)
     private String responseMessage;
     @Column(name = "RESPONSE_CODE", nullable = false)
-    private Integer responseCode;
+    private String responseCode;
 
     @Column(name = "MSG_IDENTIFIER", nullable = false)
     private String msgIdentifier;

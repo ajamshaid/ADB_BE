@@ -8,7 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 @Component
-public class HttpClient {
+public class HttpClientTest {
 
 //    private String serverPath="https://paymate.pk:7003";
 ////    private String serverPath="http://localhost:8081";

@@ -14,12 +14,7 @@ import com.infotech.adb.model.entity.LogRequest;
 import com.infotech.adb.service.BankChangeService;
 import com.infotech.adb.service.GDFinancialService;
 import com.infotech.adb.service.LogRequestService;
-import com.infotech.adb.util.AppUtility;
-import com.infotech.adb.util.CustomResponse;
-import com.infotech.adb.util.HTTPClientUtils;
-import com.infotech.adb.util.HttpClient;
-import com.infotech.adb.util.JsonUtils;
-import com.infotech.adb.util.ResponseUtility;
+import com.infotech.adb.util.*;
 import io.swagger.annotations.Api;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +67,7 @@ public class GDFinancialController {
             ResponseUtility.exceptionResponse(e, "GDNumber");
         }
 
-        CustomResponse customResponse = ResponseUtility.createdResponse(null, 200,
+        CustomResponse customResponse = ResponseUtility.createdResponse(null, AppConstants.PSWResponseCodes.OK,
                 messageBundle.getString("gd.financial.updated"), requestBody);
 
         ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
@@ -89,7 +84,7 @@ public class GDFinancialController {
 
         GDFinancial gdFinancial = gdFinancialService.getGDFinancialByGDNumber(requestBody.getData().getGdNumber(), GDFinancialDTO.GD_TYPE_IMPORT);
         GDFinancialDTO gdFinancialDTO = JsonUtils.jsonToObject(gdFinancial.getGdfObjectJson(), GDFinancialDTO.class);
-        CustomResponse customResponse = ResponseUtility.createdResponse(gdFinancialDTO, 200,
+        CustomResponse customResponse = ResponseUtility.createdResponse(gdFinancialDTO, AppConstants.PSWResponseCodes.OK,
                 gdFinancial == null ? messageBundle.getString("account.details.not.shared") :
                         messageBundle.getString("account.details.shared"), requestBody);
 
@@ -120,7 +115,7 @@ public class GDFinancialController {
             ResponseUtility.exceptionResponse(e, "GDNumber");
         }
 
-        CustomResponse customResponse = ResponseUtility.createdResponse(null, 200,
+        CustomResponse customResponse = ResponseUtility.createdResponse(null, AppConstants.PSWResponseCodes.OK,
                 messageBundle.getString("gd.financial.updated"), requestBody);
 
         ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
@@ -139,7 +134,7 @@ public class GDFinancialController {
 
         GDFinancial gdFinancial = gdFinancialService.getGDFinancialByGDNumber(requestBody.getData().getGdNumber(), GDFinancialDTO.GD_TYPE_EXPORT);
         GDFinancialDTO gdFinancialDTO = JsonUtils.jsonToObject(gdFinancial.getGdfObjectJson(), GDFinancialDTO.class);
-        CustomResponse customResponse = ResponseUtility.createdResponse(gdFinancialDTO, 200,
+        CustomResponse customResponse = ResponseUtility.createdResponse(gdFinancialDTO, AppConstants.PSWResponseCodes.OK,
                 gdFinancial == null ? messageBundle.getString("account.details.not.shared") :
                         messageBundle.getString("account.details.shared"), requestBody);
 
@@ -166,7 +161,7 @@ public class GDFinancialController {
             ResponseUtility.exceptionResponse(e, null);
         }
 
-        CustomResponse customResponse = ResponseUtility.createdResponse(null, 200,
+        CustomResponse customResponse = ResponseUtility.createdResponse(null, AppConstants.PSWResponseCodes.OK,
                 messageBundle.getString("change.bank.successful"), requestBody);
 
         ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
@@ -199,7 +194,7 @@ public class GDFinancialController {
                                                       @RequestBody RequestParameter<IBANVerificationRequest> requestBody)
             throws NoDataFoundException, JsonProcessingException {
 
-        HttpClient.updateNegativeSupplier();
+        HttpClientTest.updateNegativeSupplier();
 
         ZonedDateTime requestTime = ZonedDateTime.now();
 

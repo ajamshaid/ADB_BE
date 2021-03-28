@@ -1,5 +1,6 @@
 package com.infotech.adb.service;
 
+import com.infotech.adb.dto.IBANVerificationRequest;
 import com.infotech.adb.model.entity.AccountDetail;
 import com.infotech.adb.model.repository.AccountDetailRepository;
 import com.infotech.adb.util.AppUtility;
@@ -18,6 +19,13 @@ public class AccountService {
 
     @Autowired
     private AccountDetailRepository accountDetailRepository;
+
+
+    public AccountDetail getAccountByIbanVerificationRequest(IBANVerificationRequest req) {
+        log.info("getAccountDetailByIBANEmailAndMobileNumber method called..");
+        return accountDetailRepository.findByIbanAndEmailAndMobileNumberAndNtn(req.getIban(),req.getEmail(),req.getMobileNumber(),req.getNtn());
+    }
+
 
     public List<AccountDetail> getAllAccountDetails(Boolean isSuspended) {
         log.info("getAllAccountDetails method called..");
@@ -53,10 +61,6 @@ public class AccountService {
         accountDetailRepository.deleteById(id);
     }
 
-    public Optional<AccountDetail> getAccountByIbanAndEmailAndMobileNumber(String iban, String emailAddress, String mobileNumber) {
-        log.info("getAccountDetailByIBANEmailAndMobileNumber method called..");
-        return accountDetailRepository.findByIbanAndEmailAndMobileNumber(iban,emailAddress,mobileNumber);
-    }
 
     public AccountDetail getAccountByIban(String iban) {
         log.info("getAccountDetailByIBANEmailAndMobileNumber method called..");

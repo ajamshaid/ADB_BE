@@ -74,7 +74,7 @@ public class LogRequestController {
         try {
             logRequest = logRequestService.createLogRequest(logRequestRequest.convertToEntity());
         } catch (Exception e) {
-            ResponseUtility.exceptionResponse(e, AppConstants.DBConstraints.UNQ_BANK_CODE);
+            ResponseUtility.exceptionResponse(e,null);
         }
         return ResponseUtility.buildResponseObject(logRequest);
     }
@@ -91,7 +91,7 @@ public class LogRequestController {
         try {
             logRequest = logRequestService.updateLogRequest(logRequestRequest.convertToEntity());
         } catch (Exception e) {
-            ResponseUtility.exceptionResponse(e, AppConstants.DBConstraints.UNQ_BANK_CODE);
+            ResponseUtility.exceptionResponse(e, null);
         }
         return ResponseUtility.buildResponseObject(logRequest, new LogRequestDTO(), false);
     }

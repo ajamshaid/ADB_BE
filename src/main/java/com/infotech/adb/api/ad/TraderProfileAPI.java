@@ -1,25 +1,15 @@
 package com.infotech.adb.api.ad;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.infotech.adb.dto.AccountDetailDTO;
-import com.infotech.adb.dto.IBANVerificationRequest;
-import com.infotech.adb.dto.RequestParameter;
-import com.infotech.adb.dto.RestrictedCommoditiesDTO;
-import com.infotech.adb.dto.RestrictedCountiesDTO;
-import com.infotech.adb.dto.RestrictedSuppliersDTO;
+import com.infotech.adb.dto.*;
 import com.infotech.adb.exceptions.CustomException;
 import com.infotech.adb.exceptions.DataValidationException;
 import com.infotech.adb.exceptions.NoDataFoundException;
 import com.infotech.adb.model.entity.AccountDetail;
 import com.infotech.adb.model.entity.LogRequest;
-import com.infotech.adb.service.ADService;
 import com.infotech.adb.service.AccountService;
 import com.infotech.adb.service.LogRequestService;
-import com.infotech.adb.util.AppUtility;
-import com.infotech.adb.util.CustomResponse;
-import com.infotech.adb.util.HTTPClientUtils;
-import com.infotech.adb.util.HttpClient;
-import com.infotech.adb.util.ResponseUtility;
+import com.infotech.adb.util.*;
 import io.swagger.annotations.Api;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,17 +21,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.ZonedDateTime;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
+@SuppressWarnings("rawtypes")
 @RestController
-@RequestMapping("/ad")
+@RequestMapping("/trader-profile")
 @Log4j2
 @Api(tags = "@TP")
-public class TPController {
-
-    @Autowired
-    private ADService adService;
+public class TraderProfileAPI {
 
     @Autowired
     private LogRequestService logRequestService;
@@ -51,33 +38,51 @@ public class TPController {
 
     private static final ResourceBundle messageBundle = ResourceBundle.getBundle("messages");
 
-    @RequestMapping(value = "/verify/account", method = RequestMethod.POST)
-    public CustomResponse verifyAccount(HttpServletRequest request,
-                                        @RequestBody RequestParameter<IBANVerificationRequest> requestBody)
-            throws CustomException, DataValidationException, NoDataFoundException, JsonProcessingException {
-
-        ZonedDateTime requestTime = ZonedDateTime.now();
+    //@TODO verify this method implementation....
+    private AccountDetail getAccountDetail(RequestParameter<IBANVerificationRequest> requestBody) throws DataValidationException, CustomException {
         // TODO validate request common parameters
         if (AppUtility.isEmpty(requestBody.getMessageId())) {
             throw new DataValidationException(messageBundle.getString("id.not.found"));
         }
-        Optional<AccountDetail> accountDetail = null;
+        AccountDetail accountDetail = null;
         try {
-            IBANVerificationRequest requestData = requestBody.getData();
-            accountDetail = accountService.getAccountByIbanAndEmailAndMobileNumber(requestData.getIban(), requestData.getEmail(), requestData.getMobileNumber());
+            accountDetail = accountService.getAccountByIbanVerificationRequest(requestBody.getData());
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e, null);
         }
-        CustomResponse customResponse = ResponseUtility.createdResponse(null, accountDetail.isPresent() ? 207 : 208,
-                accountDetail.isPresent() ? messageBundle.getString("account.verified") :
-                        messageBundle.getString("account.not.verified"), requestBody);
+        return accountDetail;
+    }
+    @RequestMapping(value = "/verify", method = RequestMethod.POST)
+    public CustomResponse verifyAccount(HttpServletRequest request,
+                                        @RequestBody RequestParameter<IBANVerificationRequest> requestBody)
+            throws CustomException, DataValidationException, NoDataFoundException {
+        CustomResponse customResponse = null;
+        if (RequestParameter.isValidRequest(requestBody)) {
+            AccountDetail accountDetail = null;
+            try {
+                IBANVerificationRequest ibanVerificationRequest = requestBody.getData();
+                accountDetail = accountService.getAccountByIbanVerificationRequest(ibanVerificationRequest);
+            } catch (Exception e) {
+                ResponseUtility.exceptionResponse(e, null);
+            }
+            boolean verified = !AppUtility.isEmpty(accountDetail);
+            customResponse = ResponseUtility.createdResponse(null,
+                     verified ? AppConstants.PSWResponseCodes.VERIFIED : AppConstants.PSWResponseCodes.UN_VERIFIED,
+                    verified ? messageBundle.getString("account.verified") :
+                            messageBundle.getString("account.un-verified")
+                    , requestBody);
 
-        ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
+//            ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
 
 //        saveLogRequest("MSG1: Verify Profile", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
-        saveLogRequest("Verify Trader Profile", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
+          //  saveLogRequest("Verify Trader Profile", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
+        }
         return customResponse;
     }
+
+
+
+    /***************************************/
 
 
     @RequestMapping(value = "/account/detail", method = RequestMethod.POST)
@@ -102,7 +107,7 @@ public class TPController {
 
     @RequestMapping(value = "/account/negative/countries", method = RequestMethod.POST)
     public CustomResponse getNegativeCountriesList(HttpServletRequest request,
-                                            @RequestBody RequestParameter<IBANVerificationRequest> requestBody)
+                                                   @RequestBody RequestParameter<IBANVerificationRequest> requestBody)
             throws CustomException, DataValidationException, NoDataFoundException, JsonProcessingException {
 
         ZonedDateTime requestTime = ZonedDateTime.now();
@@ -122,7 +127,7 @@ public class TPController {
 
     @RequestMapping(value = "/account/negative/commodities", method = RequestMethod.POST)
     public CustomResponse getNegativeCommoditiesList(HttpServletRequest request,
-                                                   @RequestBody RequestParameter<IBANVerificationRequest> requestBody)
+                                                     @RequestBody RequestParameter<IBANVerificationRequest> requestBody)
             throws CustomException, DataValidationException, NoDataFoundException, JsonProcessingException {
 
         ZonedDateTime requestTime = ZonedDateTime.now();
@@ -142,7 +147,7 @@ public class TPController {
 
     @RequestMapping(value = "/account/negative/suppliers", method = RequestMethod.POST)
     public CustomResponse getNegativeSuppliersList(HttpServletRequest request,
-                                                     @RequestBody RequestParameter<IBANVerificationRequest> requestBody)
+                                                   @RequestBody RequestParameter<IBANVerificationRequest> requestBody)
             throws CustomException, DataValidationException, NoDataFoundException, JsonProcessingException {
 
         ZonedDateTime requestTime = ZonedDateTime.now();
@@ -161,81 +166,81 @@ public class TPController {
 
     @RequestMapping(value = "/update/payment/modes", method = RequestMethod.POST)
     public CustomResponse updateAccountDetails(HttpServletRequest request,
-                                            @RequestBody RequestParameter<IBANVerificationRequest> requestBody)
+                                               @RequestBody RequestParameter<IBANVerificationRequest> requestBody)
             throws CustomException, DataValidationException, NoDataFoundException, JsonProcessingException {
 
-        HttpClient.updatePaymentModes();
+        HttpClientTest.updatePaymentModes();
 
         ZonedDateTime requestTime = ZonedDateTime.now();
 
         AccountDetail accountDetail = getAccountDetail(requestBody);
         RequestParameter pswRequestPayload = requestBody.newRequestParameter();
-        pswRequestPayload.setData(new RestrictedSuppliersDTO().convertToNewDTO(accountDetail,false));
+        pswRequestPayload.setData(new RestrictedSuppliersDTO().convertToNewDTO(accountDetail, false));
 
         CustomResponse customResponse2 = requestPSWAPI("/update/payment/modes", request, pswRequestPayload);
 
 //        saveLogRequest("MSG6: Update Payment Modes", RequestMethod.POST.name(), requestBody, requestTime,(ResponseUtility.APIResponse) customResponse2.getBody());
-        saveLogRequest("Update Payment Modes With PSW by AD", RequestMethod.POST.name(), requestBody, requestTime,(ResponseUtility.APIResponse) customResponse2.getBody());
+        saveLogRequest("Update Payment Modes With PSW by AD", RequestMethod.POST.name(), requestBody, requestTime, (ResponseUtility.APIResponse) customResponse2.getBody());
         return customResponse2;
     }
 
     @RequestMapping(value = "/update/negative/countries", method = RequestMethod.POST)
     public CustomResponse updateNegativeCountriesList(HttpServletRequest request,
-                                                   @RequestBody RequestParameter<IBANVerificationRequest> requestBody)
+                                                      @RequestBody RequestParameter<IBANVerificationRequest> requestBody)
             throws CustomException, DataValidationException, NoDataFoundException, JsonProcessingException {
 
-        HttpClient.updateNegativeCountries();
+        HttpClientTest.updateNegativeCountries();
 
         ZonedDateTime requestTime = ZonedDateTime.now();
 
         AccountDetail accountDetail = getAccountDetail(requestBody);
         RequestParameter pswRequestPayload = requestBody.newRequestParameter();
-        pswRequestPayload.setData(new RestrictedSuppliersDTO().convertToNewDTO(accountDetail,false));
+        pswRequestPayload.setData(new RestrictedSuppliersDTO().convertToNewDTO(accountDetail, false));
 
         CustomResponse customResponse2 = requestPSWAPI("/update/negative/countries", request, pswRequestPayload);
 
 //        saveLogRequest("MSG7: Update Negative Countries", RequestMethod.POST.name(), requestBody, requestTime,(ResponseUtility.APIResponse) customResponse2.getBody());
-        saveLogRequest("Update Negative Countries With PSW by AD", RequestMethod.POST.name(), requestBody, requestTime,(ResponseUtility.APIResponse) customResponse2.getBody());
+        saveLogRequest("Update Negative Countries With PSW by AD", RequestMethod.POST.name(), requestBody, requestTime, (ResponseUtility.APIResponse) customResponse2.getBody());
 
         return customResponse2;
     }
 
     @RequestMapping(value = "/update/negative/commodities", method = RequestMethod.POST)
     public CustomResponse updateNegativeCommoditiesList(HttpServletRequest request,
-                                                     @RequestBody RequestParameter<IBANVerificationRequest> requestBody)
+                                                        @RequestBody RequestParameter<IBANVerificationRequest> requestBody)
             throws CustomException, DataValidationException, NoDataFoundException, JsonProcessingException {
 
-        HttpClient.updateNegativeCommodities();
+        HttpClientTest.updateNegativeCommodities();
 
         ZonedDateTime requestTime = ZonedDateTime.now();
 
         AccountDetail accountDetail = getAccountDetail(requestBody);
         RequestParameter pswRequestPayload = requestBody.newRequestParameter();
-        pswRequestPayload.setData(new RestrictedSuppliersDTO().convertToNewDTO(accountDetail,false));
+        pswRequestPayload.setData(new RestrictedSuppliersDTO().convertToNewDTO(accountDetail, false));
 
         CustomResponse customResponse2 = requestPSWAPI("/update/negative/commodities", request, pswRequestPayload);
 
 //        saveLogRequest("MSG8: Update Negative Commodities", RequestMethod.POST.name(), requestBody, requestTime,(ResponseUtility.APIResponse) customResponse2.getBody());
-        saveLogRequest("Update Negative Commodities With PSW by AD", RequestMethod.POST.name(), requestBody, requestTime,(ResponseUtility.APIResponse) customResponse2.getBody());
+        saveLogRequest("Update Negative Commodities With PSW by AD", RequestMethod.POST.name(), requestBody, requestTime, (ResponseUtility.APIResponse) customResponse2.getBody());
         return customResponse2;
     }
 
     @RequestMapping(value = "/update/negative/suppliers", method = RequestMethod.POST)
     public CustomResponse updateNegativeSuppliersList(HttpServletRequest request,
-                                                   @RequestBody RequestParameter<IBANVerificationRequest> requestBody)
+                                                      @RequestBody RequestParameter<IBANVerificationRequest> requestBody)
             throws CustomException, DataValidationException, NoDataFoundException, JsonProcessingException {
 
-        HttpClient.updateNegativeSupplier();
+        HttpClientTest.updateNegativeSupplier();
 
         ZonedDateTime requestTime = ZonedDateTime.now();
         AccountDetail accountDetail = getAccountDetail(requestBody);
         RequestParameter pswRequestPayload = requestBody.newRequestParameter();
-        pswRequestPayload.setData(new RestrictedSuppliersDTO().convertToNewDTO(accountDetail,false));
+        pswRequestPayload.setData(new RestrictedSuppliersDTO().convertToNewDTO(accountDetail, false));
 
         CustomResponse customResponse2 = requestPSWAPI("/update/negative/suppliers", request, pswRequestPayload);
 
 //        saveLogRequest("MSG9: Update Negative Supplier", RequestMethod.POST.name(), requestBody, requestTime,(ResponseUtility.APIResponse) customResponse2.getBody());
-        saveLogRequest("Update Negative Supplier With PSW by AD", RequestMethod.POST.name(), requestBody, requestTime,(ResponseUtility.APIResponse) customResponse2.getBody());
+        saveLogRequest("Update Negative Supplier With PSW by AD", RequestMethod.POST.name(), requestBody, requestTime, (ResponseUtility.APIResponse) customResponse2.getBody());
         return customResponse2;
     }
 
@@ -245,20 +250,6 @@ public class TPController {
                 requestParameter);
         CustomResponse customResponse2 = CustomResponse.status(HttpStatus.CREATED).body(responseBodyPSW);
         return customResponse2;
-    }
-
-    private AccountDetail getAccountDetail(RequestParameter<IBANVerificationRequest> requestBody) throws DataValidationException, CustomException {
-        // TODO validate request common parameters
-        if (AppUtility.isEmpty(requestBody.getMessageId())) {
-            throw new DataValidationException(messageBundle.getString("id.not.found"));
-        }
-        AccountDetail accountDetail = null;
-        try {
-            accountDetail = adService.getAccountByIban(requestBody.getData());
-        } catch (Exception e) {
-            ResponseUtility.exceptionResponse(e, null);
-        }
-        return accountDetail;
     }
 
     private void saveLogRequest(String messageName, String messageType, RequestParameter requestBody,
