@@ -7,13 +7,14 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.filter.CommonsRequestLoggingFilter;
 
 @SpringBootApplication
 public class AdcApplication extends SpringBootServletInitializer {
 
 
-    @Value("${psw.base.url}")
+    @Value("psw.base.url")
     private static String PSW_BASE_URL;
 
     public static void main(String[] args) {
@@ -33,7 +34,7 @@ public class AdcApplication extends SpringBootServletInitializer {
         CommonsRequestLoggingFilter loggingFilter = new CommonsRequestLoggingFilter();
         loggingFilter.setIncludeClientInfo(true);
         loggingFilter.setIncludeQueryString(true);
-        loggingFilter.setIncludePayload(true);
+        loggingFilter.setIncludePayload(false);
         loggingFilter.setIncludeHeaders(false);
         return loggingFilter;
     }

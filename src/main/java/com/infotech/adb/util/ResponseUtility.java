@@ -27,15 +27,34 @@ public class ResponseUtility {
 
     private static final ResourceBundle messageBundle = ResourceBundle.getBundle("messages");
 
-
-
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Data
-    public static class Message {
-        private String code;
-        private String description;
+    /**
+     * Generate success response
+     * This method will not be used locally
+     *
+     * @param data
+     * @return
+     */
+    @SuppressWarnings("rawtypes")
+    public static CustomResponse successResponse(Object data, String responseCode, String responseMessage) {
+        return successResponse(data,responseCode,responseMessage, null);
     }
+    @SuppressWarnings("rawtypes")
+    public static CustomResponse successResponse(Object data, String responseCode, String responseMessage,RequestParameter requestParameter) {
+
+        if(AppUtility.isEmpty(responseCode)){
+            responseCode = AppConstants.PSWResponseCodes.OK;
+        }
+
+        return CustomResponse
+                .status(HttpStatus.OK)
+                .body(buildAPIResponse(data, responseCode,
+                        AppUtility.isEmpty(responseMessage)
+                                ? messageBundle.getString("generic.success")
+                                : responseMessage
+                        ,requestParameter
+                ));
+    }
+
 
     @NoArgsConstructor
     @Data
@@ -45,28 +64,30 @@ public class ResponseUtility {
         private Timestamp timestamp;
         private String senderId;
         private String receiverId;
-        private String processingCode;
+        private String responseCode;
         private String methodId;
         private String signature;
-        private Message message;
+        private String message;
 
         private Object data;
 
-        public APIResponse(Object data, Message message, RequestParameter requestParameter) {
+        public APIResponse(Object data, String responseCode, String message, RequestParameter requestParameter) {
             this.data = data;
             this.message = message;
+            this.responseCode = responseCode;
             this.messageId = requestParameter.getMessageId();
             this.timestamp = requestParameter.getTimestamp();
             this.senderId = requestParameter.getSenderId();
             this.receiverId = requestParameter.getReceiverId();
-            this.processingCode = requestParameter.getProcessingCode();
+
             this.methodId = requestParameter.getMethodId();
             this.signature = requestParameter.getSignature();
         }
 
-        public APIResponse(Object data, Message message) {
+        public APIResponse(Object data, String responseCode , String message) {
             this.data = data;
             this.message = message;
+            this.responseCode = responseCode;
         }
 
         public String toJson() throws JsonProcessingException {
@@ -75,15 +96,75 @@ public class ResponseUtility {
         }
     }
 
-    public static APIResponse buildAPIResponse(Object data, Message message, RequestParameter requestParameter) {
-        APIResponse response = new APIResponse(data, message, requestParameter);
+    public static APIResponse buildAPIResponse(Object data, String responseCode , String message, RequestParameter requestParameter) {
+        APIResponse response = new APIResponse(data, responseCode , message,requestParameter );
         return response;
     }
 
-    public static APIResponse buildAPIResponse(Object data, Message message) {
-        APIResponse response = new APIResponse(data, message);
+    public static APIResponse buildAPIResponse(Object data, String responseCode , String message) {
+        APIResponse response = new APIResponse(data, responseCode,message);
         return response;
     }
+
+    /**
+     * Generate generic response for list data
+     *
+     * @param listOfEntities
+     * @return
+     */
+    @SuppressWarnings("rawtypes")
+    public static <B, E> CustomResponse buildResponseList(List<E> listOfEntities) throws NoDataFoundException {
+        if (!AppUtility.isEmpty(listOfEntities))
+            return ResponseUtility.successResponse(listOfEntities,null, listOfEntities.size() + " Records Found!");
+        throw new NoDataFoundException();
+    }
+
+    /**
+     * Generate generic response for list data
+     *
+     * @param listOfEntities
+     * @param baseObject
+     * @return
+     */
+    @SuppressWarnings("rawtypes")
+    public static <B, E> CustomResponse buildResponseList(List<E> listOfEntities, BaseDTO<B, E> baseObject) throws CustomException, NoDataFoundException {
+        if (!AppUtility.isEmpty(listOfEntities)) {
+            List<B> data = new ArrayList<B>(listOfEntities.size());
+            B bo;
+            for (E obj : listOfEntities) {
+                bo = baseObject.convertToNewDTO(obj, false);
+                data.add(bo);
+            }
+            return ResponseUtility.successResponse(data, null,listOfEntities.size() + " Records Found!");
+        }
+        throw new NoDataFoundException();
+    }
+
+     public static <B, E> CustomResponse buildResponseObject(E entityObject) throws CustomException, NoDataFoundException {
+        if (!AppUtility.isEmpty(entityObject))
+            return ResponseUtility.successResponse(entityObject, null, "Valid Object");
+        throw new NoDataFoundException();
+    }
+
+    /**
+     * Generate generic response for single Object data
+     */
+    @SuppressWarnings("rawtypes")
+    public static <B, E> CustomResponse buildResponseObject(E entityObject, BaseDTO<B, E> baseObject, boolean partialFill) throws CustomException, NoDataFoundException {
+        if (!AppUtility.isEmpty(entityObject))
+            return ResponseUtility.successResponse(baseObject.convertToNewDTO(entityObject, partialFill), null,"Valid Object");
+        throw new NoDataFoundException();
+    }
+
+    /**
+     * Generate generic response for single Optional Object data
+     */
+    @SuppressWarnings("rawtypes")
+    public static <B, E> CustomResponse buildResponseObject(Optional<E> entityObject, BaseDTO<B, E> baseObject, boolean partialFill) throws CustomException, NoDataFoundException {
+        return buildResponseObject(entityObject.get(),baseObject,partialFill);
+    }
+
+
     /**
      * Exception Response
      * @param e
@@ -101,61 +182,6 @@ public class ResponseUtility {
         throw new CustomException(e);
     }
 
-    /*
-      Generate created response
-      This method will not be used locally
-
-      @param data
-      @return
-    */
-    @SuppressWarnings("rawtypes")
-    public static CustomResponse createdResponse(Object data, String code, String responseMessage,
-                                                 RequestParameter requestParameter) {
-        return CustomResponse
-                .status(HttpStatus.CREATED)
-                .body(buildAPIResponse(data, new Message( code,
-                        AppUtility.isEmpty(responseMessage)
-                                ? messageBundle.getString("generic.success")
-                                : responseMessage
-                ), requestParameter));
-    }
-
-    public static CustomResponse successAPIRepsone(Object data, String code, String responseMessage,
-                                                 RequestParameter requestParameter) {
-        return CustomResponse
-                .status(HttpStatus.OK)
-                .body(buildAPIResponse(data, new Message( code,
-                        AppUtility.isEmpty(responseMessage)
-                                ? messageBundle.getString("generic.success")
-                                : responseMessage
-                ), requestParameter));
-    }
-
-    /**
-     * Generate success response to create a record
-     *
-     * @param data
-     * @return
-     */
-    @SuppressWarnings("rawtypes")
-    public static CustomResponse successResponseForPost(Object data) throws CustomException, DBConstraintViolationException {
-        return CustomResponse
-                .status(HttpStatus.CREATED)
-                .body(data);
-    }
-
-    /**
-     * Generate success response to create a record
-     *
-     * @param data
-     * @return
-     */
-    @SuppressWarnings("rawtypes")
-    public static CustomResponse successResponseForPut(Object data) throws CustomException, DBConstraintViolationException {
-        return CustomResponse
-                .status(HttpStatus.RESET_CONTENT)
-                .body(data);
-    }
 
     /**
      * Validates DB Constraints...
@@ -183,116 +209,35 @@ public class ResponseUtility {
         }
     }
 
-    /**
-     * Generate generic response for list data
-     *
-     * @param listOfEntities
-     * @return
-     */
-    @SuppressWarnings("rawtypes")
-    public static <B, E> CustomResponse buildResponseList(List<E> listOfEntities) throws NoDataFoundException {
-        if (!AppUtility.isEmpty(listOfEntities))
-            return ResponseUtility.successResponse(listOfEntities, listOfEntities.size() + " Records Found!");
-        throw new NoDataFoundException();
-    }
 
-    /**
-     * Generate generic response for list data
-     *
-     * @param listOfEntities
-     * @param baseObject
-     * @return
-     */
-    @SuppressWarnings("rawtypes")
-    public static <B, E> CustomResponse buildResponseList(List<E> listOfEntities, BaseDTO<B, E> baseObject) throws CustomException, NoDataFoundException {
-        if (!AppUtility.isEmpty(listOfEntities)) {
-            List<B> data = new ArrayList<B>(listOfEntities.size());
-            B bo;
-            for (E obj : listOfEntities) {
-                bo = baseObject.convertToNewDTO(obj, false);
-                data.add(bo);
-            }
-            return ResponseUtility.successResponse(data, listOfEntities.size() + " Records Found!");
-        }
-        throw new NoDataFoundException();
-    }
+    /*
+     Generate created response
+     This method will not be used locally
 
-    /**
-     * Generate success response
-     * This method will not be used locally
-     *
-     * @param data
-     * @return
-     */
+     @param data
+     @return
+   */
     @SuppressWarnings("rawtypes")
-    public static CustomResponse successResponse(Object data, String responseMessage) {
+    public static CustomResponse createdResponse(Object data, String code, String responseMessage,
+                                                 RequestParameter requestParameter) {
         return CustomResponse
-                .status(HttpStatus.OK)
-                .body(buildAPIResponse(data, new Message( AppConstants.PSWResponseCodes.OK,
-                        AppUtility.isEmpty(responseMessage)
-                                ? messageBundle.getString("generic.success")
-                                : responseMessage
-                )));
+                .status(HttpStatus.CREATED)
+                .body(buildAPIResponse(data, ""+HttpStatus.CREATED.value(),
+                        AppUtility.isEmpty(responseMessage)? messageBundle.getString("generic.success"): responseMessage
+                        , requestParameter));
     }
 
-    /**
-     * Generate generic response for single Object data
-     */
-    @SuppressWarnings("rawtypes")
-    public static <B, E> CustomResponse buildResponseObject(E entityObject, BaseDTO<B, E> baseObject, boolean partialFill) throws CustomException, NoDataFoundException {
-        if (!AppUtility.isEmpty(entityObject))
-            return ResponseUtility.successResponse(baseObject.convertToNewDTO(entityObject, partialFill), "Valid Object");
-        throw new NoDataFoundException();
-    }
 
-    /**
-     * Generate generic response for single Optional Object data
-     */
-    @SuppressWarnings("rawtypes")
-    public static <B, E> CustomResponse buildResponseObject(Optional<E> entityObject, BaseDTO<B, E> baseObject, boolean partialFill) throws CustomException, NoDataFoundException {
-        if (!AppUtility.isEmpty(entityObject))
-            return  ResponseUtility.successResponse(baseObject.convertToNewDTO(entityObject.get(), partialFill), "Valid Object");
-        throw new NoDataFoundException();
-    }
-
-    public static <B, E> CustomResponse buildResponseObject(Optional<E> entityObject, BaseDTO<B, E> baseObject, int responseCode, String responseMsg, RequestParameter requestBody) {
-        if (!AppUtility.isEmpty(entityObject))
-            return ResponseUtility.createdResponse(baseObject.convertToNewDTO(entityObject.get(), false),""+responseCode,responseMsg,requestBody);
-        throw new NoDataFoundException();
-    }
-
+//    public static <B, E> CustomResponse buildResponseObject(Optional<E> entityObject, BaseDTO<B, E> baseObject, int responseCode, String responseMsg, RequestParameter requestBody) {
+//        if (!AppUtility.isEmpty(entityObject))
+//            return ResponseUtility.createdResponse(baseObject.convertToNewDTO(entityObject.get(), false),""+responseCode,responseMsg,requestBody);
+//        throw new NoDataFoundException();
+//    }
+//
     public static <B, E> CustomResponse buildResponseObject(E entityObject, BaseDTO<B, E> baseObject, int responseCode, String responseMsg, RequestParameter requestBody) {
         if (!AppUtility.isEmpty(entityObject))
             return ResponseUtility.createdResponse(baseObject.convertToNewDTO(entityObject,false),""+responseCode,responseMsg,requestBody);
         throw new NoDataFoundException();
     }
-    /**
-     * Generate generic response for single Object data
-     *
-     * @param entityObject
-     * @return
-     */
-    @SuppressWarnings("rawtypes")
-    public static <B, E> CustomResponse buildResponseObject(E entityObject) throws CustomException, NoDataFoundException {
-        if (!AppUtility.isEmpty(entityObject))
-            return ResponseUtility.successResponse(entityObject, "Valid Object");
-        throw new NoDataFoundException();
-    }
 
-    /**
-     * Generate success response for Delete Accepted.
-     *
-     * @param data
-     * @return
-     */
-    @SuppressWarnings("rawtypes")
-    public static CustomResponse deleteSuccessResponse(Object data, String responseMessage) {
-        return CustomResponse
-                .status(HttpStatus.ACCEPTED)
-                .body(buildAPIResponse(data, new Message( AppConstants.PSWResponseCodes.OK,
-                        AppUtility.isEmpty(responseMessage)
-                                ? messageBundle.getString("generic.success")
-                                : responseMessage
-                )));
-    }
 }

@@ -179,10 +179,11 @@ public class GDFinancialController {
         // MethodId is exporterNTN
         ChangeBank changeBank = bankChangeService.getChangeBankByExporterNTN(requestBody.getMethodId());
 
-        CustomResponse customResponse = ResponseUtility.buildResponseObject(changeBank, new ChangeBankDTO(), 200,
+        CustomResponse customResponse = null;
+                /*ResponseUtility.buildResponseObject(changeBank, new ChangeBankDTO(), 200,
                 changeBank == null ? messageBundle.getString("change.bank.not.shared") :
                         messageBundle.getString("change.bank.shared"), requestBody);
-
+*/
         ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
 
 //        saveLogRequest("MSG:5.4 Get Change bank", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
@@ -280,8 +281,8 @@ public class GDFinancialController {
         logRequest.setRequestTime(requestTime);
         logRequest.setResponseTime(ZonedDateTime.now());
         logRequest.setCreatedOn(ZonedDateTime.now());
-        logRequest.setResponseCode(responseBody.getMessage().getCode());
-        logRequest.setResponseMessage(responseBody.getMessage().getDescription());
+        logRequest.setResponseCode(responseBody.getResponseCode());
+        logRequest.setResponseMessage(responseBody.getMessage());
         logRequestService.createLogRequest(logRequest);
     }
 }

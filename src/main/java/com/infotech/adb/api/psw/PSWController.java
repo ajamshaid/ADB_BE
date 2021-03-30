@@ -43,7 +43,7 @@ public class PSWController {
         String token = "Hard Coded";// pswClient.getAuthrizationToken(userName,password);
         //String token = pswClient.getAuthrizationToken("info@ad.com","Mudassir2017");
 
-        return   ResponseUtility.successResponse(token,"Token Fetched Successfully");
+        return   ResponseUtility.successResponse(token,null,"Token Fetched Successfully");
     }
 
     @RequestMapping(value = "/update/payment/modes", method = RequestMethod.POST)
@@ -92,7 +92,7 @@ public class PSWController {
     //    5.2.3. Message 3 – Sharing of BCA Information
 
     private CustomResponse getCustomResponse(RequestParameter requestBody, String message) {
-        return ResponseUtility.createdResponse(null, AppConstants.PSWResponseCodes.OK, message, requestBody);
+        return null; //ResponseUtility.createdResponse(null, AppConstants.PSWResponseCodes.OK, message, requestBody);
     }
 
     private void saveLogRequest(String messageName, String messageType, RequestParameter requestBody, ZonedDateTime requestTime, ResponseUtility.APIResponse responseBody) throws JsonProcessingException {
@@ -104,8 +104,8 @@ public class PSWController {
         logRequest.setRequestTime(requestTime);
         logRequest.setResponseTime(ZonedDateTime.now());
         logRequest.setCreatedOn(ZonedDateTime.now());
-        logRequest.setResponseCode(responseBody.getMessage().getCode());
-        logRequest.setResponseMessage(responseBody.getMessage().getDescription());
+        logRequest.setResponseCode(responseBody.getResponseCode());
+        logRequest.setResponseMessage(responseBody.getMessage());
         logRequestService.createLogRequest(logRequest);
     }
 }

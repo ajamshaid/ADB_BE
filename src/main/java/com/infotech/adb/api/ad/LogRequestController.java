@@ -95,7 +95,7 @@ public class LogRequestController {
         }
         return ResponseUtility.buildResponseObject(logRequest, new LogRequestDTO(), false);
     }
-
+/*
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public CustomResponse deleteLogRequest(HttpServletRequest request,
                                      @PathVariable("id") Long id)
@@ -111,4 +111,5 @@ public class LogRequestController {
         }
         return ResponseUtility.deleteSuccessResponse(null, messageBundle.getString("logRequest.deleted.success"));
     }
-}
+    */
+ }

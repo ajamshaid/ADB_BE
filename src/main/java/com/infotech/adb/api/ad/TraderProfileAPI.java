@@ -56,6 +56,8 @@ public class TraderProfileAPI {
     public CustomResponse verifyAccount(HttpServletRequest request,
                                         @RequestBody RequestParameter<IBANVerificationRequest> requestBody)
             throws CustomException, DataValidationException, NoDataFoundException {
+        ZonedDateTime requestTime = ZonedDateTime.now();
+
         CustomResponse customResponse = null;
         if (RequestParameter.isValidRequest(requestBody)) {
             AccountDetail accountDetail = null;
@@ -66,16 +68,15 @@ public class TraderProfileAPI {
                 ResponseUtility.exceptionResponse(e, null);
             }
             boolean verified = !AppUtility.isEmpty(accountDetail);
-            customResponse = ResponseUtility.createdResponse(null,
-                     verified ? AppConstants.PSWResponseCodes.VERIFIED : AppConstants.PSWResponseCodes.UN_VERIFIED,
-                    verified ? messageBundle.getString("account.verified") :
-                            messageBundle.getString("account.un-verified")
-                    , requestBody);
+            customResponse = ResponseUtility.successResponse(null
+                    ,verified ? AppConstants.PSWResponseCodes.VERIFIED : AppConstants.PSWResponseCodes.UN_VERIFIED
+                    ,verified ? messageBundle.getString("account.verified") : messageBundle.getString("account.un-verified")
+                    ,requestBody
+                    );
 
-//            ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
+            ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
+            saveLogRequest("Verify Trader Profile From AD", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
 
-//        saveLogRequest("MSG1: Verify Profile", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
-          //  saveLogRequest("Verify Trader Profile", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
         }
         return customResponse;
     }
@@ -253,19 +254,24 @@ public class TraderProfileAPI {
     }
 
     private void saveLogRequest(String messageName, String messageType, RequestParameter requestBody,
-                                ZonedDateTime requestTime, ResponseUtility.APIResponse responseBody) throws JsonProcessingException {
+                                ZonedDateTime requestTime, ResponseUtility.APIResponse responseBody)  {
         LogRequest logRequest = new LogRequest();
         logRequest.setReceiverId(requestBody.getReceiverId());
         logRequest.setSenderId(requestBody.getSenderId());
         logRequest.setMsgIdentifier(messageName);
         logRequest.setRequestMethod(messageType);
-        logRequest.setRequestPayload(requestBody.toJson());
-        logRequest.setResponsePayload(responseBody.toJson());
+        try {
+            logRequest.setRequestPayload(requestBody.toJson());
+            logRequest.setResponsePayload(responseBody.toJson());
+        } catch (JsonProcessingException e) {
+            log.error("-- LogRequest without payload's will be saved as error occured while parsing Request/Response payload :"+e.getMessage());
+            e.printStackTrace();
+        }
         logRequest.setRequestTime(requestTime);
         logRequest.setResponseTime(ZonedDateTime.now());
         logRequest.setCreatedOn(ZonedDateTime.now());
-        logRequest.setResponseCode(responseBody.getMessage().getCode());
-        logRequest.setResponseMessage(responseBody.getMessage().getDescription());
+        logRequest.setResponseCode(responseBody.getResponseCode());
+        logRequest.setResponseMessage(responseBody.getMessage());
         logRequestService.createLogRequest(logRequest);
     }
 }
