@@ -6,10 +6,10 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "RC_EXPORT")
+@Table(name = "RESTRICTED_COUNTRIES")
 @Getter
 @Setter
-public class RCExport {
+public class RestrictedCountries {
     /*
      * Key Fields
      */
@@ -18,14 +18,15 @@ public class RCExport {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "CODE")
-    private String code;
-
-    /*
-     * Entity Specific Fields
-     */
     @ManyToOne
-    @JoinColumn(name="ACCOUNT_DETAIL_ID", nullable=false)
+    @JoinColumn(name="ACCOUNT_ID", nullable=false)
     private AccountDetail accountDetail;
-    
+
+    @ManyToOne
+    @JoinColumn(name="COUNTRY_ID", nullable=false)
+    private Country country;
+
+    @Column(name = "TYPE", nullable=false)
+    private String type;
+
 }

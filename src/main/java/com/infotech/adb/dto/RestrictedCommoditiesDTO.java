@@ -1,6 +1,8 @@
 package com.infotech.adb.dto;
 
-import com.infotech.adb.model.entity.*;
+import com.infotech.adb.model.entity.AccountDetail;
+import com.infotech.adb.model.entity.RestrictedCommodities;
+import com.infotech.adb.util.AppConstants;
 import lombok.Data;
 
 import java.util.HashSet;
@@ -15,7 +17,10 @@ public class RestrictedCommoditiesDTO implements BaseDTO<RestrictedCommoditiesDT
 
     public RestrictedCommoditiesDTO() {
     }
-
+    public RestrictedCommoditiesDTO(AccountDetail accountDetail) {
+        accountDetail.getRestrictedCommoditiesSet();
+        convertToDTO(accountDetail,true);
+    }
     @Override
     public AccountDetail convertToEntity() {
         return null;
@@ -24,8 +29,7 @@ public class RestrictedCommoditiesDTO implements BaseDTO<RestrictedCommoditiesDT
     @Override
     public void convertToDTO(AccountDetail entity, boolean partialFill) {
         this.setIban(entity.getIban());
-        this.setRestrictedCommoditiesForExport(getCommodityCodes(entity.getRCommodityExport()));
-        this.setRestrictedCommoditiesForImport(getCommodityCodes(entity.getRCommodityImport()));
+        fillRestrictedCommoditiesList(entity.getRestrictedCommoditiesSet());
     }
 
     @Override
@@ -35,11 +39,17 @@ public class RestrictedCommoditiesDTO implements BaseDTO<RestrictedCommoditiesDT
         return accountDetailDTO;
     }
 
-    private Set<String> getCommodityCodes(Set<Commodity> commodities) {
-        Set<String> commoditiesCodes = new HashSet<>();
-        for (Commodity commodity : commodities) {
-            commoditiesCodes.add(commodity.getCode());
+    private void fillRestrictedCommoditiesList(Set<RestrictedCommodities> restrictedCommoditiesSet) {
+        Set<String> exports = new HashSet<>();
+        Set<String> imports = new HashSet<>();
+        for (RestrictedCommodities com : restrictedCommoditiesSet) {
+            if(AppConstants.PAYMENT_MODE_TYPE_IMPORT.equals(com.getType())){
+                imports.add(com.getCode());
+            }else if(AppConstants.PAYMENT_MODE_TYPE_EXPORT.equals(com.getType())){
+                exports.add(com.getCode());
+            }
         }
-        return commoditiesCodes;
+        this.setRestrictedCommoditiesForImport(imports);
+        this.setRestrictedCommoditiesForExport(exports);
     }
 }

@@ -36,25 +36,15 @@ public class AccountDetail extends BaseEntity {
     @Column(name = "CNIC")
     private String cnic;
 
-    @OneToMany(mappedBy = "accountDetail", fetch = FetchType.EAGER)
-    private Set<AuthorizedPMExport> authorizedPMExports;
-    @OneToMany(mappedBy = "accountDetail", fetch = FetchType.EAGER)
-    private Set<AuthorizedPMImport> authorizedPMImport;
+    @OneToMany(mappedBy = "accountDetail", fetch = FetchType.LAZY)
+    private Set<AuthorizedPaymentModes> authorizedPaymentModesSet;
 
+    @OneToMany(mappedBy = "accountDetail", fetch = FetchType.LAZY)
+    private Set<RestrictedCountries> restrictedCountriesSet;
 
-    @ManyToMany
-    private Set<Country> rCountryExport;
-    @ManyToMany
-    private Set<Country> rCountryImport;
+    @OneToMany(mappedBy = "accountDetail", fetch = FetchType.LAZY)
+    private Set<RestrictedCommodities> restrictedCommoditiesSet;
 
-    @ManyToMany
-    private Set<Commodity> rCommodityExport;
-    @ManyToMany
-    private Set<Commodity> rCommodityImport;
-
-    @ManyToMany
-    private Set<Supplier> rSupplierExport;
-    @ManyToMany
-    private Set<Supplier> rSupplierImport;
-
+    @OneToMany(mappedBy = "accountDetail", fetch = FetchType.LAZY)
+    private Set<RestrictedSuppliers> restrictedSuppliersSet;
 }

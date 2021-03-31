@@ -6,10 +6,10 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "AUTHORIZED_PM_EXPORT")
+@Table(name = "AUTHORIZED_PAYMENT_MODES")
 @Getter
 @Setter
-public class AuthorizedPMExport {
+public class AuthorizedPaymentModes {
     /*
      * Key Fields
      */
@@ -18,14 +18,16 @@ public class AuthorizedPMExport {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "CODE")
+    @Column(name = "CODE", nullable=false)
     private String code;
+
+    @Column(name = "TYPE" , nullable=false)
+    private String type;
 
     /*
      * Entity Specific Fields
      */
     @ManyToOne
-    @JoinColumn(name="ACCOUNT_DETAIL_ID", nullable=false)
+    @JoinColumn(name="ACCOUNT_ID", nullable=false)
     private AccountDetail accountDetail;
-    
 }

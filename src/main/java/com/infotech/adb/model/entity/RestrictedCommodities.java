@@ -6,10 +6,10 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "COMMODITY")
+@Table(name = "RESTRICTED_COMMODITIES")
 @Getter
 @Setter
-public class Commodity {
+public class RestrictedCommodities {
     /*
      * Key Fields
      */
@@ -18,10 +18,13 @@ public class Commodity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "CODE")
+    @Column(name = "CODE",length = 14, nullable=false)
     private String code;
 
-    @Column(name = "NAME")
-    private String name;
+    @ManyToOne
+    @JoinColumn(name="ACCOUNT_ID", nullable=false)
+    private AccountDetail accountDetail;
 
+    @Column(name = "TYPE", nullable=false)
+    private String type;
 }

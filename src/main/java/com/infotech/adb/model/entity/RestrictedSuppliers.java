@@ -6,10 +6,10 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "RC_IMPORT")
+@Table(name = "RESTRICTED_SUPPLIERS")
 @Getter
 @Setter
-public class RCImport {
+public class RestrictedSuppliers {
     /*
      * Key Fields
      */
@@ -18,13 +18,13 @@ public class RCImport {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "CODE")
-    private String code;
+    @Column(name = "NAME"  , length = 100, nullable=false)
+    private String NAME;
 
-    /*
-     * Entity Specific Fields
-     */
     @ManyToOne
-    @JoinColumn(name="ACCOUNT_DETAIL_ID", nullable=false)
+    @JoinColumn(name="ACCOUNT_ID", nullable=false)
     private AccountDetail accountDetail;
+
+    @Column(name = "TYPE", nullable=false)
+    private String type;
 }
