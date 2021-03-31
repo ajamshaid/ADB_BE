@@ -41,12 +41,17 @@ public class ResponseUtility {
     @SuppressWarnings("rawtypes")
     public static CustomResponse successResponse(Object data, String responseCode, String responseMessage,RequestParameter requestParameter) {
 
+        HttpStatus status = HttpStatus.OK;
+
         if(AppUtility.isEmpty(responseCode)){
             responseCode = AppConstants.PSWResponseCodes.OK;
         }
+        if(responseCode.equals(AppConstants.PSWResponseCodes.NO_DATA_FOUND)){
+            status = HttpStatus.NO_CONTENT;
+        }
 
         return CustomResponse
-                .status(HttpStatus.OK)
+                .status(status)
                 .body(buildAPIResponse(data, responseCode,
                         AppUtility.isEmpty(responseMessage)
                                 ? messageBundle.getString("generic.success")
@@ -54,7 +59,6 @@ public class ResponseUtility {
                         ,requestParameter
                 ));
     }
-
 
     @NoArgsConstructor
     @Data
@@ -65,23 +69,25 @@ public class ResponseUtility {
         private String senderId;
         private String receiverId;
         private String responseCode;
-        private String methodId;
+//        private String methodId;
         private String signature;
         private String message;
 
         private Object data;
 
         public APIResponse(Object data, String responseCode, String message, RequestParameter requestParameter) {
-            this.data = data;
+            this.data =  AppUtility.isEmpty(data)? "" : data;
             this.message = message;
             this.responseCode = responseCode;
-            this.messageId = requestParameter.getMessageId();
-            this.timestamp = requestParameter.getTimestamp();
-            this.senderId = requestParameter.getSenderId();
-            this.receiverId = requestParameter.getReceiverId();
+            if(!AppUtility.isEmpty(requestParameter)) {
+                this.messageId = requestParameter.getMessageId();
+                this.timestamp = requestParameter.getTimestamp();
+                this.senderId = AppConstants.AD_ID;//requestParameter.getReceiverId();
+                this.receiverId = requestParameter.getSenderId();
 
-            this.methodId = requestParameter.getMethodId();
-            this.signature = requestParameter.getSignature();
+                //     this.methodId = requestParameter.getMethodId();
+                this.signature = requestParameter.getSignature();
+            }
         }
 
         public APIResponse(Object data, String responseCode , String message) {

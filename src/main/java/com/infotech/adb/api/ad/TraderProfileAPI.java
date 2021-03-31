@@ -46,33 +46,43 @@ public class TraderProfileAPI {
         }
         AccountDetail accountDetail = null;
         try {
-            accountDetail = accountService.getAccountByIbanVerificationRequest(requestBody.getData());
+            accountDetail = accountService.getAccountDetailsByIban(requestBody.getData().getIban());
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e, null);
         }
         return accountDetail;
     }
-    @RequestMapping(value = "/verify", method = RequestMethod.POST)
-    public CustomResponse verifyAccount(HttpServletRequest request,
-                                        @RequestBody RequestParameter<IBANVerificationRequest> requestBody)
+
+    //**************************
+    // 4.1.	Message 1 – Verification of NTN, IBAN, Email address and Mobile No. from AD
+    // **************************/
+
+    /**
+     * @param requestBody
+     * @return
+     * @throws CustomException
+     * @throws DataValidationException
+     * @throws NoDataFoundException
+     */
+    @RequestMapping(value = "/accounts/verification", method = RequestMethod.POST)
+    public CustomResponse verifyAccount(@RequestBody RequestParameter<IBANVerificationRequest> requestBody)
             throws CustomException, DataValidationException, NoDataFoundException {
         ZonedDateTime requestTime = ZonedDateTime.now();
 
         CustomResponse customResponse = null;
-        if (RequestParameter.isValidRequest(requestBody)) {
-            AccountDetail accountDetail = null;
+        if (RequestParameter.isValidRequest(requestBody, false)) {
+            boolean accountExist = false;
             try {
                 IBANVerificationRequest ibanVerificationRequest = requestBody.getData();
-                accountDetail = accountService.getAccountByIbanVerificationRequest(ibanVerificationRequest);
+                accountExist = accountService.isAccountDetailExists(ibanVerificationRequest);
             } catch (Exception e) {
                 ResponseUtility.exceptionResponse(e, null);
             }
-            boolean verified = !AppUtility.isEmpty(accountDetail);
             customResponse = ResponseUtility.successResponse(null
-                    ,verified ? AppConstants.PSWResponseCodes.VERIFIED : AppConstants.PSWResponseCodes.UN_VERIFIED
-                    ,verified ? messageBundle.getString("account.verified") : messageBundle.getString("account.un-verified")
-                    ,requestBody
-                    );
+                    , accountExist ? AppConstants.PSWResponseCodes.VERIFIED : AppConstants.PSWResponseCodes.UN_VERIFIED
+                    , accountExist ? messageBundle.getString("account.verified") : messageBundle.getString("account.un-verified")
+                    , requestBody
+            );
 
             ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
             saveLogRequest("Verify Trader Profile From AD", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
@@ -81,50 +91,93 @@ public class TraderProfileAPI {
         return customResponse;
     }
 
-
-
-    /***************************************/
-
-
-    @RequestMapping(value = "/account/detail", method = RequestMethod.POST)
-    public CustomResponse getAccountDetails(HttpServletRequest request,
-                                            @RequestBody RequestParameter<IBANVerificationRequest> requestBody)
-            throws CustomException, DataValidationException, NoDataFoundException, JsonProcessingException {
+    //**************************
+    // 4.2.	Message 2 – Sharing of Account Details & Authorized Payment Modes with PSW by AD
+    // **************************/
+    @RequestMapping(value = "/account/details", method = RequestMethod.POST)
+    public CustomResponse getAccountDetails(@RequestBody RequestParameter<IBANVerificationRequest> requestBody)
+            throws CustomException, DataValidationException, NoDataFoundException {
 
         ZonedDateTime requestTime = ZonedDateTime.now();
 
-        // TODO validate request common parameters
-        AccountDetail accountDetail = getAccountDetail(requestBody);
-        CustomResponse customResponse = ResponseUtility.buildResponseObject(accountDetail, new AccountDetailDTO(), 200,
-                accountDetail == null ? messageBundle.getString("account.details.not.shared") :
-                        messageBundle.getString("account.details.shared"), requestBody);
+        CustomResponse customResponse = null;
+        if (RequestParameter.isValidRequest(requestBody, true)) {
+            AccountDetail accountDetail = null;
+            try {
+                IBANVerificationRequest ibanVerificationRequest = requestBody.getData();
+                accountDetail = accountService.getAccountDetailsByIban(ibanVerificationRequest.getIban());
 
-        ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
+            } catch (Exception e) {
+                ResponseUtility.exceptionResponse(e, null);
+            }
+            boolean noData = AppUtility.isEmpty(accountDetail);
+            AccountDetailDTO dto = null;
+            if (!noData) {
+                accountDetail.getAuthorizedPaymentModesSet();
+                dto = new AccountDetailDTO();
+                dto.convertToDTO(accountDetail, true);
+            }
 
-//        saveLogRequest("MSG2: Account Details", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
-        saveLogRequest("Account Details and Payment Modes", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
+            customResponse = ResponseUtility.successResponse(dto
+                    , noData ? AppConstants.PSWResponseCodes.NO_DATA_FOUND : AppConstants.PSWResponseCodes.OK
+                    , messageBundle.getString(noData ? "account.details.not.shared" : "account.details.shared")
+                    , requestBody
+            );
+            ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
+
+            saveLogRequest("Sharing of Account Details & Authorized Payment Modes", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
+        }
         return customResponse;
     }
 
-    @RequestMapping(value = "/account/negative/countries", method = RequestMethod.POST)
-    public CustomResponse getNegativeCountriesList(HttpServletRequest request,
-                                                   @RequestBody RequestParameter<IBANVerificationRequest> requestBody)
+    //**************************
+    // 4.3.	Message 3 – Sharing Negative List of Countries with PSW
+    // **************************/
+    @RequestMapping(value = "/account/negative-countries", method = RequestMethod.POST)
+    public CustomResponse getNegativeCountriesList(@RequestBody RequestParameter<IBANVerificationRequest> requestBody)
             throws CustomException, DataValidationException, NoDataFoundException, JsonProcessingException {
 
         ZonedDateTime requestTime = ZonedDateTime.now();
+        CustomResponse customResponse = null;
 
-        // TODO validate request common parameters
-        AccountDetail accountDetail = getAccountDetail(requestBody);
-        CustomResponse customResponse = ResponseUtility.buildResponseObject(accountDetail, new RestrictedCountiesDTO(), 200,
-                accountDetail == null ? messageBundle.getString("negative.countries.not.shared") :
-                        messageBundle.getString("negative.countries.shared"), requestBody);
+        if (RequestParameter.isValidRequest(requestBody, true)) {
+            AccountDetail accountDetail = null;
+            try {
+                IBANVerificationRequest ibanVerificationRequest = requestBody.getData();
+                accountDetail = accountService.getAccountDetailsByIban(ibanVerificationRequest.getIban());
 
-        ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
+            } catch (Exception e) {
+                ResponseUtility.exceptionResponse(e, null);
+            }
+            boolean noData = AppUtility.isEmpty(accountDetail);
+            RestrictedCountiesDTO dto = null;
+            if (!noData) {
+                accountDetail.getRestrictedCoutriesSet();
+                dto = new RestrictedCountiesDTO();
+                dto.convertToDTO(accountDetail, true);
+            }
 
-//        saveLogRequest("MSG3: Negative List Countries", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
-        saveLogRequest("Negative List Countries", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
+            customResponse = ResponseUtility.successResponse(dto
+                    , noData ? AppConstants.PSWResponseCodes.NO_DATA_FOUND : AppConstants.PSWResponseCodes.OK
+                    , messageBundle.getString(noData ? "negative.countries.not.shared" : "negative.countries.shared")
+                    , requestBody
+            );
+            ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
+
+            saveLogRequest("Sharing Negative List of Countries", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
+        }
         return customResponse;
     }
+
+
+
+
+
+
+
+
+
+
 
     @RequestMapping(value = "/account/negative/commodities", method = RequestMethod.POST)
     public CustomResponse getNegativeCommoditiesList(HttpServletRequest request,
@@ -254,7 +307,7 @@ public class TraderProfileAPI {
     }
 
     private void saveLogRequest(String messageName, String messageType, RequestParameter requestBody,
-                                ZonedDateTime requestTime, ResponseUtility.APIResponse responseBody)  {
+                                ZonedDateTime requestTime, ResponseUtility.APIResponse responseBody) {
         LogRequest logRequest = new LogRequest();
         logRequest.setReceiverId(requestBody.getReceiverId());
         logRequest.setSenderId(requestBody.getSenderId());
@@ -264,7 +317,7 @@ public class TraderProfileAPI {
             logRequest.setRequestPayload(requestBody.toJson());
             logRequest.setResponsePayload(responseBody.toJson());
         } catch (JsonProcessingException e) {
-            log.error("-- LogRequest without payload's will be saved as error occured while parsing Request/Response payload :"+e.getMessage());
+            log.error("-- LogRequest without payload's will be saved as error occured while parsing Request/Response payload :" + e.getMessage());
             e.printStackTrace();
         }
         logRequest.setRequestTime(requestTime);

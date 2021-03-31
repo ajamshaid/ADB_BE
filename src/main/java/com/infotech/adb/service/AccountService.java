@@ -21,11 +21,15 @@ public class AccountService {
     private AccountDetailRepository accountDetailRepository;
 
 
-    public AccountDetail getAccountByIbanVerificationRequest(IBANVerificationRequest req) {
-        log.info("getAccountDetailByIBANEmailAndMobileNumber method called..");
-        return accountDetailRepository.findByIbanAndEmailAndMobileNumberAndNtn(req.getIban(),req.getEmail(),req.getMobileNumber(),req.getNtn());
+    public boolean isAccountDetailExists(IBANVerificationRequest req) {
+        log.info("isAccountDetailExists method called..");
+        return accountDetailRepository.isExistAccountDetail(req.getIban(),req.getEmail(),req.getMobileNumber(),req.getNtn());
     }
 
+    public AccountDetail getAccountDetailsByIban(String iban) {
+        log.info("getAccountDetailsByIban method called..");
+        return accountDetailRepository.findByIban(iban);
+    }
 
     public List<AccountDetail> getAllAccountDetails(Boolean isSuspended) {
         log.info("getAllAccountDetails method called..");
@@ -59,11 +63,5 @@ public class AccountService {
         log.info("deleteAccountDetailById method called..");
 
         accountDetailRepository.deleteById(id);
-    }
-
-
-    public AccountDetail getAccountByIban(String iban) {
-        log.info("getAccountDetailByIBANEmailAndMobileNumber method called..");
-        return accountDetailRepository.findByIban(iban);
     }
 }

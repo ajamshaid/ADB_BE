@@ -2,6 +2,7 @@ package com.infotech.adb.dto;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.infotech.adb.model.entity.*;
+import com.infotech.adb.util.AppConstants;
 import lombok.Data;
 
 import java.util.HashSet;
@@ -27,8 +28,7 @@ public class RestrictedCountiesDTO implements BaseDTO<RestrictedCountiesDTO, Acc
     @Override
     public void convertToDTO(AccountDetail entity, boolean partialFill) {
         this.setIban(entity.getIban());
-        this.setRestrictedCountriesForExport(getCountryCodes(entity.getRCountryExport()));
-        this.setRestrictedCountriesForImport(getCountryCodes(entity.getRCountryImport()));
+        this.fillRestrictedCountriesList(entity.getRestrictedCoutriesSet());
     }
 
     @Override
@@ -38,11 +38,18 @@ public class RestrictedCountiesDTO implements BaseDTO<RestrictedCountiesDTO, Acc
         return accountDetailDTO;
     }
 
-    private Set<String> getCountryCodes(Set<Country> reCountry) {
-        Set<String> countryCodes = new HashSet<>();
-        for (Country country : reCountry) {
-            countryCodes.add(country.getCode());
+
+    private void fillRestrictedCountriesList(Set<RestrictedCoutries> restrictedCoutriesSet) {
+        Set<String> exports = new HashSet<>();
+        Set<String> imports = new HashSet<>();
+        for (RestrictedCoutries reCountry : restrictedCoutriesSet) {
+            if(AppConstants.PAYMENT_MODE_TYPE_IMPORT.equals(reCountry.getType())){
+                imports.add(reCountry.getCountry().getCode());
+            }else if(AppConstants.PAYMENT_MODE_TYPE_EXPORT.equals(reCountry.getType())){
+                exports.add(reCountry.getCountry().getCode());
+            }
         }
-        return countryCodes;
+        this.setRestrictedCountriesForImport(imports);
+        this.setRestrictedCountriesForExport(exports);
     }
 }

@@ -14,7 +14,7 @@ import org.springframework.web.filter.CommonsRequestLoggingFilter;
 public class AdcApplication extends SpringBootServletInitializer {
 
 
-    @Value("psw.base.url")
+    @Value("${psw.base.url}")
     private static String PSW_BASE_URL;
 
     public static void main(String[] args) {

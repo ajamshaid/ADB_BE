@@ -48,7 +48,7 @@ public class RequestParameter<T> {
         return newRParameter;
     }
 
-    public static boolean isValidRequest(RequestParameter requestParameter) throws DataValidationException {
+    public static boolean isValidRequest(RequestParameter requestParameter,boolean ibanOnly) throws DataValidationException {
         boolean isValid = true;
         StringBuffer sb = new StringBuffer("");
         if (AppUtility.isEmpty(requestParameter.getMessageId())) {
@@ -77,21 +77,24 @@ public class RequestParameter<T> {
         }
         if (requestParameter.data instanceof IBANVerificationRequest) {
             IBANVerificationRequest data = (IBANVerificationRequest) requestParameter.data;
+
             if (AppUtility.isEmpty(data.getIban())) {
                 sb.append(" IBAN " + messageBundle.getString("missing.request.parameter"));
                 isValid = false;
             }
-            if (AppUtility.isEmpty(data.getNtn())) {
-                sb.append(" NTN " + messageBundle.getString("missing.request.parameter"));
-                isValid = false;
-            }
-            if (AppUtility.isEmpty(data.getEmail())) {
-                sb.append(" Email " + messageBundle.getString("missing.request.parameter"));
-                isValid = false;
-            }
-            if (AppUtility.isEmpty(data.getMobileNumber())) {
-                sb.append(" Mobile Number  " + messageBundle.getString("missing.request.parameter"));
-                isValid = false;
+            if(!ibanOnly) {
+                if (AppUtility.isEmpty(data.getNtn())) {
+                    sb.append(" NTN " + messageBundle.getString("missing.request.parameter"));
+                    isValid = false;
+                }
+                if (AppUtility.isEmpty(data.getEmail())) {
+                    sb.append(" Email " + messageBundle.getString("missing.request.parameter"));
+                    isValid = false;
+                }
+                if (AppUtility.isEmpty(data.getMobileNumber())) {
+                    sb.append(" Mobile Number  " + messageBundle.getString("missing.request.parameter"));
+                    isValid = false;
+                }
             }
         }
 

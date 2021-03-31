@@ -12,7 +12,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 @Configuration
-@EnableResourceServer
+// @EnableResourceServer
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     private static final String RESOURCE_ID = "resource_id";
