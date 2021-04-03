@@ -80,7 +80,7 @@ public class TraderProfileAPI {
             customResponse = ResponseUtility.successResponse(dto
                     , noData ? AppConstants.PSWResponseCodes.NO_DATA_FOUND : AppConstants.PSWResponseCodes.OK
                     , message
-                    , requestBody
+                    , requestBody,false
             );
             ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
             saveLogRequest(logMessage, RequestMethod.POST.name(), requestBody, requestTime, responseBody);
@@ -117,7 +117,7 @@ public class TraderProfileAPI {
             customResponse = ResponseUtility.successResponse(null
                     , accountExist ? AppConstants.PSWResponseCodes.VERIFIED : AppConstants.PSWResponseCodes.UN_VERIFIED
                     , accountExist ? messageBundle.getString("account.verified") : messageBundle.getString("account.un-verified")
-                    , requestBody
+                    , requestBody , false
             );
 
             ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
@@ -159,6 +159,15 @@ public class TraderProfileAPI {
     // **************************/
     @RequestMapping(value = "/account/negative-suppliers", method = RequestMethod.POST)
     public CustomResponse getNegativeSuppliersList(@RequestBody RequestParameter<IBANVerificationRequest> requestBody)
+            throws CustomException, DataValidationException, NoDataFoundException {
+        return getBuildAndLogResponseByRequestType(requestBody, AppConstants.REQ_TYPE_RES_SUPPLIERS);
+    }
+
+    //**************************
+    // 4.6.	Message 6 – Sharing of Updated Information and Authorized Payment Modes by AD with PSW
+    // **************************/
+    @RequestMapping(value = "/account/negative-suppliers", method = RequestMethod.GET)
+    public CustomResponse updateAccountWithPM(@RequestBody RequestParameter<IBANVerificationRequest> requestBody)
             throws CustomException, DataValidationException, NoDataFoundException {
         return getBuildAndLogResponseByRequestType(requestBody, AppConstants.REQ_TYPE_RES_SUPPLIERS);
     }
@@ -271,7 +280,7 @@ public class TraderProfileAPI {
         logRequest.setResponseTime(ZonedDateTime.now());
         logRequest.setCreatedOn(ZonedDateTime.now());
         logRequest.setResponseCode(responseBody.getResponseCode());
-        logRequest.setResponseMessage(responseBody.getMessage());
+        logRequest.setResponseMessage(responseBody.getMessage().getDescription());
         logRequestService.createLogRequest(logRequest);
     }
 }

@@ -282,7 +282,7 @@ public class GDFinancialController {
         logRequest.setResponseTime(ZonedDateTime.now());
         logRequest.setCreatedOn(ZonedDateTime.now());
         logRequest.setResponseCode(responseBody.getResponseCode());
-        logRequest.setResponseMessage(responseBody.getMessage());
+        logRequest.setResponseMessage(responseBody.getMessage().getDescription());
         logRequestService.createLogRequest(logRequest);
     }
 }

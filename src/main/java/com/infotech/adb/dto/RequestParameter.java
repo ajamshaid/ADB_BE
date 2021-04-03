@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.time.ZonedDateTime;
 import java.util.ResourceBundle;
 import java.util.UUID;
 
@@ -28,6 +29,15 @@ public class RequestParameter<T> {
 
     private T data;
 
+    public RequestParameter(UUID messageId, String senderId, String receiverId, String processingCode, String methodId, String signature) {
+        this.messageId = messageId;
+        this.senderId = senderId;
+        this.receiverId = receiverId;
+        this.processingCode = processingCode;
+        this.methodId = methodId;
+        this.signature = signature;
+        this.timestamp = Timestamp.from(ZonedDateTime.now().toInstant());
+    }
 
     private static final ResourceBundle messageBundle = ResourceBundle.getBundle("messages");
 

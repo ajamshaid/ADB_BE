@@ -3,6 +3,7 @@ package com.infotech.adb.dto;
 import com.infotech.adb.model.entity.AccountDetail;
 import com.infotech.adb.model.entity.AuthorizedPaymentModes;
 import com.infotech.adb.util.AppConstants;
+import com.infotech.adb.util.AppUtility;
 import lombok.Data;
 
 import java.util.HashSet;
@@ -67,11 +68,13 @@ public class AccountDetailDTO implements BaseDTO<AccountDetailDTO, AccountDetail
     private void fillPaymentModes(Set<AuthorizedPaymentModes> authorizedPaymentModes) {
         Set<String> apmExports = new HashSet<>();
         Set<String> apmImports = new HashSet<>();
-        for (AuthorizedPaymentModes apm: authorizedPaymentModes) {
-            if(AppConstants.PAYMENT_MODE_TYPE_IMPORT.equals(apm.getType())){
-                apmImports.add(apm.getCode());
-            }else if(AppConstants.PAYMENT_MODE_TYPE_EXPORT.equals(apm.getType())){
-                apmExports.add(apm.getCode());
+        if(!AppUtility.isEmpty(authorizedPaymentModes)) {
+            for (AuthorizedPaymentModes apm : authorizedPaymentModes) {
+                if (AppConstants.PAYMENT_MODE_TYPE_IMPORT.equals(apm.getType())) {
+                    apmImports.add(apm.getCode());
+                } else if (AppConstants.PAYMENT_MODE_TYPE_EXPORT.equals(apm.getType())) {
+                    apmExports.add(apm.getCode());
+                }
             }
         }
         this.setAuthorizedPaymentModesForExports(apmExports);

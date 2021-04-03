@@ -36,30 +36,40 @@ public class ResponseUtility {
      */
     @SuppressWarnings("rawtypes")
     public static CustomResponse successResponse(Object data, String responseCode, String responseMessage) {
-        return successResponse(data,responseCode,responseMessage, null);
+        return successResponse(data,responseCode,responseMessage, null,false);
     }
+
     @SuppressWarnings("rawtypes")
-    public static CustomResponse successResponse(Object data, String responseCode, String responseMessage,RequestParameter requestParameter) {
+    public static CustomResponse successResponse(Object data, String responseCode, String responseMessage,RequestParameter requestParameter, boolean isPSWResponse) {
 
         HttpStatus status = HttpStatus.OK;
+        String message = AppUtility.isEmpty(responseMessage)
+                ? messageBundle.getString("generic.success")
+                : responseMessage;
 
         if(AppUtility.isEmpty(responseCode)){
             responseCode = AppConstants.PSWResponseCodes.OK;
         }
         if(responseCode.equals(AppConstants.PSWResponseCodes.NO_DATA_FOUND)){
             status = HttpStatus.NO_CONTENT;
+            message = messageBundle.getString("generic.no.content");
         }
+
+        APIResponse response = buildAPIResponse(data, responseCode,new Message(responseCode, message)
+                ,requestParameter,isPSWResponse);
 
         return CustomResponse
                 .status(status)
-                .body(buildAPIResponse(data, responseCode,
-                        AppUtility.isEmpty(responseMessage)
-                                ? messageBundle.getString("generic.success")
-                                : responseMessage
-                        ,requestParameter
-                ));
+                .body(response);
     }
 
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Data
+    public static class Message {
+        private String code;
+        private String description;
+    }
     @NoArgsConstructor
     @Data
     public static class APIResponse {
@@ -71,11 +81,11 @@ public class ResponseUtility {
         private String responseCode;
 //        private String methodId;
         private String signature;
-        private String message;
+        private Message message;
 
         private Object data;
 
-        public APIResponse(Object data, String responseCode, String message, RequestParameter requestParameter) {
+        public APIResponse(Object data, String responseCode, Message message, RequestParameter requestParameter) {
             this.data =  AppUtility.isEmpty(data)? "" : data;
             this.message = message;
             this.responseCode = responseCode;
@@ -90,7 +100,7 @@ public class ResponseUtility {
             }
         }
 
-        public APIResponse(Object data, String responseCode , String message) {
+        public APIResponse(Object data, String responseCode , Message message) {
             this.data = data;
             this.message = message;
             this.responseCode = responseCode;
@@ -102,12 +112,26 @@ public class ResponseUtility {
         }
     }
 
-    public static APIResponse buildAPIResponse(Object data, String responseCode , String message, RequestParameter requestParameter) {
+    @NoArgsConstructor
+    @Data
+    public static class PSWAPIResponse extends APIResponse {
+        private String methodId;
+
+        public PSWAPIResponse(Object data, String responseCode, Message message, RequestParameter requestParameter) {
+            super(data, responseCode, message, requestParameter);
+            this.methodId = requestParameter.getMethodId();
+        }
+    }
+
+    public static APIResponse buildAPIResponse(Object data, String responseCode , Message message, RequestParameter requestParameter,boolean isPSWResponse) {
         APIResponse response = new APIResponse(data, responseCode , message,requestParameter );
+        if(isPSWResponse) {
+            response = new PSWAPIResponse(data, responseCode , message,requestParameter);
+        }
         return response;
     }
 
-    public static APIResponse buildAPIResponse(Object data, String responseCode , String message) {
+    public static APIResponse buildAPIResponse(Object data, String responseCode , Message message) {
         APIResponse response = new APIResponse(data, responseCode,message);
         return response;
     }
@@ -226,11 +250,16 @@ public class ResponseUtility {
     @SuppressWarnings("rawtypes")
     public static CustomResponse createdResponse(Object data, String code, String responseMessage,
                                                  RequestParameter requestParameter) {
+
+        String message = AppUtility.isEmpty(responseMessage)
+                ? messageBundle.getString("generic.success")
+                : responseMessage;
+
         return CustomResponse
                 .status(HttpStatus.CREATED)
                 .body(buildAPIResponse(data, ""+HttpStatus.CREATED.value(),
-                        AppUtility.isEmpty(responseMessage)? messageBundle.getString("generic.success"): responseMessage
-                        , requestParameter));
+                        new Message(HttpStatus.CREATED.value()+"", message)
+                        , requestParameter,false));
     }
 
 

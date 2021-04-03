@@ -1,34 +1,28 @@
 package com.infotech.adb.api.psw;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.infotech.adb.api.consumer.PSWClient;
 import com.infotech.adb.dto.RequestParameter;
+import com.infotech.adb.exceptions.DataValidationException;
 import com.infotech.adb.model.entity.LogRequest;
-import com.infotech.adb.service.LogRequestService;
 import com.infotech.adb.util.AppConstants;
+import com.infotech.adb.util.AppUtility;
 import com.infotech.adb.util.CustomResponse;
 import com.infotech.adb.util.ResponseUtility;
 import io.swagger.annotations.Api;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.ZonedDateTime;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
 @RestController
-@RequestMapping("/psw")
+@RequestMapping("/dealers/a/d/i")
 @Log4j2
 @Api(tags = "PSW")
-public class PSWController {
+public class PSWAPI {
 
-    @Autowired
-    private LogRequestService logRequestService;
 
 //    @Autowired
 //    private PSWClient pswClient ;
@@ -46,39 +40,67 @@ public class PSWController {
         return   ResponseUtility.successResponse(token,null,"Token Fetched Successfully");
     }
 
-    @RequestMapping(value = "/update/payment/modes", method = RequestMethod.POST)
-    public CustomResponse getAccountDetails(HttpServletRequest request,
-                                            @RequestBody RequestParameter requestBody) {
 
-        return getCustomResponse(requestBody, messageBundle.getString("account.details.shared"));
+    //4.6.	Message 6 – Sharing of Updated Information and Authorized Payment Modes by AD with PSW
+
+    @RequestMapping(value = "/edi", method = RequestMethod.POST)
+    public CustomResponse updateToPSW(@RequestBody RequestParameter<?> requestBody) throws DataValidationException {
+
+        if(requestBody.getMethodId().equals(AppConstants.PSW.METHOD_ID_UPDATE_INFO_AND_PM)){
+            System.out.println("-------- PSW Receive ACcount Info and PM update Request :"+AppConstants.PSW.METHOD_ID_UPDATE_INFO_AND_PM);
+            HashMap<String, String> data = (HashMap<String, String>) requestBody.getData();
+            String iban = data.get("iban");
+            if (AppUtility.isEmpty(iban)) {
+                throw new DataValidationException("IBAN Missing");
+            }
+            if (iban.startsWith("PK")){
+                return getOKResponse(requestBody, "Updated authorized payment modes",requestBody.getMethodId());
+            }else{
+                throw new DataValidationException("In-correct IBAN");
+            }
+        } else if(requestBody.getMethodId().equals(AppConstants.PSW.METHOD_ID_UPDATE_INFO_AND_PM)) {
+            System.out.println("-------- PSW Receive ACcount Info and PM update Request :" + AppConstants.PSW.METHOD_ID_UPDATE_INFO_AND_PM);
+        }
+
+        return getOKResponse(requestBody, "ALL Good ","none");
     }
+
+
+
+
+
+
+
+
+
+
 
     @RequestMapping(value = "/update/negative/countries", method = RequestMethod.POST)
     public CustomResponse getNegativeCountriesList(HttpServletRequest request,
                                             @RequestBody RequestParameter requestBody) {
 
-        return getCustomResponse(requestBody, messageBundle.getString("negative.countries.shared"));
+        return getOKResponse(requestBody, messageBundle.getString("negative.countries.shared"),"none");
     }
 
     @RequestMapping(value = "/update/negative/commodities", method = RequestMethod.POST)
     public CustomResponse getNegativeCommoditiesList(HttpServletRequest request,
                                                    @RequestBody RequestParameter requestBody) {
 
-        return getCustomResponse(requestBody, messageBundle.getString("negative.commodities.shared"));
+        return getOKResponse(requestBody, messageBundle.getString("negative.commodities.shared"),"none");
     }
 
     @RequestMapping(value = "/update/negative/suppliers", method = RequestMethod.POST)
     public CustomResponse getNegativeSuppliersList(HttpServletRequest request,
                                                      @RequestBody RequestParameter requestBody) {
 
-        return getCustomResponse(requestBody, messageBundle.getString("negative.suppliers.shared"));
+        return getOKResponse(requestBody, messageBundle.getString("negative.suppliers.shared"),"none");
     }
 
     @RequestMapping(value = "/bca/information", method = RequestMethod.POST)
     public CustomResponse bcaInformation(HttpServletRequest request,
                                                    @RequestBody RequestParameter requestBody) {
 
-        return getCustomResponse(requestBody, messageBundle.getString("bca.information.updated"));
+        return getOKResponse(requestBody, messageBundle.getString("bca.information.updated"),"none");
     }
 
 
@@ -86,13 +108,14 @@ public class PSWController {
     public CustomResponse financialTransaction(HttpServletRequest request,
                                          @RequestBody RequestParameter requestBody) {
 
-        return getCustomResponse(requestBody, messageBundle.getString("negative.suppliers.shared"));
+        return getOKResponse(requestBody, messageBundle.getString("negative.suppliers.shared"),"none");
     }
 
     //    5.2.3. Message 3 – Sharing of BCA Information
 
-    private CustomResponse getCustomResponse(RequestParameter requestBody, String message) {
-        return null; //ResponseUtility.createdResponse(null, AppConstants.PSWResponseCodes.OK, message, requestBody);
+    private CustomResponse getOKResponse(RequestParameter requestBody, String message,String
+                                         methodId) {
+        return ResponseUtility.successResponse(null, AppConstants.PSWResponseCodes.OK, message, requestBody,true);
     }
 
     private void saveLogRequest(String messageName, String messageType, RequestParameter requestBody, ZonedDateTime requestTime, ResponseUtility.APIResponse responseBody) throws JsonProcessingException {
@@ -105,7 +128,7 @@ public class PSWController {
         logRequest.setResponseTime(ZonedDateTime.now());
         logRequest.setCreatedOn(ZonedDateTime.now());
         logRequest.setResponseCode(responseBody.getResponseCode());
-        logRequest.setResponseMessage(responseBody.getMessage());
-        logRequestService.createLogRequest(logRequest);
+        logRequest.setResponseMessage(responseBody.getMessage().getDescription());
+      //  logRequestService.createLogRequest(logRequest);
     }
 }
