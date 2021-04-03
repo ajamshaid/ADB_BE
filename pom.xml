@@ -116,7 +116,7 @@
     </dependencies>
 
     <build>
-        <finalName>adb</finalName>
+        <finalName>psw</finalName>
 
         <plugins>
             <plugin>
