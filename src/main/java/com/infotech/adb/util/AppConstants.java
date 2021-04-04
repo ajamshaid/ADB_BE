@@ -19,6 +19,7 @@ public class AppConstants {
     public final static String REQ_TYPE_RES_SUPPLIERS = "RES_SUPPLIERS";
 
     public static class PSW {
+
         public final static String ID = "PSW";
         public final static String BASE_URL = "http://localhost:8081/adb";
         public final static String API_AUTH = "/oauth/token";
@@ -26,17 +27,21 @@ public class AppConstants {
         public final static String CLIENT_ID = "adb";
         public final static String CLIENT_SECRET = "adb";
 
-        public final static String METHOD_ID_UPDATE_INFO_AND_PM = "1512";
-
         public final static String API_UPDATE_URL = "/dealers/a/d/i/edi";
+        public final static String METHOD_ID_UPDATE_INFO_AND_PM = "1512";//MGS-6
+        public final static String METHOD_ID_UPDATE_RESTRICTED_COUNTRIES= "1513";//MGS-7
+        public final static String METHOD_ID_UPDATE_RESTRICTED_COMMODITIES= "1514";//MGS-8
+        public final static String METHOD_ID_UPDATE_RESTRICTED_SUPPLIERS= "1515";//MGS-9
+        public final static String METHOD_ID_UPDATE_TRADER_ACCT_STATUS= "1516"; // MSG-10
+        public final static String METHOD_ID_UPDATE_TRADERS_EMAIL_MOB= "1534"; //MGS-11
 
     }
 
 
-
     public static class MESSAGE_GUID {
         public final static UUID MSG_UPDATE_ACCT_INFO_PAYMENT_MODE = UUID.fromString("940b2c1c-92b6-11eb-a8b3-0242ac130003");
-        //public final static String MSG_UPDATE_INFO_PAYMENT_MODE = "INFO_PAY_MODES";
+        public final static UUID MSG_UPDATE_GUID = UUID.fromString("a1374655-5eb8-4a0e-9eb5-989521cd1ca");
+
     }
 
     public static class DBConstraints {

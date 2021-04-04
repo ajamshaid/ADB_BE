@@ -1,9 +1,7 @@
 package com.infotech.adb.api.psw;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.infotech.adb.dto.RequestParameter;
 import com.infotech.adb.exceptions.DataValidationException;
-import com.infotech.adb.model.entity.LogRequest;
 import com.infotech.adb.util.AppConstants;
 import com.infotech.adb.util.AppUtility;
 import com.infotech.adb.util.CustomResponse;
@@ -13,7 +11,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
@@ -58,11 +55,24 @@ public class PSWAPI {
             }else{
                 throw new DataValidationException("In-correct IBAN");
             }
-        } else if(requestBody.getMethodId().equals(AppConstants.PSW.METHOD_ID_UPDATE_INFO_AND_PM)) {
-            System.out.println("-------- PSW Receive ACcount Info and PM update Request :" + AppConstants.PSW.METHOD_ID_UPDATE_INFO_AND_PM);
+        } else if(requestBody.getMethodId().equals(AppConstants.PSW.METHOD_ID_UPDATE_RESTRICTED_COUNTRIES)) {
+            System.out.println("-------- PSW Receive Updated negative list of [COUNTRIES] Request :" + AppConstants.PSW.METHOD_ID_UPDATE_RESTRICTED_COUNTRIES);
+            return getOKResponse(requestBody, "Updated negative list of countries",requestBody.getMethodId());
+        }else if(requestBody.getMethodId().equals(AppConstants.PSW.METHOD_ID_UPDATE_RESTRICTED_COMMODITIES)) {
+            System.out.println("-------- PSW Receive Updated negative list of [COMMODITIES] Request :" + AppConstants.PSW.METHOD_ID_UPDATE_RESTRICTED_COMMODITIES);
+            return getOKResponse(requestBody, "Updated negative list of commodities",requestBody.getMethodId());
+        }else if(requestBody.getMethodId().equals(AppConstants.PSW.METHOD_ID_UPDATE_RESTRICTED_SUPPLIERS)) {
+            System.out.println("-------- PSW Receive Updated negative list of [SUPPLIERS] Request :" + AppConstants.PSW.METHOD_ID_UPDATE_RESTRICTED_SUPPLIERS);
+            return getOKResponse(requestBody, "Updated negative list of suppliers",requestBody.getMethodId());
+        }else if(requestBody.getMethodId().equals(AppConstants.PSW.METHOD_ID_UPDATE_TRADER_ACCT_STATUS)) {
+            System.out.println("-------- PSW Receive Updated  [Trader Acct Status] Request :" + AppConstants.PSW.METHOD_ID_UPDATE_TRADER_ACCT_STATUS);
+            return getOKResponse(requestBody, "Updated Account Status",requestBody.getMethodId());
+        }else if(requestBody.getMethodId().equals(AppConstants.PSW.METHOD_ID_UPDATE_TRADERS_EMAIL_MOB)) {
+            System.out.println("-------- PSW Receive Updated  [Trader Email and Mob] Request :" + AppConstants.PSW.METHOD_ID_UPDATE_TRADERS_EMAIL_MOB);
+            return getOKResponse(requestBody, "Updated Trader Email and MObile number",requestBody.getMethodId());
         }
 
-        return getOKResponse(requestBody, "ALL Good ","none");
+        return getOKResponse(requestBody, "Mehthod Not FOUND........ ","none");
     }
 
 
@@ -118,17 +128,5 @@ public class PSWAPI {
         return ResponseUtility.successResponse(null, AppConstants.PSWResponseCodes.OK, message, requestBody,true);
     }
 
-    private void saveLogRequest(String messageName, String messageType, RequestParameter requestBody, ZonedDateTime requestTime, ResponseUtility.APIResponse responseBody) throws JsonProcessingException {
-        LogRequest logRequest = new LogRequest();
-        logRequest.setMsgIdentifier(messageName);
-        logRequest.setRequestMethod(messageType);
-        logRequest.setRequestPayload(requestBody.toJson());
-        logRequest.setResponsePayload(responseBody.toJson());
-        logRequest.setRequestTime(requestTime);
-        logRequest.setResponseTime(ZonedDateTime.now());
-        logRequest.setCreatedOn(ZonedDateTime.now());
-        logRequest.setResponseCode(responseBody.getResponseCode());
-        logRequest.setResponseMessage(responseBody.getMessage().getDescription());
-      //  logRequestService.createLogRequest(logRequest);
-    }
+
 }

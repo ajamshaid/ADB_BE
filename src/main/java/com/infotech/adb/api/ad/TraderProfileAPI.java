@@ -163,16 +163,6 @@ public class TraderProfileAPI {
         return getBuildAndLogResponseByRequestType(requestBody, AppConstants.REQ_TYPE_RES_SUPPLIERS);
     }
 
-    //**************************
-    // 4.6.	Message 6 – Sharing of Updated Information and Authorized Payment Modes by AD with PSW
-    // **************************/
-    @RequestMapping(value = "/account/negative-suppliers", method = RequestMethod.GET)
-    public CustomResponse updateAccountWithPM(@RequestBody RequestParameter<IBANVerificationRequest> requestBody)
-            throws CustomException, DataValidationException, NoDataFoundException {
-        return getBuildAndLogResponseByRequestType(requestBody, AppConstants.REQ_TYPE_RES_SUPPLIERS);
-    }
-
-
     /*
         @RequestMapping(value = "/update/payment/modes", method = RequestMethod.POST)
         public CustomResponse updateAccountDetails(HttpServletRequest request,

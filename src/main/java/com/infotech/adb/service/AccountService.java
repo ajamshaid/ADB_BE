@@ -61,7 +61,6 @@ public class AccountService {
 
     public void deleteAccountDetailById(Long id) {
         log.info("deleteAccountDetailById method called..");
-
         accountDetailRepository.deleteById(id);
     }
 }

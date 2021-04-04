@@ -52,5 +52,4 @@ public class LogRequestService {
 
         logRequestRepository.deleteById(id);
     }
-
 }

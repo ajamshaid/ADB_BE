@@ -1,6 +1,9 @@
 package com.infotech.adb.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.infotech.adb.dto.RequestParameter;
+import com.infotech.adb.util.ResponseUtility;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -48,4 +51,21 @@ public class LogRequest extends BaseEntity {
     public LogRequest() {
     }
 
+
+    public static LogRequest buildNewObject(String messageName, String messageType, RequestParameter requestBody, ZonedDateTime requestTime, ResponseUtility.APIResponse responseBody) throws
+        JsonProcessingException {
+            LogRequest logRequest = new LogRequest();
+            logRequest.setMsgIdentifier(messageName);
+            logRequest.setReceiverId(requestBody.getReceiverId());
+            logRequest.setSenderId(requestBody.getSenderId());
+            logRequest.setRequestMethod(messageType);
+            logRequest.setRequestTime(requestTime);
+            logRequest.setResponseTime(ZonedDateTime.now());
+            logRequest.setCreatedOn(ZonedDateTime.now());
+            logRequest.setResponseCode(responseBody.getResponseCode());
+            logRequest.setResponseMessage(responseBody.getMessage().getDescription());
+            logRequest.setRequestPayload(requestBody.toJson());
+            logRequest.setResponsePayload(responseBody.toJson());
+        return  logRequest;
+    }
 }

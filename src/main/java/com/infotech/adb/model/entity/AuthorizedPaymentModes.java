@@ -30,4 +30,10 @@ public class AuthorizedPaymentModes {
     @ManyToOne
     @JoinColumn(name="ACCOUNT_ID", nullable=false)
     private AccountDetail accountDetail;
+
+    public AuthorizedPaymentModes(String code, String type, AccountDetail accountDetail) {
+        this.code = code;
+        this.type = type;
+        this.accountDetail = accountDetail;
+    }
 }

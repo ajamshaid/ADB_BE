@@ -6,7 +6,6 @@ import com.infotech.adb.util.JsonUtils;
 import com.infotech.adb.util.ResponseUtility;
 import lombok.Data;
 
-import javax.persistence.Column;
 import java.time.ZonedDateTime;
 
 @Data
@@ -16,6 +15,7 @@ public class LogRequestDTO implements BaseDTO<LogRequestDTO, LogRequest> {
 
     private String senderId;
     private String receiverId;
+    private String methodId;
     private ZonedDateTime createdOn;
     private String messageName;
     private RequestParameter requestPayload;
@@ -49,14 +49,15 @@ public class LogRequestDTO implements BaseDTO<LogRequestDTO, LogRequest> {
         this.id = entity.getId();
         this.senderId = entity.getSenderId();
         this.receiverId = entity.getReceiverId();
-        this.responsePayload = JsonUtils.jsonToObject(entity.getResponsePayload(), ResponseUtility.APIResponse.class);
-        this.requestPayload = JsonUtils.jsonToObject(entity.getRequestPayload(), RequestParameter.class);
+
         this.responseTime = entity.getResponseTime();
         this.requestTime = entity.getRequestTime();
         this.messageName = entity.getMsgIdentifier();
         this.createdOn = entity.getCreatedOn();
         this.requestMethod = entity.getRequestMethod();
         this.requestFormattedTime = AppUtility.formatZonedDateTime("HH:mm a", entity.getRequestTime());
+        this.responsePayload = JsonUtils.jsonToObject(entity.getResponsePayload(), ResponseUtility.PSWAPIResponse.class);
+        this.requestPayload = JsonUtils.jsonToObject(entity.getRequestPayload(), RequestParameter.class);
     }
 
     @Override
