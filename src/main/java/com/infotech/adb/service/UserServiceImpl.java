@@ -2,7 +2,6 @@ package com.infotech.adb.service;
 
 import com.infotech.adb.model.entity.User;
 import com.infotech.adb.model.repository.UserRepository;
-import com.infotech.adb.model.repository.UserRoleRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,12 +16,10 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final UserRoleRepository userRoleRepository;
 
-    public UserServiceImpl(UserRepository userRepository,
-                           UserRoleRepository userRoleRepository) {
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.userRoleRepository = userRoleRepository;
+
     }
 
     @Override
@@ -38,7 +35,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private Collection<? extends GrantedAuthority> getGrantedAuthorities(String username) {
-        return userRoleRepository.findRoleByUsername(username);
+        return null;
     }
 
     public List<User> findAllUsers() {
