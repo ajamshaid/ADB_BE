@@ -47,9 +47,9 @@ public class RestrictedCountriesDTO implements BaseDTO<RestrictedCountriesDTO, A
         Set<String> exports = new HashSet<>();
         Set<String> imports = new HashSet<>();
         for (RestrictedCountries reCountry : restrictedCoutriesSet) {
-            if(AppConstants.PAYMENT_MODE_TYPE_IMPORT.equals(reCountry.getType())){
+            if(AppConstants.PAYMENT_MODE.TYPE_IMPORT.equals(reCountry.getType())){
                 imports.add(reCountry.getCountry().getCode());
-            }else if(AppConstants.PAYMENT_MODE_TYPE_EXPORT.equals(reCountry.getType())){
+            }else if(AppConstants.PAYMENT_MODE.TYPE_EXPORT.equals(reCountry.getType())){
                 exports.add(reCountry.getCountry().getCode());
             }
         }

@@ -43,9 +43,9 @@ public class RestrictedCommoditiesDTO implements BaseDTO<RestrictedCommoditiesDT
         Set<String> exports = new HashSet<>();
         Set<String> imports = new HashSet<>();
         for (RestrictedCommodities com : restrictedCommoditiesSet) {
-            if(AppConstants.PAYMENT_MODE_TYPE_IMPORT.equals(com.getType())){
+            if(AppConstants.PAYMENT_MODE.TYPE_IMPORT.equals(com.getType())){
                 imports.add(com.getCode());
-            }else if(AppConstants.PAYMENT_MODE_TYPE_EXPORT.equals(com.getType())){
+            }else if(AppConstants.PAYMENT_MODE.TYPE_EXPORT.equals(com.getType())){
                 exports.add(com.getCode());
             }
         }

@@ -177,6 +177,28 @@ public class PSWClient {
 
         return executeRequest(requestParameter, "Update in Trader’s Email and Mobile Number Message by AD to PSW");
     }
+
+
+    /***********************************************************
+     5.1.1.	Message 1 – Share Financial Transaction Data with PSW by AD
+     ***********************************************************/
+    public ResponseUtility.APIResponse shareFinancialInformation(FinancialTransactionDTO dto)
+            throws HttpClientErrorException, JsonProcessingException {
+
+        RequestParameter<FinancialTransactionDTO> requestParameter = new RequestParameter<>(
+                AppConstants.MESSAGE_GUID.MSG_UPDATE_GUID
+                , AppConstants.AD_ID
+                , AppConstants.PSW.ID, "03"
+                , AppConstants.PSW.METHOD_ID_SHARE_FIN_TRANS_DATA_IMPORT
+                , AppConstants.AD_SIGNATURE);
+        requestParameter.setData(dto);
+
+        return executeRequest(requestParameter, "Sharing Financial Transaction Data with PSW by AD");
+    }
+
+
+
+
     /*********************************************
      *   Private Methods......
      ***********************************************/

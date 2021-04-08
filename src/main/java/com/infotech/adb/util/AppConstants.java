@@ -10,13 +10,22 @@ public class AppConstants {
     public static final String HEADER_AUTHORIZATION = "Authorization";
 
 
-    public final static String PAYMENT_MODE_TYPE_IMPORT = "IMPORT";
-    public final static String PAYMENT_MODE_TYPE_EXPORT = "EXPORT";
 
     public final static String REQ_TYPE_ACCT_DETAILS_WITH_PM = "ACCT_DETAILS_WITH_PM";
     public final static String REQ_TYPE_RES_COUNTRIES = "RES_COUNTRIES";
     public final static String REQ_TYPE_RES_COMMODITIES = "RES_COMMODITIES";
     public final static String REQ_TYPE_RES_SUPPLIERS = "RES_SUPPLIERS";
+
+    public static class PAYMENT_MODE {
+        public final static String TYPE_IMPORT = "IMPORT";
+        public final static String TYPE_EXPORT = "EXPORT";
+
+        public final static String IMPORT_LC = "301";
+        public final static String IMPORT_OPEN_ACCOUNT = "302";
+        public final static String IMPORT_ADVANCE_PAYMENT = "303";
+        public final static String IMPORT_CC = "304";
+
+    }
 
     public static class PSW {
 
@@ -34,6 +43,10 @@ public class AppConstants {
         public final static String METHOD_ID_UPDATE_RESTRICTED_SUPPLIERS= "1515";//MGS-9
         public final static String METHOD_ID_UPDATE_TRADER_ACCT_STATUS= "1516"; // MSG-10
         public final static String METHOD_ID_UPDATE_TRADERS_EMAIL_MOB= "1534"; //MGS-11
+
+        //5.1.	Financial & GD Information Messages (Import)
+        public final static String METHOD_ID_SHARE_FIN_TRANS_DATA_IMPORT= "1520"; //MGS-1 5.1.1
+
 
     }
 

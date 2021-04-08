@@ -7,7 +7,9 @@ import com.infotech.adb.exceptions.DataValidationException;
 import com.infotech.adb.exceptions.NoDataFoundException;
 import com.infotech.adb.model.entity.AccountDetail;
 import com.infotech.adb.model.entity.AuthorizedPaymentModes;
+import com.infotech.adb.model.entity.FinancialTransaction;
 import com.infotech.adb.model.entity.User;
+import com.infotech.adb.model.repository.FinancialTransactionRepository;
 import com.infotech.adb.service.AccountService;
 import com.infotech.adb.service.UserService;
 import com.infotech.adb.util.AppUtility;
@@ -35,6 +37,9 @@ public class TestAPI {
 
     @Autowired
     private AccountService accountService;
+
+    @Autowired
+    private FinancialTransactionRepository financialTransactionRepository;
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public ResponseEntity<?> getUsers(UriComponentsBuilder ucBuilder) {
@@ -129,6 +134,18 @@ public class TestAPI {
         } else {
             throw new NoDataFoundException("No Record found for IBAN:" + requestBody.getData());
         }
+
+    }
+
+
+    @RequestMapping(value = "/import/share-fin-trans-data", method = RequestMethod.GET)
+    public ResponseEntity<?> shareFinTransDataForImportsTest() throws JsonProcessingException{
+        log.info("Test .. Share Fin Transaction Data Details");
+
+        FinancialTransaction fn =  financialTransactionRepository.findById(1L).get();
+
+        FinancialTransactionDTO dto = new FinancialTransactionDTO(fn);
+            return new ResponseEntity<>(pswClient.shareFinancialInformation(dto), HttpStatus.OK);
 
     }
 }

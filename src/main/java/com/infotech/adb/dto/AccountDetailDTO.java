@@ -70,9 +70,9 @@ public class AccountDetailDTO implements BaseDTO<AccountDetailDTO, AccountDetail
         Set<String> apmImports = new HashSet<>();
         if(!AppUtility.isEmpty(authorizedPaymentModes)) {
             for (AuthorizedPaymentModes apm : authorizedPaymentModes) {
-                if (AppConstants.PAYMENT_MODE_TYPE_IMPORT.equals(apm.getType())) {
+                if (AppConstants.PAYMENT_MODE.TYPE_IMPORT.equals(apm.getType())) {
                     apmImports.add(apm.getCode());
-                } else if (AppConstants.PAYMENT_MODE_TYPE_EXPORT.equals(apm.getType())) {
+                } else if (AppConstants.PAYMENT_MODE.TYPE_EXPORT.equals(apm.getType())) {
                     apmExports.add(apm.getCode());
                 }
             }

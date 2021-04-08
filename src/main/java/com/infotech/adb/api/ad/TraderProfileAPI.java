@@ -163,95 +163,17 @@ public class TraderProfileAPI {
         return getBuildAndLogResponseByRequestType(requestBody, AppConstants.REQ_TYPE_RES_SUPPLIERS);
     }
 
-    /*
-        @RequestMapping(value = "/update/payment/modes", method = RequestMethod.POST)
-        public CustomResponse updateAccountDetails(HttpServletRequest request,
-                                                   @RequestBody RequestParameter<IBANVerificationRequest> requestBody)
-                throws CustomException, DataValidationException, NoDataFoundException, JsonProcessingException {
 
-            HttpClientTest.updatePaymentModes();
 
-            ZonedDateTime requestTime = ZonedDateTime.now();
+    //**************************
+    // 4.5.	Message 5 – Sharing Negative List of Suppliers with PSW
+    // **************************/
+    @RequestMapping(value = "/import/gd-fin-information", method = RequestMethod.POST)
+    public CustomResponse shareImportGDFinInfo(@RequestBody RequestParameter<IBANVerificationRequest> requestBody)
+            throws CustomException, DataValidationException, NoDataFoundException {
+        return getBuildAndLogResponseByRequestType(requestBody, AppConstants.REQ_TYPE_RES_SUPPLIERS);
+    }
 
-            AccountDetail accountDetail = getAccountDetail(requestBody);
-            RequestParameter pswRequestPayload = requestBody.newRequestParameter();
-            pswRequestPayload.setData(new RestrictedSuppliersDTO().convertToNewDTO(accountDetail, false));
-
-            CustomResponse customResponse2 = requestPSWAPI("/update/payment/modes", request, pswRequestPayload);
-
-    //        saveLogRequest("MSG6: Update Payment Modes", RequestMethod.POST.name(), requestBody, requestTime,(ResponseUtility.APIResponse) customResponse2.getBody());
-            saveLogRequest("Update Payment Modes With PSW by AD", RequestMethod.POST.name(), requestBody, requestTime, (ResponseUtility.APIResponse) customResponse2.getBody());
-            return customResponse2;
-        }
-
-        @RequestMapping(value = "/update/negative/countries", method = RequestMethod.POST)
-        public CustomResponse updateNegativeCountriesList(HttpServletRequest request,
-                                                          @RequestBody RequestParameter<IBANVerificationRequest> requestBody)
-                throws CustomException, DataValidationException, NoDataFoundException, JsonProcessingException {
-
-            HttpClientTest.updateNegativeCountries();
-
-            ZonedDateTime requestTime = ZonedDateTime.now();
-
-            AccountDetail accountDetail = getAccountDetail(requestBody);
-            RequestParameter pswRequestPayload = requestBody.newRequestParameter();
-            pswRequestPayload.setData(new RestrictedSuppliersDTO().convertToNewDTO(accountDetail, false));
-
-            CustomResponse customResponse2 = requestPSWAPI("/update/negative/countries", request, pswRequestPayload);
-
-    //        saveLogRequest("MSG7: Update Negative Countries", RequestMethod.POST.name(), requestBody, requestTime,(ResponseUtility.APIResponse) customResponse2.getBody());
-            saveLogRequest("Update Negative Countries With PSW by AD", RequestMethod.POST.name(), requestBody, requestTime, (ResponseUtility.APIResponse) customResponse2.getBody());
-
-            return customResponse2;
-        }
-
-        @RequestMapping(value = "/update/negative/commodities", method = RequestMethod.POST)
-        public CustomResponse updateNegativeCommoditiesList(HttpServletRequest request,
-                                                            @RequestBody RequestParameter<IBANVerificationRequest> requestBody)
-                throws CustomException, DataValidationException, NoDataFoundException, JsonProcessingException {
-
-            HttpClientTest.updateNegativeCommodities();
-
-            ZonedDateTime requestTime = ZonedDateTime.now();
-
-            AccountDetail accountDetail = getAccountDetail(requestBody);
-            RequestParameter pswRequestPayload = requestBody.newRequestParameter();
-            pswRequestPayload.setData(new RestrictedSuppliersDTO().convertToNewDTO(accountDetail, false));
-
-            CustomResponse customResponse2 = requestPSWAPI("/update/negative/commodities", request, pswRequestPayload);
-
-    //        saveLogRequest("MSG8: Update Negative Commodities", RequestMethod.POST.name(), requestBody, requestTime,(ResponseUtility.APIResponse) customResponse2.getBody());
-            saveLogRequest("Update Negative Commodities With PSW by AD", RequestMethod.POST.name(), requestBody, requestTime, (ResponseUtility.APIResponse) customResponse2.getBody());
-            return customResponse2;
-        }
-
-        @RequestMapping(value = "/update/negative/suppliers", method = RequestMethod.POST)
-        public CustomResponse updateNegativeSuppliersList(HttpServletRequest request,
-                                                          @RequestBody RequestParameter<IBANVerificationRequest> requestBody)
-                throws CustomException, DataValidationException, NoDataFoundException, JsonProcessingException {
-
-            HttpClientTest.updateNegativeSupplier();
-
-            ZonedDateTime requestTime = ZonedDateTime.now();
-            AccountDetail accountDetail = getAccountDetail(requestBody);
-            RequestParameter pswRequestPayload = requestBody.newRequestParameter();
-            pswRequestPayload.setData(new RestrictedSuppliersDTO().convertToNewDTO(accountDetail, false));
-
-            CustomResponse customResponse2 = requestPSWAPI("/update/negative/suppliers", request, pswRequestPayload);
-
-    //        saveLogRequest("MSG9: Update Negative Supplier", RequestMethod.POST.name(), requestBody, requestTime,(ResponseUtility.APIResponse) customResponse2.getBody());
-            saveLogRequest("Update Negative Supplier With PSW by AD", RequestMethod.POST.name(), requestBody, requestTime, (ResponseUtility.APIResponse) customResponse2.getBody());
-            return customResponse2;
-        }
-
-        private CustomResponse requestPSWAPI(String uri, HttpServletRequest request, RequestParameter requestParameter) {
-
-            ResponseUtility.APIResponse responseBodyPSW = HTTPClientUtils.postRequest(uri, request.getHeader("Authorization"),
-                    requestParameter);
-            CustomResponse customResponse2 = CustomResponse.status(HttpStatus.CREATED).body(responseBodyPSW);
-            return customResponse2;
-        }
-    */
     private void saveLogRequest(String messageName, String messageType, RequestParameter requestBody,
                                 ZonedDateTime requestTime, ResponseUtility.APIResponse responseBody) {
         LogRequest logRequest = new LogRequest();

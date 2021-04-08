@@ -45,9 +45,9 @@ public class RestrictedSuppliersDTO implements BaseDTO<RestrictedSuppliersDTO, A
         Set<String> exports = new HashSet<>();
         Set<String> imports = new HashSet<>();
         for (RestrictedSuppliers neg : negativeSet) {
-            if(AppConstants.PAYMENT_MODE_TYPE_IMPORT.equals(neg.getType())){
+            if(AppConstants.PAYMENT_MODE.TYPE_IMPORT.equals(neg.getType())){
                 imports.add(neg.getNAME());
-            }else if(AppConstants.PAYMENT_MODE_TYPE_EXPORT.equals(neg.getType())){
+            }else if(AppConstants.PAYMENT_MODE.TYPE_EXPORT.equals(neg.getType())){
                 exports.add(neg.getNAME());
             }
         }

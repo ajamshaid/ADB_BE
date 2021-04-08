@@ -1,6 +1,7 @@
 package com.infotech.adb.service;
 
 import com.infotech.adb.model.entity.GDFinancial;
+import com.infotech.adb.model.repository.FinancialTransactionRepository;
 import com.infotech.adb.model.repository.GDFinancialRepository;
 import com.infotech.adb.util.AppUtility;
 import lombok.extern.log4j.Log4j2;
@@ -18,6 +19,9 @@ public class GDFinancialService {
 
     @Autowired
     private GDFinancialRepository gdFinancialRepository;
+
+    @Autowired
+    private FinancialTransactionRepository financialTransactionRepository;
 
     public List<GDFinancial> getAllGDFinancials(Boolean isSuspended) {
         log.info("getAllGDFinancials method called..");

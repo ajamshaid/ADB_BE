@@ -70,6 +70,9 @@ public class PSWAPI {
         }else if(requestBody.getMethodId().equals(AppConstants.PSW.METHOD_ID_UPDATE_TRADERS_EMAIL_MOB)) {
             System.out.println("-------- PSW Receive Updated  [Trader Email and Mob] Request :" + AppConstants.PSW.METHOD_ID_UPDATE_TRADERS_EMAIL_MOB);
             return getOKResponse(requestBody, "Updated Trader Email and MObile number",requestBody.getMethodId());
+        }else if(requestBody.getMethodId().equals(AppConstants.PSW.METHOD_ID_SHARE_FIN_TRANS_DATA_IMPORT)) {
+            System.out.println("-------- PSW Receive Updated  [Update Financial transaction data for import] Request :" + AppConstants.PSW.METHOD_ID_SHARE_FIN_TRANS_DATA_IMPORT);
+            return getOKResponse(requestBody, " Updated financial transaction data for import",requestBody.getMethodId());
         }
 
         return getOKResponse(requestBody, "Mehthod Not FOUND........ ","none");
