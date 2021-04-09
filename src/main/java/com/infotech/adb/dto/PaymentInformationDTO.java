@@ -20,7 +20,7 @@ public class PaymentInformationDTO implements BaseDTO<PaymentInformationDTO, Pay
     private String exporterCountry;
 
     private String portOfShipment;
-    private String deliveryTerms;
+    private String deliveryTerm;
     private BigDecimal totalInvoiceValue;
     private String invoiceCurrency;
     private BigDecimal exchangeRate;
@@ -43,12 +43,12 @@ public class PaymentInformationDTO implements BaseDTO<PaymentInformationDTO, Pay
             this.setBeneficiaryName(entity.getBeneficiaryName());
             this.setBeneficiaryAddress(entity.getBeneficiaryAddress());
             this.setBeneficiaryCountry(entity.getBeneficiaryCountry());
-            this.setBeneficiaryIban(entity.getBeneficiaryIBAN());
+            this.setBeneficiaryIban(entity.getBeneficiaryIban());
             this.setExporterName(entity.getExporterName());
             this.setExporterAddress(entity.getExporterAddress());
             this.setExporterCountry(entity.getExporterCountry());
             this.setPortOfShipment(entity.getPortOfShipment());
-            this.setDeliveryTerms(entity.getDeliveryTerms());
+            this.setDeliveryTerm(entity.getDeliveryTerm());
             this.setTotalInvoiceValue(entity.getTotalInvoiceValue());
             this.setInvoiceCurrency(entity.getInvoiceCurrency());
             this.setLcContractNo(entity.getLcContractNo());

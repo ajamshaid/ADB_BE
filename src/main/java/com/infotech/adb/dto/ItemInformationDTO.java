@@ -4,6 +4,8 @@ import com.infotech.adb.model.entity.ItemInformation;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @NoArgsConstructor
 public class ItemInformationDTO implements BaseDTO<ItemInformationDTO, ItemInformation> {
@@ -14,6 +16,11 @@ public class ItemInformationDTO implements BaseDTO<ItemInformationDTO, ItemInfor
     private String countryOfOrigin;
     private String sample;
     private String sampleValue;
+
+    private BigDecimal unitPrice;
+    private BigDecimal totalValue;
+    private BigDecimal importValue;
+    private BigDecimal importValueInvoice;
 
     public ItemInformationDTO(ItemInformation entity) {
         convertToDTO(entity, true);

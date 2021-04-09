@@ -1,12 +1,10 @@
 package com.infotech.adb.api.ad;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.infotech.adb.dto.*;
 import com.infotech.adb.exceptions.CustomException;
 import com.infotech.adb.exceptions.DataValidationException;
 import com.infotech.adb.exceptions.NoDataFoundException;
 import com.infotech.adb.model.entity.AccountDetail;
-import com.infotech.adb.model.entity.LogRequest;
 import com.infotech.adb.service.AccountService;
 import com.infotech.adb.service.LogRequestService;
 import com.infotech.adb.util.AppConstants;
@@ -83,7 +81,7 @@ public class TraderProfileAPI {
                     , requestBody,false
             );
             ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
-            saveLogRequest(logMessage, RequestMethod.POST.name(), requestBody, requestTime, responseBody);
+            logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestBody, requestTime, responseBody);
         }
         return customResponse;
     }
@@ -121,7 +119,7 @@ public class TraderProfileAPI {
             );
 
             ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
-            saveLogRequest("Verify Trader Profile From AD", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
+            logRequestService.saveLogRequest("Verify Trader Profile From AD", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
 
         }
         return customResponse;
@@ -161,39 +159,6 @@ public class TraderProfileAPI {
     public CustomResponse getNegativeSuppliersList(@RequestBody RequestParameter<IBANVerificationRequest> requestBody)
             throws CustomException, DataValidationException, NoDataFoundException {
         return getBuildAndLogResponseByRequestType(requestBody, AppConstants.REQ_TYPE_RES_SUPPLIERS);
-    }
-
-
-
-    //**************************
-    // 4.5.	Message 5 – Sharing Negative List of Suppliers with PSW
-    // **************************/
-    @RequestMapping(value = "/import/gd-fin-information", method = RequestMethod.POST)
-    public CustomResponse shareImportGDFinInfo(@RequestBody RequestParameter<IBANVerificationRequest> requestBody)
-            throws CustomException, DataValidationException, NoDataFoundException {
-        return getBuildAndLogResponseByRequestType(requestBody, AppConstants.REQ_TYPE_RES_SUPPLIERS);
-    }
-
-    private void saveLogRequest(String messageName, String messageType, RequestParameter requestBody,
-                                ZonedDateTime requestTime, ResponseUtility.APIResponse responseBody) {
-        LogRequest logRequest = new LogRequest();
-        logRequest.setReceiverId(requestBody.getReceiverId());
-        logRequest.setSenderId(requestBody.getSenderId());
-        logRequest.setMsgIdentifier(messageName);
-        logRequest.setRequestMethod(messageType);
-        try {
-            logRequest.setRequestPayload(requestBody.toJson());
-            logRequest.setResponsePayload(responseBody.toJson());
-        } catch (JsonProcessingException e) {
-            log.error("-- LogRequest without payload's will be saved as error occurred while parsing Request/Response payload :" + e.getMessage());
-            e.printStackTrace();
-        }
-        logRequest.setRequestTime(requestTime);
-        logRequest.setResponseTime(ZonedDateTime.now());
-        logRequest.setCreatedOn(ZonedDateTime.now());
-        logRequest.setResponseCode(responseBody.getResponseCode());
-        logRequest.setResponseMessage(responseBody.getMessage().getDescription());
-        logRequestService.createLogRequest(logRequest);
     }
 }
 

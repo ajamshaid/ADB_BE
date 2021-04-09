@@ -1,8 +1,11 @@
 package com.infotech.adb.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.infotech.adb.dto.RequestParameter;
 import com.infotech.adb.model.entity.LogRequest;
 import com.infotech.adb.model.repository.LogRequestRepository;
 import com.infotech.adb.util.AppUtility;
+import com.infotech.adb.util.ResponseUtility;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +21,29 @@ public class LogRequestService {
 
     @Autowired
     private LogRequestRepository logRequestRepository;
+
+
+    public void saveLogRequest(String messageName, String messageType, RequestParameter requestBody,
+                                ZonedDateTime requestTime, ResponseUtility.APIResponse responseBody) {
+        LogRequest logRequest = new LogRequest();
+        logRequest.setReceiverId(requestBody.getReceiverId());
+        logRequest.setSenderId(requestBody.getSenderId());
+        logRequest.setMsgIdentifier(messageName);
+        logRequest.setRequestMethod(messageType);
+        try {
+            logRequest.setRequestPayload(requestBody.toJson());
+            logRequest.setResponsePayload(responseBody.toJson());
+        } catch (JsonProcessingException e) {
+            log.error("-- LogRequest without payload's will be saved as error occurred while parsing Request/Response payload :" + e.getMessage());
+            e.printStackTrace();
+        }
+        logRequest.setRequestTime(requestTime);
+        logRequest.setResponseTime(ZonedDateTime.now());
+        logRequest.setCreatedOn(ZonedDateTime.now());
+        logRequest.setResponseCode(responseBody.getResponseCode());
+        logRequest.setResponseMessage(responseBody.getMessage().getDescription());
+        this.createLogRequest(logRequest);
+    }
 
     public List<LogRequest> getAllLogRequests(Boolean isSuspended) {
         log.info("getAllLogRequests method called..");

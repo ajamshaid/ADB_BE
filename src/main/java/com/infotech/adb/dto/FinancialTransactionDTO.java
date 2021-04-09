@@ -14,14 +14,6 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 public class FinancialTransactionDTO implements BaseDTO<FinancialTransactionDTO, FinancialTransaction> {
-
-    @Data
-    private class FinTranInformationDTO {
-        private Date intendedPayDate;
-        private java.util.Date transportDocDate;
-        private Date finalDateOfShipment;
-    }
-
     private String importerNtn;
     private String importerName;
     private String remittanceFromPak;
@@ -92,4 +84,12 @@ public class FinancialTransactionDTO implements BaseDTO<FinancialTransactionDTO,
         dto.convertToDTO(entity, partialFill);
         return dto;
     }
+
+    @Data
+    private class FinTranInformationDTO {
+        private Date intendedPayDate;
+        private java.util.Date transportDocDate;
+        private Date finalDateOfShipment;
+    }
+
 }

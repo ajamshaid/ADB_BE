@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -36,7 +37,7 @@ public class GD {
 
     @Column(name = "BL_AWB_DATE", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    private String blAwbDate;
+    private Date blAwbDate;
 
     @Column(name = "VIR_AIR_NUM", length = 50, nullable = false)
     private String virAirNumber;

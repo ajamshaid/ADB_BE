@@ -25,7 +25,7 @@ public class PaymentInformation {
     @Column(name = "BENEFICIARY_COUNTRY",length = 3, nullable = false)
     private String beneficiaryCountry;
     @Column(name = "BENEFICIARY_IBAN",length = 24, nullable = true)
-    private String beneficiaryIBAN;
+    private String beneficiaryIban;
 
     @Column(name = "EXPORTER_NAME",length = 100, nullable = false)
     private String exporterName;
@@ -36,8 +36,10 @@ public class PaymentInformation {
 
     @Column(name = "PORT_OF_SHIPMENT",length = 10, nullable = true)
     private String portOfShipment;
-    @Column(name = "DELIVERY_TERMS",length = 3, nullable = false)
-    private String deliveryTerms;
+
+    @Column(name = "DELIVERY_TERM",length = 3, nullable = false)
+    private String deliveryTerm;
+
     @Column(name = "TOTAL_INVOICE_VALUE", precision=24, scale=4, nullable = false)
     private BigDecimal totalInvoiceValue;
 

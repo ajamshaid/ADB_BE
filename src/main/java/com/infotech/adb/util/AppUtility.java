@@ -21,11 +21,17 @@ public class AppUtility {
     private static ResourceBundle resourceBundle = null;
     public static final int defaultDecimalPrecision = 2;
     private static int decimalPercision = defaultDecimalPrecision;
-    private static final String DATE_FORMAT = "dd/MM/yyyy";
+    private static final String DATE_FORMAT = "yyyyMMdd";
 
     public static String formatedDate(Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-        return sdf.format(date);
+
+        String dt = "";
+        if(!isEmpty(date)) {
+            SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+            dt= sdf.format(date);
+        }
+        return dt;
+
     }
 
     public static String formatZonedDateTime(String format, ZonedDateTime zonedDateTime){
