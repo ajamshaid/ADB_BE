@@ -1,7 +1,6 @@
 package com.infotech.adb.dto;
 
 import com.infotech.adb.model.entity.*;
-import com.infotech.adb.util.AppConstants;
 import com.infotech.adb.util.AppUtility;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +11,7 @@ import java.util.Set;
 
 @Data
 @NoArgsConstructor
-public class GDDTO implements BaseDTO<GDDTO, GD> {
+public class GDExportDTO implements BaseDTO<GDExportDTO, GD> {
 
      // GD Fields
     private String gdNumber;
@@ -25,13 +24,13 @@ public class GDDTO implements BaseDTO<GDDTO, GD> {
 
     private ConsignorConsigneeDTO consignorConsigneeInfo;
 
-    private GDFinancialInfoDTO financialInfo;
+    private GDFinancialInfoDTO financialInformation;
 
     private GDGeneralInfoDTO generalInformation;
-    private Set<ItemInformationDTO> itemInformation;
+    private Set<ItemInformationExportDTO> itemInformation;
 
 
-    public GDDTO(GD entity) {
+    public GDExportDTO(GD entity) {
         convertToDTO(entity, true);
     }
 
@@ -54,16 +53,16 @@ public class GDDTO implements BaseDTO<GDDTO, GD> {
             this.setVirAirNumber(entity.getVirAirNumber());
 
            this.setConsignorConsigneeInfo((new ConsignorConsigneeDTO()).convertToDTO(entity));
-           this.setFinancialInfo((new GDFinancialInfoDTO().convertToDTO(entity.getFinancialTransaction())));
+           this.setFinancialInformation(new GDFinancialInfoDTO().convertToDTO(entity.getFinancialTransaction()));
 
            this.setGeneralInformation((new GDGeneralInfoDTO()).convertToDTO(entity));
 
            // Item Information
             if (!AppUtility.isEmpty(entity.getFinancialTransaction().getItemInformationSet())) {
 
-                HashSet<ItemInformationDTO> set = new HashSet<>();
+                HashSet<ItemInformationExportDTO> set = new HashSet<>();
                 for (ItemInformation item : entity.getFinancialTransaction().getItemInformationSet()) {
-                    set.add(new ItemInformationDTO(item));
+                    set.add(new ItemInformationExportDTO(item));
                 }
                 this.setItemInformation(set);
             }
@@ -71,8 +70,8 @@ public class GDDTO implements BaseDTO<GDDTO, GD> {
     }
 
     @Override
-    public GDDTO convertToNewDTO(GD entity, boolean partialFill) {
-        GDDTO dto = new GDDTO();
+    public GDExportDTO convertToNewDTO(GD entity, boolean partialFill) {
+        GDExportDTO dto = new GDExportDTO();
         dto.convertToDTO(entity, partialFill);
         return dto;
     }
@@ -114,8 +113,17 @@ public class GDDTO implements BaseDTO<GDDTO, GD> {
         private String modeOfPayment;
         private String finInsUniqueNumber;
 
-        private CCDataDTO contractCollectionData;
-        private LCDataDTO lcData;
+        private BigDecimal openAccPercentage;
+        private BigDecimal advPayPercentage;
+        private BigDecimal docAgainstPayPercentage;
+        private BigDecimal docAgainstAcceptancePercentage;
+        private Integer ccDays;
+
+        private BigDecimal sightPercentage;
+        private BigDecimal usancePercentage;
+        private Integer lcDays;
+
+        private BigDecimal totalPercentage;
 
         private String intendedPayDate;
         private String transportDocDate;
@@ -161,14 +169,22 @@ public class GDDTO implements BaseDTO<GDDTO, GD> {
                 this.setOtherCharges(pi.getOtherCharges());
                 this.setExchangeRate(pi.getExchangeRate());
 
-                if (!AppUtility.isEmpty(ft.getCcData()) && AppConstants.PAYMENT_MODE.IMPORT_CC.equals(ft.getModeOfPayment())) {
-                    this.setContractCollectionData(new CCDataDTO(ft.getCcData()));
+
+                this.setOpenAccPercentage(ft.getOpenAccPercentage());
+                this.setAdvPayPercentage(ft.getAdvPayPercentage());
+
+                if (!AppUtility.isEmpty(ft.getCcData())) {
+                    this.setDocAgainstPayPercentage(ft.getCcData().getDocAgainstPayPercentage());
+                    this.setDocAgainstAcceptancePercentage(ft.getCcData().getDocAgainstAcceptancePercentage());
+                    this.setCcDays(ft.getCcData().getDays());
                 }
 
-                if (!AppUtility.isEmpty(ft.getLcData()) && AppConstants.PAYMENT_MODE.IMPORT_LC.equals(ft.getModeOfPayment())) {
-                    this.setLcData(new LCDataDTO(ft.getLcData()));
+                if (!AppUtility.isEmpty(ft.getLcData()) ) {
+                    this.setSightPercentage(ft.getLcData().getSightPercentage());
+                    this.setUsancePercentage(ft.getLcData().getUsancePercentage());
+                    this.setLcDays(ft.getLcData().getDays());
+                    this.setTotalPercentage(ft.getLcData().getTotalPercentage());
                 }
-
             }
             return this;
         }
@@ -185,6 +201,9 @@ public class GDDTO implements BaseDTO<GDDTO, GD> {
         private String portOfDischarge;
         private String terminalLocation;
 
+        private String consignmentType;
+        private String shippingLine;
+
         public GDGeneralInfoDTO convertToDTO(GD entity) {
             if (entity != null) {
                 this.setNetWeight(entity.getNetWeight());
@@ -193,6 +212,10 @@ public class GDDTO implements BaseDTO<GDDTO, GD> {
                 this.setPortOfDelivery(entity.getPortOfDelivery());
                 this.setPortOfDischarge(entity.getPortOfDischarge());
                 this.setTerminalLocation(entity.getTerminalLocation());
+
+                this.setConsignmentType(entity.getConsignmentType());
+                this.setShippingLine(entity.getShippingLine());
+
                 this.setPackagesInformation(entity.getPackagesInformationSet());
                 this.setContainerVehicleInformation(entity.getContainerVehicleInformationSet());
             }

@@ -8,25 +8,18 @@ import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
-public class PaymentInformationDTO implements BaseDTO<PaymentInformationDTO, PaymentInformation> {
+public class PaymentInformationExportDTO implements BaseDTO<PaymentInformationExportDTO, PaymentInformation> {
 
     private String beneficiaryName;
     private String beneficiaryAddress;
     private String beneficiaryCountry;
     private String beneficiaryIban;
 
-    private String exporterName;
-    private String exporterAddress;
-    private String exporterCountry;
-
-    private String portOfShipment;
+    private String portOfDischarge;
     private String deliveryTerm;
-    private BigDecimal totalInvoiceValue;
-    private String invoiceCurrency;
-    private BigDecimal exchangeRate;
-    private String lcContractNo;
+    private BigDecimal totalValueOfShipment;
 
-    public PaymentInformationDTO(PaymentInformation entity) {
+    public PaymentInformationExportDTO(PaymentInformation entity) {
         convertToDTO(entity, true);
     }
 
@@ -44,21 +37,15 @@ public class PaymentInformationDTO implements BaseDTO<PaymentInformationDTO, Pay
             this.setBeneficiaryAddress(entity.getBeneficiaryAddress());
             this.setBeneficiaryCountry(entity.getBeneficiaryCountry());
             this.setBeneficiaryIban(entity.getBeneficiaryIban());
-            this.setExporterName(entity.getExporterName());
-            this.setExporterAddress(entity.getExporterAddress());
-            this.setExporterCountry(entity.getExporterCountry());
-            this.setPortOfShipment(entity.getPortOfShipment());
+            this.setPortOfDischarge(entity.getPortOfDischarge());
             this.setDeliveryTerm(entity.getDeliveryTerm());
-            this.setTotalInvoiceValue(entity.getTotalInvoiceValue());
-            this.setInvoiceCurrency(entity.getInvoiceCurrency());
-            this.setLcContractNo(entity.getLcContractNo());
-            this.setExchangeRate(entity.getExchangeRate());
+            this.setTotalValueOfShipment(entity.getTotalValueOfShipment());
         }
     }
 
     @Override
-    public PaymentInformationDTO convertToNewDTO(PaymentInformation entity, boolean partialFill) {
-        PaymentInformationDTO dto = new PaymentInformationDTO();
+    public PaymentInformationExportDTO convertToNewDTO(PaymentInformation entity, boolean partialFill) {
+        PaymentInformationExportDTO dto = new PaymentInformationExportDTO();
         dto.convertToDTO(entity, partialFill);
         return dto;
     }

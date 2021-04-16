@@ -80,6 +80,12 @@ public class GD {
     @Column(name = "TERMINAL_LOCATION", length = 70, nullable = false)
     private String terminalLocation;
 
+    @Column(name = "CONSIGNMENT_TYPE", length = 20)
+    private String consignmentType;
+
+    @Column(name = "SHIPPING_LINE", length = 20)
+    private String shippingLine;
+
     @OneToOne
     @JoinColumn(name="FIN_TRANSACTION_ID", nullable=false)
     private FinancialTransaction financialTransaction;

@@ -8,21 +8,16 @@ import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
-public class ItemInformationDTO implements BaseDTO<ItemInformationDTO, ItemInformation> {
+public class ItemInformationExportDTO implements BaseDTO<ItemInformationExportDTO, ItemInformation> {
     private String hsCode;
-    private String goodsDescription;
     private Integer quantity;
     private String uom;
-    private String countryOfOrigin;
-    private String sample;
-    private String sampleValue;
 
     private BigDecimal unitPrice;
     private BigDecimal totalValue;
-    private BigDecimal importValue;
-    private BigDecimal importValueInvoice;
+    private BigDecimal exportValue;
 
-    public ItemInformationDTO(ItemInformation entity) {
+    public ItemInformationExportDTO(ItemInformation entity) {
         convertToDTO(entity, true);
     }
 
@@ -37,19 +32,18 @@ public class ItemInformationDTO implements BaseDTO<ItemInformationDTO, ItemInfor
 
         if (entity != null) {
             this.setHsCode(entity.getHsCode());
-            this.setGoodsDescription(entity.getGoodsDescription());
             this.setQuantity(entity.getQuantity());
             this.setUom(entity.getUom());
-            this.setCountryOfOrigin(entity.getCountryOfOrigin());
-            this.setSample(entity.getSample());
-            this.setSampleValue(entity.getSampleValue());
+            this.setUnitPrice(entity.getUnitPrice());
+            this.setTotalValue(entity.getUnitPrice().multiply(new BigDecimal(entity.getQuantity())));
+            this.setExportValue(entity.getImportOrExportValue());
 
         }
     }
 
     @Override
-    public ItemInformationDTO convertToNewDTO(ItemInformation entity, boolean partialFill) {
-        ItemInformationDTO dto = new ItemInformationDTO();
+    public ItemInformationExportDTO convertToNewDTO(ItemInformation entity, boolean partialFill) {
+        ItemInformationExportDTO dto = new ItemInformationExportDTO();
         dto.convertToDTO(entity, partialFill);
         return dto;
     }

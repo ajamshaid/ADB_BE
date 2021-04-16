@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Set;
 
@@ -22,10 +23,13 @@ public class FinancialTransaction {
     private String ntn;
     @Column(name = "NAME",length = 100, nullable = false)
     private String name;
+
     @Column(name = "PK_REMITTANCE",length = 3, nullable = false)
     private String isPKRemittance;
+
     @Column(name = "MODE_OF_PAYMENT",length = 3, nullable = false)
     private String modeOfPayment;
+
     @Column(name = "FIN_INS_UNIQ_NUM",length = 30, nullable = false)
     private String finInsUniqueNumber;
 
@@ -46,6 +50,12 @@ public class FinancialTransaction {
     @Column(name = "REMARKS",length = 200, nullable = true)
     private String Remarks;
 
+    @Column(name = "ADV_PAY_PERCENTAGE", precision=7, scale=4, nullable = true)
+    private BigDecimal advPayPercentage;
+
+    @Column(name = "OPEN_ACC_PERCENTAGE",precision=7, scale=4, nullable = true)
+    private BigDecimal openAccPercentage;
+
     // LC and CC Data
     @OneToOne(mappedBy = "financialTransaction", fetch = FetchType.LAZY)
     private CCData ccData;
@@ -58,4 +68,9 @@ public class FinancialTransaction {
 
     @OneToMany(mappedBy = "financialTransaction", fetch = FetchType.LAZY)
     private Set<ItemInformation> itemInformationSet;
+
+    @OneToMany(mappedBy = "financialTransaction", fetch = FetchType.LAZY)
+    private Set<FinTransMOP> finTransMOPSet;
+
+
 }

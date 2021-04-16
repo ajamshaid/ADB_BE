@@ -10,7 +10,6 @@ import io.swagger.annotations.Api;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
@@ -73,58 +72,19 @@ public class PSWAPI {
         }else if(requestBody.getMethodId().equals(AppConstants.PSW.METHOD_ID_SHARE_FIN_TRANS_DATA_IMPORT)) {
             System.out.println("-------- PSW Receive Updated  [Update Financial transaction data for import] Request :" + AppConstants.PSW.METHOD_ID_SHARE_FIN_TRANS_DATA_IMPORT);
             return getOKResponse(requestBody, " Updated financial transaction data for import",requestBody.getMethodId());
+        }else if(requestBody.getMethodId().equals(AppConstants.PSW.METHOD_ID_SHARE_BDA_INFO_IMPORT)) {
+            System.out.println("-------- PSW Received -->[Share of BDA Info for import] Request :" + AppConstants.PSW.METHOD_ID_SHARE_BDA_INFO_IMPORT);
+            return getOKResponse(requestBody, " Updated BDA Info for import",requestBody.getMethodId());
+        }else if(requestBody.getMethodId().equals(AppConstants.PSW.METHOD_ID_SHARE_FIN_TRANS_DATA_EXPORT)) {
+            System.out.println("-------- PSW Received -->[Update Financial transaction data for Export] Request :" + AppConstants.PSW.METHOD_ID_SHARE_FIN_TRANS_DATA_EXPORT);
+            return getOKResponse(requestBody, " Updated financial transaction data  for Export ",requestBody.getMethodId());
+        }else if(requestBody.getMethodId().equals(AppConstants.PSW.METHOD_ID_SHARE_BCA_INFO_EXPORT)) {
+            System.out.println("-------- PSW Received -->[Share BCA Information for Export] Request :" + AppConstants.PSW.METHOD_ID_SHARE_BCA_INFO_EXPORT);
+            return getOKResponse(requestBody, " Updated BCA Information  for Export ",requestBody.getMethodId());
         }
 
         return getOKResponse(requestBody, "Mehthod Not FOUND........ ","none");
     }
-
-
-
-
-
-
-
-
-
-
-
-    @RequestMapping(value = "/update/negative/countries", method = RequestMethod.POST)
-    public CustomResponse getNegativeCountriesList(HttpServletRequest request,
-                                            @RequestBody RequestParameter requestBody) {
-
-        return getOKResponse(requestBody, messageBundle.getString("negative.countries.shared"),"none");
-    }
-
-    @RequestMapping(value = "/update/negative/commodities", method = RequestMethod.POST)
-    public CustomResponse getNegativeCommoditiesList(HttpServletRequest request,
-                                                   @RequestBody RequestParameter requestBody) {
-
-        return getOKResponse(requestBody, messageBundle.getString("negative.commodities.shared"),"none");
-    }
-
-    @RequestMapping(value = "/update/negative/suppliers", method = RequestMethod.POST)
-    public CustomResponse getNegativeSuppliersList(HttpServletRequest request,
-                                                     @RequestBody RequestParameter requestBody) {
-
-        return getOKResponse(requestBody, messageBundle.getString("negative.suppliers.shared"),"none");
-    }
-
-    @RequestMapping(value = "/bca/information", method = RequestMethod.POST)
-    public CustomResponse bcaInformation(HttpServletRequest request,
-                                                   @RequestBody RequestParameter requestBody) {
-
-        return getOKResponse(requestBody, messageBundle.getString("bca.information.updated"),"none");
-    }
-
-
-    @RequestMapping(value = "/financial/transaction", method = RequestMethod.POST)
-    public CustomResponse financialTransaction(HttpServletRequest request,
-                                         @RequestBody RequestParameter requestBody) {
-
-        return getOKResponse(requestBody, messageBundle.getString("negative.suppliers.shared"),"none");
-    }
-
-    //    5.2.3. Message 3 – Sharing of BCA Information
 
     private CustomResponse getOKResponse(RequestParameter requestBody, String message,String
                                          methodId) {

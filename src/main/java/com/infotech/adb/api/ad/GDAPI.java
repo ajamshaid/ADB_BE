@@ -1,6 +1,7 @@
 package com.infotech.adb.api.ad;
 
-import com.infotech.adb.dto.GDDTO;
+import com.infotech.adb.dto.GDExportDTO;
+import com.infotech.adb.dto.GDImportDTO;
 import com.infotech.adb.dto.RequestParameter;
 import com.infotech.adb.exceptions.CustomException;
 import com.infotech.adb.exceptions.DataValidationException;
@@ -36,10 +37,10 @@ public class GDAPI {
     // 5.1.2.	Message 2 – Sharing of GD and Financial Information with AD by PSW
     // **************************/
     @RequestMapping(value = "/import/gd-fin-information", method = RequestMethod.POST)
-    public CustomResponse shareImportGDFinInfo(@RequestBody RequestParameter<GDDTO> requestBody)
+    public CustomResponse shareImportGDFinInfo(@RequestBody RequestParameter<GDImportDTO> requestBody)
             throws CustomException, DataValidationException, NoDataFoundException {
 
-        GDDTO dto = requestBody.getData();
+        GDImportDTO dto = requestBody.getData();
 
         //@TODO... what to do with GD Info now....yet to be decieded by AD..
 
@@ -54,6 +55,34 @@ public class GDAPI {
 
         ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
         String logMessage = "Sharing of GD and Financial Information with AD by PSW";
+
+        logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestBody, requestTime, responseBody);
+        return customResponse;
+    }
+
+
+    //**************************
+    // 5.1.2.	Message 2 – Sharing of GD and Financial Information with AD by PSW
+    // **************************/
+    @RequestMapping(value = "/export/gd-fin-information", method = RequestMethod.POST)
+    public CustomResponse shareExportGDFinInfo(@RequestBody RequestParameter<GDExportDTO> requestBody)
+            throws CustomException, DataValidationException, NoDataFoundException {
+
+        GDExportDTO dto = requestBody.getData();
+
+        //@TODO... what to do with GD Info now....yet to be decieded by AD..
+
+        System.out.println("IN coming Export GD Info:"+dto.toString());
+
+        ZonedDateTime requestTime = ZonedDateTime.now();
+        CustomResponse customResponse = null;
+
+        customResponse = ResponseUtility.successResponse("{}",AppConstants.PSWResponseCodes.OK,
+                "Updated GD and financial information for Export."
+                ,requestBody, false);
+
+        ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
+        String logMessage = "Sharing of GD and Financial Information For Export with AD by PSW";
 
         logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestBody, requestTime, responseBody);
         return customResponse;

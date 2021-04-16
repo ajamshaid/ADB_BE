@@ -26,7 +26,7 @@ import java.time.ZonedDateTime;
 
 @Log4j2
 @Service
-public class PSWClient {
+public class PSWAPIConsumer {
 
     @Autowired
     private LogRequestService logRequestService;
@@ -180,12 +180,12 @@ public class PSWClient {
 
 
     /***********************************************************
-     5.1.1.	Message 1 – Share Financial Transaction Data with PSW by AD
+     5.1.1.	Message 1 – Share Financial Transaction Data with PSW by AD (IMPORT)
      ***********************************************************/
-    public ResponseUtility.APIResponse shareFinancialInformation(FinancialTransactionDTO dto)
+    public ResponseUtility.APIResponse shareFinancialInformationImport(FinancialTransactionImportDTO dto)
             throws HttpClientErrorException, JsonProcessingException {
 
-        RequestParameter<FinancialTransactionDTO> requestParameter = new RequestParameter<>(
+        RequestParameter<FinancialTransactionImportDTO> requestParameter = new RequestParameter<>(
                 AppConstants.MESSAGE_GUID.MSG_UPDATE_GUID
                 , AppConstants.AD_ID
                 , AppConstants.PSW.ID, "03"
@@ -193,10 +193,62 @@ public class PSWClient {
                 , AppConstants.AD_SIGNATURE);
         requestParameter.setData(dto);
 
-        return executeRequest(requestParameter, "Sharing Financial Transaction Data with PSW by AD");
+        return executeRequest(requestParameter, "Sharing Financial Transaction Data For Import with PSW by AD");
     }
 
 
+    /***********************************************************
+     5.1.3.	Message 3 – Sharing of BDA Information Import by AD with PSW
+     ***********************************************************/
+    public ResponseUtility.APIResponse shareBDAInformationImport(BDAImportDTO dto)
+            throws HttpClientErrorException, JsonProcessingException {
+
+        RequestParameter<BDAImportDTO> requestParameter = new RequestParameter<>(
+                AppConstants.MESSAGE_GUID.MSG_UPDATE_GUID
+                , AppConstants.AD_ID
+                , AppConstants.PSW.ID, "03"
+                , AppConstants.PSW.METHOD_ID_SHARE_BDA_INFO_IMPORT
+                , AppConstants.AD_SIGNATURE);
+        requestParameter.setData(dto);
+
+        return executeRequest(requestParameter, "Sharing of BDA Information [Import] by AD with PSW");
+    }
+
+
+
+    /***********************************************************
+     5.2.1.	Message 1 – Share Financial Transaction Data with PSW by AD (Export)
+     ***********************************************************/
+    public ResponseUtility.APIResponse shareFinancialInformationExport(FinancialTransactionExportDTO dto)
+            throws HttpClientErrorException, JsonProcessingException {
+
+        RequestParameter<FinancialTransactionExportDTO> requestParameter = new RequestParameter<>(
+                AppConstants.MESSAGE_GUID.MSG_UPDATE_GUID
+                , AppConstants.AD_ID
+                , AppConstants.PSW.ID, "03"
+                , AppConstants.PSW.METHOD_ID_SHARE_FIN_TRANS_DATA_EXPORT
+                , AppConstants.AD_SIGNATURE);
+        requestParameter.setData(dto);
+
+        return executeRequest(requestParameter, "Sharing Financial Transaction Data for Export with PSW by AD");
+    }
+
+    /***********************************************************
+     5.2.3.	Message 3 – Sharing of BCA Information Export by AD with PSW
+     ***********************************************************/
+    public ResponseUtility.APIResponse shareBCAInformationExport(BCAExportDTO dto)
+            throws HttpClientErrorException, JsonProcessingException {
+
+        RequestParameter<BCAExportDTO> requestParameter = new RequestParameter<>(
+                AppConstants.MESSAGE_GUID.MSG_UPDATE_GUID
+                , AppConstants.AD_ID
+                , AppConstants.PSW.ID, "03"
+                , AppConstants.PSW.METHOD_ID_SHARE_BCA_INFO_EXPORT
+                , AppConstants.AD_SIGNATURE);
+        requestParameter.setData(dto);
+
+        return executeRequest(requestParameter, "Sharing of BCA Information [Export] by AD with PSW");
+    }
 
 
     /*********************************************
@@ -266,7 +318,7 @@ public class PSWClient {
 
         System.out.println("-----Hello----");
 
-        PSWClient pswClient = new PSWClient();
+        PSWAPIConsumer pswApiConsumer = new PSWAPIConsumer();
 
         try {
 //            PSWAuthTokenResponse authTokenResponse = pswClient.getAuthorizationToken("adb", "adb");
@@ -276,7 +328,7 @@ public class PSWClient {
             accountDetail.setIban("PK 123213123");
             accountDetail.setAccountType("701");
 
-            pswClient.updateAccountAndPMInPWS(accountDetail);
+            pswApiConsumer.updateAccountAndPMInPWS(accountDetail);
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();

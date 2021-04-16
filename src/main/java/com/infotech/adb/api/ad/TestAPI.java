@@ -1,14 +1,12 @@
 package com.infotech.adb.api.ad;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.infotech.adb.api.consumer.PSWClient;
+import com.infotech.adb.api.consumer.PSWAPIConsumer;
 import com.infotech.adb.dto.*;
 import com.infotech.adb.exceptions.DataValidationException;
 import com.infotech.adb.exceptions.NoDataFoundException;
-import com.infotech.adb.model.entity.AccountDetail;
-import com.infotech.adb.model.entity.AuthorizedPaymentModes;
-import com.infotech.adb.model.entity.FinancialTransaction;
-import com.infotech.adb.model.entity.User;
+import com.infotech.adb.model.entity.*;
+import com.infotech.adb.model.repository.BDARepository;
 import com.infotech.adb.model.repository.FinancialTransactionRepository;
 import com.infotech.adb.service.AccountService;
 import com.infotech.adb.service.UserService;
@@ -33,13 +31,16 @@ public class TestAPI {
     UserService userService;
 
     @Autowired
-    PSWClient pswClient;
+    PSWAPIConsumer pswApiConsumer;
 
     @Autowired
     private AccountService accountService;
 
     @Autowired
     private FinancialTransactionRepository financialTransactionRepository;
+
+    @Autowired
+    private BDARepository bdaRepository;
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public ResponseEntity<?> getUsers(UriComponentsBuilder ucBuilder) {
@@ -66,7 +67,7 @@ public class TestAPI {
 
         accountDetail.setAuthorizedPaymentModesSet(authorizedPaymentModesSet);
 
-        return new ResponseEntity<>(pswClient.updateAccountAndPMInPWS(accountDetail), HttpStatus.OK);
+        return new ResponseEntity<>(pswApiConsumer.updateAccountAndPMInPWS(accountDetail), HttpStatus.OK);
 
     }
 
@@ -78,7 +79,7 @@ public class TestAPI {
 
         if (!AppUtility.isEmpty(acct)) {
             RestrictedCountriesDTO dto = new RestrictedCountriesDTO(acct);
-            return new ResponseEntity<>(pswClient.updateRestrictedListOFCountries(dto), HttpStatus.OK);
+            return new ResponseEntity<>(pswApiConsumer.updateRestrictedListOFCountries(dto), HttpStatus.OK);
         } else {
             throw new NoDataFoundException("No Record found for IBAN:" + Iban);
         }
@@ -93,7 +94,7 @@ public class TestAPI {
 
         if (!AppUtility.isEmpty(acct)) {
             RestrictedCommoditiesDTO dto = new RestrictedCommoditiesDTO(acct);
-            return new ResponseEntity<>(pswClient.updateRestrictedListOFCommodities(dto), HttpStatus.OK);
+            return new ResponseEntity<>(pswApiConsumer.updateRestrictedListOFCommodities(dto), HttpStatus.OK);
         } else {
             throw new NoDataFoundException("No Record found for IBAN:" + Iban);
         }
@@ -108,7 +109,7 @@ public class TestAPI {
 
         if (!AppUtility.isEmpty(acct)) {
             RestrictedSuppliersDTO dto = new RestrictedSuppliersDTO(acct);
-            return new ResponseEntity<>(pswClient.updateRestrictedListOFSuppliers(dto), HttpStatus.OK);
+            return new ResponseEntity<>(pswApiConsumer.updateRestrictedListOFSuppliers(dto), HttpStatus.OK);
         } else {
             throw new NoDataFoundException("No Record found for IBAN:" + Iban);
         }
@@ -119,7 +120,7 @@ public class TestAPI {
         log.info("Test .. Update Trader Acct Status");
         if (RequestParameter.isValidRequest(requestBody, false)) {
             TraderProfileStatusDTO dto = requestBody.getData();
-            return new ResponseEntity<>(pswClient.updateTraderProfileAccountStatus(dto), HttpStatus.OK);
+            return new ResponseEntity<>(pswApiConsumer.updateTraderProfileAccountStatus(dto), HttpStatus.OK);
         } else {
             throw new NoDataFoundException("No Record found for IBAN:" + requestBody.getData());
         }
@@ -130,7 +131,7 @@ public class TestAPI {
         log.info("Test .. Update Trader Email and Mobile");
         if (RequestParameter.isValidRequest(requestBody, false)) {
             TraderProfileDTO dto = requestBody.getData();
-            return new ResponseEntity<>(pswClient.updateTraderProfile(dto), HttpStatus.OK);
+            return new ResponseEntity<>(pswApiConsumer.updateTraderProfile(dto), HttpStatus.OK);
         } else {
             throw new NoDataFoundException("No Record found for IBAN:" + requestBody.getData());
         }
@@ -144,8 +145,45 @@ public class TestAPI {
 
         FinancialTransaction fn =  financialTransactionRepository.findById(1L).get();
 
-        FinancialTransactionDTO dto = new FinancialTransactionDTO(fn);
-            return new ResponseEntity<>(pswClient.shareFinancialInformation(dto), HttpStatus.OK);
+        FinancialTransactionImportDTO dto = new FinancialTransactionImportDTO(fn);
+            return new ResponseEntity<>(pswApiConsumer.shareFinancialInformationImport(dto), HttpStatus.OK);
 
+    }
+
+
+    //Testing for    5.1.3.	Message 3 – Sharing of BDA Information by AD with PSW
+    @RequestMapping(value = "/import/share-bda", method = RequestMethod.GET)
+    public ResponseEntity<?> shareBDAForImportsTest() throws JsonProcessingException{
+        log.info("Test >>>> 5.1.3. Message 3 – Sharing of BDA Information [IMPORT] by AD with PSW ");
+
+        BDA bda =  bdaRepository.findById(1L).get();
+
+        BDAImportDTO dto = new BDAImportDTO();
+        dto.convertToDTO(bda,false);
+
+        return new ResponseEntity<>(pswApiConsumer.shareBDAInformationImport(dto), HttpStatus.OK);
+
+    }
+
+    @RequestMapping(value = "/export/share-fin-trans-data", method = RequestMethod.GET)
+    public ResponseEntity<?> shareFinTransDataForExportTest() throws JsonProcessingException{
+        log.info("Test .. Share Fin Transaction Data Details");
+
+        FinancialTransaction fn =  financialTransactionRepository.findById(2L).get();
+
+        FinancialTransactionExportDTO dto = new FinancialTransactionExportDTO(fn);
+        return new ResponseEntity<>(pswApiConsumer.shareFinancialInformationExport(dto), HttpStatus.OK);
+
+    }
+
+    //Testing for    5.2.3.	Message 3 – Sharing of BCA Information Export by AD with PSW
+    @RequestMapping(value = "/export/share-bca", method = RequestMethod.GET)
+    public ResponseEntity<?> shareBCAForExportTest(
+            @RequestBody RequestParameter<BCAExportDTO> requestBody
+    ) throws JsonProcessingException{
+        log.info("Test >>>> 5.2.3. Message 3 – Sharing of BCA Information [EXPORT] by AD with PSW ");
+        BCAExportDTO dto = requestBody.getData();
+
+        return new ResponseEntity<>(pswApiConsumer.shareBCAInformationExport(dto), HttpStatus.OK);
     }
 }

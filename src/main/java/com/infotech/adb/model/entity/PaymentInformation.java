@@ -34,11 +34,18 @@ public class PaymentInformation {
     @Column(name = "EXPORTER_COUNTRY",length = 3, nullable = false)
     private String exporterCountry;
 
-    @Column(name = "PORT_OF_SHIPMENT",length = 10, nullable = true)
+    @Column(name = "PORT_OF_SHIPMENT",length = 10)
     private String portOfShipment;
+
+    @Column(name = "PORT_OF_DISCHARGE",length = 10)
+    private String portOfDischarge;
+
 
     @Column(name = "DELIVERY_TERM",length = 3, nullable = false)
     private String deliveryTerm;
+
+    @Column(name = "TOTAL_VALUE_OF_SHIPMENT", precision=24, scale=4 ) //used in share FinInfo for Export --> Message 5.2.1
+    private BigDecimal totalValueOfShipment;
 
     @Column(name = "TOTAL_INVOICE_VALUE", precision=24, scale=4, nullable = false)
     private BigDecimal totalInvoiceValue;

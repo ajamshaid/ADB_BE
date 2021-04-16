@@ -13,7 +13,7 @@ import java.util.Set;
 
 @Data
 @NoArgsConstructor
-public class FinancialTransactionDTO implements BaseDTO<FinancialTransactionDTO, FinancialTransaction> {
+public class FinancialTransactionImportDTO implements BaseDTO<FinancialTransactionImportDTO, FinancialTransaction> {
     private String importerNtn;
     private String importerName;
     private String remittanceFromPak;
@@ -23,11 +23,11 @@ public class FinancialTransactionDTO implements BaseDTO<FinancialTransactionDTO,
 
     private CCDataDTO contractCollectionData;
     private LCDataDTO lcData;
-    private PaymentInformationDTO paymentInformation;
-    private Set<ItemInformationDTO> itemInformation;
+    private PaymentInformationImportDTO paymentInformation;
+    private Set<ItemInformationImportDTO> itemInformation;
     private FinTranInformationDTO financialTranInformation;
 
-    public FinancialTransactionDTO(FinancialTransaction entity) {
+    public FinancialTransactionImportDTO(FinancialTransaction entity) {
         convertToDTO(entity, true);
     }
 
@@ -56,7 +56,7 @@ public class FinancialTransactionDTO implements BaseDTO<FinancialTransactionDTO,
             this.getFinancialTranInformation().setTransportDocDate(entity.getTransportDocumentDate());
 
             if (!AppUtility.isEmpty(entity.getPaymentInformation())) {
-                this.setPaymentInformation(new PaymentInformationDTO(entity.getPaymentInformation()));
+                this.setPaymentInformation(new PaymentInformationImportDTO(entity.getPaymentInformation()));
             }
 
             if (!AppUtility.isEmpty(entity.getCcData()) && AppConstants.PAYMENT_MODE.IMPORT_CC.equals(entity.getModeOfPayment())) {
@@ -69,9 +69,9 @@ public class FinancialTransactionDTO implements BaseDTO<FinancialTransactionDTO,
 
             if (!AppUtility.isEmpty(entity.getItemInformationSet())) {
 
-                HashSet<ItemInformationDTO> set = new HashSet<>();
+                HashSet<ItemInformationImportDTO> set = new HashSet<>();
                 for (ItemInformation item : entity.getItemInformationSet()) {
-                    set.add(new ItemInformationDTO(item));
+                    set.add(new ItemInformationImportDTO(item));
                 }
                 this.setItemInformation(set);
             }
@@ -79,8 +79,8 @@ public class FinancialTransactionDTO implements BaseDTO<FinancialTransactionDTO,
     }
 
     @Override
-    public FinancialTransactionDTO convertToNewDTO(FinancialTransaction entity, boolean partialFill) {
-        FinancialTransactionDTO dto = new FinancialTransactionDTO();
+    public FinancialTransactionImportDTO convertToNewDTO(FinancialTransaction entity, boolean partialFill) {
+        FinancialTransactionImportDTO dto = new FinancialTransactionImportDTO();
         dto.convertToDTO(entity, partialFill);
         return dto;
     }

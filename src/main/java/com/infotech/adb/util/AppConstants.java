@@ -46,6 +46,10 @@ public class AppConstants {
 
         //5.1.	Financial & GD Information Messages (Import)
         public final static String METHOD_ID_SHARE_FIN_TRANS_DATA_IMPORT= "1520"; //MGS-1 5.1.1
+        public final static String METHOD_ID_SHARE_FIN_TRANS_DATA_EXPORT= "1524"; //MGS-1 5.2.1
+
+        public final static String METHOD_ID_SHARE_BDA_INFO_IMPORT= "1522"; //MGS-3 5.1.3
+        public final static String METHOD_ID_SHARE_BCA_INFO_EXPORT= "1526"; //MGS-3 5.2.3
 
 
     }
