@@ -51,6 +51,9 @@ public class AppConstants {
         public final static String METHOD_ID_SHARE_BDA_INFO_IMPORT= "1522"; //MGS-3 5.1.3
         public final static String METHOD_ID_SHARE_BCA_INFO_EXPORT= "1526"; //MGS-3 5.2.3
 
+        //Cash Margin Message
+        public final static String METHOD_ID_SHARE_CASH_MARGIN_MESSAGE= "1541"; //MGS-1 6.1
+        public final static String METHOD_ID_SHARE_COB_APPROVAL_REJECTION_MESSAGE= "1538"; //MGS-1 7.1.3
 
     }
 

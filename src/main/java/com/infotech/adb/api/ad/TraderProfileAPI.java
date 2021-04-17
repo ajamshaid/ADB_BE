@@ -160,5 +160,8 @@ public class TraderProfileAPI {
             throws CustomException, DataValidationException, NoDataFoundException {
         return getBuildAndLogResponseByRequestType(requestBody, AppConstants.REQ_TYPE_RES_SUPPLIERS);
     }
+
+
+
 }
 

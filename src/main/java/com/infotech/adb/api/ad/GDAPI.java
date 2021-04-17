@@ -34,7 +34,7 @@ public class GDAPI {
     private static final ResourceBundle messageBundle = ResourceBundle.getBundle("messages");
 
     //**************************
-    // 5.1.2.	Message 2 – Sharing of GD and Financial Information with AD by PSW
+    // 5.1.2.	Message 2 – Sharing of GD and Financial Information for Import with AD by PSW
     // **************************/
     @RequestMapping(value = "/import/gd-fin-information", method = RequestMethod.POST)
     public CustomResponse shareImportGDFinInfo(@RequestBody RequestParameter<GDImportDTO> requestBody)
@@ -62,7 +62,7 @@ public class GDAPI {
 
 
     //**************************
-    // 5.1.2.	Message 2 – Sharing of GD and Financial Information with AD by PSW
+    // 5.2.2.	Message 2 – Sharing of GD and Financial Information for Export with AD by PSW
     // **************************/
     @RequestMapping(value = "/export/gd-fin-information", method = RequestMethod.POST)
     public CustomResponse shareExportGDFinInfo(@RequestBody RequestParameter<GDExportDTO> requestBody)

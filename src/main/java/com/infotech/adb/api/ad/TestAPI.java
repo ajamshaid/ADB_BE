@@ -186,4 +186,26 @@ public class TestAPI {
 
         return new ResponseEntity<>(pswApiConsumer.shareBCAInformationExport(dto), HttpStatus.OK);
     }
+
+    //Testing for    6.1.	Message 1 – Sharing of Cash Margin Message by AD with PSW
+    @RequestMapping(value = "/share-cash-margin", method = RequestMethod.GET)
+    public ResponseEntity<?> shareCashMarginTest(
+            @RequestBody RequestParameter<CashMarginDTO> requestBody
+    ) throws JsonProcessingException{
+        log.info("Test >>>> 6.1. Message 1 – Sharing of Cash Margin Message by AD with PSW ");
+        CashMarginDTO dto = requestBody.getData();
+
+        return new ResponseEntity<>(pswApiConsumer.shareCashMarginMessage(dto), HttpStatus.OK);
+    }
+
+    //Testing for  7.1.3.	Message 1 – Sharing of Change of Bank request approval/rejection message by AD with PSW
+    @RequestMapping(value = "/share-cob-status", method = RequestMethod.GET)
+    public ResponseEntity<?> shareCOBStatusTest(
+            @RequestBody RequestParameter<ChangeBankRequestDTO> requestBody
+    ) throws JsonProcessingException{
+        log.info("Test >>>> 6.1. Message 1 – Sharing of Cash Margin Message by AD with PSW ");
+        ChangeBankRequestDTO dto = requestBody.getData();
+
+        return new ResponseEntity<>(pswApiConsumer.shareCOBApprovalRejectionMsg(dto), HttpStatus.OK);
+    }
 }

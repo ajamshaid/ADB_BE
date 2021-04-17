@@ -251,6 +251,41 @@ public class PSWAPIConsumer {
     }
 
 
+    /***********************************************************
+     6.	Sharing of Cash Margin Message by AD to PSW for Payment Mode - Open Account
+     ***********************************************************/
+    public ResponseUtility.APIResponse shareCashMarginMessage(CashMarginDTO dto)
+            throws HttpClientErrorException, JsonProcessingException {
+
+        RequestParameter<CashMarginDTO> requestParameter = new RequestParameter<>(
+                AppConstants.MESSAGE_GUID.MSG_UPDATE_GUID
+                , AppConstants.AD_ID
+                , AppConstants.PSW.ID, "03"
+                , AppConstants.PSW.METHOD_ID_SHARE_CASH_MARGIN_MESSAGE
+                , AppConstants.AD_SIGNATURE);
+        requestParameter.setData(dto);
+
+        return executeRequest(requestParameter, "Sharing of Cash Margin Message by AD to PSW for Payment Mode - Open Account");
+    }
+
+
+    /***********************************************************
+     7.1.3.	Message 1 – Sharing of Change of Bank request approval/rejection message by AD with PSW
+     ***********************************************************/
+    public ResponseUtility.APIResponse shareCOBApprovalRejectionMsg(ChangeBankRequestDTO dto)
+            throws HttpClientErrorException, JsonProcessingException {
+
+        RequestParameter<ChangeBankRequestDTO> requestParameter = new RequestParameter<>(
+                AppConstants.MESSAGE_GUID.MSG_UPDATE_GUID
+                , AppConstants.AD_ID
+                , AppConstants.PSW.ID, "03"
+                , AppConstants.PSW.METHOD_ID_SHARE_COB_APPROVAL_REJECTION_MESSAGE
+                , AppConstants.AD_SIGNATURE);
+        requestParameter.setData(dto);
+
+        return executeRequest(requestParameter, "Sharing of Change of Bank request approval/rejection message by AD with PSW");
+    }
+
     /*********************************************
      *   Private Methods......
      ***********************************************/
