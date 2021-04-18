@@ -55,6 +55,14 @@ public class AppConstants {
         public final static String METHOD_ID_SHARE_CASH_MARGIN_MESSAGE= "1541"; //MGS-1 6.1
         public final static String METHOD_ID_SHARE_COB_APPROVAL_REJECTION_MESSAGE= "1538"; //MGS-1 7.1.3
 
+        public final static String METHOD_ID_FIN_TRANS_CANCELLATION= "1535"; //MGS-1 9.1
+        public final static String METHOD_ID_REVERSAL_OF_BDA_BCA= "1536"; //MGS-1 10.1
+        public final static String METHOD_ID_FIN_TRANS_SETTLEMENT= "1537"; //MGS-1 11.1
+
+        /* Missing Messages Method ID 1538 & 1539
+        1538 Sharing of Change of Bank request approval/rejection message by AD with PSW
+        1539 Sharing of Change of Bank request approval/rejection message by other selected AD with PSW
+        */
     }
 
 

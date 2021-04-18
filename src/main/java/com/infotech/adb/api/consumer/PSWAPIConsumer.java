@@ -286,6 +286,59 @@ public class PSWAPIConsumer {
         return executeRequest(requestParameter, "Sharing of Change of Bank request approval/rejection message by AD with PSW");
     }
 
+
+    /***********************************************************
+     9.1.	Message 1 – Cancellation of Financial Transaction by AD (Import/Export):
+     ***********************************************************/
+    public ResponseUtility.APIResponse cancelFinancialTransaction(TradeTransactionDTO dto)
+            throws HttpClientErrorException, JsonProcessingException {
+
+        RequestParameter<TradeTransactionDTO> requestParameter = new RequestParameter<>(
+                AppConstants.MESSAGE_GUID.MSG_UPDATE_GUID
+                , AppConstants.AD_ID
+                , AppConstants.PSW.ID, "03"
+                , AppConstants.PSW.METHOD_ID_FIN_TRANS_CANCELLATION
+                , AppConstants.AD_SIGNATURE);
+        requestParameter.setData(dto);
+
+        return executeRequest(requestParameter, "Cancellation of Financial Transaction by AD (Import/Export)");
+    }
+
+    /***********************************************************
+     10.1.	Message 1 – – Reversal of BDA/BCA Message by AD to PSW
+     ***********************************************************/
+    public ResponseUtility.APIResponse reversalOfBdaBca(TradeTransBDAInfoDTO dto)
+            throws HttpClientErrorException, JsonProcessingException {
+
+        RequestParameter<TradeTransBDAInfoDTO> requestParameter = new RequestParameter<>(
+                AppConstants.MESSAGE_GUID.MSG_UPDATE_GUID
+                , AppConstants.AD_ID
+                , AppConstants.PSW.ID, "03"
+                , AppConstants.PSW.METHOD_ID_REVERSAL_OF_BDA_BCA
+                , AppConstants.AD_SIGNATURE);
+        requestParameter.setData(dto);
+
+        return executeRequest(requestParameter, "– Reversal of BDA/BCA Message by AD to PSW");
+    }
+
+    /***********************************************************
+     11.1.	Message 1  – Settlement of Financial Transaction by AD (Import/Export):
+     ***********************************************************/
+    public ResponseUtility.APIResponse settlementOfFinTrans(TradeTransSettlementDTO dto)
+            throws HttpClientErrorException, JsonProcessingException {
+
+        RequestParameter<TradeTransSettlementDTO> requestParameter = new RequestParameter<>(
+                AppConstants.MESSAGE_GUID.MSG_UPDATE_GUID
+                , AppConstants.AD_ID
+                , AppConstants.PSW.ID, "03"
+                , AppConstants.PSW.METHOD_ID_FIN_TRANS_SETTLEMENT
+                , AppConstants.AD_SIGNATURE);
+        requestParameter.setData(dto);
+
+        return executeRequest(requestParameter, "– Settlement of Financial Transaction by AD (Import/Export):");
+    }
+
+
     /*********************************************
      *   Private Methods......
      ***********************************************/

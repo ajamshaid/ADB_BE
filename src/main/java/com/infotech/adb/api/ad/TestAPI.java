@@ -208,4 +208,38 @@ public class TestAPI {
 
         return new ResponseEntity<>(pswApiConsumer.shareCOBApprovalRejectionMsg(dto), HttpStatus.OK);
     }
+
+
+    //Testing for  9.1.	Message 1 – Cancellation of Financial Transaction by AD (Import/Export)
+    @RequestMapping(value = "/cancel-fin-trans", method = RequestMethod.GET)
+    public ResponseEntity<?> cancelFinTransTest(
+            @RequestBody RequestParameter<TradeTransactionDTO> requestBody
+    ) throws JsonProcessingException{
+        log.info("Test >>>> 9.1. Message 1 – Cancellation of Financial Transaction by AD (Import/Export) ");
+        TradeTransactionDTO dto = requestBody.getData();
+
+        return new ResponseEntity<>(pswApiConsumer.cancelFinancialTransaction(dto), HttpStatus.OK);
+    }
+
+    //Testing for  10.1.	Message 1 –– Reversal of BDA/BCA Message by AD to PSW
+    @RequestMapping(value = "/reverse-bda-bca", method = RequestMethod.GET)
+    public ResponseEntity<?> reverseBdaBcaTest(
+            @RequestBody RequestParameter<TradeTransBDAInfoDTO> requestBody
+    ) throws JsonProcessingException{
+        log.info("Test >>>> 10.1. Message 1 – – Reversal of BDA/BCA Message by AD to PSW ");
+        TradeTransBDAInfoDTO dto = requestBody.getData();
+
+        return new ResponseEntity<>(pswApiConsumer.reversalOfBdaBca(dto), HttpStatus.OK);
+    }
+
+    //Testing for  11.1.	Message 1 –Settlement of Financial Transaction by AD (Import/Export):
+    @RequestMapping(value = "/settlement-fin-trans", method = RequestMethod.GET)
+    public ResponseEntity<?> settlementOfFinTransTest(
+            @RequestBody RequestParameter<TradeTransSettlementDTO> requestBody
+    ) throws JsonProcessingException{
+        log.info("Test >>>> 10.1. Message 1 –Settlement of Financial Transaction by AD (Import/Export): ");
+        TradeTransSettlementDTO dto = requestBody.getData();
+
+        return new ResponseEntity<>(pswApiConsumer.settlementOfFinTrans(dto), HttpStatus.OK);
+    }
 }
