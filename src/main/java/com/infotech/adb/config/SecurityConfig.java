@@ -44,7 +44,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void globalUserDetails(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService);
+       auth.userDetailsService(userDetailsService);
+        //auth.inMemoryAuthentication().withUser("user").password("password").roles("USER");
     }
 
     @Bean
@@ -54,13 +55,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-//        http.csrf().disable()
-//                .authorizeRequests()
-//                .antMatchers("/oauth/token").permitAll()
-//                .anyRequest().authenticated()
-//                .and().exceptionHandling();
+        http.csrf().disable()
+                .authorizeRequests()
+                .antMatchers("/oauth/token").permitAll()
+                .antMatchers("/connect/token").permitAll()
+                .anyRequest().authenticated()
+                .and().exceptionHandling();
 
-       http.csrf().disable().authorizeRequests().antMatchers("/**").permitAll().anyRequest().anonymous();
+   //    http.csrf().disable().authorizeRequests().antMatchers("/**").permitAll().anyRequest().anonymous();
 
     }
 

@@ -1,7 +1,6 @@
 package com.infotech.adb.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,24 +27,26 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients
-                .inMemory()
+        clients.inMemory()
                 .withClient("adb")
                 .secret(new BCryptPasswordEncoder().encode("adb"))
                 .authorizedGrantTypes("password", "client_credentials", "refresh_token")
                 .scopes("read", "write", "trust")
-                .accessTokenValiditySeconds(86400)
-                .refreshTokenValiditySeconds(86400);
+                .accessTokenValiditySeconds(3600)
+                .refreshTokenValiditySeconds(3600);
     }
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
+        endpoints.pathMapping("/oauth/token", "/connect/token");
         endpoints.tokenStore(tokenStore())
                 .authenticationManager(authManager);
     }
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer oauthServer) {
-        oauthServer.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()");
+        //oauthServer.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()");
+
+        oauthServer.allowFormAuthenticationForClients();
     }
 }
