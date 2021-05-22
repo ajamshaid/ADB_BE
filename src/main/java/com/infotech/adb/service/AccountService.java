@@ -1,6 +1,7 @@
 package com.infotech.adb.service;
 
 import com.infotech.adb.dto.IBANVerificationRequest;
+import com.infotech.adb.jms.WMQRequestor;
 import com.infotech.adb.model.entity.AccountDetail;
 import com.infotech.adb.model.repository.AccountDetailRepository;
 import com.infotech.adb.util.AppUtility;
@@ -8,6 +9,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.jms.JMSException;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -20,8 +22,17 @@ public class AccountService {
     @Autowired
     private AccountDetailRepository accountDetailRepository;
 
+    @Autowired
+    private WMQRequestor  wmqRequestor;
+
     public boolean isAccountVerified(IBANVerificationRequest req) {
         log.info("isAccountDetailExists method called..");
+
+        try {
+            wmqRequestor.sendMessageToPWSQIN();
+        } catch (JMSException e) {
+            e.printStackTrace();
+        }
         return accountDetailRepository.isExistAccountDetail(req.getIban(),req.getEmail(),req.getMobileNumber(),req.getNtn());
     }
 

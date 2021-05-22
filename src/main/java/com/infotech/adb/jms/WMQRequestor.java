@@ -4,12 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.jms.connection.JmsTransactionManager;
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Component;
 
 import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.Session;
 import javax.jms.TextMessage;
 import java.util.Date;
 
@@ -37,11 +34,18 @@ public void sendMessageToPWSQIN() throws JMSException {
 
 // Create the JMS Template object to control connections and sessions.
     JmsTemplate jmsTemplate = context.getBean(JmsTemplate.class);
-    jmsTemplate.setReceiveTimeout(5 * 1000); // How long to wait for a reply - milliseconds
+    jmsTemplate.setReceiveTimeout(15 * 1000); // How long to wait for a reply - milliseconds
 
     // Create a single message with a timestamp
-    String payload = "Hello from IBM MQ at " + new Date();
+    String payload = "213213 Hello from IBM MQ at " + new Date();
 
+
+
+    jmsTemplate.convertAndSend(qName,message);
+    System.out.println("MQ JMS Sample started. Message sent to queue: " + qName);
+
+
+    /*
     // Send the message and wait for a reply for up to the specified timeout
     Message replyMsg = jmsTemplate.sendAndReceive(qName, new MessageCreator() {
         @Override
@@ -51,8 +55,6 @@ public void sendMessageToPWSQIN() throws JMSException {
             return message;
         }
     });
-
-
     if (replyMsg != null) {
         if (replyMsg instanceof TextMessage) {
             System.out.println("Reply message is: " + ((TextMessage) replyMsg).getText());
@@ -64,6 +66,7 @@ public void sendMessageToPWSQIN() throws JMSException {
     else {
         System.out.println("No reply received");
     }
+    */
 
     System.out.println("Done.");
 }
