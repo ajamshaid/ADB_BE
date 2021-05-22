@@ -26,7 +26,6 @@ public class AppConstants {
         public final static String IMPORT_CC = "304";
 
     }
-
     public static class PSW {
 
         public final static String ID = "PSW";

@@ -20,8 +20,7 @@ public class AccountService {
     @Autowired
     private AccountDetailRepository accountDetailRepository;
 
-
-    public boolean isAccountDetailExists(IBANVerificationRequest req) {
+    public boolean isAccountVerified(IBANVerificationRequest req) {
         log.info("isAccountDetailExists method called..");
         return accountDetailRepository.isExistAccountDetail(req.getIban(),req.getEmail(),req.getMobileNumber(),req.getNtn());
     }

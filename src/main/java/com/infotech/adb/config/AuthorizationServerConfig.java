@@ -28,8 +28,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory()
-                .withClient("adb")
-                .secret(new BCryptPasswordEncoder().encode("adb"))
+                .withClient("psw2$ilk")
+                .secret(new BCryptPasswordEncoder().encode("@dbrP$w"))
                 .authorizedGrantTypes("password", "client_credentials", "refresh_token")
                 .scopes("read", "write", "trust")
                 .accessTokenValiditySeconds(3600)
@@ -38,7 +38,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
-        endpoints.pathMapping("/oauth/token", "/connect/token");
+        endpoints.pathMapping("/oauth/token", "/saud/connect/token");
         endpoints.tokenStore(tokenStore())
                 .authenticationManager(authManager);
     }

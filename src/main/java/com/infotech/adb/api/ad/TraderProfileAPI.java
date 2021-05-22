@@ -108,7 +108,7 @@ public class TraderProfileAPI {
             boolean accountExist = false;
             try {
                 IBANVerificationRequest ibanVerificationRequest = requestBody.getData();
-                accountExist = accountService.isAccountDetailExists(ibanVerificationRequest);
+                accountExist = accountService.isAccountVerified(ibanVerificationRequest);
             } catch (Exception e) {
                 ResponseUtility.exceptionResponse(e, null);
             }
