@@ -414,7 +414,7 @@ public class PSWAPIConsumer {
 
             AccountDetail accountDetail = new AccountDetail();
             accountDetail.setIban("PK 123213123");
-            accountDetail.setAccountType("701");
+         //   accountDetail.setAccountType("701");
 
             pswApiConsumer.updateAccountAndPMInPWS(accountDetail);
 

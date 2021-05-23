@@ -1,6 +1,5 @@
 package com.infotech.adb;
 
-import com.infotech.adb.jms.WMQRequestor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,8 +10,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.filter.CommonsRequestLoggingFilter;
-
-import javax.jms.JMSException;
 
 @SpringBootApplication
 @EnableJms
@@ -35,13 +32,13 @@ public class AdcApplication extends SpringBootServletInitializer {
         ConfigurableApplicationContext context = SpringApplication.run(AdcApplication.class, args);
         printStarted();
         System.out.println("--------------"+PSW_BASE_URL);
-        WMQRequestor wmqRequestor = context.getBean(WMQRequestor.class);
-
-        try {
-            wmqRequestor.sendMessageToPWSQIN();
-        } catch (JMSException e) {
-            e.printStackTrace();
-        }
+//        WMQRequestor wmqRequestor = context.getBean(WMQRequestor.class);
+//
+//        try {
+//            wmqRequestor.sendMessageToPWSQIN();
+//        } catch (JMSException e) {
+//            e.printStackTrace();
+//        }
 
     }
 

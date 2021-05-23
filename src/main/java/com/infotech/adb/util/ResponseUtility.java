@@ -206,10 +206,10 @@ public class ResponseUtility {
         log.error(e);
         if(!AppUtility.isEmpty(DBConstraint)) {
             ResponseUtility.validateDBConstraint(e, DBConstraint, "Data");
-        } else if (e instanceof EmptyResultDataAccessException){
-            throw new NoDataFoundException("No Data Found.", e);
+        } else if (e instanceof EmptyResultDataAccessException ){
+            throw new NoDataFoundException(e.getMessage(), e);
         }
-        throw new CustomException(e);
+        throw new CustomException(e.getMessage(),e);
     }
 
 

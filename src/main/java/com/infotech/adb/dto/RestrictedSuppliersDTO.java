@@ -19,7 +19,7 @@ public class RestrictedSuppliersDTO implements BaseDTO<RestrictedSuppliersDTO, A
     }
 
     public RestrictedSuppliersDTO(AccountDetail accountDetail) {
-        accountDetail.getRestrictedSuppliersSet();
+     //   accountDetail.getRestrictedSuppliersSet();
         convertToDTO(accountDetail,true);
     }
     @Override
@@ -31,7 +31,7 @@ public class RestrictedSuppliersDTO implements BaseDTO<RestrictedSuppliersDTO, A
     public void convertToDTO(AccountDetail entity, boolean partialFill) {
 
         this.setIban(entity.getIban());
-        fillRestrictedList(entity.getRestrictedSuppliersSet());
+     //   fillRestrictedList(entity.getRestrictedSuppliersSet());
     }
 
     @Override

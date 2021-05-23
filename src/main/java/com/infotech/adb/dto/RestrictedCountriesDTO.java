@@ -21,7 +21,7 @@ public class RestrictedCountriesDTO implements BaseDTO<RestrictedCountriesDTO, A
     }
 
     public RestrictedCountriesDTO(AccountDetail accountDetail) {
-        accountDetail.getRestrictedCountriesSet();
+    //    accountDetail.getRestrictedCountriesSet();
         convertToDTO(accountDetail,true);
     }
     @Override
@@ -32,7 +32,7 @@ public class RestrictedCountriesDTO implements BaseDTO<RestrictedCountriesDTO, A
     @Override
     public void convertToDTO(AccountDetail entity, boolean partialFill) {
         this.setIban(entity.getIban());
-        this.fillRestrictedCountriesList(entity.getRestrictedCountriesSet());
+     //   this.fillRestrictedCountriesList(entity.getRestrictedCountriesSet());
     }
 
     @Override

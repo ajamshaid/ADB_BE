@@ -14,37 +14,30 @@ import java.util.Set;
 public class AccountDetailDTO implements BaseDTO<AccountDetailDTO, AccountDetail> {
 
     private String iban;
-//    private String email;
-//    private String mobileNumber;
-    private String accountTitle;
-    private String accountNumber;
     private String accountStatus;
-    private String accountType;
-    private String ntn;
-    private String cnic;
+//    private Set<String> authorizedPaymentModesForImport;
+//    private Set<String> authorizedPaymentModesForExports;
 
-    private Set<String> authorizedPaymentModesForImport;
-    private Set<String> authorizedPaymentModesForExports;
+    private String AuthPMImport;
+    private String AuthPMExport;
 
     public AccountDetailDTO() {
     }
 
     public AccountDetailDTO(AccountDetail accountDetail) {
-        accountDetail.getAuthorizedPaymentModesSet();
+     //   accountDetail.getAuthorizedPaymentModesSet();
         convertToDTO(accountDetail,true);
     }
     @Override
     public AccountDetail convertToEntity() {
         AccountDetail accountDetail = new AccountDetail();
         accountDetail.setIban(this.iban);
+        accountDetail.setAccountStatus(this.accountStatus);
+        accountDetail.setAuthPMImport(this.getAuthPMImport());
+        accountDetail.setAuthPMExport(this.getAuthPMExport());
 //        accountDetail.setEmail(this.email);
 //        accountDetail.setMobileNumber(this.mobileNumber);
-        accountDetail.setAccountTitle(this.accountTitle);
-        accountDetail.setAccountNumber(this.accountNumber);
-        accountDetail.setAccountStatus(this.accountStatus);
-        accountDetail.setAccountType(this.accountType);
-        accountDetail.setCnic(this.cnic);
-        accountDetail.setNtn(this.ntn);
+
         return accountDetail;
     }
 
@@ -53,15 +46,11 @@ public class AccountDetailDTO implements BaseDTO<AccountDetailDTO, AccountDetail
 
         if(entity != null) {
             this.setIban(entity.getIban());
-//            this.setEmail(entity.getEmail());
-//            this.setMobileNumber(entity.getMobileNumber());
-            this.setAccountTitle(entity.getAccountTitle());
-            this.setAccountNumber(entity.getAccountNumber());
             this.setAccountStatus(entity.getAccountStatus());
-            this.setAccountType(entity.getAccountType());
-            this.setCnic(entity.getCnic());
-            this.setNtn(entity.getNtn());
-            fillPaymentModes(entity.getAuthorizedPaymentModesSet());
+            this.setAuthPMImport(entity.getAuthPMImport());
+            this.setAuthPMExport(entity.getAuthPMExport());
+
+          //  fillPaymentModes(entity.getAuthorizedPaymentModesSet());
         }
     }
 
@@ -77,8 +66,8 @@ public class AccountDetailDTO implements BaseDTO<AccountDetailDTO, AccountDetail
                 }
             }
         }
-        this.setAuthorizedPaymentModesForExports(apmExports);
-        this.setAuthorizedPaymentModesForImport(apmImports);
+      //  this.setAuthorizedPaymentModesForExports(apmExports);
+    //    this.setAuthorizedPaymentModesForImport(apmImports);
     }
 
     @Override

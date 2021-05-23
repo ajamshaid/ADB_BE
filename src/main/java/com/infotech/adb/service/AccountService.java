@@ -1,15 +1,19 @@
 package com.infotech.adb.service;
 
 import com.infotech.adb.dto.IBANVerificationRequest;
+import com.infotech.adb.exceptions.NoDataFoundException;
 import com.infotech.adb.jms.WMQRequestor;
 import com.infotech.adb.model.entity.AccountDetail;
 import com.infotech.adb.model.repository.AccountDetailRepository;
 import com.infotech.adb.util.AppUtility;
+import com.infotech.adb.util.OpenCsvUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.jms.JMSException;
+import java.io.InputStream;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +29,30 @@ public class AccountService {
     @Autowired
     private WMQRequestor  wmqRequestor;
 
+    // Store Csv File's data to database
+
+    @Transactional
+    public void storeCSVToDB(InputStream file) {
+
+            // Using ApacheCommons Csv Utils to parse CSV file
+            List<AccountDetail> acctDetailList = OpenCsvUtil.parseCsvFile(file);
+
+            if(AppUtility.isEmpty(acctDetailList)) {
+                throw new NoDataFoundException("No Data Found, No Valid Object/Empty in CVS File");
+            }else {
+                acctDetailList.forEach((acct ->{
+                    acct.setCreatedOn(ZonedDateTime.now());
+                    acct.setUpdatedOn(ZonedDateTime.now());
+                    acct.setAuthPMImport(acct.getAuthPMImport().replace("|", ","));
+                    acct.setAuthPMExport(acct.getAuthPMExport().replace("|", ","));
+                }
+                ));
+                // Save customers to database
+                accountDetailRepository.saveAll(acctDetailList);
+            }
+    }
+
+
     public boolean isAccountVerified(IBANVerificationRequest req) {
         log.info("isAccountDetailExists method called..");
 
@@ -33,7 +61,7 @@ public class AccountService {
         } catch (JMSException e) {
             e.printStackTrace();
         }
-        return accountDetailRepository.isExistAccountDetail(req.getIban(),req.getEmail(),req.getMobileNumber(),req.getNtn());
+        return false ;//accountDetailRepository.isExistAccountDetail(req.getIban(),req.getEmail(),req.getMobileNumber(),req.getNtn());
     }
 
     public AccountDetail getAccountDetailsByIban(String iban) {
@@ -65,7 +93,7 @@ public class AccountService {
 
     public AccountDetail updateAccountDetail(AccountDetail accountDetail) {
         log.info("updateAccountDetail method called..");
-        accountDetail.setUpdatedOn(ZonedDateTime.now());
+     //   accountDetail.setUpdatedOn(ZonedDateTime.now());
         return accountDetailRepository.save(accountDetail);
     }
 

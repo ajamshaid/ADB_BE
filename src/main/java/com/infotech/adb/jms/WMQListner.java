@@ -1,13 +1,12 @@
 package com.infotech.adb.jms;
 
-import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 
 @Component
 public class WMQListner {
     static boolean warned = false;
 
-    @JmsListener(destination = "QOUT_PSW")
+  //  @JmsListener(destination = "QOUT_PSW")
     public void receiveMessage(String msg) {
         infinityWarning();
 

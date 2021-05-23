@@ -3,6 +3,7 @@ package com.infotech.adb.api.ad;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.infotech.adb.api.consumer.PSWAPIConsumer;
 import com.infotech.adb.dto.*;
+import com.infotech.adb.exceptions.CustomException;
 import com.infotech.adb.exceptions.DataValidationException;
 import com.infotech.adb.exceptions.NoDataFoundException;
 import com.infotech.adb.model.entity.*;
@@ -10,12 +11,16 @@ import com.infotech.adb.model.repository.BDARepository;
 import com.infotech.adb.model.repository.FinancialTransactionRepository;
 import com.infotech.adb.service.AccountService;
 import com.infotech.adb.service.UserService;
+import com.infotech.adb.util.AppConstants;
 import com.infotech.adb.util.AppUtility;
+import com.infotech.adb.util.OpenCsvUtil;
+import com.infotech.adb.util.ResponseUtility;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.HashSet;
@@ -42,6 +47,34 @@ public class TestAPI {
     @Autowired
     private BDARepository bdaRepository;
 
+    @PostMapping("/upload/iban")
+    public ResponseEntity<?> uploadSingleCSVFile(@RequestParam("csvfile") MultipartFile csvfile) throws CustomException {
+
+        String message = "";
+// Checking the upload-file's name before processing
+
+        if (csvfile.getOriginalFilename().isEmpty()) {
+            ResponseUtility.exceptionResponse(new DataValidationException("No selected file to upload! Please do the checking"),"");
+        }
+
+        // checking the upload file's type is CSV or NOT
+
+        if(!OpenCsvUtil.isCSVFile(csvfile)) {
+            ResponseUtility.exceptionResponse(new DataValidationException("Error: this is not a CSV file!"),"");
+        }
+
+        try {
+            // save file data to database
+            accountService.storeCSVToDB(csvfile.getInputStream());
+
+        } catch (Exception e) {
+            ResponseUtility.exceptionResponse(e, AppConstants.DBConstraints.UNIQ_IBAN);
+        }
+        return new ResponseEntity<>(csvfile.getOriginalFilename()+ " : Upload File Successfully!", HttpStatus.OK);
+    }
+
+
+
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public ResponseEntity<?> getUsers(UriComponentsBuilder ucBuilder) {
 
@@ -58,14 +91,14 @@ public class TestAPI {
         AccountDetail accountDetail = new AccountDetail();
         accountDetail.setIban("PK 123213123");
         accountDetail.setAccountStatus("600");
-        accountDetail.setAccountType("701");
+     //   accountDetail.setAccountType("701");
         Set<AuthorizedPaymentModes> authorizedPaymentModesSet = new HashSet<>();
         authorizedPaymentModesSet.add(new AuthorizedPaymentModes("305", "IMPORT", accountDetail));
         authorizedPaymentModesSet.add(new AuthorizedPaymentModes("306", "IMPORT", accountDetail));
         authorizedPaymentModesSet.add(new AuthorizedPaymentModes("307", "EXPORT", accountDetail));
         authorizedPaymentModesSet.add(new AuthorizedPaymentModes("301", "EXPORT", accountDetail));
 
-        accountDetail.setAuthorizedPaymentModesSet(authorizedPaymentModesSet);
+      //  accountDetail.setAuthorizedPaymentModesSet(authorizedPaymentModesSet);
 
         return new ResponseEntity<>(pswApiConsumer.updateAccountAndPMInPWS(accountDetail), HttpStatus.OK);
 

@@ -73,6 +73,7 @@ public class AppConstants {
 
     public static class DBConstraints {
 
+        public static final String UNIQ_IBAN = "UNIQ_IBAN";
     }
     public static class PSWResponseCodes {
 

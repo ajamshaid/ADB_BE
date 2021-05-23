@@ -18,7 +18,7 @@ public class RestrictedCommoditiesDTO implements BaseDTO<RestrictedCommoditiesDT
     public RestrictedCommoditiesDTO() {
     }
     public RestrictedCommoditiesDTO(AccountDetail accountDetail) {
-        accountDetail.getRestrictedCommoditiesSet();
+    //    accountDetail.getRestrictedCommoditiesSet();
         convertToDTO(accountDetail,true);
     }
     @Override
@@ -29,7 +29,7 @@ public class RestrictedCommoditiesDTO implements BaseDTO<RestrictedCommoditiesDT
     @Override
     public void convertToDTO(AccountDetail entity, boolean partialFill) {
         this.setIban(entity.getIban());
-        fillRestrictedCommoditiesList(entity.getRestrictedCommoditiesSet());
+  //      fillRestrictedCommoditiesList(entity.getRestrictedCommoditiesSet());
     }
 
     @Override

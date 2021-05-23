@@ -29,10 +29,10 @@ public class TraderProfileDTO implements BaseDTO<TraderProfileDTO, AccountDetail
 
         if(entity != null) {
             this.setIban(entity.getIban());
-            this.setEmail(entity.getEmail());
-            this.setMobileNumber(entity.getMobileNumber());
-            this.setNtn(entity.getNtn());
-            this.setTraderName(entity.getAccountTitle());
+//            this.setEmail(entity.getEmail());
+//            this.setMobileNumber(entity.getMobileNumber());
+//            this.setNtn(entity.getNtn());
+//            this.setTraderName(entity.getAccountTitle());
         }
     }
 
