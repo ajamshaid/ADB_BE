@@ -1,20 +1,43 @@
 package com.infotech.adb.jms;
 
+import com.infotech.adb.util.AppUtility;
+import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 
 @Component
-public class WMQListner {
+public class QoutPSWListner {
     static boolean warned = false;
 
-  //  @JmsListener(destination = "QOUT_PSW")
+
+    //@TODO JMSTemplate is not closing Que Connection. Please check.
+
+
+
+
+    @JmsListener(destination = "QOUT_PSW")
     public void receiveMessage(String msg) {
-        infinityWarning();
+  //      infinityWarning();
 
         System.out.println();
         System.out.println("========================================");
         System.out.println("Received message is: " + msg);
         System.out.println("========================================");
 
+
+        String name = Thread.currentThread().getName();
+        System.out.println(name+" started");
+        try {
+            Thread.sleep(1000);
+
+            final String messageId = msg;
+            WMQMessage message = (WMQMessage) AppUtility.objectLockingMap.get(messageId);
+            synchronized (message) {
+                message.setMsg(name+"-> Notifying at Message:"+messageId);
+                message.notify();
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     void infinityWarning() {

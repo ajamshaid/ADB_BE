@@ -1,6 +1,7 @@
 package com.infotech.adb.util;
 
 import com.infotech.adb.exceptions.CustomException;
+import com.infotech.adb.jms.WMQMessage;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
@@ -22,6 +23,14 @@ public class AppUtility {
     public static final int defaultDecimalPrecision = 2;
     private static int decimalPercision = defaultDecimalPrecision;
     private static final String DATE_FORMAT = "yyyyMMdd";
+
+    public static HashMap<String, WMQMessage> objectLockingMap = new HashMap<>();
+
+    public static void lockThreadForMessage(){
+
+
+    }
+
 
     public static String formatedDate(Date date) {
 
@@ -307,7 +316,7 @@ public class AppUtility {
 
     public static String generateRandomUniqString() {
         SecureRandom random = new SecureRandom();
-        return new BigInteger(130, random).toString(32);
+        return new BigInteger(70, random).toString(18);
     }
 
     /**

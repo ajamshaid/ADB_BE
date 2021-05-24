@@ -91,7 +91,7 @@ public class ResponseUtility {
             this.responseCode = responseCode;
             if(!AppUtility.isEmpty(requestParameter)) {
                 this.messageId = requestParameter.getMessageId();
-                this.timestamp = requestParameter.getTimestamp();
+                this.timestamp = AppUtility.getCurrentTimeStamp();
                 this.senderId = AppConstants.AD_ID;//requestParameter.getReceiverId();
                 this.receiverId = requestParameter.getSenderId();
 

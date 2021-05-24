@@ -2,7 +2,8 @@ package com.infotech.adb.service;
 
 import com.infotech.adb.dto.IBANVerificationRequest;
 import com.infotech.adb.exceptions.NoDataFoundException;
-import com.infotech.adb.jms.WMQRequestor;
+import com.infotech.adb.jms.QinPSW;
+import com.infotech.adb.jms.WMQMessage;
 import com.infotech.adb.model.entity.AccountDetail;
 import com.infotech.adb.model.repository.AccountDetailRepository;
 import com.infotech.adb.util.AppUtility;
@@ -27,7 +28,7 @@ public class AccountService {
     private AccountDetailRepository accountDetailRepository;
 
     @Autowired
-    private WMQRequestor  wmqRequestor;
+    private QinPSW qinPSW;
 
     // Store Csv File's data to database
 
@@ -57,7 +58,11 @@ public class AccountService {
         log.info("isAccountDetailExists method called..");
 
         try {
-            wmqRequestor.sendMessageToPWSQIN();
+           WMQMessage message = new WMQMessage(AppUtility.generateRandomUniqString(),"Hello WOrld");
+
+           message = qinPSW.putMessage(message);
+
+
         } catch (JMSException e) {
             e.printStackTrace();
         }

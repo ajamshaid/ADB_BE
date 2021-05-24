@@ -35,7 +35,8 @@ public class AdcApplication extends SpringBootServletInitializer {
 //        WMQRequestor wmqRequestor = context.getBean(WMQRequestor.class);
 //
 //        try {
-//            wmqRequestor.sendMessageToPWSQIN();
+//            WMQMessage message = new WMQMessage("123456","send me");
+//            wmqRequestor.sendMessageToPWSQIN(message);
 //        } catch (JMSException e) {
 //            e.printStackTrace();
 //        }

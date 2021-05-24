@@ -86,7 +86,7 @@ public class EDIAPI {
             );
 
             ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
-            logRequestService.saveLogRequest("Verify Trader Profile From AD", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
+   //         logRequestService.saveLogRequest("Verify Trader Profile From AD", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
         return customResponse;
     }
 }
