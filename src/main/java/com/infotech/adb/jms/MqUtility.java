@@ -6,10 +6,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.extern.log4j.Log4j2;
 
 import java.util.HashMap;
 import java.util.Objects;
 
+@Log4j2
 public class MqUtility {
 
 
@@ -35,11 +37,17 @@ public class MqUtility {
     }
 
     public static MqMessage parseReplyMessage(String message) {
-        MqMessage msg = new MqMessage();
+        MqMessage msg = null;
         String[] messageAry = message.split(DELIMETER);
-        msg.setType(messageAry[0]);
-        msg.setId(messageAry[1]);
-        msg.setReqResStr(messageAry[2]);
+        if(AppUtility.isEmpty(messageAry) || messageAry.length < 3){
+            log.debug("Invalid Message ");
+        }else {
+            msg = new MqMessage();
+            msg.setType(AppUtility.isEmpty(messageAry[0]) ? "" : messageAry[0]);
+            msg.setId(AppUtility.isEmpty(messageAry[1]) ? "" : messageAry[1]);
+            msg.setReqResStr(AppUtility.isEmpty(messageAry[2]) ? "" : messageAry[2]);
+        }
+
         return msg;
     }
 

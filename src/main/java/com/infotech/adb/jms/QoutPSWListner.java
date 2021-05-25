@@ -11,27 +11,29 @@ import org.springframework.stereotype.Component;
 public class QoutPSWListner {
     @JmsListener(destination = "QOUT_PSW")
     public void receiveMessage(String msg) {
-        log.debug("========================================");
-        log.debug("Received message string is: " + msg);
-        log.debug("========================================");
+        System.out.println("========================================");
+        System.out.println("Received message string is: " + msg);
+        System.out.println("========================================");
 
         String name = Thread.currentThread().getName();
         MqUtility.MqMessage replyMessage = MqUtility.parseReplyMessage(msg);
-        MqUtility.MqMessage reqMessage = MqUtility.objectLockingMap.get(replyMessage.getId());
-        if (AppUtility.isEmpty(reqMessage)) {
-            log.debug("NO Object Found in ObjectLockingMap for Incoming message:" + replyMessage);
-        } else {
-            try {
-                Thread.sleep(1000);
+        if (!AppUtility.isEmpty(replyMessage)) { //IF Valid Expected Format Message. Else Ignore
+            MqUtility.MqMessage reqMessage = MqUtility.objectLockingMap.get(replyMessage.getId());
+            if (AppUtility.isEmpty(reqMessage)) {
+                System.out.println("NO Object Found in ObjectLockingMap for Incoming message:" + replyMessage);
+            } else {
+                try {
+                    Thread.sleep(1000);
 
-                synchronized (reqMessage) {
-                    // Replace Request Message with Reply Message on Map to be get from Waiter Thread...
-                    MqUtility.objectLockingMap.put(reqMessage.getId(), replyMessage);
-                    log.debug(name + "-> Notifying back to Waiting Thread at MessageId:" + reqMessage.getId());
-                    reqMessage.notify();
+                    synchronized (reqMessage) {
+                        // Replace Request Message with Reply Message on Map to be get from Waiter Thread...
+                        MqUtility.objectLockingMap.put(reqMessage.getId(), replyMessage);
+                        System.out.println(name + "-> Notifying back to Waiting Thread at MessageId:" + reqMessage.getId());
+                        reqMessage.notify();
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
         }
     }
