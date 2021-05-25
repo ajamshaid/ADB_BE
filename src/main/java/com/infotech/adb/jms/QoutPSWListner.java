@@ -1,55 +1,38 @@
 package com.infotech.adb.jms;
 
 import com.infotech.adb.util.AppUtility;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 
+
+@Log4j2
 @Component
 public class QoutPSWListner {
-    static boolean warned = false;
-
-
-    //@TODO JMSTemplate is not closing Que Connection. Please check.
-
-
-
-
     @JmsListener(destination = "QOUT_PSW")
     public void receiveMessage(String msg) {
-  //      infinityWarning();
-
-        System.out.println();
-        System.out.println("========================================");
-        System.out.println("Received message is: " + msg);
-        System.out.println("========================================");
-
+        log.debug("========================================");
+        log.debug("Received message string is: " + msg);
+        log.debug("========================================");
 
         String name = Thread.currentThread().getName();
-        System.out.println(name+" started");
-        try {
-            Thread.sleep(1000);
+        MqUtility.MqMessage replyMessage = MqUtility.parseReplyMessage(msg);
+        MqUtility.MqMessage reqMessage = MqUtility.objectLockingMap.get(replyMessage.getId());
+        if (AppUtility.isEmpty(reqMessage)) {
+            log.debug("NO Object Found in ObjectLockingMap for Incoming message:" + replyMessage);
+        } else {
+            try {
+                Thread.sleep(1000);
 
-            final String messageId = msg;
-            WMQMessage message = (WMQMessage) AppUtility.objectLockingMap.get(messageId);
-            synchronized (message) {
-                message.setMsg(name+"-> Notifying at Message:"+messageId);
-                message.notify();
+                synchronized (reqMessage) {
+                    // Replace Request Message with Reply Message on Map to be get from Waiter Thread...
+                    MqUtility.objectLockingMap.put(reqMessage.getId(), replyMessage);
+                    log.debug(name + "-> Notifying back to Waiting Thread at MessageId:" + reqMessage.getId());
+                    reqMessage.notify();
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
     }
-
-    void infinityWarning() {
-        if (!warned) {
-            warned = true;
-            System.out.println();
-            System.out.println("========================================");
-            System.out.println("MQ JMS Listener started for queue: " + "QOUT_PSW");
-            System.out.println("NOTE: This program does not automatically end - it continues to wait");
-            System.out.println("      for more messages, so you may need to hit BREAK to end it.");
-            System.out.println("========================================");
-        }
-    }
-
 }

@@ -2,10 +2,11 @@ package com.infotech.adb.service;
 
 import com.infotech.adb.dto.IBANVerificationRequest;
 import com.infotech.adb.exceptions.NoDataFoundException;
+import com.infotech.adb.jms.MqUtility;
 import com.infotech.adb.jms.QinPSW;
-import com.infotech.adb.jms.WMQMessage;
 import com.infotech.adb.model.entity.AccountDetail;
 import com.infotech.adb.model.repository.AccountDetailRepository;
+import com.infotech.adb.util.AppConstants;
 import com.infotech.adb.util.AppUtility;
 import com.infotech.adb.util.OpenCsvUtil;
 import lombok.extern.log4j.Log4j2;
@@ -56,17 +57,17 @@ public class AccountService {
 
     public boolean isAccountVerified(IBANVerificationRequest req) {
         log.info("isAccountDetailExists method called..");
-
+        boolean isVerified = false;
         try {
-           WMQMessage message = new WMQMessage(AppUtility.generateRandomUniqString(),"Hello WOrld");
-
-           message = qinPSW.putMessage(message);
-
-
+            MqUtility.MqMessage replyMessage = qinPSW.putMessage(MqUtility.buildAccountVerificationMessage(req));
+            if(AppConstants.PSWResponseCodes.VERIFIED.equals(replyMessage.getReqResStr())){
+                isVerified = true;
+            }
         } catch (JMSException e) {
+            log.error(e.getMessage());
             e.printStackTrace();
         }
-        return false ;//accountDetailRepository.isExistAccountDetail(req.getIban(),req.getEmail(),req.getMobileNumber(),req.getNtn());
+        return isVerified ;//accountDetailRepository.isExistAccountDetail(req.getIban(),req.getEmail(),req.getMobileNumber(),req.getNtn());
     }
 
     public AccountDetail getAccountDetailsByIban(String iban) {

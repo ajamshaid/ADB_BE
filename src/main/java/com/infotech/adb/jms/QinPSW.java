@@ -1,52 +1,55 @@
 package com.infotech.adb.jms;
 
 import com.infotech.adb.util.AppUtility;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.jms.JMSException;
 
-
+@Log4j2
 @Component
 public class QinPSW {
     static final String qName = "QIN_PSW"; // A queue from the default MQ Developer container config
-    static final long timeOut = 280 * 1000; // x * 1000 = x seconds
+    static final long timeOut = 2 * 60 * 1000; // x * 1000 = x seconds
 
     @Autowired
     JmsTemplate jmsTemplate;
+    //@TODO JMSTemplate is not closing Que Connection. Please check.
 
-    public WMQMessage putMessage(WMQMessage message) throws JMSException {
-// Create the JMS Template object to control connections and sessions.
+    public MqUtility.MqMessage putMessage(MqUtility.MqMessage message) throws JMSException {
+
+        // Create the JMS Template object to control connections and sessions.
         //JmsTemplate jmsTemplate = context.getBean(JmsTemplate.class);
         // jmsTemplate.setReceiveTimeout(15 * 1000); // How long to wait for a reply - milliseconds
 
-        AppUtility.objectLockingMap.put(message.getId(),message);
+        MqUtility.objectLockingMap.put(message.getId(),message);
 
-
-        System.out.println("MessageID="+message.getId());
-        jmsTemplate.convertAndSend(qName, message.getMsg());
-        System.out.println("Message placed to queue: " + qName);
-
+        log.info("Placing Message["+message.getType()+"] on Queue["+qName+"] with MessageID="+message.getId());
+        jmsTemplate.convertAndSend(qName, message.getReqResStr());
+        log.debug("Message Placed Successfully");
 
         String threadName = Thread.currentThread().getName();
         try {
 
             synchronized (message) {
-                System.out.println(" Locked on :"+message);
-                //System.out.println(threadName+"-> waiting to get notified at time:"+System.currentTimeMillis());
+                log.info("Locked on :"+message);
+                log.info(threadName+"-> waiting to get notified at time:"+AppUtility.getCurrentTimeStampString());
+                log.info("Timeout is set to "+timeOut+" milliSeconds");
                 message.wait(timeOut);
+
             }
         } catch (InterruptedException e) {
+            log.error(e.getMessage());
             e.printStackTrace();
-
-            message.setMsg("Request Interrupted/Timeout");
+            message.setDesc("Request Interrupted/Timeout");
         }
 
-        message = AppUtility.objectLockingMap.remove(message.getId());
-      ///  System.out.println(threadName+"-> Notified at time:"+System.currentTimeMillis());
-        System.out.println(threadName+"-> Returned Message is: "+message);
-        return message;
+        message = MqUtility.objectLockingMap.remove(message.getId());
 
+        log.debug(threadName+"-> Notified at time:"+AppUtility.getCurrentTimeStampString());
+        log.debug(threadName+"-> Returned Message is: "+message);
+        return message;
     }
 }

@@ -1,7 +1,6 @@
 package com.infotech.adb.util;
 
 import com.infotech.adb.exceptions.CustomException;
-import com.infotech.adb.jms.WMQMessage;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
@@ -24,14 +23,6 @@ public class AppUtility {
     private static int decimalPercision = defaultDecimalPrecision;
     private static final String DATE_FORMAT = "yyyyMMdd";
 
-    public static HashMap<String, WMQMessage> objectLockingMap = new HashMap<>();
-
-    public static void lockThreadForMessage(){
-
-
-    }
-
-
     public static String formatedDate(Date date) {
 
         String dt = "";
@@ -47,6 +38,10 @@ public class AppUtility {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
         return formatter.format(zonedDateTime);
 
+    }
+
+    public static String getCurrentTimeStampString() {
+        return formatedDate(Calendar.getInstance().getTime());
     }
 
     public static Timestamp getCurrentTimeStamp() {
