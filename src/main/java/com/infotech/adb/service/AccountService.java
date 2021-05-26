@@ -1,6 +1,7 @@
 package com.infotech.adb.service;
 
 import com.infotech.adb.dto.IBANVerificationRequest;
+import com.infotech.adb.exceptions.CustomException;
 import com.infotech.adb.exceptions.NoDataFoundException;
 import com.infotech.adb.jms.MqUtility;
 import com.infotech.adb.jms.QinPSW;
@@ -34,7 +35,7 @@ public class AccountService {
     // Store Csv File's data to database
 
     @Transactional
-    public void storeCSVToDB(InputStream file) {
+    public void storeCSVToDB(InputStream file) throws CustomException {
 
             // Using ApacheCommons Csv Utils to parse CSV file
             List<AccountDetail> acctDetailList = OpenCsvUtil.parseCsvFile(file);
@@ -45,8 +46,12 @@ public class AccountService {
                 acctDetailList.forEach((acct ->{
                     acct.setCreatedOn(ZonedDateTime.now());
                     acct.setUpdatedOn(ZonedDateTime.now());
-                    acct.setAuthPMImport(acct.getAuthPMImport().replace("|", ","));
-                    acct.setAuthPMExport(acct.getAuthPMExport().replace("|", ","));
+                    if(!AppUtility.isEmpty(acct.getAuthPMImport())) {
+                        acct.setAuthPMImport(acct.getAuthPMImport().replace("|", ","));
+                    }
+                    if(!AppUtility.isEmpty(acct.getAuthPMExport())) {
+                        acct.setAuthPMExport(acct.getAuthPMExport().replace("|", ","));
+                    }
                 }
                 ));
                 // Save customers to database

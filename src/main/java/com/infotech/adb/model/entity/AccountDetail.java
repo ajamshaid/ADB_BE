@@ -22,7 +22,7 @@ import javax.persistence.UniqueConstraint;
 public class AccountDetail extends BaseEntity {
 
 
-    @CsvBindByName(column = "\uFEFFIBAN")
+    @CsvBindByName(column = "IBAN")
   //  @CsvBindByPosition(position = 0)
     @Column(name = "IBAN",nullable = false)
     private String iban;

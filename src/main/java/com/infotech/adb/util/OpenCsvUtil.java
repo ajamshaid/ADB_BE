@@ -1,5 +1,6 @@
 package com.infotech.adb.util;
 
+import com.infotech.adb.exceptions.CustomException;
 import com.infotech.adb.model.entity.AccountDetail;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
@@ -16,7 +17,7 @@ public class OpenCsvUtil {
 
     private static String csvExtension = "csv";
 
-    public static List<AccountDetail> parseCsvFile(InputStream is) {
+    public static List<AccountDetail> parseCsvFile(InputStream is) throws CustomException {
         String[] CSV_HEADER = { "IBAN","Account Status","AuthPM(IM)","AuthPM(EX)" };
         Reader fileReader = null;
 
@@ -34,16 +35,17 @@ public class OpenCsvUtil {
 
             acctBean = csvToBean.parse();
 
-            return acctBean;
         } catch (Exception e) {
             System.out.println("Reading CSV Error!");
             e.printStackTrace();
+            throw new CustomException(e.getMessage());
         } finally {
             try {
                 fileReader.close();
             } catch (IOException e) {
                 System.out.println("Closing fileReader/csvParser Error!");
                 e.printStackTrace();
+                throw new CustomException(e.getMessage());
             }
         }
 
