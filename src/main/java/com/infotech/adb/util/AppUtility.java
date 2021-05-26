@@ -311,7 +311,7 @@ public class AppUtility {
 
     public static String generateRandomUniqString() {
         SecureRandom random = new SecureRandom();
-        return new BigInteger(70, random).toString(18);
+        return "PSW"+( new BigInteger(60, random).toString(18));
     }
 
     /**
