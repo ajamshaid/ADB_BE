@@ -1,6 +1,5 @@
 package com.infotech.adb.dto;
 
-import com.infotech.adb.model.entity.AccountDetail;
 import com.infotech.adb.model.entity.AuthorizedPaymentModes;
 import com.infotech.adb.util.AppConstants;
 import com.infotech.adb.util.AppUtility;
@@ -11,47 +10,22 @@ import java.util.Set;
 
 @Data
 //@JsonFilter("assetModelFilter")
-public class AccountDetailDTO implements BaseDTO<AccountDetailDTO, AccountDetail> {
+public class AccountDetailDTO {
 
     private String iban;
+//    private String email;
+//    private String mobileNumber;
+    private String accountTitle;
+    private String accountNumber;
     private String accountStatus;
-//    private Set<String> authorizedPaymentModesForImport;
-//    private Set<String> authorizedPaymentModesForExports;
+//    private String accountType;
+    private String ntn;
+    private String cnic;
 
-    private String AuthPMImport;
-    private String AuthPMExport;
+    private Set<String> authorizedPaymentModesForImport;
+    private Set<String> authorizedPaymentModesForExports;
 
     public AccountDetailDTO() {
-    }
-
-    public AccountDetailDTO(AccountDetail accountDetail) {
-     //   accountDetail.getAuthorizedPaymentModesSet();
-        convertToDTO(accountDetail,true);
-    }
-    @Override
-    public AccountDetail convertToEntity() {
-        AccountDetail accountDetail = new AccountDetail();
-        accountDetail.setIban(this.iban);
-        accountDetail.setAccountStatus(this.accountStatus);
-        accountDetail.setAuthPMImport(this.getAuthPMImport());
-        accountDetail.setAuthPMExport(this.getAuthPMExport());
-//        accountDetail.setEmail(this.email);
-//        accountDetail.setMobileNumber(this.mobileNumber);
-
-        return accountDetail;
-    }
-
-    @Override
-    public void convertToDTO(AccountDetail entity, boolean partialFill) {
-
-        if(entity != null) {
-            this.setIban(entity.getIban());
-            this.setAccountStatus(entity.getAccountStatus());
-            this.setAuthPMImport(entity.getAuthPMImport());
-            this.setAuthPMExport(entity.getAuthPMExport());
-
-          //  fillPaymentModes(entity.getAuthorizedPaymentModesSet());
-        }
     }
 
     private void fillPaymentModes(Set<AuthorizedPaymentModes> authorizedPaymentModes) {
@@ -66,14 +40,7 @@ public class AccountDetailDTO implements BaseDTO<AccountDetailDTO, AccountDetail
                 }
             }
         }
-      //  this.setAuthorizedPaymentModesForExports(apmExports);
-    //    this.setAuthorizedPaymentModesForImport(apmImports);
-    }
-
-    @Override
-    public AccountDetailDTO convertToNewDTO(AccountDetail accountDetail, boolean partialFill) {
-        AccountDetailDTO accountDetailDTO = new AccountDetailDTO();
-        accountDetailDTO.convertToDTO(accountDetail, partialFill);
-        return accountDetailDTO;
+        this.setAuthorizedPaymentModesForExports(apmExports);
+        this.setAuthorizedPaymentModesForImport(apmImports);
     }
 }

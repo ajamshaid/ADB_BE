@@ -87,7 +87,7 @@ public class PSWAPIConsumer {
                 , AppConstants.PSW.METHOD_ID_UPDATE_INFO_AND_PM
                 , AppConstants.AD_SIGNATURE);
 
-        AccountDetailDTO dto = new AccountDetailDTO(accountDetail);
+        AccountDetailDTO dto = null; ///new AccountDetailDTO(accountDetail);
         requestParameter.setData(dto);
 
         return executeRequest(requestParameter, "Sharing of Update Information and Payment Mode By AD");

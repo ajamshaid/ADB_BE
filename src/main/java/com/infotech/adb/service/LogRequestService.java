@@ -42,7 +42,9 @@ public class LogRequestService {
         logRequest.setCreatedOn(ZonedDateTime.now());
         logRequest.setResponseCode(responseBody.getResponseCode());
         logRequest.setResponseMessage(responseBody.getMessage().getDescription());
-        this.createLogRequest(logRequest);
+   //     System.out.println("Going to save Log Request :"+logRequest);
+        System.out.println("-------Saving Log object to DB is disabled for testing-----");
+   //     this.createLogRequest(logRequest);
     }
 
     public List<LogRequest> getAllLogRequests(Boolean isSuspended) {

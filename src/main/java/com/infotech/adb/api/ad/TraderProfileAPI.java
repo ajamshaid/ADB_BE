@@ -1,10 +1,12 @@
 package com.infotech.adb.api.ad;
 
-import com.infotech.adb.dto.*;
+import com.infotech.adb.dto.AccountDetailDTO;
+import com.infotech.adb.dto.BaseDTO;
+import com.infotech.adb.dto.IBANVerificationRequest;
+import com.infotech.adb.dto.RequestParameter;
 import com.infotech.adb.exceptions.CustomException;
 import com.infotech.adb.exceptions.DataValidationException;
 import com.infotech.adb.exceptions.NoDataFoundException;
-import com.infotech.adb.model.entity.AccountDetail;
 import com.infotech.adb.service.AccountService;
 import com.infotech.adb.service.LogRequestService;
 import com.infotech.adb.util.AppConstants;
@@ -45,7 +47,7 @@ public class TraderProfileAPI {
         CustomResponse customResponse = null;
 
         if (RequestParameter.isValidRequest(requestBody, true)) {
-            AccountDetail accountDetail = null;
+            AccountDetailDTO accountDetail = null;
             try {
                 IBANVerificationRequest ibanVerificationRequest = requestBody.getData();
                 accountDetail = accountService.getAccountDetailsByIban(ibanVerificationRequest.getIban());
@@ -57,9 +59,9 @@ public class TraderProfileAPI {
             BaseDTO dto = null;
             String message = "";
             String logMessage = "";
-
+/*
             if (AppConstants.REQ_TYPE_ACCT_DETAILS_WITH_PM.equals(requestType)) {
-                dto = noData ? null : new AccountDetailDTO(accountDetail);
+                dto = noData ? null : new AccountDetailDTO();//accountDetail);
                 message = messageBundle.getString(noData ? "account.details.not.shared" : "account.details.shared");
                 logMessage = "Sharing of Account Details & Authorized Payment Modes";
             } else if (AppConstants.REQ_TYPE_RES_COUNTRIES.equals(requestType)) {
@@ -75,6 +77,8 @@ public class TraderProfileAPI {
                 message = messageBundle.getString(noData ? "negative.suppliers.not.shared" : "negative.suppliers.shared");
                 logMessage = "Sharing Negative List of Countries";
             }
+
+ */
             customResponse = ResponseUtility.successResponse(dto
                     , noData ? AppConstants.PSWResponseCodes.NO_DATA_FOUND : AppConstants.PSWResponseCodes.OK
                     , message

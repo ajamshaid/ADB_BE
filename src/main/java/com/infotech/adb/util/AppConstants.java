@@ -80,7 +80,7 @@ public class AppConstants {
         public static final String OK = "200";
         public static final String CREATED = "201";
         public static final String ACCEPTED = "202";
-        public static final String NO_DATA_FOUND = "204"; //HttpStatus.NO_CONTENT
+        public static final String NO_DATA_FOUND = "700"; //HttpStatus.NO_CONTENT
         public static final String VERIFIED = "207";
         public static final String UN_VERIFIED = "208";
 

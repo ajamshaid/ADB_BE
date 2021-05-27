@@ -1,5 +1,6 @@
 package com.infotech.adb.service;
 
+import com.infotech.adb.dto.AccountDetailDTO;
 import com.infotech.adb.dto.IBANVerificationRequest;
 import com.infotech.adb.exceptions.CustomException;
 import com.infotech.adb.exceptions.NoDataFoundException;
@@ -18,8 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.jms.JMSException;
 import java.io.InputStream;
 import java.time.ZonedDateTime;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 //@Transactional(value = "masterTransactionManager", rollbackFor = {Throwable.class})
@@ -36,80 +38,82 @@ public class AccountService {
 
     @Transactional
     public void storeCSVToDB(InputStream file) throws CustomException {
+        // Using ApacheCommons Csv Utils to parse CSV file
+        List<AccountDetail> acctDetailList = OpenCsvUtil.parseCsvFile(file);
 
-            // Using ApacheCommons Csv Utils to parse CSV file
-            List<AccountDetail> acctDetailList = OpenCsvUtil.parseCsvFile(file);
-
-            if(AppUtility.isEmpty(acctDetailList)) {
-                throw new NoDataFoundException("No Data Found, No Valid Object/Empty in CVS File");
-            }else {
-                acctDetailList.forEach((acct ->{
-                    acct.setCreatedOn(ZonedDateTime.now());
-                    acct.setUpdatedOn(ZonedDateTime.now());
-                    if(!AppUtility.isEmpty(acct.getAuthPMImport())) {
-                        acct.setAuthPMImport(acct.getAuthPMImport().replace("|", ","));
-                    }
-                    if(!AppUtility.isEmpty(acct.getAuthPMExport())) {
-                        acct.setAuthPMExport(acct.getAuthPMExport().replace("|", ","));
-                    }
+        if (AppUtility.isEmpty(acctDetailList)) {
+            throw new NoDataFoundException("No Data Found, No Valid Object/Empty in CVS File");
+        } else {
+            acctDetailList.forEach((acct -> {
+                acct.setCreatedOn(ZonedDateTime.now());
+                acct.setUpdatedOn(ZonedDateTime.now());
+                if (!AppUtility.isEmpty(acct.getAuthPMImport())) {
+                    acct.setAuthPMImport(acct.getAuthPMImport().replace(MqUtility.DELIMETER_DATA, ","));
                 }
-                ));
-                // Save customers to database
-                accountDetailRepository.saveAll(acctDetailList);
+                if (!AppUtility.isEmpty(acct.getAuthPMExport())) {
+                    acct.setAuthPMExport(acct.getAuthPMExport().replace(MqUtility.DELIMETER_DATA, ","));
+                }
             }
+            ));
+            // Save customers to database
+            accountDetailRepository.saveAll(acctDetailList);
+        }
     }
-
 
     public boolean isAccountVerified(IBANVerificationRequest req) {
         log.info("isAccountDetailExists method called..");
         boolean isVerified = false;
         try {
             MqUtility.MqMessage replyMessage = qinPSW.putMessage(MqUtility.buildAccountVerificationMessage(req));
-            if(AppConstants.PSWResponseCodes.VERIFIED.equals(replyMessage.getReqResStr())){
+            if (AppConstants.PSWResponseCodes.VERIFIED.equals(replyMessage.getReqResStr())) {
                 isVerified = true;
             }
         } catch (JMSException e) {
             log.error(e.getMessage());
             e.printStackTrace();
         }
-        return isVerified ;//accountDetailRepository.isExistAccountDetail(req.getIban(),req.getEmail(),req.getMobileNumber(),req.getNtn());
+        return isVerified;//accountDetailRepository.isExistAccountDetail(req.getIban(),req.getEmail(),req.getMobileNumber(),req.getNtn());
     }
 
-    public AccountDetail getAccountDetailsByIban(String iban) {
+    public AccountDetailDTO getAccountDetailsByIban(String iban) {
         log.info("getAccountDetailsByIban method called..");
-        return accountDetailRepository.findByIban(iban);
-    }
 
-    public List<AccountDetail> getAllAccountDetails(Boolean isSuspended) {
-        log.info("getAllAccountDetails method called..");
-        if (AppUtility.isEmpty(isSuspended)) {
-            return accountDetailRepository.findAll();
-        } else {
-            return accountDetailRepository.findAll();
+        AccountDetailDTO dto = null;
+        MqUtility.MqMessage replyMessage = null;
+        try {
+            replyMessage = qinPSW.putMessage(MqUtility.buildGetAccountDetailsMessage(iban));
+        } catch (JMSException e) {
+            log.error(e.getMessage());
+            e.printStackTrace();
         }
-    }
+        if (!AppUtility.isEmpty(replyMessage) && !AppUtility.isEmpty(replyMessage.getReqResStr())) {
+            //  Parse format as  IBAN|ACC_TITLE|ACCT_NUM|ACCT_STATUS|NTN|CNIC
+            String[] acctDtlAry = replyMessage.getReqResStr().split("\\"+MqUtility.DELIMETER_DATA);
+            if (!AppUtility.isEmpty(acctDtlAry) && acctDtlAry.length >= 6) {
+                dto = new AccountDetailDTO();
+                dto.setIban(acctDtlAry[0]);
+                dto.setAccountTitle(acctDtlAry[1]);
+                dto.setAccountNumber(acctDtlAry[2]);
+                dto.setAccountStatus(acctDtlAry[3]);
+                dto.setNtn(acctDtlAry[4]);
+                dto.setCnic(acctDtlAry[5]);
 
-    public Optional<AccountDetail> getAccountDetailById(Long id) {
-        log.info("getAccountDetailById method called..");
-        if (!AppUtility.isEmpty(id)) {
-            return accountDetailRepository.findById(id);
+                // Get and Fill AuthPM from DB
+
+                AccountDetail accountDetail = accountDetailRepository.findByIban(iban);
+                if (!AppUtility.isEmpty(accountDetail)) {
+                    String autPM = accountDetail.getAuthPMImport();
+                    if (!AppUtility.isEmpty(autPM)) {
+                        dto.setAuthorizedPaymentModesForImport(new HashSet<>(Arrays.asList(autPM.split(","))));
+                    }
+                    autPM = accountDetail.getAuthPMExport();
+                    if (!AppUtility.isEmpty(autPM)) {
+                        dto.setAuthorizedPaymentModesForExports(new HashSet<>(Arrays.asList(autPM.split(","))));
+                    }
+                }
+
+            }
         }
-        return Optional.empty();
-    }
-
-    public AccountDetail createAccountDetail(AccountDetail accountDetail) {
-        log.info("createAccountDetail method called..");
-        return accountDetailRepository.save(accountDetail);
-    }
-
-    public AccountDetail updateAccountDetail(AccountDetail accountDetail) {
-        log.info("updateAccountDetail method called..");
-     //   accountDetail.setUpdatedOn(ZonedDateTime.now());
-        return accountDetailRepository.save(accountDetail);
-    }
-
-    public void deleteAccountDetailById(Long id) {
-        log.info("deleteAccountDetailById method called..");
-        accountDetailRepository.deleteById(id);
+        return dto;
     }
 }

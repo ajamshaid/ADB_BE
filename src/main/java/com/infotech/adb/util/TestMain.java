@@ -18,8 +18,16 @@ public class TestMain {
     public static void main(String args[]) throws CsvException, FileNotFoundException {
 
 
-       // TestMain.ReadMSG();
+        // TestMain.ReadMSG();
+        //testRandomUUID();
 
+        String replyMessage =  "PK81 SAUD 0000 0820 0130 4936|Ahsan|33325221125|602|548491_NTN|CNIC_35201565464546";
+        String[] acctDtlAry = replyMessage.split("\\|");
+
+        System.out.println("-------");
+    }
+
+    public static void testRandomUUID(){
         final String uuid = UUID.randomUUID().toString().replace("-", "").substring(0,18);
         System.out.println("uuid = " +  UUID.randomUUID().toString().replace("-", "").substring(0,18));
 

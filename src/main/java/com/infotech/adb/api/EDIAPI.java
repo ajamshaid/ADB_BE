@@ -1,5 +1,6 @@
 package com.infotech.adb.api;
 
+import com.infotech.adb.dto.AccountDetailDTO;
 import com.infotech.adb.dto.IBANVerificationRequest;
 import com.infotech.adb.dto.RequestParameter;
 import com.infotech.adb.exceptions.CustomException;
@@ -8,6 +9,7 @@ import com.infotech.adb.exceptions.NoDataFoundException;
 import com.infotech.adb.service.AccountService;
 import com.infotech.adb.service.LogRequestService;
 import com.infotech.adb.util.AppConstants;
+import com.infotech.adb.util.AppUtility;
 import com.infotech.adb.util.CustomResponse;
 import com.infotech.adb.util.ResponseUtility;
 import io.swagger.annotations.Api;
@@ -36,7 +38,7 @@ public class EDIAPI {
 
     private static final ResourceBundle messageBundle = ResourceBundle.getBundle("messages");
 
-    @RequestMapping(value = "/edi", method = RequestMethod.POST, headers = {"content-type=application/json"} )
+    @RequestMapping(value = "/edi", method = RequestMethod.POST, headers = {"content-type=application/json"})
     public CustomResponse getMessageAndResponse(@RequestBody RequestParameter<IBANVerificationRequest> requestBody)
             throws CustomException, DataValidationException, NoDataFoundException {
 
@@ -48,16 +50,17 @@ public class EDIAPI {
 
             log.info("Valid Request with processing code:" + processingCode);
             switch (processingCode) {
-                case "301": //Message 4.1, Verification of NTN,IBAN,Email and Mob
+                case "301": // 4.1 Message 1, Verification of NTN,IBAN,Email and Mob
                     customResponse = this.verifyAccount(requestBody);
                     break;
-                case "302":
+                case "302": // 4.2.	Message 2 – Sharing of Account Details & Authorized Payment Modes with PSW by AD
+                    customResponse = this.getAccountDetails(requestBody);
                     break;
                 default: // Default Custom response
                     log.info("No Case Matched for processing code:" + processingCode);
                     throw new DataValidationException("Invalid Request! No Processing Code Matched");
             }
-        }else{
+        } else {
             throw new DataValidationException("Required Parameter Missing!");
         }
         return customResponse;
@@ -67,27 +70,59 @@ public class EDIAPI {
     //**************************
     // 4.1.	Message 1 – Verification of NTN, IBAN, Email address and Mobile No. from AD
     // **************************/
-    public CustomResponse verifyAccount(@RequestBody RequestParameter<IBANVerificationRequest> requestBody)
+    public CustomResponse verifyAccount(RequestParameter<IBANVerificationRequest> requestBody)
             throws CustomException, DataValidationException, NoDataFoundException {
         ZonedDateTime requestTime = ZonedDateTime.now();
-
         CustomResponse customResponse = null;
-            boolean isVerified = false;
-            try {
-                IBANVerificationRequest ibanVerificationRequest = requestBody.getData();
-                isVerified = accountService.isAccountVerified(ibanVerificationRequest);
-            } catch (Exception e) {
-                ResponseUtility.exceptionResponse(e, null);
-            }
-            customResponse = ResponseUtility.successResponse(null
-                    , isVerified ? AppConstants.PSWResponseCodes.VERIFIED : AppConstants.PSWResponseCodes.UN_VERIFIED
-                    , isVerified ? messageBundle.getString("account.verified") : messageBundle.getString("account.un-verified")
-                    , requestBody , false
-            );
+        boolean isVerified = false;
+        try {
+            IBANVerificationRequest ibanVerificationRequest = requestBody.getData();
+            isVerified = accountService.isAccountVerified(ibanVerificationRequest);
+        } catch (Exception e) {
+            ResponseUtility.exceptionResponse(e, null);
+        }
+        customResponse = ResponseUtility.successResponse(null
+                , isVerified ? AppConstants.PSWResponseCodes.VERIFIED : AppConstants.PSWResponseCodes.UN_VERIFIED
+                , isVerified ? messageBundle.getString("account.verified") : messageBundle.getString("account.un-verified")
+                , requestBody, false
+        );
 
-            ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
-   //         logRequestService.saveLogRequest("Verify Trader Profile From AD", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
+        ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
+        logRequestService.saveLogRequest("Verify Trader Profile From AD", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
+        return customResponse;
+    }
+
+    //**************************
+    // 4.2.	Message 2 – Sharing of Account Details & Authorized Payment Modes with PSW by AD
+    // **************************/
+    public CustomResponse getAccountDetails(RequestParameter<IBANVerificationRequest> requestBody)
+            throws CustomException, DataValidationException, NoDataFoundException {
+        ZonedDateTime requestTime = ZonedDateTime.now();
+        CustomResponse customResponse = null;
+        AccountDetailDTO accountDetailDTO = null;
+        String message = "";
+        String logMessage = "";
+        boolean noData = false;
+        try {
+            IBANVerificationRequest ibanVerificationRequest = requestBody.getData();
+            accountDetailDTO = accountService.getAccountDetailsByIban(ibanVerificationRequest.getIban());
+            noData = AppUtility.isEmpty(accountDetailDTO);
+        } catch (Exception e) {
+            ResponseUtility.exceptionResponse(e, null);
+        }
+        message = messageBundle.getString(noData ? "account.details.not.shared" : "account.details.shared");
+        logMessage = "Sharing of Account Details & Authorized Payment Modes";
+
+        customResponse = ResponseUtility.successResponse(accountDetailDTO
+                , noData ? AppConstants.PSWResponseCodes.NO_DATA_FOUND : AppConstants.PSWResponseCodes.OK
+                , message
+                , requestBody,false
+        );
+
+        ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
+        logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestBody, requestTime, responseBody);
         return customResponse;
     }
 }
+
 

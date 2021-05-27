@@ -16,36 +16,53 @@ public class MqUtility {
 
 
     public static final String MSG_TYPE_ACCT_VERIFICATION = "PSW001";
-    public static final String DELIMETER = "!";
+    public static final String MSG_TYPE_ACCT_DETAILS = "PSW002";
+    public static final String DELIMETER_MSG = "!";
+    public static final String DELIMETER_DATA = "|";
 
     public static HashMap<String, MqUtility.MqMessage> objectLockingMap = new HashMap<>();
 
+
+    // Message 4.1 Acct Verification Message
     public static MqMessage buildAccountVerificationMessage(IBANVerificationRequest req) {
         MqMessage msg = new MqMessage();
         msg.setId(AppUtility.generateRandomUniqString());
         msg.setType(MSG_TYPE_ACCT_VERIFICATION);
 
         StringBuffer sb = new StringBuffer();
-        sb.append(MSG_TYPE_ACCT_VERIFICATION)
-                .append(DELIMETER).append(msg.getId())
-                .append(DELIMETER).append(req.getNtn())
-                .append(DELIMETER).append(req.getIban())
-                .append(DELIMETER).append(req.getEmail())
-                .append(DELIMETER).append(req.getMobileNumber());
+        sb.append(msg.getType()).append(DELIMETER_MSG).append(msg.getId())
+                .append(DELIMETER_MSG).append(req.getNtn())
+                .append(DELIMETER_MSG).append(req.getIban())
+                .append(DELIMETER_MSG).append(req.getEmail())
+                .append(DELIMETER_MSG).append(req.getMobileNumber());
+        msg.setReqResStr(sb.toString());
+        return msg;
+    }
+
+    // Message 4.2  Get Acct Details Message
+    public static MqMessage buildGetAccountDetailsMessage(String IBAN ){
+        MqMessage msg = new MqMessage();
+
+        msg.setId(AppUtility.generateRandomUniqString());
+        msg.setType(MSG_TYPE_ACCT_DETAILS);
+
+        StringBuffer sb = new StringBuffer();
+        sb.append(msg.getType()).append(DELIMETER_MSG).append(msg.getId())
+                .append(DELIMETER_MSG).append(IBAN);
         msg.setReqResStr(sb.toString());
         return msg;
     }
 
     public static MqMessage parseReplyMessage(String message) {
         MqMessage msg = null;
-        String[] messageAry = message.split(DELIMETER);
-        if(AppUtility.isEmpty(messageAry) || messageAry.length < 3){
+        String[] messageAry = message.split(DELIMETER_MSG);
+        if(AppUtility.isEmpty(messageAry) || messageAry.length < 2){
             log.debug("Invalid Message ");
         }else {
             msg = new MqMessage();
             msg.setType(AppUtility.isEmpty(messageAry[0]) ? "" : messageAry[0]);
             msg.setId(AppUtility.isEmpty(messageAry[1]) ? "" : messageAry[1]);
-            msg.setReqResStr(AppUtility.isEmpty(messageAry[2]) ? "" : messageAry[2]);
+            msg.setReqResStr((messageAry.length > 2 && !AppUtility.isEmpty(messageAry[2]) )? messageAry[2] : "" );
         }
 
         return msg;
