@@ -3,7 +3,7 @@ package com.infotech.adb.api;
 
 import com.infotech.adb.exceptions.CustomException;
 import com.infotech.adb.exceptions.DataValidationException;
-import com.infotech.adb.service.AccountService;
+import com.infotech.adb.service.MQServices;
 import com.infotech.adb.util.AppConstants;
 import com.infotech.adb.util.OpenCsvUtil;
 import com.infotech.adb.util.ResponseUtility;
@@ -25,7 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ImportAPI {
 
     @Autowired
-    private AccountService accountService;
+    private MQServices mqService;
 
     @PostMapping("/iban")
     public ResponseEntity<?> uploadSingleCSVFile(@RequestParam("csvfile") MultipartFile csvfile) throws CustomException {
@@ -46,7 +46,7 @@ public class ImportAPI {
 
         try {
             // save file data to database
-            accountService.storeCSVToDB(csvfile.getInputStream());
+            mqService.storeCSVToDB(csvfile.getInputStream());
 
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e, AppConstants.DBConstraints.UNIQ_IBAN);

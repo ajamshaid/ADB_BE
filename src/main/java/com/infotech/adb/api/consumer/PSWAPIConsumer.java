@@ -3,7 +3,6 @@ package com.infotech.adb.api.consumer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.infotech.adb.config.RestTemplateResponseErrorHandler;
 import com.infotech.adb.dto.*;
-import com.infotech.adb.model.entity.AccountDetail;
 import com.infotech.adb.model.entity.LogRequest;
 import com.infotech.adb.service.LogRequestService;
 import com.infotech.adb.util.AppConstants;
@@ -22,6 +21,7 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.ZonedDateTime;
+import java.util.UUID;
 
 
 @Log4j2
@@ -76,18 +76,18 @@ public class PSWAPIConsumer {
 
 
     /*********************************************************************
-     4.6.	Message 6 – Sharing of Updated Information and Authorized Payment Modes by AD with PSW
+     4.3.	Message 3 – Sharing of Updated Information and Authorized Payment Modes by AD with PSW
      ********************************************************************/
-    public ResponseUtility.APIResponse updateAccountAndPMInPWS(AccountDetail accountDetail)
+    public ResponseUtility.APIResponse updateAccountAndPMInPWS(AccountDetailDTO dto)
             throws HttpClientErrorException, JsonProcessingException {
 
         RequestParameter<AccountDetailDTO> requestParameter = new RequestParameter<>(
-                AppConstants.MESSAGE_GUID.MSG_UPDATE_ACCT_INFO_PAYMENT_MODE,
+                UUID.randomUUID(),
                 AppConstants.AD_ID, AppConstants.PSW.ID, "03"
                 , AppConstants.PSW.METHOD_ID_UPDATE_INFO_AND_PM
                 , AppConstants.AD_SIGNATURE);
 
-        AccountDetailDTO dto = null; ///new AccountDetailDTO(accountDetail);
+//        AccountDetailDTO dto = null; ///new AccountDetailDTO(accountDetail);
         requestParameter.setData(dto);
 
         return executeRequest(requestParameter, "Sharing of Update Information and Payment Mode By AD");
@@ -412,7 +412,7 @@ public class PSWAPIConsumer {
 //            PSWAuthTokenResponse authTokenResponse = pswClient.getAuthorizationToken("adb", "adb");
 //            System.out.println("-------------PSWAuthTokenResponse: " + authTokenResponse);
 
-            AccountDetail accountDetail = new AccountDetail();
+            AccountDetailDTO accountDetail = new AccountDetailDTO();
             accountDetail.setIban("PK 123213123");
          //   accountDetail.setAccountType("701");
 

@@ -6,8 +6,8 @@ import com.infotech.adb.dto.RequestParameter;
 import com.infotech.adb.exceptions.CustomException;
 import com.infotech.adb.exceptions.DataValidationException;
 import com.infotech.adb.exceptions.NoDataFoundException;
-import com.infotech.adb.service.AccountService;
 import com.infotech.adb.service.LogRequestService;
+import com.infotech.adb.service.MQServices;
 import com.infotech.adb.util.AppConstants;
 import com.infotech.adb.util.AppUtility;
 import com.infotech.adb.util.CustomResponse;
@@ -34,7 +34,7 @@ public class EDIAPI {
     private LogRequestService logRequestService;
 
     @Autowired
-    private AccountService accountService;
+    private MQServices mqService;
 
     private static final ResourceBundle messageBundle = ResourceBundle.getBundle("messages");
 
@@ -77,7 +77,7 @@ public class EDIAPI {
         boolean isVerified = false;
         try {
             IBANVerificationRequest ibanVerificationRequest = requestBody.getData();
-            isVerified = accountService.isAccountVerified(ibanVerificationRequest);
+            isVerified = mqService.isAccountVerified(ibanVerificationRequest);
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e, null);
         }
@@ -105,7 +105,7 @@ public class EDIAPI {
         boolean noData = false;
         try {
             IBANVerificationRequest ibanVerificationRequest = requestBody.getData();
-            accountDetailDTO = accountService.getAccountDetailsByIban(ibanVerificationRequest.getIban());
+            accountDetailDTO = mqService.getAccountDetailsByIban(ibanVerificationRequest.getIban());
             noData = AppUtility.isEmpty(accountDetailDTO);
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e, null);

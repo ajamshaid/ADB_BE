@@ -7,8 +7,8 @@ import com.infotech.adb.dto.RequestParameter;
 import com.infotech.adb.exceptions.CustomException;
 import com.infotech.adb.exceptions.DataValidationException;
 import com.infotech.adb.exceptions.NoDataFoundException;
-import com.infotech.adb.service.AccountService;
 import com.infotech.adb.service.LogRequestService;
+import com.infotech.adb.service.MQServices;
 import com.infotech.adb.util.AppConstants;
 import com.infotech.adb.util.AppUtility;
 import com.infotech.adb.util.CustomResponse;
@@ -35,7 +35,7 @@ public class TraderProfileAPI {
     private LogRequestService logRequestService;
 
     @Autowired
-    private AccountService accountService;
+    private MQServices mqService;
 
     private static final ResourceBundle messageBundle = ResourceBundle.getBundle("messages");
 
@@ -50,7 +50,7 @@ public class TraderProfileAPI {
             AccountDetailDTO accountDetail = null;
             try {
                 IBANVerificationRequest ibanVerificationRequest = requestBody.getData();
-                accountDetail = accountService.getAccountDetailsByIban(ibanVerificationRequest.getIban());
+                accountDetail = mqService.getAccountDetailsByIban(ibanVerificationRequest.getIban());
 
             } catch (Exception e) {
                 ResponseUtility.exceptionResponse(e, null);
@@ -112,7 +112,7 @@ public class TraderProfileAPI {
             boolean accountExist = false;
             try {
                 IBANVerificationRequest ibanVerificationRequest = requestBody.getData();
-                accountExist = accountService.isAccountVerified(ibanVerificationRequest);
+                accountExist = mqService.isAccountVerified(ibanVerificationRequest);
             } catch (Exception e) {
                 ResponseUtility.exceptionResponse(e, null);
             }

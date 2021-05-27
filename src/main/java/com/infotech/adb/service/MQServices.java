@@ -24,9 +24,8 @@ import java.util.HashSet;
 import java.util.List;
 
 @Service
-//@Transactional(value = "masterTransactionManager", rollbackFor = {Throwable.class})
 @Log4j2
-public class AccountService {
+public class MQServices {
 
     @Autowired
     private AccountDetailRepository accountDetailRepository;
@@ -74,6 +73,7 @@ public class AccountService {
         }
         return isVerified;//accountDetailRepository.isExistAccountDetail(req.getIban(),req.getEmail(),req.getMobileNumber(),req.getNtn());
     }
+
 
     public AccountDetailDTO getAccountDetailsByIban(String iban) {
         log.info("getAccountDetailsByIban method called..");

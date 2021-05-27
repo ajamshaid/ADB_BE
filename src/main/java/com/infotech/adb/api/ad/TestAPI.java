@@ -5,7 +5,10 @@ import com.infotech.adb.api.consumer.PSWAPIConsumer;
 import com.infotech.adb.dto.*;
 import com.infotech.adb.exceptions.DataValidationException;
 import com.infotech.adb.exceptions.NoDataFoundException;
-import com.infotech.adb.model.entity.*;
+import com.infotech.adb.model.entity.AccountDetail;
+import com.infotech.adb.model.entity.BDA;
+import com.infotech.adb.model.entity.FinancialTransaction;
+import com.infotech.adb.model.entity.User;
 import com.infotech.adb.model.repository.BDARepository;
 import com.infotech.adb.model.repository.FinancialTransactionRepository;
 import com.infotech.adb.service.UserService;
@@ -17,9 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/test")
@@ -47,25 +48,25 @@ public class TestAPI {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/update-info", method = RequestMethod.GET)
-    public ResponseEntity<?> getRequestUpdateInfoTest() throws JsonProcessingException {
-
-        log.info("Test .. Request update Info");
-        AccountDetail accountDetail = new AccountDetail();
-        accountDetail.setIban("PK 123213123");
-        accountDetail.setAccountStatus("600");
-     //   accountDetail.setAccountType("701");
-        Set<AuthorizedPaymentModes> authorizedPaymentModesSet = new HashSet<>();
-        authorizedPaymentModesSet.add(new AuthorizedPaymentModes("305", "IMPORT", accountDetail));
-        authorizedPaymentModesSet.add(new AuthorizedPaymentModes("306", "IMPORT", accountDetail));
-        authorizedPaymentModesSet.add(new AuthorizedPaymentModes("307", "EXPORT", accountDetail));
-        authorizedPaymentModesSet.add(new AuthorizedPaymentModes("301", "EXPORT", accountDetail));
-
-      //  accountDetail.setAuthorizedPaymentModesSet(authorizedPaymentModesSet);
-
-        return new ResponseEntity<>(pswApiConsumer.updateAccountAndPMInPWS(accountDetail), HttpStatus.OK);
-
-    }
+//    @RequestMapping(value = "/update-info", method = RequestMethod.GET)
+//    public ResponseEntity<?> getRequestUpdateInfoTest() throws JsonProcessingException {
+//
+//        log.info("Test .. Request update Info");
+//        AccountDetail accountDetail = new AccountDetail();
+//        accountDetail.setIban("PK 123213123");
+//        accountDetail.setAccountStatus("600");
+//     //   accountDetail.setAccountType("701");
+//        Set<AuthorizedPaymentModes> authorizedPaymentModesSet = new HashSet<>();
+//        authorizedPaymentModesSet.add(new AuthorizedPaymentModes("305", "IMPORT", accountDetail));
+//        authorizedPaymentModesSet.add(new AuthorizedPaymentModes("306", "IMPORT", accountDetail));
+//        authorizedPaymentModesSet.add(new AuthorizedPaymentModes("307", "EXPORT", accountDetail));
+//        authorizedPaymentModesSet.add(new AuthorizedPaymentModes("301", "EXPORT", accountDetail));
+//
+//      //  accountDetail.setAuthorizedPaymentModesSet(authorizedPaymentModesSet);
+//
+//        return new ResponseEntity<>(pswApiConsumer.updateAccountAndPMInPWS(accountDetail), HttpStatus.OK);
+//
+//    }
 
     @RequestMapping(value = "/update-res-countries", method = RequestMethod.GET)
     public ResponseEntity<?> getRequestRequestedCountriesTest(@RequestParam String Iban) throws JsonProcessingException {
