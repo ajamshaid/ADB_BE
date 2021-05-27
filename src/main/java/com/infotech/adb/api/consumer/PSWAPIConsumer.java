@@ -10,8 +10,13 @@ import com.infotech.adb.util.HTTPClientUtils;
 import com.infotech.adb.util.PSWAuthTokenResponse;
 import com.infotech.adb.util.ResponseUtility;
 import lombok.extern.log4j.Log4j2;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.ssl.TrustStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.client.HttpClientErrorException;
@@ -20,6 +25,11 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.net.ssl.SSLContext;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.X509Certificate;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
@@ -31,14 +41,47 @@ public class PSWAPIConsumer {
     @Autowired
     private LogRequestService logRequestService;
 
+    @Autowired
+    private RestTemplate restTemplate;
+
+
+    public RestTemplate restTemplate() throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+        TrustStrategy acceptingTrustStrategy = (X509Certificate[] chain, String authType) -> true;
+
+        SSLContext sslContext = org.apache.http.ssl.SSLContexts.custom()
+                .loadTrustMaterial(null, acceptingTrustStrategy)
+                .build();
+
+        SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext);
+
+        CloseableHttpClient httpClient = HttpClients.custom()
+                .setSSLSocketFactory(csf)
+                .build();
+
+        HttpComponentsClientHttpRequestFactory requestFactory =
+                HTTPClientUtils.getClientHttpRequestFactory("ADSAUDX35", "Nwpm2dByDNoe");
+
+        requestFactory.setHttpClient(httpClient);
+        RestTemplate restTemplate = new RestTemplate(requestFactory);
+        return restTemplate;
+    }
     //**************************
     // Get Authorization Token
     // **************************/
     public PSWAuthTokenResponse getAuthorizationToken(String clientID, String clientSecret) throws JsonProcessingException {
-        RestTemplate restTemplate = new RestTemplate(
-                HTTPClientUtils.getClientHttpRequestFactory(
-                        clientID, clientSecret));
+//        RestTemplate restTemplate = new RestTemplate(
+//                HTTPClientUtils.getClientHttpRequestFactory(
+//                        clientID, clientSecret));
 
+        try {
+            restTemplate = restTemplate();
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
+            e.printStackTrace();
+        }
         // Set Headers...
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/x-www-form-urlencoded ");
@@ -409,14 +452,14 @@ public class PSWAPIConsumer {
         PSWAPIConsumer pswApiConsumer = new PSWAPIConsumer();
 
         try {
-//            PSWAuthTokenResponse authTokenResponse = pswClient.getAuthorizationToken("adb", "adb");
-//            System.out.println("-------------PSWAuthTokenResponse: " + authTokenResponse);
+            PSWAuthTokenResponse authTokenResponse = pswApiConsumer.getAuthorizationToken("adb", "adb");
+            System.out.println("-------------PSWAuthTokenResponse: " + authTokenResponse);
 
             AccountDetailDTO accountDetail = new AccountDetailDTO();
             accountDetail.setIban("PK 123213123");
          //   accountDetail.setAccountType("701");
 
-            pswApiConsumer.updateAccountAndPMInPWS(accountDetail);
+        //    pswApiConsumer.updateAccountAndPMInPWS(accountDetail);
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();

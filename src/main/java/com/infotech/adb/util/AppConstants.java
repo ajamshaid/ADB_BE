@@ -31,7 +31,7 @@ public class AppConstants {
 
         public final static String TIME_STAMP_FORMAT="YyyyMmddhhmmss";
         public final static String ID = "PSW";
-        public final static String BASE_URL = "http://localhost:8081/adb";
+        public final static String BASE_URL = "https://localhost:8081/adb";
         public final static String API_AUTH = "/connect/token";
 
         public final static String AUT_GRANT_TYPE = "client_credentials";
