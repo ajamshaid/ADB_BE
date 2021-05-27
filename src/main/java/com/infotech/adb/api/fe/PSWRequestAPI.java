@@ -2,6 +2,7 @@ package com.infotech.adb.api.fe;
 
 
 import com.infotech.adb.dto.AccountDetailDTO;
+import com.infotech.adb.dto.TraderProfileStatusDTO;
 import com.infotech.adb.exceptions.CustomException;
 import com.infotech.adb.exceptions.DataValidationException;
 import com.infotech.adb.exceptions.NoDataFoundException;
@@ -36,7 +37,7 @@ public class PSWRequestAPI {
     public CustomResponse updatePaymentModes(@RequestBody AccountDetailDTO dto)
             throws CustomException, DataValidationException, NoDataFoundException {
 
-        log.debug("IN Coming Request Data is:"+dto.toString());
+        log.debug("updatePaymentModes::IN Coming Request Data is:"+dto.toString());
 
          ResponseUtility.APIResponse response =  pswService.shareUpdatedAuthPMs(dto);
 
@@ -50,6 +51,28 @@ public class PSWRequestAPI {
         }else{
             customResponse = ResponseUtility.successResponse("{}", AppConstants.PSWResponseCodes.OK,
                 "Updated authorized payment modes", null,false);
+        }
+        return customResponse;
+    }
+
+    @RequestMapping(value = "/activate-tp", method = RequestMethod.POST)
+    public CustomResponse updateTraderProfileStatus(@RequestBody TraderProfileStatusDTO dto)
+            throws CustomException, DataValidationException, NoDataFoundException {
+
+        log.debug("updateTraderProfileStatus:: IN Coming Request Data is:"+dto.toString());
+
+        ResponseUtility.APIResponse response =  pswService.updateTraderProfileStatus(dto);
+
+        ZonedDateTime requestTime = ZonedDateTime.now();
+        CustomResponse customResponse = null;
+
+        if(AppUtility.isEmpty(response)){ //if Un-successful Response
+
+            ResponseUtility.exceptionResponse(new CustomException("Resquest update Failed.."),"");
+
+        }else{
+            customResponse = ResponseUtility.successResponse("{}", AppConstants.PSWResponseCodes.OK,
+                    "Updated authorized payment modes", null,false);
         }
         return customResponse;
     }

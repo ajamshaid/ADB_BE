@@ -3,6 +3,7 @@ package com.infotech.adb.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.infotech.adb.api.consumer.PSWAPIConsumer;
 import com.infotech.adb.dto.AccountDetailDTO;
+import com.infotech.adb.dto.TraderProfileStatusDTO;
 import com.infotech.adb.util.AppConstants;
 import com.infotech.adb.util.AppUtility;
 import com.infotech.adb.util.ResponseUtility;
@@ -22,6 +23,22 @@ public class PSWService {
 
         try {
             pswResponse  =  consumer.updateAccountAndPMInPWS(dto);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        if(!AppUtility.isEmpty(pswResponse)){
+            if(AppConstants.PSWResponseCodes.OK .equals(pswResponse.getMessage().getCode())){
+                //@TODO // update in DB
+            }
+        }
+        return pswResponse;
+    }
+
+    public ResponseUtility.APIResponse updateTraderProfileStatus(TraderProfileStatusDTO dto) {
+        ResponseUtility.APIResponse pswResponse = null;
+
+        try {
+            pswResponse  =  consumer.updateTraderProfileAccountStatus(dto);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
