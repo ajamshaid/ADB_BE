@@ -1,14 +1,9 @@
 package com.infotech.adb.util;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;
 
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
 @Component
-public class HttpClientTest {
+public class HttpClientTest_ToDel {
 
 //    private String serverPath="https://paymate.pk:7003";
 ////    private String serverPath="http://localhost:8081";

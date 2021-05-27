@@ -11,7 +11,7 @@ import java.io.IOException;
 
 @Component
 @Log4j2
-public class RestTemplateResponseErrorHandler implements ResponseErrorHandler {
+public class RestTemplateResponseErrorHandler_ToDel implements ResponseErrorHandler {
 
     @Override
     public boolean hasError(ClientHttpResponse httpResponse)

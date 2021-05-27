@@ -25,7 +25,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/test")
 @Log4j2
-public class TestAPI {
+public class TestAPI_ToDel {
 
     @Autowired
     UserService userService;

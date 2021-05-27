@@ -26,7 +26,7 @@ import java.util.ResourceBundle;
 @RequestMapping("/gd")
 @Log4j2
 @Api(tags = "@GD")
-public class GDAPI {
+public class GDAPI_ToDel {
 
     @Autowired
     private LogRequestService logRequestService;

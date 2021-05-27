@@ -29,7 +29,7 @@ import java.util.ResourceBundle;
 @RequestMapping("/trader-profile")
 @Log4j2
 @Api(tags = "@TP")
-public class TraderProfileAPI {
+public class TraderProfileAPI_ToDel {
 
     @Autowired
     private LogRequestService logRequestService;

@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 @RequestMapping("/dealers/a/d/i")
 @Log4j2
 @Api(tags = "PSW")
-public class PSWAPI {
+public class PSWAPI_TODel {
 
 
 //    @Autowired

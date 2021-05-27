@@ -1,12 +1,12 @@
 package com.infotech.adb.api.consumer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.infotech.adb.config.RestTemplateResponseErrorHandler;
+import com.infotech.adb.config.RestTemplateResponseErrorHandler_ToDel;
 import com.infotech.adb.dto.*;
 import com.infotech.adb.model.entity.LogRequest;
 import com.infotech.adb.service.LogRequestService;
 import com.infotech.adb.util.AppConstants;
-import com.infotech.adb.util.HTTPClientUtils;
+import com.infotech.adb.util.HTTPClientUtils_ToDel;
 import com.infotech.adb.util.PSWAuthTokenResponse;
 import com.infotech.adb.util.ResponseUtility;
 import lombok.extern.log4j.Log4j2;
@@ -59,7 +59,7 @@ public class PSWAPIConsumer {
                 .build();
 
         HttpComponentsClientHttpRequestFactory requestFactory =
-                HTTPClientUtils.getClientHttpRequestFactory("ADSAUDX35", "Nwpm2dByDNoe");
+                HTTPClientUtils_ToDel.getClientHttpRequestFactory("ADSAUDX35", "Nwpm2dByDNoe");
 
         requestFactory.setHttpClient(httpClient);
         RestTemplate restTemplate = new RestTemplate(requestFactory);
@@ -428,7 +428,7 @@ public class PSWAPIConsumer {
         HttpEntity<RequestParameter> request = new HttpEntity<>(requestParameter, headers);
 
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.setErrorHandler(new RestTemplateResponseErrorHandler());
+        restTemplate.setErrorHandler(new RestTemplateResponseErrorHandler_ToDel());
 
         ResponseEntity<ResponseUtility.PSWAPIResponse> response = restTemplate.postForEntity(uri, request, ResponseUtility.PSWAPIResponse.class);
         return response.getBody();

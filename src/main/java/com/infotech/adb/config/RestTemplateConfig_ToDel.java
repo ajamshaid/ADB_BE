@@ -1,6 +1,6 @@
 package com.infotech.adb.config;
 
-import com.infotech.adb.util.HTTPClientUtils;
+import com.infotech.adb.util.HTTPClientUtils_ToDel;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -17,7 +17,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
 
 @Configuration
-public class RestTemplateConfig{
+public class RestTemplateConfig_ToDel {
 
     @Bean
     public RestTemplate restTemplate() throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
@@ -34,7 +34,7 @@ public class RestTemplateConfig{
                 .build();
 
         HttpComponentsClientHttpRequestFactory requestFactory =
-                HTTPClientUtils.getClientHttpRequestFactory("ADSAUDX35", "Nwpm2dByDNoe");
+                HTTPClientUtils_ToDel.getClientHttpRequestFactory("ADSAUDX35", "Nwpm2dByDNoe");
 
         requestFactory.setHttpClient(httpClient);
         RestTemplate restTemplate = new RestTemplate(requestFactory);

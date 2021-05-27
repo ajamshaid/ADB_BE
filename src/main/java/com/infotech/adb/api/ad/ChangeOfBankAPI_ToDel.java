@@ -25,7 +25,7 @@ import java.util.ResourceBundle;
 @RequestMapping("/cob")
 @Log4j2
 @Api(tags = "@ChangeOfBankAPI")
-public class ChangeOfBankAPI {
+public class ChangeOfBankAPI_ToDel {
 
     @Autowired
     private LogRequestService logRequestService;
