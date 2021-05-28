@@ -31,16 +31,14 @@ public class AppConstants {
 
         public final static String TIME_STAMP_FORMAT="YyyyMmddhhmmss";
         public final static String ID = "PSW";
-        public final static String BASE_URL = "https://localhost:8081/adb";
-        public final static String API_AUTH = "/connect/token";
-
+        public final static String BASE_URL = "https://dev.psw.gov.pk";
+        public final static String API_AUTH = "/auth/connect/token";
         public final static String AUT_GRANT_TYPE = "client_credentials";
-        public final static String CLIENT_ID = "adb";
-        public final static String CLIENT_SECRET = "adb";
+        public final static String CLIENT_ID = "ADSAUDX35";
+        public final static String CLIENT_SECRET = "Nwpm2dByDNoe";
 
-        public final static String API_UPDATE_URL = "/dealers/a/d/i/edi";
-
-        public final static String METHOD_ID_UPDATE_INFO_AND_PM = "1512";//MGS-4.3
+        public final static String API_UPDATE_URL = "/api/dealers/saud/edi";
+        public final static String METHOD_ID_UPDATE_INFO_AND_PM = "1512";//MGS-6
         public final static String METHOD_ID_UPDATE_RESTRICTED_COUNTRIES= "1513";//MGS-7
         public final static String METHOD_ID_UPDATE_RESTRICTED_COMMODITIES= "1514";//MGS-8
         public final static String METHOD_ID_UPDATE_RESTRICTED_SUPPLIERS= "1515";//MGS-9

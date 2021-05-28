@@ -18,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpStatusCodeException;
@@ -78,20 +80,36 @@ public class PSWAPIConsumer {
                         clientID, clientSecret));
 
         // Set Headers...
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Content-Type", "application/x-www-form-urlencoded ");
-        HttpEntity<String> entity = new HttpEntity<>("", headers);
+     //   HttpHeaders headers = new HttpHeaders();
+     //   headers.set("Content-Type", "application/x-www-form-urlencoded ");
+    //    HttpEntity<String> entity = new HttpEntity<>("", headers);
+
+        System.out.println("AppConstants.PSW.BASE_URL :"+AppConstants.PSW.BASE_URL);
 
         UriComponents uriBuilder = UriComponentsBuilder.fromHttpUrl(AppConstants.PSW.BASE_URL + AppConstants.PSW.API_AUTH)
-                .queryParam("grant_type", AppConstants.PSW.AUT_GRANT_TYPE)
+              //  .queryParam("grant_type", AppConstants.PSW.AUT_GRANT_TYPE)
 //                .queryParam("username", userName)
-//                .queryParam("password", password)
+  //              .queryParam("password", password)
                 .build();
 
 
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> map= new LinkedMultiValueMap<>(
+
+        );
+        map.add("grant_type", AppConstants.PSW.AUT_GRANT_TYPE);
+        map.add("client_id", AppConstants.PSW.CLIENT_ID);
+        map.add("client_secret", AppConstants.PSW.CLIENT_SECRET);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
+
+        //ResponseEntity<String> response = restTemplate.postForEntity( url, request , String.class );
+
         PSWAuthTokenResponse authTokenResponse = new PSWAuthTokenResponse();
         try {
-            ResponseEntity<String> result = restTemplate.postForEntity(uriBuilder.toUri(), entity, String.class);
+            ResponseEntity<String> result = restTemplate.postForEntity(uriBuilder.toUri(), request, String.class);
             log.debug("________________Status Code:" + result.getStatusCode());
             log.debug("________________Body:" + result.getBody());
 
@@ -101,6 +119,8 @@ public class PSWAPIConsumer {
             authTokenResponse = PSWAuthTokenResponse.jsonToObject(result.getBody());
             authTokenResponse.setResponseCode(result.getStatusCodeValue());
             authTokenResponse.setMessage("Authentication Successful.");
+
+            System.out.println("------------------AuthTokem Response"+authTokenResponse);
         } catch (HttpStatusCodeException ex) {
             HttpStatus statusCode = ex.getStatusCode();
             if (HttpStatus.UNAUTHORIZED == statusCode) {
