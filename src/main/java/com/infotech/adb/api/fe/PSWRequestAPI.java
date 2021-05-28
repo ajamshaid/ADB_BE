@@ -14,6 +14,7 @@ import com.infotech.adb.util.ResponseUtility;
 import io.swagger.annotations.Api;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -61,7 +62,11 @@ public class PSWRequestAPI {
 
         log.debug("updateTraderProfileStatus:: IN Coming Request Data is:"+dto.toString());
 
-        ResponseUtility.APIResponse response =  pswService.updateTraderProfileStatus(dto);
+        ResponseUtility.APIResponse response ;
+
+        //response =  pswService.updateTraderProfileStatus(dto);
+        response = ResponseUtility.buildAPIResponse(null, HttpStatus.OK.toString(),new ResponseUtility.Message("200","Hello World"));
+
 
         ZonedDateTime requestTime = ZonedDateTime.now();
         CustomResponse customResponse = null;

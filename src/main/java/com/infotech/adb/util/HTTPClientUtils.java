@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.Charset;
 
-public class HTTPClientUtils_ToDel {
+public class HTTPClientUtils {
     public static final String AUTHORIZATION = "Authorization";
 
     public static HttpComponentsClientHttpRequestFactory getClientHttpRequestFactory(String userName, String pass)

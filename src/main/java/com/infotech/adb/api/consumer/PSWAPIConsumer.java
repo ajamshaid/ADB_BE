@@ -6,17 +6,12 @@ import com.infotech.adb.dto.*;
 import com.infotech.adb.model.entity.LogRequest;
 import com.infotech.adb.service.LogRequestService;
 import com.infotech.adb.util.AppConstants;
-import com.infotech.adb.util.HTTPClientUtils_ToDel;
+import com.infotech.adb.util.HTTPClientUtils;
 import com.infotech.adb.util.PSWAuthTokenResponse;
 import com.infotech.adb.util.ResponseUtility;
 import lombok.extern.log4j.Log4j2;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.ssl.TrustStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -27,11 +22,6 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.net.ssl.SSLContext;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.X509Certificate;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
@@ -43,78 +33,37 @@ public class PSWAPIConsumer {
     @Autowired
     private LogRequestService logRequestService;
 
-//    @Autowired
-//    private RestTemplate restTemplate;
-
-
-    public RestTemplate restTemplate() throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
-        TrustStrategy acceptingTrustStrategy = (X509Certificate[] chain, String authType) -> true;
-
-        SSLContext sslContext = org.apache.http.ssl.SSLContexts.custom()
-                .loadTrustMaterial(null, acceptingTrustStrategy)
-                .build();
-
-        SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext);
-
-        CloseableHttpClient httpClient = HttpClients.custom()
-                .setSSLSocketFactory(csf)
-                .build();
-
-        HttpComponentsClientHttpRequestFactory requestFactory =
-                HTTPClientUtils_ToDel.getClientHttpRequestFactory("ADSAUDX35", "Nwpm2dByDNoe");
-
-        requestFactory.setHttpClient(httpClient);
-        RestTemplate restTemplate = new RestTemplate(requestFactory);
-        return restTemplate;
-    }
     //**************************
     // Get Authorization Token
     // **************************/
-    public PSWAuthTokenResponse getAuthorizationToken(String clientID, String clientSecret) throws JsonProcessingException {
-//        RestTemplate restTemplate = new RestTemplate(
-//                HTTPClientUtils.getClientHttpRequestFactory(
-//                        clientID, clientSecret));
-
+    public PSWAuthTokenResponse getAuthorizationToken() throws JsonProcessingException {
         RestTemplate restTemplate = new RestTemplate(
-                HTTPClientUtils_ToDel.getClientHttpRequestFactory(
-                        clientID, clientSecret));
-
-        // Set Headers...
-     //   HttpHeaders headers = new HttpHeaders();
-     //   headers.set("Content-Type", "application/x-www-form-urlencoded ");
-    //    HttpEntity<String> entity = new HttpEntity<>("", headers);
+                HTTPClientUtils.getClientHttpRequestFactory(
+                        AppConstants.PSW.CLIENT_ID, AppConstants.PSW.CLIENT_SECRET));
 
         System.out.println("AppConstants.PSW.BASE_URL :"+AppConstants.PSW.BASE_URL);
 
-        UriComponents uriBuilder = UriComponentsBuilder.fromHttpUrl(AppConstants.PSW.BASE_URL + AppConstants.PSW.API_AUTH)
-              //  .queryParam("grant_type", AppConstants.PSW.AUT_GRANT_TYPE)
-//                .queryParam("username", userName)
-  //              .queryParam("password", password)
-                .build();
-
+        UriComponents uriBuilder = UriComponentsBuilder.fromHttpUrl(
+                AppConstants.PSW.BASE_URL + AppConstants.PSW.API_AUTH).build();
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
-        MultiValueMap<String, String> map= new LinkedMultiValueMap<>(
-
-        );
+        MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
         map.add("grant_type", AppConstants.PSW.AUT_GRANT_TYPE);
         map.add("client_id", AppConstants.PSW.CLIENT_ID);
         map.add("client_secret", AppConstants.PSW.CLIENT_SECRET);
 
-        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
-
-        //ResponseEntity<String> response = restTemplate.postForEntity( url, request , String.class );
+        HttpEntity<MultiValueMap<String, String>> request
+                = new HttpEntity<MultiValueMap<String, String>>(map, headers);
 
         PSWAuthTokenResponse authTokenResponse = new PSWAuthTokenResponse();
         try {
             ResponseEntity<String> result = restTemplate.postForEntity(uriBuilder.toUri(), request, String.class);
+
+            System.out.println("________________Status Code:" + result.getStatusCode());
             log.debug("________________Status Code:" + result.getStatusCode());
             log.debug("________________Body:" + result.getBody());
-
-            //        JSONObject jsonObject = new JSONObject(result.getBody());
-//        String accessToken = jsonObject.getString("access_token");
 
             authTokenResponse = PSWAuthTokenResponse.jsonToObject(result.getBody());
             authTokenResponse.setResponseCode(result.getStatusCodeValue());
@@ -407,13 +356,13 @@ public class PSWAPIConsumer {
     private ResponseUtility.APIResponse executeRequest(RequestParameter requestParameter, String messageName) throws JsonProcessingException {
 
         // fetch toke.
-        PSWAuthTokenResponse authTokenResponse = getAuthorizationToken(AppConstants.PSW.CLIENT_ID, AppConstants.PSW.CLIENT_SECRET);
+        PSWAuthTokenResponse authTokenResponse = getAuthorizationToken();
+
         String token = authTokenResponse.getApiToken();
         ResponseUtility.APIResponse apiResponse = null;
 
         ZonedDateTime requestTime = ZonedDateTime.now();
         LogRequest logRequest = null;
-
         //Auth completed.
         if (HttpStatus.OK.value() == authTokenResponse.getResponseCode()) {
             UriComponents uriBuilder = UriComponentsBuilder.fromHttpUrl(
@@ -422,7 +371,9 @@ public class PSWAPIConsumer {
             apiResponse = postRequest(uriBuilder.toUriString(), token, requestParameter);
 
             System.out.println("=================" + apiResponse);
+
             logRequest = LogRequest.buildNewObject(messageName, RequestMethod.POST.name(), requestParameter, requestTime, apiResponse);
+
             logRequestService.createLogRequest(logRequest);
         } else {
             ///   logRequest = LogRequest.buildNewObject("Sharing of Update Information and Payment Mode By AD", RequestMethod.POST.name(),requestParameter, requestTime, authTokenResponse);
@@ -467,7 +418,7 @@ public class PSWAPIConsumer {
         PSWAPIConsumer pswApiConsumer = new PSWAPIConsumer();
 
         try {
-            PSWAuthTokenResponse authTokenResponse = pswApiConsumer.getAuthorizationToken("ADSAUDX35", "Nwpm2dByDNoe");
+            PSWAuthTokenResponse authTokenResponse = pswApiConsumer.getAuthorizationToken();
             System.out.println("-------------PSWAuthTokenResponse: " + authTokenResponse);
 
             AccountDetailDTO accountDetail = new AccountDetailDTO();
