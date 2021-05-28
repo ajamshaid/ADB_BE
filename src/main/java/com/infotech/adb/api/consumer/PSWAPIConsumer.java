@@ -73,15 +73,10 @@ public class PSWAPIConsumer {
 //                HTTPClientUtils.getClientHttpRequestFactory(
 //                        clientID, clientSecret));
 
-        try {
-            restTemplate = restTemplate();
-        } catch (KeyStoreException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (KeyManagementException e) {
-            e.printStackTrace();
-        }
+        RestTemplate restTemplate = new RestTemplate(
+                HTTPClientUtils_ToDel.getClientHttpRequestFactory(
+                        clientID, clientSecret));
+
         // Set Headers...
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/x-www-form-urlencoded ");
@@ -452,7 +447,7 @@ public class PSWAPIConsumer {
         PSWAPIConsumer pswApiConsumer = new PSWAPIConsumer();
 
         try {
-            PSWAuthTokenResponse authTokenResponse = pswApiConsumer.getAuthorizationToken("adb", "adb");
+            PSWAuthTokenResponse authTokenResponse = pswApiConsumer.getAuthorizationToken("ADSAUDX35", "Nwpm2dByDNoe");
             System.out.println("-------------PSWAuthTokenResponse: " + authTokenResponse);
 
             AccountDetailDTO accountDetail = new AccountDetailDTO();
