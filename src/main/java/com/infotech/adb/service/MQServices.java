@@ -46,6 +46,8 @@ public class MQServices {
             acctDetailList.forEach((acct -> {
                 acct.setCreatedOn(ZonedDateTime.now());
                 acct.setUpdatedOn(ZonedDateTime.now());
+
+                acct.setIban(acct.getIban().replaceAll("\\s+",""));
                 if (!AppUtility.isEmpty(acct.getAuthPMImport())) {
                     acct.setAuthPMImport(acct.getAuthPMImport().replace(MqUtility.DELIMETER_DATA, ","));
                 }

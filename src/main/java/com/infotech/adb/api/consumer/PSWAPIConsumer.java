@@ -41,8 +41,8 @@ public class PSWAPIConsumer {
     @Autowired
     private LogRequestService logRequestService;
 
-    @Autowired
-    private RestTemplate restTemplate;
+//    @Autowired
+//    private RestTemplate restTemplate;
 
 
     public RestTemplate restTemplate() throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
