@@ -2,6 +2,7 @@ package com.infotech.adb.api.fe;
 
 
 import com.infotech.adb.dto.AccountDetailDTO;
+import com.infotech.adb.dto.BankNegativeCountriesDTO;
 import com.infotech.adb.dto.TraderProfileStatusDTO;
 import com.infotech.adb.exceptions.CustomException;
 import com.infotech.adb.exceptions.DataValidationException;
@@ -78,6 +79,33 @@ public class PSWRequestAPI {
         }else{
             customResponse = ResponseUtility.successResponse("{}", AppConstants.PSWResponseCodes.OK,
                     "Updated authorized payment modes", null,false);
+        }
+        return customResponse;
+    }
+
+
+    @RequestMapping(value = "/update/neg-countries", method = RequestMethod.POST)
+    public CustomResponse updateNegativeCountries(@RequestBody BankNegativeCountriesDTO dto)
+            throws CustomException, DataValidationException, NoDataFoundException {
+
+        log.debug("updateNegativeCountries:: IN Coming Request Data is:"+dto.toString());
+
+        ResponseUtility.APIResponse response ;
+
+        response =  pswService.shareNegativeListOfCountries(dto);
+  //      response = ResponseUtility.buildAPIResponse(null, HttpStatus.OK.toString(),new ResponseUtility.Message("200","Hello World"));
+
+
+        ZonedDateTime requestTime = ZonedDateTime.now();
+        CustomResponse customResponse = null;
+
+        if(AppUtility.isEmpty(response)){ //if Un-successful Response
+
+            ResponseUtility.exceptionResponse(new CustomException("Resquest update Failed.."),"");
+
+        }else{
+            customResponse = ResponseUtility.successResponse("{}", AppConstants.PSWResponseCodes.OK,
+                    "Negative List Of Countries Shared", null,false);
         }
         return customResponse;
     }

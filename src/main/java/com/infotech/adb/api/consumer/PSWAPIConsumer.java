@@ -83,7 +83,8 @@ public class PSWAPIConsumer {
 
 
     /*********************************************************************
-     4.3.	Message 3 – Sharing of Updated Information and Authorized Payment Modes by AD with PSW
+     4.3
+     Message 3 – Sharing of updated authorized payment modes by AD with PSW
      ********************************************************************/
     public ResponseUtility.APIResponse updateAccountAndPMInPWS(AccountDetailDTO dto)
             throws HttpClientErrorException, JsonProcessingException {
@@ -100,64 +101,16 @@ public class PSWAPIConsumer {
         return executeRequest(requestParameter, "Sharing of Update Information and Payment Mode By AD");
     }
 
-    /***********************************************************
-     4.7.	Message 7 – Sharing Updated Negative List of Countries with PSW
-     ***********************************************************/
-    public ResponseUtility.APIResponse updateRestrictedListOFCountries(RestrictedCountriesDTO restrictedDTO)
-            throws HttpClientErrorException, JsonProcessingException {
-
-        RequestParameter<RestrictedCountriesDTO> requestParameter = new RequestParameter<>(
-                AppConstants.MESSAGE_GUID.MSG_UPDATE_GUID
-                , AppConstants.AD_ID
-                , AppConstants.PSW.ID, "03"
-                , AppConstants.PSW.METHOD_ID_UPDATE_RESTRICTED_COUNTRIES
-                , AppConstants.AD_SIGNATURE);
-        requestParameter.setData(restrictedDTO);
-
-        return executeRequest(requestParameter, "Sharing Updated Negative List of Countries with PSW");
-    }
 
     /***********************************************************
-     4.8.	Message 8 – Sharing Updated Negative List of Commodities with PSW
-     ***********************************************************/
-    public ResponseUtility.APIResponse updateRestrictedListOFCommodities(RestrictedCommoditiesDTO dto)
-            throws HttpClientErrorException, JsonProcessingException {
-
-        RequestParameter<RestrictedCommoditiesDTO> requestParameter = new RequestParameter<>(
-                AppConstants.MESSAGE_GUID.MSG_UPDATE_GUID
-                , AppConstants.AD_ID
-                , AppConstants.PSW.ID, "03"
-                , AppConstants.PSW.METHOD_ID_UPDATE_RESTRICTED_COMMODITIES
-                , AppConstants.AD_SIGNATURE);
-        requestParameter.setData(dto);
-
-        return executeRequest(requestParameter, "Sharing Updated Negative List of Commodities with PSW");
-    }
-    /***********************************************************
-     4.9.	Message 9 – Sharing Updated Negative List of Suppliers with PSW
-     ***********************************************************/
-    public ResponseUtility.APIResponse updateRestrictedListOFSuppliers(RestrictedSuppliersDTO dto)
-            throws HttpClientErrorException, JsonProcessingException {
-
-        RequestParameter<RestrictedSuppliersDTO> requestParameter = new RequestParameter<>(
-                AppConstants.MESSAGE_GUID.MSG_UPDATE_GUID
-                , AppConstants.AD_ID
-                , AppConstants.PSW.ID, "03"
-                , AppConstants.PSW.METHOD_ID_UPDATE_RESTRICTED_SUPPLIERS
-                , AppConstants.AD_SIGNATURE);
-        requestParameter.setData(dto);
-
-        return executeRequest(requestParameter, "Sharing Updated Negative List of Suppliers with PSW");
-    }
-
-    /***********************************************************
-     4.10.	Message 10 – Trader Profile Active/Inactive Message by AD to PSW
+     4.4
+     Message 4 – Trader Profile Active/Inactive Message by AD to PSW
      ***********************************************************/
     public ResponseUtility.APIResponse updateTraderProfileAccountStatus(TraderProfileStatusDTO dto)
             throws HttpClientErrorException, JsonProcessingException {
 
         RequestParameter<TraderProfileStatusDTO> requestParameter = new RequestParameter<>(
-                AppConstants.MESSAGE_GUID.MSG_UPDATE_GUID
+                UUID.randomUUID()
                 , AppConstants.AD_ID
                 , AppConstants.PSW.ID, "03"
                 , AppConstants.PSW.METHOD_ID_UPDATE_TRADER_ACCT_STATUS
@@ -168,14 +121,90 @@ public class PSWAPIConsumer {
     }
 
 
+
+    /***********************************************************
+     11.1
+     Message 1 – Sharing negative list of countries by AD with PSW / Sharing
+     update in negative list of countries by AD with PSW
+     ***********************************************************/
+    public ResponseUtility.APIResponse shareNegativeListOfCountries(BankNegativeCountriesDTO restrictedDTO)
+            throws HttpClientErrorException, JsonProcessingException {
+
+        RequestParameter<BankNegativeCountriesDTO> requestParameter = new RequestParameter<>(
+                UUID.randomUUID()
+                , AppConstants.AD_ID
+                , AppConstants.PSW.ID, "03"
+                , AppConstants.PSW.METHOD_ID_SHARE_NEG_LIST_OF_COUNTRIES
+                , AppConstants.AD_SIGNATURE);
+        requestParameter.setData(restrictedDTO);
+
+        return executeRequest(requestParameter, "Sharing Updated Negative List of Countries with PSW");
+    }
+
+    /***********************************************************
+    11.2
+     Message 2 – Sharing Negative List of Commodities by AD with PSW/ Sharing
+     update in negative list of Commodities by AD with PSW
+     ***********************************************************/
+    public ResponseUtility.APIResponse shareNegativeListOfCommodities(BankNegativeCommoditiesDTO dto)
+            throws HttpClientErrorException, JsonProcessingException {
+
+        RequestParameter<BankNegativeCommoditiesDTO> requestParameter = new RequestParameter<>(
+                 UUID.randomUUID()
+                , AppConstants.AD_ID
+                , AppConstants.PSW.ID, "03"
+                , AppConstants.PSW.METHOD_ID_SHARE_NEG_LIST_OF_COMMODITIES
+                , AppConstants.AD_SIGNATURE);
+        requestParameter.setData(dto);
+
+        return executeRequest(requestParameter, "Sharing Updated Negative List of Commodities with PSW");
+    }
+    /***********************************************************
+     11.3
+     Message 3 – Sharing Negative List of Suppliers by AD with PSW/ Sharing
+     update in negative list of Suppliers by AD with PSW
+     ***********************************************************/
+    public ResponseUtility.APIResponse shareNegativeListOfSuppliers(BankNegativeSuppliersDTO dto)
+            throws HttpClientErrorException, JsonProcessingException {
+
+        RequestParameter<BankNegativeSuppliersDTO> requestParameter = new RequestParameter<>(
+                 UUID.randomUUID()
+                , AppConstants.AD_ID
+                , AppConstants.PSW.ID, "03"
+                , AppConstants.PSW.METHOD_ID_SHARE_NEG_LIST_OF_SUPPLIERS
+                , AppConstants.AD_SIGNATURE);
+        requestParameter.setData(dto);
+
+        return executeRequest(requestParameter, "Sharing Updated Negative List of Suppliers with PSW");
+    }
+
+    /***********************************************************
+     5.1.1.	Message 1 – Share Financial Transaction Data with PSW by AD (IMPORT)
+     ***********************************************************/
+     public ResponseUtility.APIResponse shareFinancialInformationImport(FinancialTransactionImportDTO dto)
+     throws HttpClientErrorException, JsonProcessingException {
+
+     RequestParameter<FinancialTransactionImportDTO> requestParameter = new RequestParameter<>(
+     UUID.randomUUID()
+     , AppConstants.AD_ID
+     , AppConstants.PSW.ID, "03"
+     , AppConstants.PSW.METHOD_ID_SHARE_FIN_TRANS_DATA_IMPORT
+     , AppConstants.AD_SIGNATURE);
+     requestParameter.setData(dto);
+
+     return executeRequest(requestParameter, "Sharing Financial Transaction Data For Import with PSW by AD");
+     }
+
+
+
     /***********************************************************
      4.11.	Message 11 – Update in Trader’s Email and Mobile Number Message by AD to PSW
-     ***********************************************************/
+     ***********************************************************
     public ResponseUtility.APIResponse updateTraderProfile(TraderProfileDTO dto)
             throws HttpClientErrorException, JsonProcessingException {
 
         RequestParameter<TraderProfileDTO> requestParameter = new RequestParameter<>(
-                AppConstants.MESSAGE_GUID.MSG_UPDATE_GUID
+                 UUID.randomUUID()
                 , AppConstants.AD_ID
                 , AppConstants.PSW.ID, "03"
                 , AppConstants.PSW.METHOD_ID_UPDATE_TRADERS_EMAIL_MOB
@@ -188,12 +217,12 @@ public class PSWAPIConsumer {
 
     /***********************************************************
      5.1.1.	Message 1 – Share Financial Transaction Data with PSW by AD (IMPORT)
-     ***********************************************************/
+     ***********************************************************
     public ResponseUtility.APIResponse shareFinancialInformationImport(FinancialTransactionImportDTO dto)
             throws HttpClientErrorException, JsonProcessingException {
 
         RequestParameter<FinancialTransactionImportDTO> requestParameter = new RequestParameter<>(
-                AppConstants.MESSAGE_GUID.MSG_UPDATE_GUID
+                 UUID.randomUUID()
                 , AppConstants.AD_ID
                 , AppConstants.PSW.ID, "03"
                 , AppConstants.PSW.METHOD_ID_SHARE_FIN_TRANS_DATA_IMPORT
@@ -206,12 +235,12 @@ public class PSWAPIConsumer {
 
     /***********************************************************
      5.1.3.	Message 3 – Sharing of BDA Information Import by AD with PSW
-     ***********************************************************/
+     ***********************************************************
     public ResponseUtility.APIResponse shareBDAInformationImport(BDAImportDTO dto)
             throws HttpClientErrorException, JsonProcessingException {
 
         RequestParameter<BDAImportDTO> requestParameter = new RequestParameter<>(
-                AppConstants.MESSAGE_GUID.MSG_UPDATE_GUID
+                 UUID.randomUUID()
                 , AppConstants.AD_ID
                 , AppConstants.PSW.ID, "03"
                 , AppConstants.PSW.METHOD_ID_SHARE_BDA_INFO_IMPORT
@@ -225,12 +254,12 @@ public class PSWAPIConsumer {
 
     /***********************************************************
      5.2.1.	Message 1 – Share Financial Transaction Data with PSW by AD (Export)
-     ***********************************************************/
+     ***********************************************************
     public ResponseUtility.APIResponse shareFinancialInformationExport(FinancialTransactionExportDTO dto)
             throws HttpClientErrorException, JsonProcessingException {
 
         RequestParameter<FinancialTransactionExportDTO> requestParameter = new RequestParameter<>(
-                AppConstants.MESSAGE_GUID.MSG_UPDATE_GUID
+                 UUID.randomUUID()
                 , AppConstants.AD_ID
                 , AppConstants.PSW.ID, "03"
                 , AppConstants.PSW.METHOD_ID_SHARE_FIN_TRANS_DATA_EXPORT
@@ -247,7 +276,7 @@ public class PSWAPIConsumer {
             throws HttpClientErrorException, JsonProcessingException {
 
         RequestParameter<BCAExportDTO> requestParameter = new RequestParameter<>(
-                AppConstants.MESSAGE_GUID.MSG_UPDATE_GUID
+                 UUID.randomUUID()
                 , AppConstants.AD_ID
                 , AppConstants.PSW.ID, "03"
                 , AppConstants.PSW.METHOD_ID_SHARE_BCA_INFO_EXPORT
@@ -265,7 +294,7 @@ public class PSWAPIConsumer {
             throws HttpClientErrorException, JsonProcessingException {
 
         RequestParameter<CashMarginDTO> requestParameter = new RequestParameter<>(
-                AppConstants.MESSAGE_GUID.MSG_UPDATE_GUID
+                 UUID.randomUUID()
                 , AppConstants.AD_ID
                 , AppConstants.PSW.ID, "03"
                 , AppConstants.PSW.METHOD_ID_SHARE_CASH_MARGIN_MESSAGE
@@ -283,7 +312,7 @@ public class PSWAPIConsumer {
             throws HttpClientErrorException, JsonProcessingException {
 
         RequestParameter<ChangeBankRequestDTO> requestParameter = new RequestParameter<>(
-                AppConstants.MESSAGE_GUID.MSG_UPDATE_GUID
+                 UUID.randomUUID()
                 , AppConstants.AD_ID
                 , AppConstants.PSW.ID, "03"
                 , AppConstants.PSW.METHOD_ID_SHARE_COB_APPROVAL_REJECTION_MESSAGE
@@ -301,7 +330,7 @@ public class PSWAPIConsumer {
             throws HttpClientErrorException, JsonProcessingException {
 
         RequestParameter<TradeTransactionDTO> requestParameter = new RequestParameter<>(
-                AppConstants.MESSAGE_GUID.MSG_UPDATE_GUID
+                 UUID.randomUUID()
                 , AppConstants.AD_ID
                 , AppConstants.PSW.ID, "03"
                 , AppConstants.PSW.METHOD_ID_FIN_TRANS_CANCELLATION
@@ -318,7 +347,7 @@ public class PSWAPIConsumer {
             throws HttpClientErrorException, JsonProcessingException {
 
         RequestParameter<TradeTransBDAInfoDTO> requestParameter = new RequestParameter<>(
-                AppConstants.MESSAGE_GUID.MSG_UPDATE_GUID
+                 UUID.randomUUID()
                 , AppConstants.AD_ID
                 , AppConstants.PSW.ID, "03"
                 , AppConstants.PSW.METHOD_ID_REVERSAL_OF_BDA_BCA
@@ -335,7 +364,7 @@ public class PSWAPIConsumer {
             throws HttpClientErrorException, JsonProcessingException {
 
         RequestParameter<TradeTransSettlementDTO> requestParameter = new RequestParameter<>(
-                AppConstants.MESSAGE_GUID.MSG_UPDATE_GUID
+                 UUID.randomUUID()
                 , AppConstants.AD_ID
                 , AppConstants.PSW.ID, "03"
                 , AppConstants.PSW.METHOD_ID_FIN_TRANS_SETTLEMENT

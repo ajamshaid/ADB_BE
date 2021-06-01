@@ -1,7 +1,5 @@
 package com.infotech.adb.util;
 
-import java.util.UUID;
-
 public class AppConstants {
 
     public final static String AD_ID = "SAUD";
@@ -38,11 +36,14 @@ public class AppConstants {
         public final static String CLIENT_SECRET = "Nwpm2dByDNoe";
 
         public final static String API_UPDATE_URL = "/api/dealers/saud/edi";
-        public final static String METHOD_ID_UPDATE_INFO_AND_PM = "1512";//MGS-6
-        public final static String METHOD_ID_UPDATE_RESTRICTED_COUNTRIES= "1513";//MGS-7
-        public final static String METHOD_ID_UPDATE_RESTRICTED_COMMODITIES= "1514";//MGS-8
-        public final static String METHOD_ID_UPDATE_RESTRICTED_SUPPLIERS= "1515";//MGS-9
-        public final static String METHOD_ID_UPDATE_TRADER_ACCT_STATUS= "1516"; // MSG-10
+        public final static String METHOD_ID_UPDATE_INFO_AND_PM = "1512";//MGS-4.3
+        public final static String METHOD_ID_UPDATE_TRADER_ACCT_STATUS= "1516"; // MSG-4.4
+
+        public final static String METHOD_ID_SHARE_NEG_LIST_OF_COUNTRIES= "1554";//MGS-11.1
+        public final static String METHOD_ID_SHARE_NEG_LIST_OF_COMMODITIES= "1555";//MGS-11.2
+        public final static String METHOD_ID_SHARE_NEG_LIST_OF_SUPPLIERS= "1556";//MGS-11.3
+
+
         public final static String METHOD_ID_UPDATE_TRADERS_EMAIL_MOB= "1534"; //MGS-11
 
         //5.1.	Financial & GD Information Messages (Import)
@@ -64,13 +65,6 @@ public class AppConstants {
         1538 Sharing of Change of Bank request approval/rejection message by AD with PSW
         1539 Sharing of Change of Bank request approval/rejection message by other selected AD with PSW
         */
-    }
-
-
-    public static class MESSAGE_GUID {
-//        public final static UUID MSG_UPDATE_ACCT_INFO_PAYMENT_MODE = UUID.fromString(AppUtility.generateRandomUniqString());
-        public final static UUID MSG_UPDATE_GUID = UUID.fromString("a1374655-5eb8-4a0e-9eb5-989521cd1ca");
-
     }
 
     public static class DBConstraints {

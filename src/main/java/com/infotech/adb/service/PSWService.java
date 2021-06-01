@@ -2,8 +2,7 @@ package com.infotech.adb.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.infotech.adb.api.consumer.PSWAPIConsumer;
-import com.infotech.adb.dto.AccountDetailDTO;
-import com.infotech.adb.dto.TraderProfileStatusDTO;
+import com.infotech.adb.dto.*;
 import com.infotech.adb.util.AppConstants;
 import com.infotech.adb.util.AppUtility;
 import com.infotech.adb.util.ResponseUtility;
@@ -49,4 +48,54 @@ public class PSWService {
         }
         return pswResponse;
     }
+
+    public ResponseUtility.APIResponse shareNegativeListOfCountries(BankNegativeCountriesDTO dto) {
+        ResponseUtility.APIResponse pswResponse = null;
+
+        try {
+            pswResponse  =  consumer.shareNegativeListOfCountries(dto);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        if(!AppUtility.isEmpty(pswResponse)){
+            if(AppConstants.PSWResponseCodes.OK .equals(pswResponse.getMessage().getCode())){
+                //@TODO // update in DB
+            }
+        }
+        return pswResponse;
+    }
+
+    public ResponseUtility.APIResponse shareNegativeListOfCommodities(BankNegativeCommoditiesDTO dto) {
+        ResponseUtility.APIResponse pswResponse = null;
+
+        try {
+            pswResponse  =  consumer.shareNegativeListOfCommodities(dto);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        if(!AppUtility.isEmpty(pswResponse)){
+            if(AppConstants.PSWResponseCodes.OK .equals(pswResponse.getMessage().getCode())){
+                //@TODO // update in DB
+            }
+        }
+        return pswResponse;
+    }
+
+    public ResponseUtility.APIResponse shareNegativeListOfSuppliers(BankNegativeSuppliersDTO dto) {
+        ResponseUtility.APIResponse pswResponse = null;
+
+        try {
+            pswResponse  =  consumer.shareNegativeListOfSuppliers(dto);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        if(!AppUtility.isEmpty(pswResponse)){
+            if(AppConstants.PSWResponseCodes.OK .equals(pswResponse.getMessage().getCode())){
+                //@TODO // update in DB
+            }
+        }
+        return pswResponse;
+    }
+
+
 }

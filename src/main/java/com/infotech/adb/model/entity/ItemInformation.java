@@ -29,20 +29,20 @@ public class ItemInformation {
     @Column(name = "UOM",length = 3, nullable = true)
     private String uom;
 
-    @Column(name = "UNIT_PRICE", precision=24, scale=4)
-    private BigDecimal unitPrice;
-
     @Column(name = "COUNTRY_OF_ORIGIN",length = 3, nullable = false)
     private String countryOfOrigin;
-
-    @Column(name = "IMPORT_OR_EXPORT_VALUE", precision=24, scale=4)
-    private BigDecimal importOrExportValue;
 
     @Column(name = "SAMPLE",length = 3, nullable = false)
     private String sample;
 
     @Column(name = "SAMPLE_VALUE",length = 20, nullable = true)
     private String sampleValue;
+
+    @Column(name = "UNIT_PRICE", precision=24, scale=4)
+    private BigDecimal unitPrice;
+
+    @Column(name = "IMPORT_OR_EXPORT_VALUE", precision=24, scale=4)
+    private BigDecimal importOrExportValue;
 
     @ManyToOne
     @JoinColumn(name="FIN_TRANSACTION_ID", nullable=false)

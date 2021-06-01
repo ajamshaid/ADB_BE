@@ -54,15 +54,6 @@ public class PSWAPI_TODel {
             }else{
                 throw new DataValidationException("In-correct IBAN");
             }
-        } else if(requestBody.getMethodId().equals(AppConstants.PSW.METHOD_ID_UPDATE_RESTRICTED_COUNTRIES)) {
-            System.out.println("-------- PSW Receive Updated negative list of [COUNTRIES] Request :" + AppConstants.PSW.METHOD_ID_UPDATE_RESTRICTED_COUNTRIES);
-            return getOKResponse(requestBody, "Updated negative list of countries",requestBody.getMethodId());
-        }else if(requestBody.getMethodId().equals(AppConstants.PSW.METHOD_ID_UPDATE_RESTRICTED_COMMODITIES)) {
-            System.out.println("-------- PSW Receive Updated negative list of [COMMODITIES] Request :" + AppConstants.PSW.METHOD_ID_UPDATE_RESTRICTED_COMMODITIES);
-            return getOKResponse(requestBody, "Updated negative list of commodities",requestBody.getMethodId());
-        }else if(requestBody.getMethodId().equals(AppConstants.PSW.METHOD_ID_UPDATE_RESTRICTED_SUPPLIERS)) {
-            System.out.println("-------- PSW Receive Updated negative list of [SUPPLIERS] Request :" + AppConstants.PSW.METHOD_ID_UPDATE_RESTRICTED_SUPPLIERS);
-            return getOKResponse(requestBody, "Updated negative list of suppliers",requestBody.getMethodId());
         }else if(requestBody.getMethodId().equals(AppConstants.PSW.METHOD_ID_UPDATE_TRADER_ACCT_STATUS)) {
             System.out.println("-------- PSW Receive Updated  [Trader Acct Status] Request :" + AppConstants.PSW.METHOD_ID_UPDATE_TRADER_ACCT_STATUS);
             return getOKResponse(requestBody, "Updated Account Status",requestBody.getMethodId());

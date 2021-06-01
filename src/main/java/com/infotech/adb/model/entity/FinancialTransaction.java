@@ -47,6 +47,9 @@ public class FinancialTransaction {
     @Temporal(TemporalType.TIMESTAMP)
     private Date finalDateOfShipment;
 
+    // Financial Instrument  Expiry Date ??
+
+
     @Column(name = "REMARKS",length = 200, nullable = true)
     private String Remarks;
 

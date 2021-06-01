@@ -44,6 +44,20 @@ public class PaymentInformation {
     @Column(name = "DELIVERY_TERM",length = 3, nullable = false)
     private String deliveryTerm;
 
+    @Column(name = "EXCHANGE_RATE", precision=24, scale=4, nullable = false)
+    private BigDecimal exchangeRate;
+
+    @Column(name = "LC_CONTRACT_NO",length = 30, nullable = true)
+    private String lcContractNo;
+
+    /* Missing in FT import???
+
+    Financial Instrument Value
+    Financial Instrument Currency
+
+     */
+
+
     @Column(name = "TOTAL_VALUE_OF_SHIPMENT", precision=24, scale=4 ) //used in share FinInfo for Export --> Message 5.2.1
     private BigDecimal totalValueOfShipment;
 
@@ -81,11 +95,7 @@ public class PaymentInformation {
     @Column(name = "OTHER_CHARGES", precision=19, scale=4)
     private BigDecimal otherCharges;
 
-    @Column(name = "EXCHANGE_RATE", precision=24, scale=4, nullable = false)
-    private BigDecimal exchangeRate;
 
-    @Column(name = "LC_CONTRACT_NO",length = 30, nullable = true)
-    private String lcContractNo;
 
     @OneToOne
     @JoinColumn(name="FIN_TRANSACTION_ID", nullable=false)

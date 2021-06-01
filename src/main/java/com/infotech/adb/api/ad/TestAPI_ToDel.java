@@ -5,19 +5,18 @@ import com.infotech.adb.api.consumer.PSWAPIConsumer;
 import com.infotech.adb.dto.*;
 import com.infotech.adb.exceptions.DataValidationException;
 import com.infotech.adb.exceptions.NoDataFoundException;
-import com.infotech.adb.model.entity.AccountDetail;
-import com.infotech.adb.model.entity.BDA;
-import com.infotech.adb.model.entity.FinancialTransaction;
 import com.infotech.adb.model.entity.User;
 import com.infotech.adb.model.repository.BDARepository;
 import com.infotech.adb.model.repository.FinancialTransactionRepository;
 import com.infotech.adb.service.UserService;
-import com.infotech.adb.util.AppUtility;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
@@ -68,7 +67,7 @@ public class TestAPI_ToDel {
 //
 //    }
 
-    @RequestMapping(value = "/update-res-countries", method = RequestMethod.GET)
+  /*  @RequestMapping(value = "/update-res-countries", method = RequestMethod.GET)
     public ResponseEntity<?> getRequestRequestedCountriesTest(@RequestParam String Iban) throws JsonProcessingException {
 
         log.info("Test .. Request update Restricted Countries");
@@ -111,7 +110,7 @@ public class TestAPI_ToDel {
             throw new NoDataFoundException("No Record found for IBAN:" + Iban);
         }
     }
-
+*/
     @RequestMapping(value = "/update-trader-acct-status", method = RequestMethod.GET)
     public ResponseEntity<?> updateTraderAcctStatusTest(@RequestBody RequestParameter<TraderProfileStatusDTO> requestBody) throws JsonProcessingException, DataValidationException {
         log.info("Test .. Update Trader Acct Status");
@@ -122,7 +121,7 @@ public class TestAPI_ToDel {
             throw new NoDataFoundException("No Record found for IBAN:" + requestBody.getData());
         }
     }
-
+/*
     @RequestMapping(value = "/update-trader-email-mob", method = RequestMethod.GET)
     public ResponseEntity<?> updateTraderEmailAndMobTest(@RequestBody RequestParameter<TraderProfileDTO> requestBody) throws JsonProcessingException, DataValidationException {
         log.info("Test .. Update Trader Email and Mobile");
@@ -172,6 +171,7 @@ public class TestAPI_ToDel {
         return new ResponseEntity<>(pswApiConsumer.shareFinancialInformationExport(dto), HttpStatus.OK);
 
     }
+    */
 
     //Testing for    5.2.3.	Message 3 – Sharing of BCA Information Export by AD with PSW
     @RequestMapping(value = "/export/share-bca", method = RequestMethod.GET)
