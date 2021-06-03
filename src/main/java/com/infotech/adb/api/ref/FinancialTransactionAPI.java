@@ -59,4 +59,20 @@ public class FinancialTransactionAPI {
         return ResponseUtility.buildResponseObject(entity, new FinancialTransactionImportDTO(),true);
     }
 
+    @RequestMapping(value = "/import/", method = RequestMethod.PUT)
+    public CustomResponse updateFTImport(HttpServletRequest request,
+                                     @RequestBody FinancialTransactionImportDTO reqDTO)
+            throws CustomException, DataValidationException, NoDataFoundException {
+
+        if (AppUtility.isEmpty(reqDTO) || AppUtility.isEmpty(reqDTO.getFtId())) {
+            throw new DataValidationException(messageBundle.getString("validation.error"));
+        }
+        FinancialTransaction entity = null;
+        try {
+            entity = referenceService.updateFinancialTransaction(reqDTO.convertToEntity());
+        } catch (Exception e) {
+            ResponseUtility.exceptionResponse(e, "");
+        }
+        return ResponseUtility.buildResponseObject(entity, new FinancialTransactionImportDTO(), false);
+    }
 }

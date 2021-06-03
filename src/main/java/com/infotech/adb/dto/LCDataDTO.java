@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 public class LCDataDTO implements BaseDTO<LCDataDTO, LCData> {
+    private Long id;
     private BigDecimal advPayPercentage;
     private BigDecimal sightPercentage;
     private BigDecimal usancePercentage;
@@ -22,13 +23,20 @@ public class LCDataDTO implements BaseDTO<LCDataDTO, LCData> {
     @Override
     public LCData convertToEntity() {
         LCData entity = new LCData();
+        entity.setId(this.getId());
+        entity.setAdvPayPercentage(this.getAdvPayPercentage());
+        entity.setSightPercentage(this.getSightPercentage());
+        entity.setUsancePercentage(this.getUsancePercentage());
+        entity.setDays(this.getDays());
+        entity.setTotalPercentage(this.getTotalPercentage());
+
         return entity;
     }
 
     @Override
     public void convertToDTO(LCData entity, boolean partialFill) {
-
         if (entity != null) {
+            this.setId(entity.getId());
             this.setAdvPayPercentage(entity.getAdvPayPercentage());
             this.setSightPercentage(entity.getSightPercentage());
             this.setUsancePercentage(entity.getUsancePercentage());

@@ -9,9 +9,10 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 public class ItemInformationImportDTO implements BaseDTO<ItemInformationImportDTO, ItemInformation> {
+    private Long id;
     private String hsCode;
     private String goodsDescription;
-    private Integer quantity;
+    private BigDecimal quantity;
     private String uom;
     private String countryOfOrigin;
     private String sample;
@@ -29,6 +30,19 @@ public class ItemInformationImportDTO implements BaseDTO<ItemInformationImportDT
     @Override
     public ItemInformation convertToEntity() {
         ItemInformation entity = new ItemInformation();
+
+        entity.setId(this.getId());
+        entity.setHsCode(this.getHsCode());
+        entity.setGoodsDescription(this.getGoodsDescription());
+        entity.setQuantity(this.getQuantity());
+        entity.setUom(this.getUom());
+        entity.setCountryOfOrigin(this.getCountryOfOrigin());
+        entity.setSample(this.getSample());
+        entity.setSampleValue(this.getSampleValue());
+        entity.setUnitPrice(this.getUnitPrice());
+//        entity.setTotalValue(this.getUnitPrice().multiply(entity.getQuantity()));
+        entity.setImportOrExportValue(this.getImportValue());
+
         return entity;
     }
 
@@ -36,6 +50,7 @@ public class ItemInformationImportDTO implements BaseDTO<ItemInformationImportDT
     public void convertToDTO(ItemInformation entity, boolean partialFill) {
 
         if (entity != null) {
+            this.setId(entity.getId());
             this.setHsCode(entity.getHsCode());
             this.setGoodsDescription(entity.getGoodsDescription());
             this.setQuantity(entity.getQuantity());
@@ -44,7 +59,7 @@ public class ItemInformationImportDTO implements BaseDTO<ItemInformationImportDT
             this.setSample(entity.getSample());
             this.setSampleValue(entity.getSampleValue());
             this.setUnitPrice(entity.getUnitPrice());
-            this.setTotalValue(entity.getUnitPrice().multiply(new BigDecimal(entity.getQuantity())));
+            this.setTotalValue(entity.getUnitPrice().multiply(entity.getQuantity()));
             this.setImportValue(entity.getImportOrExportValue());
 
         }

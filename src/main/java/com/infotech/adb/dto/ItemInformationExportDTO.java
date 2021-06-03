@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class ItemInformationExportDTO implements BaseDTO<ItemInformationExportDTO, ItemInformation> {
     private String hsCode;
-    private Integer quantity;
+    private BigDecimal quantity;
     private String uom;
 
     private BigDecimal unitPrice;
@@ -35,7 +35,7 @@ public class ItemInformationExportDTO implements BaseDTO<ItemInformationExportDT
             this.setQuantity(entity.getQuantity());
             this.setUom(entity.getUom());
             this.setUnitPrice(entity.getUnitPrice());
-            this.setTotalValue(entity.getUnitPrice().multiply(new BigDecimal(entity.getQuantity())));
+            this.setTotalValue(entity.getUnitPrice().multiply(entity.getQuantity()));
             this.setExportValue(entity.getImportOrExportValue());
 
         }

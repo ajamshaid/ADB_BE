@@ -20,19 +20,19 @@ public class ItemInformation {
     @Column(name = "HS_CODE",length = 14, nullable = false)
     private String hsCode;
 
-    @Column(name = "GOODS_DESCRIPTION",length = 100, nullable = false)
+    @Column(name = "GOODS_DESCRIPTION",length = 100, nullable = true)
     private String goodsDescription;
 
-    @Column(name = "QUANTITY",length = 4, nullable = false)
-    private Integer quantity;
+    @Column(name = "QUANTITY", precision=24, scale=4)
+    private BigDecimal quantity;
 
-    @Column(name = "UOM",length = 3, nullable = true)
+    @Column(name = "UOM",length = 10, nullable = true)
     private String uom;
 
-    @Column(name = "COUNTRY_OF_ORIGIN",length = 3, nullable = false)
+    @Column(name = "COUNTRY_OF_ORIGIN",length = 3, nullable = true)
     private String countryOfOrigin;
 
-    @Column(name = "SAMPLE",length = 3, nullable = false)
+    @Column(name = "SAMPLE",length = 3, nullable = true)
     private String sample;
 
     @Column(name = "SAMPLE_VALUE",length = 20, nullable = true)

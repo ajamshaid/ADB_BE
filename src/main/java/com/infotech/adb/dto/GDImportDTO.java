@@ -147,8 +147,8 @@ public class GDImportDTO implements BaseDTO<GDImportDTO, GD> {
                 this.setExporterCountry(pi.getExporterCountry());
                 this.setModeOfPayment(ft.getModeOfPayment());
                 this.setFinInsUniqueNumber(ft.getFinInsUniqueNumber());
-                this.setInvoiceValue(pi.getTotalInvoiceValue());
-                this.setInvoiceCurrency(pi.getInvoiceCurrency());
+//                this.setInvoiceValue(pi.getFinancialInstrumentValue());
+//                this.setInvoiceCurrency(pi.getFinancialInstrumentCurrency());
                 this.setInvoiceNumber(pi.getInvoiceNumber());
                 this.setInvoiceDate(AppUtility.formatedDate(pi.getInvoiceDate()));
                 this.setDeliveryTerm(pi.getDeliveryTerm());

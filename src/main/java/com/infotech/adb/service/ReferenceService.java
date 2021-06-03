@@ -10,6 +10,7 @@ import com.infotech.adb.util.AppUtility;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -66,5 +67,11 @@ public class ReferenceService {
         log.info("getAllFinancialTransactionById method called..");
         Optional<FinancialTransaction> ref = financialTransactionRepository.findById(id);
         return ref.get();
+    }
+
+    @Transactional
+    public FinancialTransaction updateFinancialTransaction(FinancialTransaction ftEntity) {
+        log.info("updateFinancialTransaction method called..");
+        return financialTransactionRepository.save(ftEntity);
     }
 }

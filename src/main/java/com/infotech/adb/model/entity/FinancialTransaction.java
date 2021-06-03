@@ -21,11 +21,12 @@ public class FinancialTransaction {
 
     @Column(name = "NTN",length = 9, nullable = false)
     private String ntn;
+
     @Column(name = "NAME",length = 100, nullable = false)
     private String name;
 
-    @Column(name = "PK_REMITTANCE",length = 3, nullable = false)
-    private String isPKRemittance;
+    @Column(name = "IBAN",length = 24, nullable = false)
+    private String iban;
 
     @Column(name = "MODE_OF_PAYMENT",length = 3, nullable = false)
     private String modeOfPayment;
@@ -47,33 +48,41 @@ public class FinancialTransaction {
     @Temporal(TemporalType.TIMESTAMP)
     private Date finalDateOfShipment;
 
-    // Financial Instrument  Expiry Date ??
+    @Column(name = "FIN_INS_EXPIRY_DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date finInsExpiryDate;
 
-
-    @Column(name = "REMARKS",length = 200, nullable = true)
+    @Column(name = "REMARKS",length = 500, nullable = true)
     private String Remarks;
 
-    @Column(name = "ADV_PAY_PERCENTAGE", precision=7, scale=4, nullable = true)
-    private BigDecimal advPayPercentage;
+//    @Column(name = "ADV_PAY_PERCENTAGE", precision=7, scale=4, nullable = true)
+//    private BigDecimal advPayPercentage;
+//
+//    @Column(name = "OPEN_ACC_PERCENTAGE",precision=7, scale=4, nullable = true)
+//    private BigDecimal openAccPercentage;
 
-    @Column(name = "OPEN_ACC_PERCENTAGE",precision=7, scale=4, nullable = true)
-    private BigDecimal openAccPercentage;
+    //for Payment mode -> Open Account (Cash Margin)
+
+    @Column(name = "CASH_MARGIN_PERCENTAGE",precision=7, scale=4)
+    private BigDecimal cashMarginPercentage;
+
+    @Column(name = "CASH_MARGIN_VALUE", precision=19, scale=4)
+    private BigDecimal cashMarginValue;
 
     // LC and CC Data
-    @OneToOne(mappedBy = "financialTransaction", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "financialTransaction", fetch = FetchType.LAZY , cascade = CascadeType.ALL)
     private CCData ccData;
 
-    @OneToOne(mappedBy = "financialTransaction", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "financialTransaction", fetch = FetchType.LAZY , cascade = CascadeType.ALL)
     private LCData lcData;
 
-    @OneToOne(mappedBy = "financialTransaction", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "financialTransaction", fetch = FetchType.LAZY , cascade = CascadeType.ALL)
     private PaymentInformation paymentInformation;
 
-    @OneToMany(mappedBy = "financialTransaction", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "financialTransaction", fetch = FetchType.LAZY , cascade = CascadeType.ALL)
     private Set<ItemInformation> itemInformationSet;
 
-    @OneToMany(mappedBy = "financialTransaction", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "financialTransaction", fetch = FetchType.LAZY , cascade = CascadeType.ALL)
     private Set<FinTransMOP> finTransMOPSet;
-
 
 }

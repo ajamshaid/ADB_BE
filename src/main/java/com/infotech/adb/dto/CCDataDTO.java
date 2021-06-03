@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 public class CCDataDTO implements BaseDTO<CCDataDTO, CCData> {
+    private Long id;
     private BigDecimal advPayPercentage;
     private BigDecimal docAgainstPayPercentage;
     private BigDecimal docAgainstAcceptancePercentage;
@@ -22,6 +23,12 @@ public class CCDataDTO implements BaseDTO<CCDataDTO, CCData> {
     @Override
     public CCData convertToEntity() {
         CCData entity = new CCData();
+        entity.setId(this.getId());
+        entity.setAdvPayPercentage(this.getAdvPayPercentage());
+        entity.setDocAgainstPayPercentage(this.getDocAgainstPayPercentage());
+        entity.setDocAgainstAcceptancePercentage(this.getDocAgainstAcceptancePercentage());
+        entity.setDays(this.getDays());
+        entity.setTotalPercentage(this.getTotalPercentage());
         return entity;
     }
 
@@ -29,6 +36,7 @@ public class CCDataDTO implements BaseDTO<CCDataDTO, CCData> {
     public void convertToDTO(CCData entity, boolean partialFill) {
 
         if (entity != null) {
+            this.setId(entity.getId());
             this.setAdvPayPercentage(entity.getAdvPayPercentage());
             this.setDocAgainstPayPercentage(entity.getDocAgainstPayPercentage());
             this.setDocAgainstAcceptancePercentage(entity.getDocAgainstAcceptancePercentage());

@@ -155,8 +155,8 @@ public class GDExportDTO implements BaseDTO<GDExportDTO, GD> {
                 this.setExporterCountry(pi.getExporterCountry());
                 this.setModeOfPayment(ft.getModeOfPayment());
                 this.setFinInsUniqueNumber(ft.getFinInsUniqueNumber());
-                this.setInvoiceValue(pi.getTotalInvoiceValue());
-                this.setInvoiceCurrency(pi.getInvoiceCurrency());
+//                this.setInvoiceValue(pi.getTotalInvoiceValue());
+//                this.setInvoiceCurrency(pi.getInvoiceCurrency());
                 this.setInvoiceNumber(pi.getInvoiceNumber());
                 this.setInvoiceDate(AppUtility.formatedDate(pi.getInvoiceDate()));
                 this.setDeliveryTerm(pi.getDeliveryTerm());
@@ -170,8 +170,8 @@ public class GDExportDTO implements BaseDTO<GDExportDTO, GD> {
                 this.setExchangeRate(pi.getExchangeRate());
 
 
-                this.setOpenAccPercentage(ft.getOpenAccPercentage());
-                this.setAdvPayPercentage(ft.getAdvPayPercentage());
+//                this.setOpenAccPercentage(ft.getOpenAccPercentage());
+//                this.setAdvPayPercentage(ft.getAdvPayPercentage());
 
                 if (!AppUtility.isEmpty(ft.getCcData())) {
                     this.setDocAgainstPayPercentage(ft.getCcData().getDocAgainstPayPercentage());

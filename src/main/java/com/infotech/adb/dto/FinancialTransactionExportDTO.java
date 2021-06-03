@@ -57,8 +57,8 @@ public class FinancialTransactionExportDTO implements BaseDTO<FinancialTransacti
                 this.setPaymentInformation(new PaymentInformationExportDTO(entity.getPaymentInformation()));
             }
 
-            this.setOpenAccPercentage(entity.getOpenAccPercentage());
-            this.setAdvPayPercentage(entity.getAdvPayPercentage());
+//            this.setOpenAccPercentage(entity.getOpenAccPercentage());
+//            this.setAdvPayPercentage(entity.getAdvPayPercentage());
 
             if (!AppUtility.isEmpty(entity.getCcData())) {
                 this.setDocAgainstPayPercentage(entity.getCcData().getDocAgainstPayPercentage());

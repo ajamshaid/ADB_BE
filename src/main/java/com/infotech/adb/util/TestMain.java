@@ -3,6 +3,7 @@ package com.infotech.adb.util;
 import com.ibm.mq.*;
 import com.ibm.mq.constants.CMQC;
 import com.ibm.mq.constants.MQConstants;
+import com.infotech.adb.jms.MqUtility;
 import com.opencsv.exceptions.CsvException;
 
 import java.io.FileNotFoundException;
@@ -21,10 +22,23 @@ public class TestMain {
         // TestMain.ReadMSG();
         //testRandomUUID();
 
-        String replyMessage =  "PK81 SAUD 0000 0820 0130 4936|Ahsan|33325221125|602|548491_NTN|CNIC_35201565464546";
-        String[] acctDtlAry = replyMessage.split("\\|");
+        String msg =  "MSG TYPE!UNIQ ID!Importer NTN|Importer Name|Importer IBAN|Mode of Payment|InstumentNo|BENEFICIARY Name|BENEFICIARY ADDRESS|SHIP PORT|223232.22|INSTR CURR|2.200|INSTUMENT NO\n" +
+                "|^HS CODE|HS QUANTITY|GOODS DESC|^HS CODE|HS QUANTITY|GOODS DESC|^HS CODE|HS QUANTITY|GOODS DESC";
 
-        System.out.println("-------");
+
+
+        MqUtility.MqMessage replyMessage = MqUtility.parseReplyMessage(msg);
+
+        System.out.println("-------"+replyMessage.getReqResStr());
+  //      String[] acctDtlAry = msg.getReqResStr().split("\\|\\^");
+       /* for (String str:acctDtlAry){
+            System.out.println("-------"+str);
+
+        }*/
+
+
+
+
     }
 
     public static void testRandomUUID(){
