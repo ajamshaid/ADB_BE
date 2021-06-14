@@ -58,7 +58,7 @@ public class RequestParameter<T> {
         return newRParameter;
     }
 
-    public static boolean isValidRequest(RequestParameter requestParameter,boolean ibanOnly) throws DataValidationException {
+    public static boolean isValidRequest(RequestParameter requestParameter) throws DataValidationException {
         boolean isValid = true;
         StringBuffer sb = new StringBuffer("");
         if (AppUtility.isEmpty(requestParameter.getMessageId())) {
@@ -85,6 +85,16 @@ public class RequestParameter<T> {
             sb.append(" Processing Code " + messageBundle.getString("missing.request.parameter"));
             isValid = false;
         }
+
+        if (!isValid) {
+            throw new DataValidationException(sb.toString());
+        }
+        return isValid;
+    }
+
+    public static boolean isValidIBANRequest(RequestParameter requestParameter, boolean ibanOnly)throws DataValidationException {
+        boolean isValid = true;
+        StringBuffer sb = new StringBuffer("");
         if (requestParameter.data instanceof IBANVerificationRequest) {
             IBANVerificationRequest data = (IBANVerificationRequest) requestParameter.data;
 
@@ -107,7 +117,6 @@ public class RequestParameter<T> {
                 }
             }
         }
-
         if (!isValid) {
             throw new DataValidationException(sb.toString());
         }

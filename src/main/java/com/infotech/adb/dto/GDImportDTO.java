@@ -1,13 +1,13 @@
 package com.infotech.adb.dto;
 
 import com.infotech.adb.model.entity.*;
-import com.infotech.adb.util.AppConstants;
 import com.infotech.adb.util.AppUtility;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -17,6 +17,7 @@ public class GDImportDTO implements BaseDTO<GDImportDTO, GD> {
      // GD Fields
     private String gdNumber;
     private String gdType;
+    private String gdStatus;
     private String consignmentCategory;
     private String collectorate;
     private String blAwbNumber;
@@ -29,6 +30,8 @@ public class GDImportDTO implements BaseDTO<GDImportDTO, GD> {
 
     private GDGeneralInfoDTO generalInformation;
     private Set<ItemInformationImportDTO> itemInformation;
+
+    private NegativeListDTO negativeList;
 
 
     public GDImportDTO(GD entity) {
@@ -47,6 +50,7 @@ public class GDImportDTO implements BaseDTO<GDImportDTO, GD> {
         if (entity != null) {
             this.setGdNumber(entity.getGdNumber());
             this.setGdType(entity.getGdType());
+            this.setGdStatus(entity.getGdStatus());
             this.setConsignmentCategory(entity.getConsignmentCategory());
             this.setCollectorate(entity.getCollectorate());
             this.setBlAwbNumber(entity.getBlAwbNumber());
@@ -103,27 +107,13 @@ public class GDImportDTO implements BaseDTO<GDImportDTO, GD> {
 
     @Data
     public class GDFinancialInfoDTO {
-        private String beneficiaryName;
-        private String beneficiaryAddress;
-        private String beneficiaryCountry;
-        private String beneficiaryIban;
-
-        private String exporterName;
-        private String exporterAddress;
-        private String exporterCountry;
+        private String importerIban;
         private String modeOfPayment;
         private String finInsUniqueNumber;
-
-        private CCDataDTO contractCollectionData;
-        private LCDataDTO lcData;
-
-        private String intendedPayDate;
-        private String transportDocDate;
-
-        private String invoiceCurrency;
+        private String currency;
         private String invoiceNumber;
         private String invoiceDate;
-        private BigDecimal invoiceValue;
+        private BigDecimal totalDeclaredValue;
         private String deliveryTerm;
         private BigDecimal fobValueUsd;
         private BigDecimal freightUsd;
@@ -134,23 +124,18 @@ public class GDImportDTO implements BaseDTO<GDImportDTO, GD> {
         private BigDecimal otherCharges;
         private BigDecimal exchangeRate;
 
-
         public GDFinancialInfoDTO convertToDTO( FinancialTransaction ft) {
             if (ft != null) {
                 PaymentInformation pi = ft.getPaymentInformation();
-                this.setBeneficiaryName(pi.getBeneficiaryName());
-                this.setBeneficiaryAddress(pi.getBeneficiaryAddress());
-                this.setBeneficiaryCountry(pi.getBeneficiaryCountry());
-                this.setBeneficiaryIban(pi.getBeneficiaryIban());
-                this.setExporterName(pi.getExporterName());
-                this.setExporterAddress(pi.getExporterAddress());
-                this.setExporterCountry(pi.getExporterCountry());
+                this.setImporterIban(ft.getIban());
                 this.setModeOfPayment(ft.getModeOfPayment());
                 this.setFinInsUniqueNumber(ft.getFinInsUniqueNumber());
-//                this.setInvoiceValue(pi.getFinancialInstrumentValue());
-//                this.setInvoiceCurrency(pi.getFinancialInstrumentCurrency());
+                this.setCurrency(pi.getFinancialInstrumentCurrency());
+
                 this.setInvoiceNumber(pi.getInvoiceNumber());
                 this.setInvoiceDate(AppUtility.formatedDate(pi.getInvoiceDate()));
+                this.setTotalDeclaredValue(pi.getTotalDeclaredValue());
+
                 this.setDeliveryTerm(pi.getDeliveryTerm());
                 this.setFobValueUsd(pi.getFobValueUsd());
                 this.setFreightUsd(pi.getFreightUsd());
@@ -160,15 +145,6 @@ public class GDImportDTO implements BaseDTO<GDImportDTO, GD> {
                 this.setAssessedValueUsd(pi.getAssessedValueUsd());
                 this.setOtherCharges(pi.getOtherCharges());
                 this.setExchangeRate(pi.getExchangeRate());
-
-                if (!AppUtility.isEmpty(ft.getCcData()) && AppConstants.PAYMENT_MODE.IMPORT_CC.equals(ft.getModeOfPayment())) {
-                    this.setContractCollectionData(new CCDataDTO(ft.getCcData()));
-                }
-
-                if (!AppUtility.isEmpty(ft.getLcData()) && AppConstants.PAYMENT_MODE.IMPORT_LC.equals(ft.getModeOfPayment())) {
-                    this.setLcData(new LCDataDTO(ft.getLcData()));
-                }
-
             }
             return this;
         }
@@ -200,5 +176,10 @@ public class GDImportDTO implements BaseDTO<GDImportDTO, GD> {
         }
     }
 
-
+    @Data
+    public class NegativeListDTO{
+        public String country;
+        public String supplier;
+        public List<String> commodities;
+    }
 }

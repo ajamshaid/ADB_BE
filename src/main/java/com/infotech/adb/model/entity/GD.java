@@ -23,6 +23,9 @@ public class GD {
     @Column(name = "GD_NUMBER", length = 24, nullable = false)
     private String gdNumber;
 
+    @Column(name = "GD_STATUS", length = 3, nullable = false)
+    private String gdStatus;
+
     @Column(name = "GD_TYPE", length = 30, nullable = false)
     private String gdType;
 

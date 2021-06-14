@@ -3,8 +3,6 @@ package com.infotech.adb.api.ad;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.infotech.adb.api.consumer.PSWAPIConsumer;
 import com.infotech.adb.dto.*;
-import com.infotech.adb.exceptions.DataValidationException;
-import com.infotech.adb.exceptions.NoDataFoundException;
 import com.infotech.adb.model.entity.User;
 import com.infotech.adb.model.repository.BDARepository;
 import com.infotech.adb.model.repository.FinancialTransactionRepository;
@@ -110,7 +108,7 @@ public class TestAPI_ToDel {
             throw new NoDataFoundException("No Record found for IBAN:" + Iban);
         }
     }
-*/
+
     @RequestMapping(value = "/update-trader-acct-status", method = RequestMethod.GET)
     public ResponseEntity<?> updateTraderAcctStatusTest(@RequestBody RequestParameter<TraderProfileStatusDTO> requestBody) throws JsonProcessingException, DataValidationException {
         log.info("Test .. Update Trader Acct Status");

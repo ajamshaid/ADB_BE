@@ -81,9 +81,13 @@ public class QoutPSWListner {
             pi.setBeneficiaryName(ftDetailsAry[5]);
             pi.setBeneficiaryAddress(ftDetailsAry[6]);
             pi.setPortOfShipment(ftDetailsAry[7]);
-            pi.setFinancialInstrumentValue(new BigDecimal(ftDetailsAry[8]));
+            if(AppUtility.isBigDecimal(ftDetailsAry[8])) {
+                pi.setFinancialInstrumentValue(new BigDecimal(ftDetailsAry[8]));
+            }
             pi.setFinancialInstrumentCurrency(ftDetailsAry[9]);
-            pi.setExchangeRate(new BigDecimal(ftDetailsAry[10]));
+            if(AppUtility.isBigDecimal(ftDetailsAry[10])) {
+                pi.setExchangeRate(new BigDecimal(ftDetailsAry[10]));
+            }
             pi.setLcContractNo(ftDetailsAry[11]);
 
 
@@ -93,8 +97,15 @@ public class QoutPSWListner {
 
                 ItemInformation itemInfo = new ItemInformation();
                 itemInfo.setHsCode(itemStrAry[0]);
-                itemInfo.setQuantity(new BigDecimal(itemStrAry[1]));
-                itemInfo.setGoodsDescription(itemStrAry[2]);
+                if(AppUtility.isBigDecimal(itemStrAry[1])) {
+                    itemInfo.setQuantity(new BigDecimal(itemStrAry[1]));
+                }
+
+                if(itemStrAry[2].length() > 99) {
+                    itemInfo.setGoodsDescription(itemStrAry[2].substring(0, 96)+"...");
+                }else{
+                    itemInfo.setGoodsDescription(itemStrAry[2]);
+                }
 
                 itemInfo.setFinancialTransaction(ft);
 

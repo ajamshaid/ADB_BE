@@ -59,6 +59,9 @@ public class PaymentInformation {
     @Column(name = "TOTAL_VALUE_OF_SHIPMENT", precision=24, scale=4 ) //used in share FinInfo for Export --> Message 5.2.1
     private BigDecimal totalValueOfShipment;
 
+    @Column(name = "TOTAL_DECLARED_VALUE", precision=24, scale=4 ) //RENAME FORM TOTAL_INVOICE_VALUE
+    private BigDecimal totalDeclaredValue;
+
     @Column(name = "INVOICE_Num",length = 30, nullable = true)
     private String invoiceNumber;
 

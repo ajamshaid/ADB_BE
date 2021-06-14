@@ -46,7 +46,7 @@ public class TraderProfileAPI_ToDel {
         ZonedDateTime requestTime = ZonedDateTime.now();
         CustomResponse customResponse = null;
 
-        if (RequestParameter.isValidRequest(requestBody, true)) {
+        if (RequestParameter.isValidIBANRequest(requestBody, true)) {
             AccountDetailDTO accountDetail = null;
             try {
                 IBANVerificationRequest ibanVerificationRequest = requestBody.getData();
@@ -108,7 +108,7 @@ public class TraderProfileAPI_ToDel {
         ZonedDateTime requestTime = ZonedDateTime.now();
 
         CustomResponse customResponse = null;
-        if (RequestParameter.isValidRequest(requestBody, false)) {
+        if (RequestParameter.isValidIBANRequest(requestBody, false)) {
             boolean accountExist = false;
             try {
                 IBANVerificationRequest ibanVerificationRequest = requestBody.getData();

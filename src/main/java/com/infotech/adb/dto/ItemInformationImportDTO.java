@@ -1,6 +1,7 @@
 package com.infotech.adb.dto;
 
 import com.infotech.adb.model.entity.ItemInformation;
+import com.infotech.adb.util.AppUtility;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -58,8 +59,8 @@ public class ItemInformationImportDTO implements BaseDTO<ItemInformationImportDT
             this.setCountryOfOrigin(entity.getCountryOfOrigin());
             this.setSample(entity.getSample());
             this.setSampleValue(entity.getSampleValue());
-            this.setUnitPrice(entity.getUnitPrice());
-            this.setTotalValue(entity.getUnitPrice().multiply(entity.getQuantity()));
+            this.setUnitPrice(AppUtility.isEmpty(entity.getUnitPrice()) ? new BigDecimal("0" ) : entity.getUnitPrice());
+            this.setTotalValue(this.getUnitPrice().multiply(entity.getQuantity()));
             this.setImportValue(entity.getImportOrExportValue());
 
         }
