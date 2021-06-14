@@ -54,13 +54,13 @@ public class ItemInformationImportDTO implements BaseDTO<ItemInformationImportDT
             this.setId(entity.getId());
             this.setHsCode(entity.getHsCode());
             this.setGoodsDescription(entity.getGoodsDescription());
-            this.setQuantity(entity.getQuantity());
+            this.setQuantity(AppUtility.isEmpty(entity.getQuantity()) ? new BigDecimal("0" ) : entity.getQuantity());
             this.setUom(entity.getUom());
             this.setCountryOfOrigin(entity.getCountryOfOrigin());
             this.setSample(entity.getSample());
             this.setSampleValue(entity.getSampleValue());
             this.setUnitPrice(AppUtility.isEmpty(entity.getUnitPrice()) ? new BigDecimal("0" ) : entity.getUnitPrice());
-            this.setTotalValue(this.getUnitPrice().multiply(entity.getQuantity()));
+            this.setTotalValue(this.getUnitPrice().multiply(this.getQuantity()));
             this.setImportValue(entity.getImportOrExportValue());
 
         }

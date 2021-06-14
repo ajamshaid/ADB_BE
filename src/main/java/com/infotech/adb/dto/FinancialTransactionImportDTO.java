@@ -2,7 +2,6 @@ package com.infotech.adb.dto;
 
 import com.infotech.adb.model.entity.FinancialTransaction;
 import com.infotech.adb.model.entity.ItemInformation;
-import com.infotech.adb.util.AppConstants;
 import com.infotech.adb.util.AppUtility;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -114,18 +113,18 @@ public class FinancialTransactionImportDTO implements BaseDTO<FinancialTransacti
                 this.setPaymentInformation(new PaymentInformationImportDTO(entity.getPaymentInformation()));
             }
 
-            if (AppConstants.PAYMENT_MODE.IMPORT_OPEN_ACCOUNT.equals(entity.getModeOfPayment())) {
+       //     if (AppConstants.PAYMENT_MODE.IMPORT_OPEN_ACCOUNT.equals(entity.getModeOfPayment())) {
                 this.setCashMargin(new CashMarginDTO(entity.getCashMarginPercentage()
                         , entity.getCashMarginValue()));
-            }
+       //     }
 
-            if (!AppUtility.isEmpty(entity.getCcData()) && AppConstants.PAYMENT_MODE.IMPORT_CC.equals(entity.getModeOfPayment())) {
+        //    if (!AppUtility.isEmpty(entity.getCcData()) && AppConstants.PAYMENT_MODE.IMPORT_CC.equals(entity.getModeOfPayment())) {
                 this.setContractCollectionData(new CCDataDTO(entity.getCcData()));
-            }
+         //   }
 
-            if (!AppUtility.isEmpty(entity.getLcData()) && AppConstants.PAYMENT_MODE.IMPORT_LC.equals(entity.getModeOfPayment())) {
+       ///     if (!AppUtility.isEmpty(entity.getLcData()) && AppConstants.PAYMENT_MODE.IMPORT_LC.equals(entity.getModeOfPayment())) {
                 this.setLcData(new LCDataDTO(entity.getLcData()));
-            }
+       //     }
 
             if (!AppUtility.isEmpty(entity.getItemInformationSet())) {
                 HashSet<ItemInformationImportDTO> set = new HashSet<>();
@@ -145,6 +144,7 @@ public class FinancialTransactionImportDTO implements BaseDTO<FinancialTransacti
     }
 
     @Data
+    @NoArgsConstructor
     private class FinTranInformationDTO {
         private Date intendedPayDate;
         private java.util.Date transportDocDate;
@@ -153,6 +153,7 @@ public class FinancialTransactionImportDTO implements BaseDTO<FinancialTransacti
     }
 
     @Data
+    @NoArgsConstructor
     private class CashMarginDTO {
         private BigDecimal cashMarginPercentage;
         private BigDecimal cashMarginValue;
