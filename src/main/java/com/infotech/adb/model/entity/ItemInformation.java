@@ -20,7 +20,7 @@ public class ItemInformation {
     @Column(name = "HS_CODE",length = 14, nullable = false)
     private String hsCode;
 
-    @Column(name = "GOODS_DESCRIPTION",length = 100, nullable = true)
+    @Column(name = "GOODS_DESCRIPTION",length = 1000, nullable = true)
     private String goodsDescription;
 
     @Column(name = "QUANTITY", precision=24, scale=4)

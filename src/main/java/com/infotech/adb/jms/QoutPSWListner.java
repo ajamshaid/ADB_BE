@@ -64,10 +64,9 @@ public class QoutPSWListner {
 
 
     private FinancialTransaction parseAndBuildFTImport(String data) {
-        FinancialTransaction ft = null;
+        FinancialTransaction ft = new FinancialTransaction();
         if (!AppUtility.isEmpty(data)) {
-            String[] dataAry = data.split(MqUtility.DELIMETER_MULTIPLE_DATA);
-            String[] ftDetailsAry = dataAry[0].split(MqUtility.DELIMETER_DATA);
+            String[] ftDetailsAry = data.split(MqUtility.DELIMETER_DATA);
 
             ft = new FinancialTransaction();
             ft.setNtn(ftDetailsAry[0]);
@@ -91,20 +90,22 @@ public class QoutPSWListner {
             pi.setLcContractNo(ftDetailsAry[11]);
 
 
-            Set<ItemInformation> itemInformationSet = new HashSet<>(dataAry.length-1);
-            for (int index = 1; index < dataAry.length; index++) {
-               String[] itemStrAry = dataAry[index].split(MqUtility.DELIMETER_DATA);
+            String[] hsCodeAry = ftDetailsAry[12].split(MqUtility.DELIMETER_MULTIPLE_DATA);
+            String[] qtyAry = ftDetailsAry[13].split(MqUtility.DELIMETER_MULTIPLE_DATA);
+            String[] descAry = ftDetailsAry[14].split(MqUtility.DELIMETER_MULTIPLE_DATA);
+
+            Set<ItemInformation> itemInformationSet = new HashSet<>(hsCodeAry.length);
+            for (int index = 0; index < hsCodeAry.length; index++) {
 
                 ItemInformation itemInfo = new ItemInformation();
-                itemInfo.setHsCode(itemStrAry[0]);
-                if(AppUtility.isBigDecimal(itemStrAry[1])) {
-                    itemInfo.setQuantity(new BigDecimal(itemStrAry[1]));
+                itemInfo.setHsCode(hsCodeAry[index]);
+
+                if(qtyAry.length > index && AppUtility.isBigDecimal(qtyAry[index])) {
+                    itemInfo.setQuantity(new BigDecimal(qtyAry[index]));
                 }
 
-                if(itemStrAry[2].length() > 99) {
-                    itemInfo.setGoodsDescription(itemStrAry[2].substring(0, 96)+"...");
-                }else{
-                    itemInfo.setGoodsDescription(itemStrAry[2]);
+                if(descAry.length > index ) {
+                    itemInfo.setGoodsDescription(descAry[index].length() > 999 ? descAry[index].substring(0, 996)+"...": descAry[index]);
                 }
 
                 itemInfo.setFinancialTransaction(ft);

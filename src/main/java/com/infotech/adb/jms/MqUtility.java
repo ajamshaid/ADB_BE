@@ -20,7 +20,7 @@ public class MqUtility {
     public static final String MSG_TYPE_FIN_TRANS_IMPORT = "PSW511";
     public static final String DELIMETER_MSG = "!";
     public static final String DELIMETER_DATA = "\\|";
-    public static final String DELIMETER_MULTIPLE_DATA = "\\|\\^";
+    public static final String DELIMETER_MULTIPLE_DATA = "\\^";
 
     public static HashMap<String, MqUtility.MqMessage> objectLockingMap = new HashMap<>();
 
