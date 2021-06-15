@@ -19,8 +19,8 @@ import java.util.UUID;
 @NoArgsConstructor
 public class RequestParameter<T> {
 
-    private UUID messageId;
-    private Timestamp timestamp;
+    private String messageId;
+    private String timestamp;
     private String senderId;
     private String receiverId;
     private String processingCode;
@@ -48,13 +48,13 @@ public class RequestParameter<T> {
     }
 
     public RequestParameter(UUID messageId, String senderId, String receiverId, String processingCode, String methodId, String signature) {
-        this.messageId = messageId;
+        this.messageId = messageId.toString();
         this.senderId = senderId;
         this.receiverId = receiverId;
         this.processingCode = processingCode;
         this.methodId = methodId;
         this.signature = signature;
-        this.timestamp = Timestamp.from(ZonedDateTime.now().toInstant());
+        this.timestamp = Timestamp.from(ZonedDateTime.now().toInstant()).toString();
     }
 
     private static final ResourceBundle messageBundle = ResourceBundle.getBundle("messages");

@@ -29,13 +29,13 @@ public class AppConstants {
 
         public final static String TIME_STAMP_FORMAT="YyyyMmddhhmmss";
         public final static String ID = "PSW";
-        public final static String BASE_URL = "https://dev.psw.gov.pk";
+        public final static String BASE_URL = "https://sit.psw.gov.pk";
         public final static String API_AUTH = "/auth/connect/token";
         public final static String AUT_GRANT_TYPE = "client_credentials";
         public final static String CLIENT_ID = "ADSAUDX35";
         public final static String CLIENT_SECRET = "Nwpm2dByDNoe";
 
-        public final static String API_UPDATE_URL = "/api/dealers/saud/edi";
+        public final static String API_UPDATE_URL = "/api/dealers/a/d/i/edi";
         public final static String METHOD_ID_UPDATE_INFO_AND_PM = "1512";//MGS-4.3
         public final static String METHOD_ID_UPDATE_TRADER_ACCT_STATUS= "1516"; // MSG-4.4
 

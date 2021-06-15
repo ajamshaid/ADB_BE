@@ -20,7 +20,10 @@ import org.springframework.http.HttpStatus;
 
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.ResourceBundle;
 
 @Log4j2
 public class ResponseUtility {
@@ -74,7 +77,7 @@ public class ResponseUtility {
     @Data
     public static class APIResponse {
 
-        private UUID messageId;
+        private String messageId;
         private Timestamp timestamp;
         private String senderId;
         private String receiverId;
