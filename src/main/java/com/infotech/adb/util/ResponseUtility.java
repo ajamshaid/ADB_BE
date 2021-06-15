@@ -19,7 +19,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -78,7 +77,7 @@ public class ResponseUtility {
     public static class APIResponse {
 
         private String messageId;
-        private Timestamp timestamp;
+        private String timestamp;
         private String senderId;
         private String receiverId;
         private String responseCode;
@@ -94,7 +93,7 @@ public class ResponseUtility {
             this.responseCode = responseCode;
             if(!AppUtility.isEmpty(requestParameter)) {
                 this.messageId = requestParameter.getMessageId();
-                this.timestamp = AppUtility.getCurrentTimeStamp();
+                this.timestamp = AppUtility.getCurrentTimeStamp().toString();
                 this.senderId = AppConstants.AD_ID;//requestParameter.getReceiverId();
                 this.receiverId = requestParameter.getSenderId();
 
