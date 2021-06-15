@@ -65,7 +65,7 @@ public class PSWRequestAPI {
 
         ResponseUtility.APIResponse response ;
 
-        //response =  pswService.updateTraderProfileStatus(dto);
+        response =  pswService.updateTraderProfileStatus(dto);
         response = ResponseUtility.buildAPIResponse(null, HttpStatus.OK.toString(),new ResponseUtility.Message("200","Hello World"));
 
 

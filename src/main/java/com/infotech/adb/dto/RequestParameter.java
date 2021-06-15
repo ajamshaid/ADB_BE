@@ -29,6 +29,24 @@ public class RequestParameter<T> {
 
     private T data;
 
+    public void setData(T data) {
+        this.data = data;
+
+        ObjectWriter ow = new ObjectMapper().writer();
+        String json = "";
+        try {
+            json = ow.writeValueAsString(data);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        this.signature = AppUtility.buildSignature(json);
+        System.out.println("-----------------------------------");
+        System.out.println("Data json is:"+json);
+        System.out.println("The Signature is "+this.signature);
+        System.out.println("-----------------------------------");
+    }
+
     public RequestParameter(UUID messageId, String senderId, String receiverId, String processingCode, String methodId, String signature) {
         this.messageId = messageId;
         this.senderId = senderId;

@@ -1,6 +1,8 @@
 package com.infotech.adb.util;
 
 import com.infotech.adb.exceptions.CustomException;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
@@ -22,6 +24,14 @@ public class AppUtility {
     public static final int defaultDecimalPrecision = 2;
     private static int decimalPercision = defaultDecimalPrecision;
     private static final String DATE_FORMAT = "yyyyMMdd";
+
+
+
+    // Signature field will contain base64 of the SHA256 hashed value of data field
+
+    public static String buildSignature(String data) {
+        return new String(Base64.encodeBase64(DigestUtils.sha256(data)));
+    }
 
     public static String formatedDate(Date date) {
 
