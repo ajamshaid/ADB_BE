@@ -2,10 +2,10 @@ package com.infotech.adb.util;
 
 public class AppConstants {
 
-    public final static String AD_ID = "SAUD";
+    public final static String AD_ID = "SLB";
     //YyyyMmddhhmmss
 
-    public final static String AD_SIGNATURE = "SLKB_SIGNATURE_ABCBC";
+    public final static String AD_SIGNATURE = "SLB_SIGNATURE";
     public static final String HEADER_AUTHORIZATION = "Authorization";
 
 
