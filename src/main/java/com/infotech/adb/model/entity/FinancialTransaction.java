@@ -2,6 +2,7 @@ package com.infotech.adb.model.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -12,6 +13,7 @@ import java.util.Set;
 @Table(name = "FINANCIAL_TRANSACTION")
 @Getter
 @Setter
+@ToString
 public class FinancialTransaction {
 
     @Id
@@ -19,6 +21,9 @@ public class FinancialTransaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "TYPE",length = 10, nullable = false)
+    private String type;
+    
     @Column(name = "NTN",length = 9, nullable = false)
     private String ntn;
 

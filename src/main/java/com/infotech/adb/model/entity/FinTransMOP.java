@@ -24,4 +24,12 @@ public class FinTransMOP {
 
     @Column(name = "MODE_OF_PAYMENT",length = 3, nullable = false)
     private String modeOfPayment;
+
+    @Override
+    public String toString() {
+        return "FinTransMOP{" +
+                "id=" + id +
+                ", modeOfPayment='" + modeOfPayment + '\'' +
+                '}';
+    }
 }

@@ -1,11 +1,13 @@
 package com.infotech.adb.api.ref;
 
+import com.infotech.adb.dto.FinancialTransactionExportDTO;
 import com.infotech.adb.dto.FinancialTransactionImportDTO;
 import com.infotech.adb.exceptions.CustomException;
 import com.infotech.adb.exceptions.DataValidationException;
 import com.infotech.adb.exceptions.NoDataFoundException;
 import com.infotech.adb.model.entity.FinancialTransaction;
 import com.infotech.adb.service.ReferenceService;
+import com.infotech.adb.util.AppConstants;
 import com.infotech.adb.util.AppUtility;
 import com.infotech.adb.util.CustomResponse;
 import com.infotech.adb.util.ResponseUtility;
@@ -29,13 +31,13 @@ public class FinancialTransactionAPI {
     private ReferenceService referenceService;
 
     @RequestMapping(value = "/import/", method = RequestMethod.GET)
-    public CustomResponse getAll(HttpServletRequest request,
+    public CustomResponse getAllImportFT(HttpServletRequest request,
                                  @RequestParam(value = "status", required = false) String status)
             throws CustomException, NoDataFoundException {
 
         List<FinancialTransaction> refList = null;
         try {
-            refList = referenceService.getAllFinancialTransactionByStatus(status);
+            refList = referenceService.getAllFinancialTransactionByType(AppConstants.TYPE_IMPORT);
         } catch (Exception e) {
             throw new CustomException(e);
         }
@@ -43,7 +45,7 @@ public class FinancialTransactionAPI {
     }
 
     @RequestMapping(value = "/import/{id}", method = RequestMethod.GET)
-    public CustomResponse getById(HttpServletRequest request,
+    public CustomResponse getImportFTById(HttpServletRequest request,
                                     @PathVariable Long id)
             throws CustomException, DataValidationException, NoDataFoundException {
 
@@ -60,7 +62,7 @@ public class FinancialTransactionAPI {
     }
 
     @RequestMapping(value = "/import/", method = RequestMethod.PUT)
-    public CustomResponse updateFTImport(HttpServletRequest request,
+    public CustomResponse updateImportFT(HttpServletRequest request,
                                      @RequestBody FinancialTransactionImportDTO reqDTO)
             throws CustomException, DataValidationException, NoDataFoundException {
 
@@ -75,4 +77,57 @@ public class FinancialTransactionAPI {
         }
         return ResponseUtility.buildResponseObject(entity, new FinancialTransactionImportDTO(), false);
     }
+
+    /**********************
+     *  Export
+     *************************/
+
+    @RequestMapping(value = "/export/", method = RequestMethod.GET)
+    public CustomResponse getAllExportFT(HttpServletRequest request,
+                                 @RequestParam(value = "status", required = false) String status)
+            throws CustomException, NoDataFoundException {
+
+        List<FinancialTransaction> refList = null;
+        try {
+            refList = referenceService.getAllFinancialTransactionByType(AppConstants.TYPE_EXPORT);
+        } catch (Exception e) {
+            throw new CustomException(e);
+        }
+        return ResponseUtility.buildResponseList(refList, new FinancialTransactionExportDTO());
+    }
+
+    @RequestMapping(value = "/export/{id}", method = RequestMethod.GET)
+    public CustomResponse getExportFTById(HttpServletRequest request,
+                                  @PathVariable Long id)
+            throws CustomException, DataValidationException, NoDataFoundException {
+
+        if (AppUtility.isEmpty(id)) {
+            throw new DataValidationException(messageBundle.getString("id.not.found"));
+        }
+        FinancialTransaction entity = null;
+        try {
+            entity = referenceService.getAllFinancialTransactionById(id);
+        } catch (Exception e) {
+            throw new CustomException(e);
+        }
+        return ResponseUtility.buildResponseObject(entity, new FinancialTransactionImportDTO(),true);
+    }
+
+    @RequestMapping(value = "/export/", method = RequestMethod.PUT)
+    public CustomResponse updateExportFT(HttpServletRequest request,
+                                         @RequestBody FinancialTransactionImportDTO reqDTO)
+            throws CustomException, DataValidationException, NoDataFoundException {
+
+        if (AppUtility.isEmpty(reqDTO) || AppUtility.isEmpty(reqDTO.getFtId())) {
+            throw new DataValidationException(messageBundle.getString("validation.error"));
+        }
+        FinancialTransaction entity = null;
+        try {
+            entity = referenceService.updateFinancialTransaction(reqDTO.convertToEntity());
+        } catch (Exception e) {
+            ResponseUtility.exceptionResponse(e, "");
+        }
+        return ResponseUtility.buildResponseObject(entity, new FinancialTransactionImportDTO(), false);
+    }
+
 }

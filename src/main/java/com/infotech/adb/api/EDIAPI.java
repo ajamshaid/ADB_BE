@@ -159,7 +159,7 @@ public class EDIAPI {
         ObjectMapper mapper = new ObjectMapper();
         RequestParameter<GDImportDTO> requestBody = new RequestParameter<>();
 
-               requestBody = mapper.readValue(requestString, requestBody.getClass());
+               requestBody = mapper.convertValue(requestString, requestBody.getClass());
 
 
         GDImportDTO dto1 = requestBody.getData();

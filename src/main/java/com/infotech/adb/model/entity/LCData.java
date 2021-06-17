@@ -41,4 +41,15 @@ public class LCData {
     @JoinColumn(name="FIN_TRANSACTION_ID", nullable=false)
     private FinancialTransaction financialTransaction;
 
+    @Override
+    public String toString() {
+        return "LCData{" +
+                "id=" + id +
+                ", advPayPercentage=" + advPayPercentage +
+                ", sightPercentage=" + sightPercentage +
+                ", usancePercentage=" + usancePercentage +
+                ", days=" + days +
+                ", totalPercentage=" + totalPercentage +
+                '}';
+    }
 }

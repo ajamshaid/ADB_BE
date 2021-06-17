@@ -96,4 +96,36 @@ public class PaymentInformation {
     @JoinColumn(name="FIN_TRANSACTION_ID", nullable=false)
     private FinancialTransaction financialTransaction;
 
+
+    @Override
+    public String toString() {
+        return "PaymentInformation{" +
+                "id=" + id +
+                ", beneficiaryName='" + beneficiaryName + '\'' +
+                ", beneficiaryAddress='" + beneficiaryAddress + '\'' +
+                ", beneficiaryCountry='" + beneficiaryCountry + '\'' +
+                ", beneficiaryIban='" + beneficiaryIban + '\'' +
+                ", exporterName='" + exporterName + '\'' +
+                ", exporterAddress='" + exporterAddress + '\'' +
+                ", exporterCountry='" + exporterCountry + '\'' +
+                ", portOfShipment='" + portOfShipment + '\'' +
+                ", portOfDischarge='" + portOfDischarge + '\'' +
+                ", deliveryTerm='" + deliveryTerm + '\'' +
+                ", exchangeRate=" + exchangeRate +
+                ", lcContractNo='" + lcContractNo + '\'' +
+                ", financialInstrumentValue=" + financialInstrumentValue +
+                ", financialInstrumentCurrency='" + financialInstrumentCurrency + '\'' +
+                ", totalValueOfShipment=" + totalValueOfShipment +
+                ", totalDeclaredValue=" + totalDeclaredValue +
+                ", invoiceNumber='" + invoiceNumber + '\'' +
+                ", invoiceDate=" + invoiceDate +
+                ", fobValueUsd=" + fobValueUsd +
+                ", freightUsd=" + freightUsd +
+                ", cfrValueUsd=" + cfrValueUsd +
+                ", insuranceUsd=" + insuranceUsd +
+                ", landingChargesUsd=" + landingChargesUsd +
+                ", assessedValueUsd=" + assessedValueUsd +
+                ", otherCharges=" + otherCharges +
+                '}';
+    }
 }

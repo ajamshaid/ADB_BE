@@ -3,6 +3,9 @@ package com.infotech.adb.util;
 public class AppConstants {
 
     public final static String AD_ID = "SLB";
+    public final static String TYPE_IMPORT = "IMPORT";
+    public final static String TYPE_EXPORT = "EXPORT";
+
     //YyyyMmddhhmmss
 
     public final static String AD_SIGNATURE = "SLB_SIGNATURE";
@@ -16,8 +19,6 @@ public class AppConstants {
     public final static String REQ_TYPE_RES_SUPPLIERS = "RES_SUPPLIERS";
 
     public static class PAYMENT_MODE {
-        public final static String TYPE_IMPORT = "IMPORT";
-        public final static String TYPE_EXPORT = "EXPORT";
 
         public final static String IMPORT_LC = "301";
         public final static String IMPORT_OPEN_ACCOUNT = "302";

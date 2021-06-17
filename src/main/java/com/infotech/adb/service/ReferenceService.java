@@ -56,10 +56,10 @@ public class ReferenceService {
     /*************************************
      * Financial Transaction METHODS
      **************************************/
-    public List<FinancialTransaction> getAllFinancialTransactionByStatus(String status) {
-        log.info("getAllFinancialTransactionByStatus method called..");
+    public List<FinancialTransaction> getAllFinancialTransactionByType(String type) {
+        log.info("getAllFinancialTransactionByType method called..");
         List<FinancialTransaction> refList = null;
-        refList= this.financialTransactionRepository.findAll();
+        refList= this.financialTransactionRepository.findByType(type);
         return refList;
     }
 

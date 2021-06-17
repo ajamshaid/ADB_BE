@@ -41,4 +41,15 @@ public class CCData{
     @JoinColumn(name="FIN_TRANSACTION_ID", nullable=false)
     private FinancialTransaction financialTransaction;
 
+    @Override
+    public String toString() {
+        return "CCData{" +
+                "id=" + id +
+                ", advPayPercentage=" + advPayPercentage +
+                ", docAgainstPayPercentage=" + docAgainstPayPercentage +
+                ", docAgainstAcceptancePercentage=" + docAgainstAcceptancePercentage +
+                ", days=" + days +
+                ", totalPercentage=" + totalPercentage +
+                '}';
+    }
 }

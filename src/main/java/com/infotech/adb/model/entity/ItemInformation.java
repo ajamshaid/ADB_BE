@@ -48,4 +48,20 @@ public class ItemInformation {
     @JoinColumn(name="FIN_TRANSACTION_ID", nullable=false)
     private FinancialTransaction financialTransaction;
 
+
+    @Override
+    public String toString() {
+        return "ItemInformation{" +
+                "id=" + id +
+                ", hsCode='" + hsCode + '\'' +
+                ", goodsDescription='" + goodsDescription + '\'' +
+                ", quantity=" + quantity +
+                ", uom='" + uom + '\'' +
+                ", countryOfOrigin='" + countryOfOrigin + '\'' +
+                ", sample='" + sample + '\'' +
+                ", sampleValue='" + sampleValue + '\'' +
+                ", unitPrice=" + unitPrice +
+                ", importOrExportValue=" + importOrExportValue +
+                '}';
+    }
 }
