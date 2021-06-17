@@ -1,5 +1,6 @@
 package com.infotech.adb.jms;
 
+import com.infotech.adb.model.entity.BDA;
 import com.infotech.adb.model.entity.FinancialTransaction;
 import com.infotech.adb.model.entity.ItemInformation;
 import com.infotech.adb.model.entity.PaymentInformation;
@@ -128,5 +129,34 @@ public class MQMessageParser {
             System.out.println("FT-<>" + ft);
         }
         return ft;
+    }
+
+    public BDA parseAndBuildBDAInfoImport(String data) {
+        //Sharing of BDA Information
+        BDA bda = new BDA();
+     //   ft.setType(AppConstants.TYPE_IMPORT);
+
+        if (!AppUtility.isEmpty(data)) {
+            String[] ftDetailsAry = data.split(MqUtility.DELIMETER_DATA);
+            bda.setImporterNtn(ftDetailsAry[0]);
+            bda.setImporterName(ftDetailsAry[1]);
+            bda.setIban(ftDetailsAry[2]);
+            bda.setFinInsUniqueNumber(ftDetailsAry[3]);
+            bda.setTotalBdaAmountFcy(AppUtility.isBigDecimal(ftDetailsAry[4]) ? new BigDecimal(ftDetailsAry[4]): null);
+            bda.setTotalBdaAmountCurrency(ftDetailsAry[5]);
+            bda.setNetBdaAmountFcy(AppUtility.isBigDecimal(ftDetailsAry[6]) ? new BigDecimal(ftDetailsAry[6]): null);
+            bda.setCurrencyFcy(ftDetailsAry[7]);
+            bda.setModeOfPayment(ftDetailsAry[8]);
+           // bda.setExchangeRateFcy(ftDetailsAry[10]);
+            bda.setExchangeRateFcy(AppUtility.isBigDecimal(ftDetailsAry[10]) ? new BigDecimal(ftDetailsAry[10]): null);
+            bda.setBdaAmountFcy(AppUtility.isBigDecimal(ftDetailsAry[11]) ? new BigDecimal(ftDetailsAry[11]): null);
+            bda.setNetBdaAmountPkr(AppUtility.isBigDecimal(ftDetailsAry[12]) ? new BigDecimal(ftDetailsAry[12]): null);
+            bda.setBdaDocumentRefNumber(ftDetailsAry[13]);
+            bda.setOtherChargesPkr(AppUtility.isBigDecimal(ftDetailsAry[14]) ? new BigDecimal(ftDetailsAry[14]): null);
+
+
+            System.out.println("BDA-<>" + bda);
+        }
+        return bda;
     }
 }

@@ -1,9 +1,11 @@
 package com.infotech.adb.service;
 
 import com.infotech.adb.model.entity.AccountDetail;
+import com.infotech.adb.model.entity.BDA;
 import com.infotech.adb.model.entity.BankNegativeList;
 import com.infotech.adb.model.entity.FinancialTransaction;
 import com.infotech.adb.model.repository.AccountDetailRepository;
+import com.infotech.adb.model.repository.BDARepository;
 import com.infotech.adb.model.repository.BankNegtiveListRepository;
 import com.infotech.adb.model.repository.FinancialTransactionRepository;
 import com.infotech.adb.util.AppUtility;
@@ -27,6 +29,9 @@ public class ReferenceService {
 
     @Autowired
     private FinancialTransactionRepository financialTransactionRepository;
+
+    @Autowired
+    private BDARepository bdaRepository;
 
     public List<AccountDetail> getAllAccountDetails() {
         log.info("getAllAccountDetails method called..");
@@ -73,5 +78,27 @@ public class ReferenceService {
     public FinancialTransaction updateFinancialTransaction(FinancialTransaction ftEntity) {
         log.info("updateFinancialTransaction method called..");
         return financialTransactionRepository.save(ftEntity);
+    }
+
+    /*************************************
+     * BDA METHODS
+     **************************************/
+    public List<BDA> getAllBDA(String type) {
+        log.info("getAllBDA method called..");
+        List<BDA> refList = null;
+        refList= this.bdaRepository.findAll();
+        return refList;
+    }
+
+    public BDA getBDAById(Long id) {
+        log.info("getBDAById method called..");
+        Optional<BDA> ref = bdaRepository.findById(id);
+        return ref.get();
+    }
+
+    @Transactional
+    public BDA updateBDA(BDA entity) {
+        log.info("updateFinancialTransaction method called..");
+        return bdaRepository.save(entity);
     }
 }

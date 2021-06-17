@@ -3,6 +3,7 @@ package com.infotech.adb.util;
 import com.ibm.mq.*;
 import com.ibm.mq.constants.CMQC;
 import com.ibm.mq.constants.MQConstants;
+import com.infotech.adb.jms.MQMessageParser;
 import com.infotech.adb.jms.MqUtility;
 import com.opencsv.exceptions.CsvException;
 
@@ -31,15 +32,18 @@ public class TestMain {
 
 
 
-        String msg = "PSW521!PSW521TF210056793120210202!1336346-8|MOHID INDUSTRIES|PK87SAUD0000032000633154|301|TF2100567931||USD|28215.00|20210508|3901.1000|24.75 M.TONS LLDPE 118WJ AT THE RATE OF USD 1,140/M.TON.^CFR ANY PORT IN PAKISTAN OTHER DETAILS AS PER BENEFICIARYS^PROFORMA INVOICE NO. NA/192025/JAN-20 DATED 30 DECEMBER, 2020.|";
+        String msg = "PSW513!PSW513TF16249431810620210202!|COMMERZ BANK AG FRANKFURT|PK13SAUD0099982000002723|TF162494318106|13239.90||13239.90|EUR||||13239.90|1588788.00|LC-3101^LC-3101^LC-3101^LC-3101|EXPSRVCHG  PKR  2381.00  B^WHTEXP1PC  PKR  15875.00  B^EXPDOCCOLL  PKR  500.00  B^EPRC1YR  PKR  300.00  B|";
 
 
         MqUtility.MqMessage replyMessage = MqUtility.parseReplyMessage(msg);
 
+
+
         System.out.println("-------"+replyMessage.getReqResStr());
 
+        MQMessageParser parser = new MQMessageParser();
 
-  //      System.out.println("=========="+parseAndBuildFTExport(replyMessage.getReqResStr()));
+        System.out.println("=========="+parser.parseAndBuildBDAInfoImport(replyMessage.getReqResStr()));
 
   //      String[] acctDtlAry = msg.getReqResStr().split("\\|\\^");
        /* for (String str:acctDtlAry){

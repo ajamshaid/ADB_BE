@@ -1,5 +1,6 @@
 package com.infotech.adb.jms;
 
+import com.infotech.adb.model.entity.BDA;
 import com.infotech.adb.model.entity.FinancialTransaction;
 import com.infotech.adb.service.ReferenceService;
 import com.infotech.adb.util.AppUtility;
@@ -37,7 +38,15 @@ public class QoutPSWListner {
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
-            } else if (MqUtility.MSG_TYPE_FIN_TRANS_EXPORT.equals(replyMessage.getType())) {
+            } else if (MqUtility.MSG_TYPE_BDA_IMPORT.equals(replyMessage.getType())) {
+                // IF Message 5.1.2  BDA Import
+                try {
+                    BDA bda = mqMessageParser.parseAndBuildBDAInfoImport(replyMessage.getReqResStr());
+                    referenceService.updateBDA(bda);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }  else if (MqUtility.MSG_TYPE_FIN_TRANS_EXPORT.equals(replyMessage.getType())) {
                 // IF Message 5.2.1  Export Share Financial Transaction Data with PSW
                 try {
                     FinancialTransaction ft = mqMessageParser.parseAndBuildFTExport(replyMessage.getReqResStr());
