@@ -1,31 +1,62 @@
 package com.infotech.adb.dto;
 
 import com.infotech.adb.model.entity.BDA;
-import com.infotech.adb.util.AppUtility;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
 public class BDADTO implements BaseDTO<BDADTO, BDA> {
-
     private Long id;
     public String bdaUniqueIdNumber;
     public String gdNumber;
     public String iban;
     public String importerNtn;
     public String importerName;
-    public String bdaDate;
+    public Date bdaDate;
     public String modeOfPayment;
     public String finInsUniqueNumber;
     public BdaInformation bdaInformation;
 
-
     @Override
     public BDA convertToEntity() {
         BDA entity = new BDA();
+
+        entity.setId(this.getId());
+        entity.setGdNumber(this.getGdNumber());
+        entity.setBdaUniqueIdNumber(this.getBdaUniqueIdNumber());
+        entity.setIban(this.getIban());
+        entity.setImporterNtn(this.getImporterNtn());
+        entity.setImporterName(this.getImporterName());
+        entity.setBdaDate(this.getBdaDate());
+        entity.setModeOfPayment(this.getModeOfPayment());
+        entity.setFinInsUniqueNumber(this.getFinInsUniqueNumber());
+
+        entity.setTotalBdaAmountFcy(this.getBdaInformation().getTotalBdaAmountFcy());
+        entity.setTotalBdaAmountCurrency(this.getBdaInformation().getTotalBdaAmountCurrency());
+        entity.setSampleAmountExclude(this.getBdaInformation().getSampleAmountExclude());
+        entity.setSampleAmountCurrency(this.getBdaInformation().getSampleAmountCurrency());
+        entity.setNetBdaAmountFcy(this.getBdaInformation().getNetBdaAmountFcy());
+        entity.setNetBdaAmountCurrency(this.getBdaInformation().getNetBdaAmountCurrency());
+        entity.setExchangeRateFcy(this.getBdaInformation().getExchangeRateFcy());
+        entity.setNetBdaAmountPkr(this.getBdaInformation().getNetBdaAmountPkr());
+        entity.setAmountInWords(this.getBdaInformation().getAmountInWords());
+        entity.setCurrencyFcy(this.getBdaInformation().getCurrencyFcy());
+        entity.setBdaAmountFcy(this.getBdaInformation().getBdaAmountFcy());
+        entity.setBdaAmountPkr(this.getBdaInformation().getBdaAmountPkr());
+        entity.setBdaDocumentRefNumber(this.getBdaInformation().getBdaDocumentRefNumber());
+        entity.setCommissionAmountFcy(this.getBdaInformation().getCommisionAmountFcy());
+        entity.setCommissionAmountPkr(this.getBdaInformation().getCommisionAmountPkr());
+        entity.setFedFcy(this.getBdaInformation().getFedFcy());
+        entity.setFedAmountPkr(this.getBdaInformation().getFedAmountPkr());
+        entity.setSwiftChargesPkr(this.getBdaInformation().getSwiftChargesPkr());
+        entity.setOtherChargesPkr(this.getBdaInformation().getOtherChargesPkr());
+        entity.setRemarks(this.getBdaInformation().getRemarks());
+        entity.setBalanceBdaAmountFcy(this.getBdaInformation().getBalanceBdaAmountFcy());
+
         return entity;
     }
 
@@ -38,7 +69,7 @@ public class BDADTO implements BaseDTO<BDADTO, BDA> {
             this.setIban(entity.getIban());
             this.setImporterNtn(entity.getImporterNtn());
             this.setImporterName(entity.getImporterName());
-            this.setBdaDate(AppUtility.formatedDate(entity.getBdaDate()));
+            this.setBdaDate(entity.getBdaDate());
             this.setModeOfPayment(entity.getModeOfPayment());
             this.setFinInsUniqueNumber(entity.getFinInsUniqueNumber());
             this.setBdaInformation(new BdaInformation(entity.getTotalBdaAmountFcy(),entity.getTotalBdaAmountCurrency()
