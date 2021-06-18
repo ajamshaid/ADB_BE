@@ -31,7 +31,7 @@ public class CCData{
     @Column(name = "DAYS",length = 3, nullable = true)
     private Integer days;
 
-    @Column(name = "TOTAL_PERCENTAGE",precision=7, scale=4, nullable = false)
+    @Column(name = "TOTAL_PERCENTAGE",precision=7, scale=4, nullable = true)
     private BigDecimal totalPercentage;
 
     /*

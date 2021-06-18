@@ -2,6 +2,7 @@ package com.infotech.adb.dto;
 
 import com.infotech.adb.model.entity.FinancialTransaction;
 import com.infotech.adb.model.entity.ItemInformation;
+import com.infotech.adb.util.AppConstants;
 import com.infotech.adb.util.AppUtility;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class FinancialTransactionExportDTO implements BaseDTO<FinancialTransactionExportDTO, FinancialTransaction> {
     private  Long ftId ;
+    private String type;
     private String exporterNtn;
     private String exporterName;
     private String exporterIban;
@@ -33,6 +35,7 @@ public class FinancialTransactionExportDTO implements BaseDTO<FinancialTransacti
     public FinancialTransaction convertToEntity() {
         FinancialTransaction entity = new FinancialTransaction();
 
+        entity.setType(this.getType());
         entity.setId(this.getFtId());
         entity.setNtn(this.getExporterNtn());
         entity.setName(this.getExporterName());
@@ -75,6 +78,7 @@ public class FinancialTransactionExportDTO implements BaseDTO<FinancialTransacti
     public void convertToDTO(FinancialTransaction entity, boolean partialFill) {
         if (entity != null) {
             this.setFtId(entity.getId());
+            this.setType(entity.getType());
             this.setExporterNtn(entity.getNtn());
             this.setExporterName(entity.getName());
             this.setExporterIban(entity.getIban());
