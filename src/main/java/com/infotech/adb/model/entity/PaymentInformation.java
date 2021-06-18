@@ -56,6 +56,10 @@ public class PaymentInformation {
     @Column(name = "FIN_INS_CURRENCY",length = 3, nullable = true)
     private String financialInstrumentCurrency;
 
+    @Column(name = "FIN_INS_EXPIRY_DATE", nullable = true)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date financialInstrumenExpiryDate;
+
     @Column(name = "TOTAL_VALUE_OF_SHIPMENT", precision=24, scale=4 ) //used in share FinInfo for Export --> Message 5.2.1
     private BigDecimal totalValueOfShipment;
 

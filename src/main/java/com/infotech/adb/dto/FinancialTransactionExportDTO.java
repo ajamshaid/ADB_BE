@@ -1,13 +1,11 @@
 package com.infotech.adb.dto;
 
-import com.infotech.adb.model.entity.FinTransMOP;
 import com.infotech.adb.model.entity.FinancialTransaction;
 import com.infotech.adb.model.entity.ItemInformation;
 import com.infotech.adb.util.AppUtility;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,25 +14,15 @@ import java.util.Set;
 public class FinancialTransactionExportDTO implements BaseDTO<FinancialTransactionExportDTO, FinancialTransaction> {
     private String exporterNtn;
     private String exporterName;
-
-    private HashSet<String> modeOfPayment;
+    private String exporterIban;
+    private String modeOfPayment;
     private String finInsUniqueNumber;
 
-    private BigDecimal openAccPercentage;
-    private BigDecimal advPayPercentage;
-    private BigDecimal docAgainstPayPercentage;
-    private BigDecimal docAgainstAcceptancePercentage;
-    private Integer ccDays;
-
-    private BigDecimal sightPercentage;
-    private BigDecimal usancePercentage;
-    private Integer lcDays;
-
-    private BigDecimal totalPercentage;
+    private CCDataDTO contractCollectionData;
+    private LCDataDTO lcData;
 
     private PaymentInformationExportDTO paymentInformation;
-
-    private Set<ItemInformationImportDTO> itemInformation;
+    private Set<ItemInformationExportDTO> itemInformation;
 
     public FinancialTransactionExportDTO(FinancialTransaction entity) {
         convertToDTO(entity, true);
@@ -51,41 +39,27 @@ public class FinancialTransactionExportDTO implements BaseDTO<FinancialTransacti
         if (entity != null) {
             this.setExporterNtn(entity.getNtn());
             this.setExporterName(entity.getName());
+            this.setExporterIban(entity.getIban());
             this.setFinInsUniqueNumber(entity.getFinInsUniqueNumber());
+            this.setModeOfPayment(entity.getModeOfPayment());
 
             if (!AppUtility.isEmpty(entity.getPaymentInformation())) {
                 this.setPaymentInformation(new PaymentInformationExportDTO(entity.getPaymentInformation()));
             }
 
-//            this.setOpenAccPercentage(entity.getOpenAccPercentage());
-//            this.setAdvPayPercentage(entity.getAdvPayPercentage());
+            //    if (!AppUtility.isEmpty(entity.getCcData()) && AppConstants.PAYMENT_MODE.IMPORT_CC.equals(entity.getModeOfPayment())) {
+            this.setContractCollectionData(new CCDataDTO(entity.getCcData()));
+            //   }
 
-            if (!AppUtility.isEmpty(entity.getCcData())) {
-                this.setDocAgainstPayPercentage(entity.getCcData().getDocAgainstPayPercentage());
-                this.setDocAgainstAcceptancePercentage(entity.getCcData().getDocAgainstAcceptancePercentage());
-                this.setCcDays(entity.getCcData().getDays());
-            }
-
-            if (!AppUtility.isEmpty(entity.getLcData()) ) {
-                this.setSightPercentage(entity.getLcData().getSightPercentage());
-                this.setUsancePercentage(entity.getLcData().getUsancePercentage());
-                this.setLcDays(entity.getLcData().getDays());
-                this.setTotalPercentage(entity.getLcData().getTotalPercentage());
-            }
-
-            //Fin Trans mop SET
-            HashSet<String> mopSet = new HashSet<>();
-            for (FinTransMOP item : entity.getFinTransMOPSet()) {
-                mopSet.add(item.getModeOfPayment());
-            }
-            this.setModeOfPayment(mopSet);
+            ///     if (!AppUtility.isEmpty(entity.getLcData()) && AppConstants.PAYMENT_MODE.IMPORT_LC.equals(entity.getModeOfPayment())) {
+            this.setLcData(new LCDataDTO(entity.getLcData()));
+            //     }
 
             //Item Information
             if (!AppUtility.isEmpty(entity.getItemInformationSet())) {
-
-                HashSet<ItemInformationImportDTO> set = new HashSet<>();
+                HashSet<ItemInformationExportDTO> set = new HashSet<>();
                 for (ItemInformation item : entity.getItemInformationSet()) {
-                    set.add(new ItemInformationImportDTO(item));
+                    set.add(new ItemInformationExportDTO(item));
                 }
                 this.setItemInformation(set);
             }

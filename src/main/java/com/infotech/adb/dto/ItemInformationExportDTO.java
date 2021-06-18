@@ -1,6 +1,7 @@
 package com.infotech.adb.dto;
 
 import com.infotech.adb.model.entity.ItemInformation;
+import com.infotech.adb.util.AppUtility;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,13 +10,13 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 public class ItemInformationExportDTO implements BaseDTO<ItemInformationExportDTO, ItemInformation> {
+    private Long id;
     private String hsCode;
+    private String goodsDescription;
     private BigDecimal quantity;
     private String uom;
-
-    private BigDecimal unitPrice;
-    private BigDecimal totalValue;
-    private BigDecimal exportValue;
+    private BigDecimal itemInvoiceValue;
+    private String countryOfOrigin;
 
     public ItemInformationExportDTO(ItemInformation entity) {
         convertToDTO(entity, true);
@@ -24,6 +25,13 @@ public class ItemInformationExportDTO implements BaseDTO<ItemInformationExportDT
     @Override
     public ItemInformation convertToEntity() {
         ItemInformation entity = new ItemInformation();
+        entity.setId(this.getId());
+        entity.setHsCode(this.getHsCode());
+        entity.setGoodsDescription(this.getGoodsDescription());
+        entity.setQuantity(this.getQuantity());
+        entity.setUom(this.getUom());
+        entity.setCountryOfOrigin(this.getCountryOfOrigin());
+        entity.setImportOrExportValue(this.getItemInvoiceValue());
         return entity;
     }
 
@@ -31,13 +39,13 @@ public class ItemInformationExportDTO implements BaseDTO<ItemInformationExportDT
     public void convertToDTO(ItemInformation entity, boolean partialFill) {
 
         if (entity != null) {
+            this.setId(entity.getId());
             this.setHsCode(entity.getHsCode());
-            this.setQuantity(entity.getQuantity());
+            this.setGoodsDescription(entity.getGoodsDescription());
+            this.setQuantity(AppUtility.isEmpty(entity.getQuantity()) ? new BigDecimal("0" ) : entity.getQuantity());
             this.setUom(entity.getUom());
-            this.setUnitPrice(entity.getUnitPrice());
-            this.setTotalValue(entity.getUnitPrice().multiply(entity.getQuantity()));
-            this.setExportValue(entity.getImportOrExportValue());
-
+            this.setCountryOfOrigin(entity.getCountryOfOrigin());
+            this.setItemInvoiceValue(entity.getImportOrExportValue());
         }
     }
 
