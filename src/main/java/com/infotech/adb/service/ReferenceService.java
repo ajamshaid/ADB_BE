@@ -1,13 +1,7 @@
 package com.infotech.adb.service;
 
-import com.infotech.adb.model.entity.AccountDetail;
-import com.infotech.adb.model.entity.BDA;
-import com.infotech.adb.model.entity.BankNegativeList;
-import com.infotech.adb.model.entity.FinancialTransaction;
-import com.infotech.adb.model.repository.AccountDetailRepository;
-import com.infotech.adb.model.repository.BDARepository;
-import com.infotech.adb.model.repository.BankNegtiveListRepository;
-import com.infotech.adb.model.repository.FinancialTransactionRepository;
+import com.infotech.adb.model.entity.*;
+import com.infotech.adb.model.repository.*;
 import com.infotech.adb.util.AppUtility;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +26,9 @@ public class ReferenceService {
 
     @Autowired
     private BDARepository bdaRepository;
+
+    @Autowired
+    private BCARepository bcaRepository;
 
     public List<AccountDetail> getAllAccountDetails() {
         log.info("getAllAccountDetails method called..");
@@ -98,7 +95,29 @@ public class ReferenceService {
 
     @Transactional
     public BDA updateBDA(BDA entity) {
-        log.info("updateFinancialTransaction method called..");
+        log.info("updateBDA method called..");
         return bdaRepository.save(entity);
+    }
+
+    /*************************************
+     * BCA METHODS
+     **************************************/
+    public List<BCA> getAllBCA(String type) {
+        log.info("getAllBCA method called..");
+        List<BCA> refList = null;
+        refList= this.bcaRepository.findAll();
+        return refList;
+    }
+
+    public BCA getBCAById(Long id) {
+        log.info("getBCAById method called..");
+        Optional<BCA> ref = bcaRepository.findById(id);
+        return ref.get();
+    }
+
+    @Transactional
+    public BCA updateBCA(BCA entity) {
+        log.info("updateBCA method called..");
+        return bcaRepository.save(entity);
     }
 }

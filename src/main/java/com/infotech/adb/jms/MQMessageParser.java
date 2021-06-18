@@ -1,9 +1,6 @@
 package com.infotech.adb.jms;
 
-import com.infotech.adb.model.entity.BDA;
-import com.infotech.adb.model.entity.FinancialTransaction;
-import com.infotech.adb.model.entity.ItemInformation;
-import com.infotech.adb.model.entity.PaymentInformation;
+import com.infotech.adb.model.entity.*;
 import com.infotech.adb.util.AppConstants;
 import com.infotech.adb.util.AppUtility;
 import org.springframework.stereotype.Component;
@@ -158,5 +155,39 @@ public class MQMessageParser {
             System.out.println("BDA-<>" + bda);
         }
         return bda;
+    }
+
+    public BCA parseAndBuildBCAExport(String data) {
+        //Sharing of Export BCA Information
+        BCA bca = new BCA();
+        //   ft.setType(AppConstants.TYPE_IMPORT);
+
+        if (!AppUtility.isEmpty(data)) {
+            String[] ftDetailsAry = data.split(MqUtility.DELIMETER_DATA);
+            bca.setExporterNtn(ftDetailsAry[0]);
+            bca.setExporterName(ftDetailsAry[1]);
+            bca.setIban(ftDetailsAry[2]);
+            bca.setModeOfPayment(ftDetailsAry[3]);
+            bca.setFinInsUniqueNumber(ftDetailsAry[4]);
+            bca.setBillNumber(ftDetailsAry[5]);
+            if (AppUtility.isDate(ftDetailsAry[6])) {
+                bca.setBillDated(new Date(ftDetailsAry[6]));
+            }
+
+            bca.setInvoiceNumber(ftDetailsAry[7]);
+
+            if (AppUtility.isDate(ftDetailsAry[8])) {
+                bca.setInvoiceDate(new Date(ftDetailsAry[8]));
+            }
+            //bca.setInvoiceAmount(AppUtility.isBigDecimal(ftDetailsAry[9]) ? new BigDecimal(ftDetailsAry[9]): null);
+            bca.setBillAmount(AppUtility.isBigDecimal(ftDetailsAry[9]) ? new BigDecimal(ftDetailsAry[9]): null);
+            bca.setAgentCommissionFcy(AppUtility.isBigDecimal(ftDetailsAry[10]) ? new BigDecimal(ftDetailsAry[10]): null);
+            bca.setWithholdingTaxPkr(AppUtility.isBigDecimal(ftDetailsAry[11]) ? new BigDecimal(ftDetailsAry[11]): null);
+            bca.setBcaFc(AppUtility.isBigDecimal(ftDetailsAry[12]) ? new BigDecimal(ftDetailsAry[12]): null);
+            bca.setBcaPkr(AppUtility.isBigDecimal(ftDetailsAry[13]) ? new BigDecimal(ftDetailsAry[13]): null);
+
+            System.out.println("BCA-<>" + bca);
+        }
+        return bca;
     }
 }

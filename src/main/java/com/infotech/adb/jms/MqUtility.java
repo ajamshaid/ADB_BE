@@ -20,6 +20,7 @@ public class MqUtility {
     public static final String MSG_TYPE_FIN_TRANS_IMPORT = "PSW511";
     public static final String MSG_TYPE_BDA_IMPORT = "PSW513";
     public static final String MSG_TYPE_FIN_TRANS_EXPORT = "PSW521";
+    public static final String MSG_TYPE_BCA_EXPORT = "PSW523";
     public static final String DELIMETER_MSG = "!";
     public static final String DELIMETER_DATA = "\\|";
     public static final String DELIMETER_MULTIPLE_DATA = "\\^";

@@ -1,5 +1,6 @@
 package com.infotech.adb.jms;
 
+import com.infotech.adb.model.entity.BCA;
 import com.infotech.adb.model.entity.BDA;
 import com.infotech.adb.model.entity.FinancialTransaction;
 import com.infotech.adb.service.ReferenceService;
@@ -39,7 +40,7 @@ public class QoutPSWListner {
                     ex.printStackTrace();
                 }
             } else if (MqUtility.MSG_TYPE_BDA_IMPORT.equals(replyMessage.getType())) {
-                // IF Message 5.1.2  BDA Import
+                // IF Message 5.1.3  BDA Import
                 try {
                     BDA bda = mqMessageParser.parseAndBuildBDAInfoImport(replyMessage.getReqResStr());
                     referenceService.updateBDA(bda);
@@ -51,6 +52,14 @@ public class QoutPSWListner {
                 try {
                     FinancialTransaction ft = mqMessageParser.parseAndBuildFTExport(replyMessage.getReqResStr());
                     referenceService.updateFinancialTransaction(ft);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            } else if (MqUtility.MSG_TYPE_BCA_EXPORT.equals(replyMessage.getType())) {
+                // IF Message 5.2.3  BDA Import
+                try {
+                    BCA bca = mqMessageParser.parseAndBuildBCAExport(replyMessage.getReqResStr());
+                    referenceService.updateBCA(bca);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }

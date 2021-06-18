@@ -34,8 +34,9 @@ public class TestMain {
 
         String msg = "PSW513!PSW513TF16249431810620210202!|COMMERZ BANK AG FRANKFURT|PK13SAUD0099982000002723|TF162494318106|13239.90||13239.90|EUR||||13239.90|1588788.00|LC-3101^LC-3101^LC-3101^LC-3101|EXPSRVCHG  PKR  2381.00  B^WHTEXP1PC  PKR  15875.00  B^EXPDOCCOLL  PKR  500.00  B^EPRC1YR  PKR  300.00  B|";
 
+        String msg523 = "PSW523!PSW523TF16249431810620210202!|COMMERZ BANK AG FRANKFURT|PK13SAUD0099982000002723|301|TF162494318106|169502ECSF0070605||||13239.90|||13239.90|1588788.00|";
 
-        MqUtility.MqMessage replyMessage = MqUtility.parseReplyMessage(msg);
+        MqUtility.MqMessage replyMessage = MqUtility.parseReplyMessage(msg523);
 
 
 
@@ -43,7 +44,9 @@ public class TestMain {
 
         MQMessageParser parser = new MQMessageParser();
 
-        System.out.println("=========="+parser.parseAndBuildBDAInfoImport(replyMessage.getReqResStr()));
+        //System.out.println("=========="+parser.parseAndBuildBDAInfoImport(replyMessage.getReqResStr()));
+
+        System.out.println("=========="+parser.parseAndBuildBCAExport(replyMessage.getReqResStr()));
 
   //      String[] acctDtlAry = msg.getReqResStr().split("\\|\\^");
        /* for (String str:acctDtlAry){
