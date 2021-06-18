@@ -33,7 +33,7 @@ public class MQMessageParser {
             }
 
             if (AppUtility.isDate(ftDetailsAry[8])) {
-                ft.setFinInsExpiryDate(new Date(ftDetailsAry[8]));
+                pi.setFinancialInstrumenExpiryDate(new Date(ftDetailsAry[8]));
             }
 
             String[] hsCodeAry = ftDetailsAry.length >= 10 ? ftDetailsAry[9].split(MqUtility.DELIMETER_MULTIPLE_DATA) : new String[]{};

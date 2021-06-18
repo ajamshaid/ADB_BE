@@ -12,6 +12,7 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 public class FinancialTransactionExportDTO implements BaseDTO<FinancialTransactionExportDTO, FinancialTransaction> {
+    private  Long ftId ;
     private String exporterNtn;
     private String exporterName;
     private String exporterIban;
@@ -31,12 +32,49 @@ public class FinancialTransactionExportDTO implements BaseDTO<FinancialTransacti
     @Override
     public FinancialTransaction convertToEntity() {
         FinancialTransaction entity = new FinancialTransaction();
+
+        entity.setId(this.getFtId());
+        entity.setNtn(this.getExporterNtn());
+        entity.setName(this.getExporterName());
+        entity.setIban(this.getExporterIban());
+
+        entity.setModeOfPayment(this.getModeOfPayment());
+        entity.setFinInsUniqueNumber(this.getFinInsUniqueNumber());
+
+        //CC Data
+        if(!AppUtility.isEmpty(this.getContractCollectionData())) {
+            entity.setCcData(this.getContractCollectionData().convertToEntity());
+            entity.getCcData().setFinancialTransaction(entity);
+        }
+
+        //LC Data
+        if(!AppUtility.isEmpty(this.getLcData())) {
+            entity.setLcData(this.getLcData().convertToEntity());
+            entity.getLcData().setFinancialTransaction(entity);
+        }
+        //Payment Information
+        if(!AppUtility.isEmpty(this.getPaymentInformation())) {
+            entity.setPaymentInformation(this.getPaymentInformation().convertToEntity());
+            entity.getPaymentInformation().setFinancialTransaction(entity);
+        }
+
+        // Item Information
+        if (!AppUtility.isEmpty(this.getItemInformation())) {
+            HashSet<ItemInformation> set = new HashSet<>();
+            for (ItemInformationExportDTO itemDTO : this.getItemInformation()) {
+                ItemInformation item = itemDTO.convertToEntity();
+                item.setFinancialTransaction(entity);
+                set.add(item);
+            }
+            entity.setItemInformationSet(set);
+        }
         return entity;
     }
 
     @Override
     public void convertToDTO(FinancialTransaction entity, boolean partialFill) {
         if (entity != null) {
+            this.setFtId(entity.getId());
             this.setExporterNtn(entity.getNtn());
             this.setExporterName(entity.getName());
             this.setExporterIban(entity.getIban());
