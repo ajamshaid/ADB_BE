@@ -80,7 +80,7 @@ public class ReferenceService {
     /*************************************
      * BDA METHODS
      **************************************/
-    public List<BDA> getAllBDA(String type) {
+    public List<BDA> getAllBDA() {
         log.info("getAllBDA method called..");
         List<BDA> refList = null;
         refList= this.bdaRepository.findAll();
@@ -102,7 +102,7 @@ public class ReferenceService {
     /*************************************
      * BCA METHODS
      **************************************/
-    public List<BCA> getAllBCA(String type) {
+    public List<BCA> getAllBCA() {
         log.info("getAllBCA method called..");
         List<BCA> refList = null;
         refList= this.bcaRepository.findAll();

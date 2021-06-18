@@ -110,12 +110,12 @@ public class FinancialTransactionAPI {
         } catch (Exception e) {
             throw new CustomException(e);
         }
-        return ResponseUtility.buildResponseObject(entity, new FinancialTransactionImportDTO(),true);
+        return ResponseUtility.buildResponseObject(entity, new FinancialTransactionExportDTO(),true);
     }
 
     @RequestMapping(value = "/export/", method = RequestMethod.PUT)
     public CustomResponse updateExportFT(HttpServletRequest request,
-                                         @RequestBody FinancialTransactionImportDTO reqDTO)
+                                         @RequestBody FinancialTransactionExportDTO reqDTO)
             throws CustomException, DataValidationException, NoDataFoundException {
 
         if (AppUtility.isEmpty(reqDTO) || AppUtility.isEmpty(reqDTO.getFtId())) {
@@ -127,7 +127,7 @@ public class FinancialTransactionAPI {
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e, "");
         }
-        return ResponseUtility.buildResponseObject(entity, new FinancialTransactionImportDTO(), false);
+        return ResponseUtility.buildResponseObject(entity, new FinancialTransactionExportDTO(), false);
     }
 
 }

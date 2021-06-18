@@ -9,8 +9,9 @@ import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
-public class BDAImportDTO implements BaseDTO<BDAImportDTO, BDA> {
+public class BDADTO implements BaseDTO<BDADTO, BDA> {
 
+    private Long id;
     public String bdaUniqueIdNumber;
     public String gdNumber;
     public String iban;
@@ -31,6 +32,7 @@ public class BDAImportDTO implements BaseDTO<BDAImportDTO, BDA> {
     @Override
     public void convertToDTO(BDA entity, boolean partialFill) {
         if (entity != null) {
+            this.setId(entity.getId());
             this.setGdNumber(entity.getGdNumber());
             this.setBdaUniqueIdNumber(entity.getBdaUniqueIdNumber());
             this.setIban(entity.getIban());
@@ -53,8 +55,8 @@ public class BDAImportDTO implements BaseDTO<BDAImportDTO, BDA> {
     }
 
     @Override
-    public BDAImportDTO convertToNewDTO(BDA entity, boolean partialFill) {
-        BDAImportDTO dto = new BDAImportDTO();
+    public BDADTO convertToNewDTO(BDA entity, boolean partialFill) {
+        BDADTO dto = new BDADTO();
         dto.convertToDTO(entity, partialFill);
         return dto;
     }

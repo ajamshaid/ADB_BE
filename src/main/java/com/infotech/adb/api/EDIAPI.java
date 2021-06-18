@@ -17,6 +17,7 @@ import com.infotech.adb.util.CustomResponse;
 import com.infotech.adb.util.ResponseUtility;
 import io.swagger.annotations.Api;
 import lombok.extern.log4j.Log4j2;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,36 +43,31 @@ public class EDIAPI {
     private static final ResourceBundle messageBundle = ResourceBundle.getBundle("messages");
 
     @RequestMapping(value = "/edi", method = RequestMethod.POST, headers = {"content-type=application/json"})
-    public CustomResponse getMessageAndResponse(@RequestBody String strBody)
+    public CustomResponse getMessageAndResponse(@RequestBody String reqBodyStr)
             throws CustomException, DataValidationException, NoDataFoundException, JsonProcessingException {
 
         CustomResponse customResponse = null;
-        RequestParameter requestBody = new RequestParameter();
+        RequestParameter requestParameter = new RequestParameter();
 
         ObjectMapper mapper = new ObjectMapper();
-        try {
-            requestBody = mapper.readValue(strBody, RequestParameter.class);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+        requestParameter = mapper.readValue(reqBodyStr, RequestParameter.class);
 
+        if (RequestParameter.isValidRequest(requestParameter)) {
 
-        if (RequestParameter.isValidRequest(requestBody)) {
-
-            String processingCode = requestBody.getProcessingCode();
+            String processingCode = requestParameter.getProcessingCode();
 
             log.info("Valid Request with processing code:" + processingCode);
             switch (processingCode) {
                 case "301": // 4.1 Message 1, Verification of NTN,IBAN,Email and Mob
-                    RequestParameter.isValidIBANRequest(requestBody,false);
-                    customResponse = this.verifyAccount(requestBody);
+                    RequestParameter.isValidIBANRequest(requestParameter,false);
+                    customResponse = this.verifyAccount(requestParameter);
                     break;
                 case "302": // 4.2.	Message 2 – Sharing of Account Details & Authorized Payment Modes with PSW by AD
-                    RequestParameter.isValidIBANRequest(requestBody,true);
-                    customResponse = this.getAccountDetails(requestBody);
+                    RequestParameter.isValidIBANRequest(requestParameter,true);
+                    customResponse = this.getAccountDetails(requestParameter);
                     break;
                 case "101": //5.1.2 Message 2 – Sharing of GD and Financial Information with AD by PSW
-                    customResponse = this.shareImportGDFinInfoToBank(strBody);
+                    customResponse = this.shareImportGDFinInfoToBank(reqBodyStr , requestParameter);
                     break;
                 default: // Default Custom response
                     log.info("No Case Matched for processing code:" + processingCode);
@@ -153,32 +149,32 @@ public class EDIAPI {
      1. PSW will share the goods declaration and financial information of import with the authorized dealer.
      2. AD receive the information and shares the acknowledgement with PSW.
      **************************/
-    public CustomResponse shareImportGDFinInfoToBank( String requestString)
+    public CustomResponse shareImportGDFinInfoToBank( String requestString, RequestParameter requestParameter)
             throws CustomException, DataValidationException, NoDataFoundException, JsonProcessingException {
 
+        JSONObject obj = new JSONObject(requestString);
+        String data = obj.getJSONObject("data").toString();
+
         ObjectMapper mapper = new ObjectMapper();
-        RequestParameter<GDImportDTO> requestBody = new RequestParameter<>();
-
-               requestBody = mapper.convertValue(requestString, requestBody.getClass());
+        GDImportDTO dto= mapper.readValue(data, GDImportDTO.class);
 
 
-        GDImportDTO dto1 = requestBody.getData();
 
         //@TODO... what to do with GD Info now....yet to be decieded by AD..
 
-        System.out.println("IN coming GD Info:"+requestBody.toString());
+        System.out.println("IN coming GD Info:"+dto);
 
         ZonedDateTime requestTime = ZonedDateTime.now();
         CustomResponse customResponse = null;
 
         customResponse = ResponseUtility.successResponse("{}",AppConstants.PSWResponseCodes.OK,
                 "Updated GD and financial information."
-                ,requestBody, false);
+                ,requestParameter, false);
 
         ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
         String logMessage = "Sharing of GD and Financial Information with AD by PSW";
 
-        logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestBody, requestTime, responseBody);
+        logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter, requestTime, responseBody);
         return customResponse;
     }
 

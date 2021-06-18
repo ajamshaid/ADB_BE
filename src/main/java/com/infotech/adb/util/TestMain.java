@@ -1,11 +1,14 @@
 package com.infotech.adb.util;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ibm.mq.*;
 import com.ibm.mq.constants.CMQC;
 import com.ibm.mq.constants.MQConstants;
-import com.infotech.adb.jms.MQMessageParser;
-import com.infotech.adb.jms.MqUtility;
+import com.infotech.adb.dto.GDImportDTO;
+import com.infotech.adb.dto.RequestParameter;
 import com.opencsv.exceptions.CsvException;
+import org.json.JSONObject;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -19,6 +22,124 @@ public class TestMain {
 
     public static void main(String args[]) throws CsvException, FileNotFoundException {
 
+        String requestString = "{\n" +
+                "  \"data\": {\n" +
+                "    \"gdNumber\": \"KPPI-HC-86-03-09-2020\",\n" +
+                "    \"gdStatus\": \"01\",\n" +
+                "    \"consignmentCategory\": \"Commercial\",\n" +
+                "    \"gdType\": \"Home Consumption\",\n" +
+                "    \"collectorate\": \"Qasim International Container Terminal\",\n" +
+                "    \"blAwbNumber\": \"BL-24923231\",\n" +
+                "    \"blAwbDate\": \"20210922\",\n" +
+                "    \"virAirNumber\": \"KEWB-0005-010112020\",\n" +
+                "    \"consignorConsigneeInfo\": {\n" +
+                "      \"ntnFtn\": \"0425425\",\n" +
+                "      \"strn\": \"1700003019489\",\n" +
+                "      \"consigneeName\": \"PSW\",\n" +
+                "      \"consigneeAddress\": \"PECHS\",\n" +
+                "      \"consignorName\": \"M/S. International Jute Traders\",\n" +
+                "      \"consignorAddress\": \"95, MOTIJHEEL COMMERCIAL AREA (2ND FLOOR)BANGLADESH.\"\n" +
+                "    },\n" +
+                "    \"financialInfo\": {\n" +
+                "      \"importerIban\": \"PK35ASCM0000121234567890\",\n" +
+                "      \"modeOfPayment\": \"Letter of Credit\",\n" +
+                "      \"finInsUniqueNumber\": \"2009LCS3004700PK\",\n" +
+                "      \"currency\": \"USD\",\n" +
+                "      \"invoiceNumber\": \"AS1234567\",\n" +
+                "      \"invoiceDate\": \"20200223\",\n" +
+                "      \"totalDeclaredValue\": 5000.0002,\n" +
+                "      \"deliveryTerm\": \"CFR\",\n" +
+                "      \"fobValueUsd\": 1.0000,\n" +
+                "      \"freightUsd\": 1.0000,\n" +
+                "      \"cfrValueUsd\": 1.0000,\n" +
+                "      \"insuranceUsd\": 0.0000,\n" +
+                "      \"landingChargesUsd\": 100.0000,\n" +
+                "      \"assessedValueUsd\": 50.0000,\n" +
+                "      \"otherCharges\": 0.0000,\n" +
+                "      \"exchangeRate\": 158.0000\n" +
+                "    },\n" +
+                "    \"generalInformation\": {\n" +
+                "      \"packagesInformation\": [\n" +
+                "        {\n" +
+                "          \"numberOfPackages\": 100.000,\n" +
+                "          \"packageType\": \"Box\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "          \"numberOfPackages\": 100.000,\n" +
+                "          \"packageType\": \"Pallete\"\n" +
+                "        }\n" +
+                "      ],\n" +
+                "      \"containerVehicleInformation\": [\n" +
+                "        {\n" +
+                "          \"containerOrTruckNumber\": \"ASF9999991\",\n" +
+                "          \"sealNumber\": \"SL2674\",\n" +
+                "          \"containerType\": \"20FT\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "          \"containerOrTruckNumber\": \"ASF9999992\",\n" +
+                "          \"sealNumber\": \"SL2674\",\n" +
+                "          \"containerType\": \"40FT\"\n" +
+                "        }\n" +
+                "      ],\n" +
+                "      \"netWeight\": \"1.89400 MT\",\n" +
+                "      \"grossWeight\": \"1.11400 MT\",\n" +
+                "      \"portOfShipment\": \"CHN\",\n" +
+                "      \"portOfDelivery\": \"DAV\",\n" +
+                "      \"portOfDischarge\": \"DAV\",\n" +
+                "      \"terminalLocation\": \"Qasim International Container Terminal\"\n" +
+                "    },\n" +
+                "    \"itemInformation\": [\n" +
+                "      {\n" +
+                "        \"hsCode\": \"8446.1000\",\n" +
+                "        \"quantity\": 6.0000,\n" +
+                "        \"unitPrice\": 20.0000,\n" +
+                "        \"totalValue\": 120.0000,\n" +
+                "        \"importValue\": 120.0000,\n" +
+                "        \"uom\": \"KG\"\n" +
+                "      },\n" +
+                "      {\n" +
+                "        \"hsCode\": \"9246.1000\",\n" +
+                "        \"quantity\": 6.0000,\n" +
+                "        \"unitPrice\": 20.0000,\n" +
+                "        \"totalValue\": 120.0000,\n" +
+                "        \"importValue\": 120.0000,\n" +
+                "        \"uom\": \"KG\"\n" +
+                "      }\n" +
+                "    ],\n" +
+                "    \"negativeList\": {\n" +
+                "      \"country\": \"AUS\",\n" +
+                "      \"supplier\": \"M/S. International Jute Traders\",\n" +
+                "      \"commodities\": [\n" +
+                "        \"0402.1000\",\n" +
+                "        \"0402.2000\"\n" +
+                "      ]\n" +
+                "    }\n" +
+                "  },\n" +
+                "  \"messageId\": \"a1374655-5eb8-4a0e-9eb5-989521cd1ca8\",\n" +
+                "  \"processingCode\": \"101\",\n" +
+                "  \"receiverId\": \"SAUD\",\n" +
+                "  \"senderId\": \"PSW\",\n" +
+                "  \"signature\": \"82045ede93efbbcbea55da67c6655e9b\",\n" +
+                "  \"timestamp\": \"20200925183412\"\n" +
+                "}";
+
+
+//        String jsonString = ... ; //assign your JSON String here
+        JSONObject obj = new JSONObject(requestString);
+        String data = obj.getJSONObject("data").toString();
+
+
+        ObjectMapper mapper = new ObjectMapper();
+        ///mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+        RequestParameter<GDImportDTO> requestBody = new RequestParameter<>();
+        GDImportDTO dto = null;
+        try {
+            dto = mapper.readValue(data, GDImportDTO.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(requestBody);
 
         // TestMain.ReadMSG();
         //testRandomUUID();
@@ -31,22 +152,22 @@ public class TestMain {
 //  5.2.1        MSG.TYPE!UNIQUE.ID!Exporter NTN|Exporter Name|Exporter IBAN|Mode of Payment|Financial Instrument Unique No|Delivery Terms|Financial Instrument Currency|Financial Instrument Value|Financial Instrument Expiry Date|HS Code|Goods Description| Quantity
 
 
-
-        String msg = "PSW513!PSW513TF16249431810620210202!|COMMERZ BANK AG FRANKFURT|PK13SAUD0099982000002723|TF162494318106|13239.90||13239.90|EUR||||13239.90|1588788.00|LC-3101^LC-3101^LC-3101^LC-3101|EXPSRVCHG  PKR  2381.00  B^WHTEXP1PC  PKR  15875.00  B^EXPDOCCOLL  PKR  500.00  B^EPRC1YR  PKR  300.00  B|";
-
-        String msg523 = "PSW523!PSW523TF16249431810620210202!|COMMERZ BANK AG FRANKFURT|PK13SAUD0099982000002723|301|TF162494318106|169502ECSF0070605||||13239.90|||13239.90|1588788.00|";
-
-        MqUtility.MqMessage replyMessage = MqUtility.parseReplyMessage(msg523);
-
-
-
-        System.out.println("-------"+replyMessage.getReqResStr());
-
-        MQMessageParser parser = new MQMessageParser();
-
-        //System.out.println("=========="+parser.parseAndBuildBDAInfoImport(replyMessage.getReqResStr()));
-
-        System.out.println("=========="+parser.parseAndBuildBCAExport(replyMessage.getReqResStr()));
+//
+//        String msg = "PSW513!PSW513TF16249431810620210202!|COMMERZ BANK AG FRANKFURT|PK13SAUD0099982000002723|TF162494318106|13239.90||13239.90|EUR||||13239.90|1588788.00|LC-3101^LC-3101^LC-3101^LC-3101|EXPSRVCHG  PKR  2381.00  B^WHTEXP1PC  PKR  15875.00  B^EXPDOCCOLL  PKR  500.00  B^EPRC1YR  PKR  300.00  B|";
+//
+//        String msg523 = "PSW523!PSW523TF16249431810620210202!|COMMERZ BANK AG FRANKFURT|PK13SAUD0099982000002723|301|TF162494318106|169502ECSF0070605||||13239.90|||13239.90|1588788.00|";
+//
+//        MqUtility.MqMessage replyMessage = MqUtility.parseReplyMessage(msg523);
+//
+//
+//
+//        System.out.println("-------"+replyMessage.getReqResStr());
+//
+//        MQMessageParser parser = new MQMessageParser();
+//
+//        //System.out.println("=========="+parser.parseAndBuildBDAInfoImport(replyMessage.getReqResStr()));
+//
+//        System.out.println("=========="+parser.parseAndBuildBCAExport(replyMessage.getReqResStr()));
 
   //      String[] acctDtlAry = msg.getReqResStr().split("\\|\\^");
        /* for (String str:acctDtlAry){

@@ -174,10 +174,10 @@ public class TestAPI_ToDel {
     //Testing for    5.2.3.	Message 3 – Sharing of BCA Information Export by AD with PSW
     @RequestMapping(value = "/export/share-bca", method = RequestMethod.GET)
     public ResponseEntity<?> shareBCAForExportTest(
-            @RequestBody RequestParameter<BCAExportDTO> requestBody
+            @RequestBody RequestParameter<BCADTO> requestBody
     ) throws JsonProcessingException{
         log.info("Test >>>> 5.2.3. Message 3 – Sharing of BCA Information [EXPORT] by AD with PSW ");
-        BCAExportDTO dto = requestBody.getData();
+        BCADTO dto = requestBody.getData();
 
         return new ResponseEntity<>(pswApiConsumer.shareBCAInformationExport(dto), HttpStatus.OK);
     }

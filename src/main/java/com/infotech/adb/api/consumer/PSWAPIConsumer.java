@@ -272,10 +272,10 @@ public class PSWAPIConsumer {
     /***********************************************************
      5.2.3.	Message 3 – Sharing of BCA Information Export by AD with PSW
      ***********************************************************/
-    public ResponseUtility.APIResponse shareBCAInformationExport(BCAExportDTO dto)
+    public ResponseUtility.APIResponse shareBCAInformationExport(BCADTO dto)
             throws HttpClientErrorException, JsonProcessingException {
 
-        RequestParameter<BCAExportDTO> requestParameter = new RequestParameter<>(
+        RequestParameter<BCADTO> requestParameter = new RequestParameter<>(
                  UUID.randomUUID()
                 , AppConstants.AD_ID
                 , AppConstants.PSW.ID, "03"

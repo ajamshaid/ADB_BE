@@ -22,7 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/import")
 @Log4j2
 @Api(tags = "@Import")
-public class ImportAPI {
+public class FileImporterAPI {
 
     @Autowired
     private MQServices mqService;

@@ -10,8 +10,9 @@ import java.util.Date;
 
 @Data
 @NoArgsConstructor
-public class BCAExportDTO implements BaseDTO<BCAExportDTO, BCA> {
+public class BCADTO implements BaseDTO<BCADTO, BCA> {
 
+    private Long id;
     public String bcaUniqueIdNumber;
     public String gdNumber;
     public String iban;
@@ -35,6 +36,7 @@ public class BCAExportDTO implements BaseDTO<BCAExportDTO, BCA> {
     @Override
     public void convertToDTO(BCA entity, boolean partialFill) {
         if (entity != null) {
+            this.setId(entity.getId());
             this.setGdNumber(entity.getGdNumber());
             this.setBcaUniqueIdNumber(entity.getBcaUniqueIdNumber());
             this.setIban(entity.getIban());
@@ -64,8 +66,8 @@ public class BCAExportDTO implements BaseDTO<BCAExportDTO, BCA> {
     }
 
     @Override
-    public BCAExportDTO convertToNewDTO(BCA entity, boolean partialFill) {
-        BCAExportDTO dto = new BCAExportDTO();
+    public BCADTO convertToNewDTO(BCA entity, boolean partialFill) {
+        BCADTO dto = new BCADTO();
         dto.convertToDTO(entity, partialFill);
         return dto;
     }
