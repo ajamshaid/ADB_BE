@@ -15,14 +15,16 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
     private Long id;
     public String bcaUniqueIdNumber;
     public String gdNumber;
-    public String iban;
     public String exporterNtn;
     public String exporterName;
-    public String bcaDate;
+    public String iban;
     public String modeOfPayment;
     public String finInsUniqueNumber;
-    public BCAInformation bcaInformation;
+
+    public String bcaDate;
     public String remarks;
+
+    public BCAInformation bcaInformation;
     public Deductions deductions;
 
     public NetAmountRealized netAmountRealized;
@@ -30,6 +32,51 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
     @Override
     public BCA convertToEntity() {
         BCA entity = new BCA();
+
+        entity.setId(this.getId());
+        entity.setGdNumber(this.getGdNumber());
+        entity.setBcaUniqueIdNumber(this.getBcaUniqueIdNumber());
+        entity.setIban(this.getIban());
+        entity.setExporterName(this.getExporterName());
+        entity.setExporterNtn(this.getExporterNtn());
+//        entity.setBcaDate(AppUtility.formatedDate(this.getBcaDate()));
+        entity.setModeOfPayment(this.getModeOfPayment());
+        entity.setRemarks(this.getRemarks());
+        entity.setFinInsUniqueNumber(this.getFinInsUniqueNumber());
+
+        if(!AppUtility.isEmpty(this.getBcaInformation())) {
+            entity.setBcaEventName(this.getBcaInformation().getBcaEventName());
+            entity.setEventDate(this.getBcaInformation().getEventDate());
+            entity.setRunningSerialNumber(this.getBcaInformation().getRunningSerialNumber());
+            entity.setSwiftReference(this.getBcaInformation().getSwiftReference());
+            entity.setBillNumber(this.getBcaInformation().getBillNumber());
+            entity.setBillDated(this.getBcaInformation().getBillDated());
+            entity.setBillAmount(this.getBcaInformation().getBillAmount());
+            entity.setInvoiceNumber(this.getBcaInformation().getInvoiceNumber());
+            entity.setInvoiceDate(this.getBcaInformation().getInvoiceDate());
+            entity.setInvoiceAmount(this.getBcaInformation().getInvoiceAmount());
+        }
+
+        if(!AppUtility.isEmpty(this.getDeductions())) {
+            entity.setForeignBankChargesFcy(this.getDeductions().getForeignBankChargesFcy());
+            entity.setAgentCommissionFcy(this.getDeductions().getAgentCommissionFcy());
+            entity.setWithholdingTaxPkr(this.getDeductions().getWithholdingTaxPkr());
+            entity.setEdsPkr(this.getDeductions().getEdsPkr());
+        }
+        if(!AppUtility.isEmpty(this.getNetAmountRealized())) {
+            entity.setBcaFc(this.getNetAmountRealized().getBcaFc());
+            entity.setFcyExchangeRate(this.getNetAmountRealized().getFcyExchangeRate());
+            entity.setBcaPkr(this.getNetAmountRealized().getBcaPkr());
+            entity.setDateOfRealized(this.getNetAmountRealized().getDateOfRealized());
+            entity.setAdjustFromSpecialFcyAcc(this.getNetAmountRealized().getAdjustFromSpecialFcyAcc());
+            entity.setCurrency(this.getNetAmountRealized().getCurrency());
+            entity.setIsFinInsCurrencyDiff(this.getNetAmountRealized().getIsFinInsCurrencyDiff());
+            entity.setIsRemAmtSettledWithDiscount(this.getNetAmountRealized().getIsRemAmtSettledWithDiscount());
+            entity.setAmountRealized(this.getNetAmountRealized().getAmountRealized());
+            entity.setBalance(this.getNetAmountRealized().getBalance());
+            entity.setAllowedDiscount(this.getNetAmountRealized().getAllowedDiscount());
+            entity.setAllowedDiscountPercentage(this.getNetAmountRealized().getAllowedDiscountPercentage());
+        }
         return entity;
     }
 
@@ -75,18 +122,23 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
     @Data
     @NoArgsConstructor
     public class NetAmountRealized {
+        private String isFinInsCurrencyDiff;
+        public String currency;
+
         public BigDecimal bcaFc;
         public BigDecimal fcyExchangeRate;
         public BigDecimal bcaPkr;
         public Date dateOfRealized;
         public BigDecimal adjustFromSpecialFcyAcc;
-        public String currency;
-        private String isFinInsCurrencyDiff;
+
+
         private String isRemAmtSettledWithDiscount;
-        public BigDecimal amountRealized;
-        public BigDecimal balance;
         public BigDecimal allowedDiscount;
         public BigDecimal allowedDiscountPercentage;
+        public BigDecimal totalBcaAmount;
+        public BigDecimal amountRealized;
+        public BigDecimal balance;
+
 
         public NetAmountRealized(BigDecimal bcaFc, BigDecimal fcyExchangeRate, BigDecimal bcaPkr, Date dateOfRealized, BigDecimal adjustFromSpecialFcyAcc, String currency, String isFinInsCurrencyDiff, String isRemAmtSettledWithDiscount, BigDecimal amountRealized, BigDecimal balance, BigDecimal allowedDiscount, BigDecimal allowedDiscountPercentage) {
             this.bcaFc = bcaFc;
@@ -125,28 +177,28 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
     public class BCAInformation {
 
         public String bcaEventName;
-        public String eventDate;
+        public Date eventDate;
         public String runningSerialNumber;
         public String swiftReference;
         public String billNumber;
-        public String billDated;
+        public Date billDated;
         public BigDecimal billAmount;
         public String invoiceNumber;
-        public String invoiceDate;
+        public Date invoiceDate;
         public BigDecimal invoiceAmount;
 
         public BCAInformation(String bcaEventName, Date eventDate, String runningSerialNumber
                 , String swiftReference, String billNumber, Date billDated, BigDecimal billAmount
                 , String invoiceNumber, Date invoiceDate, BigDecimal invoiceAmount) {
             this.bcaEventName = bcaEventName;
-            this.eventDate = AppUtility.formatedDate(eventDate);
+            this.eventDate = eventDate ;//AppUtility.formatedDate(eventDate);
             this.runningSerialNumber = runningSerialNumber;
             this.swiftReference = swiftReference;
             this.billNumber = billNumber;
-            this.billDated = AppUtility.formatedDate(billDated);
+            this.billDated = billDated;//AppUtility.formatedDate(billDated);
             this.billAmount = billAmount;
             this.invoiceNumber = invoiceNumber;
-            this.invoiceDate = AppUtility.formatedDate(invoiceDate);
+            this.invoiceDate = invoiceDate;//AppUtility.formatedDate(invoiceDate);
             this.invoiceAmount = invoiceAmount;
         }
     }
