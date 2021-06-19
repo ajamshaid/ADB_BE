@@ -30,6 +30,9 @@ public class ReferenceService {
     @Autowired
     private BCARepository bcaRepository;
 
+    @Autowired
+    private GDRepository gdRepository;
+
     public List<AccountDetail> getAllAccountDetails() {
         log.info("getAllAccountDetails method called..");
         return accountDetailRepository.findAll();
@@ -119,5 +122,28 @@ public class ReferenceService {
     public BCA updateBCA(BCA entity) {
         log.info("updateBCA method called..");
         return bcaRepository.save(entity);
+    }
+
+
+    /*************************************
+     * GD  METHODS
+     **************************************/
+    public List<GD> getAllGD(String type) {
+        log.info("getAllGD method called..");
+        List<GD> refList = null;
+        refList= this.gdRepository.findAll();
+        return refList;
+    }
+
+    public GD getGDById(Long id) {
+        log.info("getGDById method called..");
+        Optional<GD> ref = gdRepository.findById(id);
+        return ref.get();
+    }
+
+    @Transactional
+    public GD updateGD(GD entity) {
+        log.info("updateGD method called..");
+        return gdRepository.save(entity);
     }
 }

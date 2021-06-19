@@ -41,6 +41,9 @@ public class ItemInformation {
     @Column(name = "UNIT_PRICE", precision=24, scale=4)
     private BigDecimal unitPrice;
 
+    @Column(name = "TOTAL_VALUE", precision=24, scale=4)
+    private BigDecimal totalValue;
+
     @Column(name = "IMPORT_OR_EXPORT_VALUE", precision=24, scale=4)
     private BigDecimal importOrExportValue;
 

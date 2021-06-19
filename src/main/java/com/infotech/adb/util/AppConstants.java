@@ -4,6 +4,7 @@ public class AppConstants {
 
     public final static String AD_ID = "SLB";
     public final static String TYPE_IMPORT = "IMPORT";
+    public final static String TYPE_GD_IMPORT = "GD-IMPORT";
     public final static String TYPE_EXPORT = "EXPORT";
 
     //YyyyMmddhhmmss
@@ -20,7 +21,9 @@ public class AppConstants {
 
     public static class PAYMENT_MODE {
 
-        public final static String IMPORT_LC = "301";
+        public final static String LETTER_OF_CREDIT = "Letter of Credit";
+
+        public final static String LC_VALUE = "301";
         public final static String IMPORT_OPEN_ACCOUNT = "302";
         public final static String IMPORT_ADVANCE_PAYMENT = "303";
         public final static String IMPORT_CC = "304";

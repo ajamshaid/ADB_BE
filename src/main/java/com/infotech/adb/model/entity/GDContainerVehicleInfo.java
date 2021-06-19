@@ -1,5 +1,6 @@
 package com.infotech.adb.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,18 +19,19 @@ public class GDContainerVehicleInfo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "CONTAINER_TRUCK_NUMBER", length = 25 ,nullable = false)
+    @Column(name = "CONTAINER_TRUCK_NUMBER", length = 25 ,nullable = true)
     private String containerOrTruckNumber;
 
-    @Column(name = "CONTAINER_TYPE",length = 10, nullable = false)
+    @Column(name = "CONTAINER_TYPE",length = 10, nullable = true)
     private String containerType;
 
-    @Column(name = "SEAL_NUMBER",length = 20, nullable = false)
+    @Column(name = "SEAL_NUMBER",length = 20, nullable = true)
     private String sealNumber;
 
     /*
      * Entity Specific Fields
      */
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name="GD_ID", nullable=false)
     private GD gd;

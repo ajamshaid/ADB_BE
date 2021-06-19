@@ -41,6 +41,7 @@ public class ItemInformationImportDTO implements BaseDTO<ItemInformationImportDT
         entity.setSample(this.getSample());
         entity.setSampleValue(this.getSampleValue());
         entity.setUnitPrice(this.getUnitPrice());
+        entity.setTotalValue(this.getTotalValue());
 //        entity.setTotalValue(this.getUnitPrice().multiply(entity.getQuantity()));
         entity.setImportOrExportValue(this.getImportValue());
 
@@ -60,7 +61,7 @@ public class ItemInformationImportDTO implements BaseDTO<ItemInformationImportDT
             this.setSample(entity.getSample());
             this.setSampleValue(entity.getSampleValue());
             this.setUnitPrice(AppUtility.isEmpty(entity.getUnitPrice()) ? new BigDecimal("0" ) : entity.getUnitPrice());
-            this.setTotalValue(this.getUnitPrice().multiply(this.getQuantity()));
+            this.setTotalValue(this.getTotalValue());
             this.setImportValue(entity.getImportOrExportValue());
 
         }

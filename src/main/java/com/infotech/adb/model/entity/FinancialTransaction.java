@@ -24,19 +24,19 @@ public class FinancialTransaction {
     @Column(name = "TYPE",length = 10, nullable = false)
     private String type;
     
-    @Column(name = "NTN",length = 9, nullable = false)
+    @Column(name = "NTN",length = 9, nullable = true)
     private String ntn;
 
-    @Column(name = "NAME",length = 100, nullable = false)
+    @Column(name = "NAME",length = 100, nullable = true)
     private String name;
 
-    @Column(name = "IBAN",length = 24, nullable = false)
+    @Column(name = "IBAN",length = 24, nullable = true)
     private String iban;
 
-    @Column(name = "MODE_OF_PAYMENT",length = 3, nullable = false)
+    @Column(name = "MODE_OF_PAYMENT",length = 30, nullable = true)
     private String modeOfPayment;
 
-    @Column(name = "FIN_INS_UNIQ_NUM",length = 30, nullable = false)
+    @Column(name = "FIN_INS_UNIQ_NUM",length = 30, nullable = true)
     private String finInsUniqueNumber;
 
 

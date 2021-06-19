@@ -1,14 +1,13 @@
 package com.infotech.adb.dto;
 
 import com.infotech.adb.model.entity.*;
+import com.infotech.adb.util.AppConstants;
 import com.infotech.adb.util.AppUtility;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Data
 @NoArgsConstructor
@@ -21,14 +20,13 @@ public class GDImportDTO implements BaseDTO<GDImportDTO, GD> {
     private String consignmentCategory;
     private String collectorate;
     private String blAwbNumber;
-    private String blAwbDate;
+    private Date blAwbDate;
     private String virAirNumber;
 
     private ConsignorConsigneeDTO consignorConsigneeInfo;
-
     private GDFinancialInfoDTO financialInfo;
-
     private GDGeneralInfoDTO generalInformation;
+
     private Set<ItemInformationImportDTO> itemInformation;
 
     private NegativeListDTO negativeList;
@@ -41,6 +39,99 @@ public class GDImportDTO implements BaseDTO<GDImportDTO, GD> {
     @Override
     public GD convertToEntity() {
         GD entity = new GD();
+        entity.setGdNumber(this.getGdNumber());
+        entity.setGdType(this.getGdType());
+        entity.setGdStatus(this.getGdStatus());
+        entity.setConsignmentCategory(this.getConsignmentCategory());
+        entity.setCollectorate(this.getCollectorate());
+        entity.setBlAwbNumber(this.getBlAwbNumber());
+        entity.setBlAwbDate(this.getBlAwbDate());
+        entity.setVirAirNumber(this.getVirAirNumber());
+
+        //Consignor Info
+        entity.setNtnFtn(this.getConsignorConsigneeInfo().getNtnFtn());
+        entity.setStrn(this.getConsignorConsigneeInfo().getStrn());
+        entity.setConsigneeName(this.getConsignorConsigneeInfo().getConsigneeName());
+        entity.setConsigneeAddress(this.getConsignorConsigneeInfo().getConsigneeAddress());
+        entity.setConsignorName(this.getConsignorConsigneeInfo().getConsignorName());
+        entity.setConsignorAddress(this.getConsignorConsigneeInfo().getConsignorAddress());
+
+        if(!AppUtility.isEmpty(this.getFinancialInfo())) {
+            // Financial Info
+            PaymentInformation pi = new PaymentInformation();
+            FinancialTransaction ft = new FinancialTransaction();
+
+            ft.setType(AppConstants.TYPE_GD_IMPORT);
+
+            ft.setIban(this.getFinancialInfo().getImporterIban());
+
+            if(!AppUtility.isEmpty(this.getFinancialInfo().getModeOfPayment()) &&
+            AppConstants.PAYMENT_MODE.LETTER_OF_CREDIT.equalsIgnoreCase(this.getFinancialInfo().getModeOfPayment())){
+                ft.setModeOfPayment(AppConstants.PAYMENT_MODE.LC_VALUE);
+            }else{
+                ft.setModeOfPayment(this.getFinancialInfo().getModeOfPayment());
+            }
+
+
+            ft.setFinInsUniqueNumber(this.getFinancialInfo().getFinInsUniqueNumber());
+
+            pi.setFinancialInstrumentCurrency(this.getFinancialInfo().getCurrency());
+            pi.setInvoiceNumber(this.getFinancialInfo().getInvoiceNumber());
+            pi.setInvoiceDate(this.getFinancialInfo().getInvoiceDate());
+            pi.setTotalDeclaredValue(this.getFinancialInfo().getTotalDeclaredValue());
+
+            pi.setDeliveryTerm(this.getFinancialInfo().getDeliveryTerm());
+            pi.setFobValueUsd(this.getFinancialInfo().getFobValueUsd());
+            pi.setFreightUsd(this.getFinancialInfo().getFreightUsd());
+            pi.setCfrValueUsd(this.getFinancialInfo().getCfrValueUsd());
+            pi.setInsuranceUsd(this.getFinancialInfo().getInsuranceUsd());
+            pi.setLandingChargesUsd(this.getFinancialInfo().getLandingChargesUsd());
+            pi.setAssessedValueUsd(this.getFinancialInfo().getAssessedValueUsd());
+            pi.setOtherCharges(this.getFinancialInfo().getOtherCharges());
+            pi.setExchangeRate(this.getFinancialInfo().getExchangeRate());
+
+            ft.setPaymentInformation(pi);
+            pi.setFinancialTransaction(ft);
+
+            //item Information
+            if (!AppUtility.isEmpty(this.getItemInformation())) {
+                HashSet<ItemInformation> set = new HashSet<>();
+                for (ItemInformationImportDTO itemDTO : this.getItemInformation()) {
+                    ItemInformation item = itemDTO.convertToEntity();
+                    item.setFinancialTransaction(ft);
+                    set.add(item);
+                }
+                ft.setItemInformationSet(set);
+            }
+            entity.setFinancialTransaction(ft);
+        }
+
+        //General Informaion
+        if(!AppUtility.isEmpty(this.getGeneralInformation())) {
+            entity.setNetWeight(this.getGeneralInformation().getNetWeight());
+            entity.setGrossWeight(this.getGeneralInformation().getGrossWeight());
+            entity.setPortOfShipment(this.getGeneralInformation().getPortOfShipment());
+            entity.setPortOfDelivery(this.getGeneralInformation().getPortOfDelivery());
+            entity.setPortOfDischarge(this.getGeneralInformation().getPortOfDischarge());
+            entity.setTerminalLocation(this.getGeneralInformation().getTerminalLocation());
+            entity.setPackagesInformationSet(this.getGeneralInformation().getPackagesInformation());
+            entity.setContainerVehicleInformationSet(this.getGeneralInformation().getContainerVehicleInformation());
+
+            for (GDContainerVehicleInfo vi : entity.getContainerVehicleInformationSet()) {
+                vi.setGd(entity);
+            }
+            for (GDPackageInfo pkg: entity.getPackagesInformationSet()) {
+                pkg.setGd(entity);
+            }
+        }
+
+        if(!AppUtility.isEmpty(this.getNegativeList())){
+            entity.setNegativeCountry(this.getNegativeList().getCountry());
+            entity.setNegativeSupplier(this.getNegativeList().getSupplier());
+            if(!AppUtility.isEmpty(this.getNegativeList().getCommodities())){
+                entity.setNegativeCommodities(this.getNegativeList().getCommodities().toString());
+            }
+        }
         return entity;
     }
 
@@ -54,13 +145,18 @@ public class GDImportDTO implements BaseDTO<GDImportDTO, GD> {
             this.setConsignmentCategory(entity.getConsignmentCategory());
             this.setCollectorate(entity.getCollectorate());
             this.setBlAwbNumber(entity.getBlAwbNumber());
-            this.setBlAwbDate(AppUtility.formatedDate(entity.getBlAwbDate()));
+            this.setBlAwbDate(entity.getBlAwbDate());
             this.setVirAirNumber(entity.getVirAirNumber());
 
            this.setConsignorConsigneeInfo((new ConsignorConsigneeDTO()).convertToDTO(entity));
            this.setFinancialInfo((new GDFinancialInfoDTO().convertToDTO(entity.getFinancialTransaction())));
 
            this.setGeneralInformation((new GDGeneralInfoDTO()).convertToDTO(entity));
+
+            NegativeListDTO negativeListDTO = new NegativeListDTO(entity.getNegativeCountry()
+                    , entity.getNegativeSupplier()
+                    ,entity.getNegativeCommodities());
+           this.setNegativeList(negativeListDTO);
 
            // Item Information
             if (!AppUtility.isEmpty(entity.getFinancialTransaction().getItemInformationSet())) {
@@ -112,7 +208,7 @@ public class GDImportDTO implements BaseDTO<GDImportDTO, GD> {
         private String finInsUniqueNumber;
         private String currency;
         private String invoiceNumber;
-        private String invoiceDate;
+        private Date invoiceDate;
         private BigDecimal totalDeclaredValue;
         private String deliveryTerm;
         private BigDecimal fobValueUsd;
@@ -133,7 +229,7 @@ public class GDImportDTO implements BaseDTO<GDImportDTO, GD> {
                 this.setCurrency(pi.getFinancialInstrumentCurrency());
 
                 this.setInvoiceNumber(pi.getInvoiceNumber());
-                this.setInvoiceDate(AppUtility.formatedDate(pi.getInvoiceDate()));
+                this.setInvoiceDate(pi.getInvoiceDate());//AppUtility.formatedDate(pi.getInvoiceDate()));
                 this.setTotalDeclaredValue(pi.getTotalDeclaredValue());
 
                 this.setDeliveryTerm(pi.getDeliveryTerm());
@@ -177,9 +273,25 @@ public class GDImportDTO implements BaseDTO<GDImportDTO, GD> {
     }
 
     @Data
+    @NoArgsConstructor
     public class NegativeListDTO{
         public String country;
         public String supplier;
         public List<String> commodities;
+
+        public NegativeListDTO(String country, String supplier, String commodities) {
+            this.country = country;
+            this.supplier = supplier;
+
+            if(!AppUtility.isEmpty(commodities)){
+                String [] comAry = commodities.split(" ");
+                if(!AppUtility.isEmpty(comAry)){
+                    this.commodities = Arrays.asList(comAry);
+                }
+            }else {
+                this.commodities = new ArrayList<>();
+            }
+
+        }
     }
 }

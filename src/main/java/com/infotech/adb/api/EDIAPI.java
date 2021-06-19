@@ -11,6 +11,7 @@ import com.infotech.adb.exceptions.DataValidationException;
 import com.infotech.adb.exceptions.NoDataFoundException;
 import com.infotech.adb.service.LogRequestService;
 import com.infotech.adb.service.MQServices;
+import com.infotech.adb.service.ReferenceService;
 import com.infotech.adb.util.AppConstants;
 import com.infotech.adb.util.AppUtility;
 import com.infotech.adb.util.CustomResponse;
@@ -36,6 +37,9 @@ public class EDIAPI {
 
     @Autowired
     private LogRequestService logRequestService;
+
+    @Autowired
+    private ReferenceService referenceService;
 
     @Autowired
     private MQServices mqService;
@@ -157,12 +161,11 @@ public class EDIAPI {
 
         ObjectMapper mapper = new ObjectMapper();
         GDImportDTO dto= mapper.readValue(data, GDImportDTO.class);
-
-
-
-        //@TODO... what to do with GD Info now....yet to be decieded by AD..
-
         System.out.println("IN coming GD Info:"+dto);
+
+        if(!AppUtility.isEmpty(dto)) {
+            referenceService.updateGD(dto.convertToEntity());
+        }
 
         ZonedDateTime requestTime = ZonedDateTime.now();
         CustomResponse customResponse = null;

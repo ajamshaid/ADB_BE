@@ -89,14 +89,23 @@ public class GD {
     @Column(name = "SHIPPING_LINE", length = 20)
     private String shippingLine;
 
-    @OneToOne
+    @Column(name = "NEG_COUNTRY", length = 3)
+    private String negativeCountry;
+
+    @Column(name = "NEG_SUPPLIER", length = 300)
+    private String negativeSupplier;
+
+    @Column(name = "NEG_COMMODITIES", length = 15000)
+    private String negativeCommodities;
+
+    @OneToOne( fetch = FetchType.LAZY , cascade = CascadeType.ALL)
     @JoinColumn(name="FIN_TRANSACTION_ID", nullable=false)
     private FinancialTransaction financialTransaction;
 
-    @OneToMany(mappedBy = "gd", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "gd", fetch = FetchType.LAZY , cascade = CascadeType.ALL)
     private Set<GDPackageInfo> packagesInformationSet;
 
-    @OneToMany(mappedBy = "gd", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "gd", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<GDContainerVehicleInfo> containerVehicleInformationSet;
 
 }
