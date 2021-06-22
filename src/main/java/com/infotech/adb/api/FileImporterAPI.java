@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/import")
+@RequestMapping("/file-importer")
 @Log4j2
 @Api(tags = "@Import")
 public class FileImporterAPI {
