@@ -38,7 +38,11 @@ public class GDPackageInfo {
      */
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name="GD_ID", nullable=false)
+    @JoinColumn(name="GD_ID", nullable=true)
     private GD gd;
 
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name="GD_EXPORT_ID", nullable=true)
+    private GDExport gdExport;
 }

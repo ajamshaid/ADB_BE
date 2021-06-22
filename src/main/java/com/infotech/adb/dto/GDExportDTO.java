@@ -6,20 +6,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Data
 @NoArgsConstructor
-public class GDExportDTO implements BaseDTO<GDExportDTO, GD> {
+public class GDExportDTO implements BaseDTO<GDExportDTO, GDExport> {
 
-     // GD Fields
+    private Long id;
+    // GD Fields
     private String gdNumber;
     private String gdType;
+    private String gdStatus;
+
     private String consignmentCategory;
     private String collectorate;
     private String blAwbNumber;
-    private String blAwbDate;
+    private Date blAwbDate;
     private String virAirNumber;
 
     private ConsignorConsigneeDTO consignorConsigneeInfo;
@@ -30,38 +32,137 @@ public class GDExportDTO implements BaseDTO<GDExportDTO, GD> {
     private Set<ItemInformationExportDTO> itemInformation;
 
 
-    public GDExportDTO(GD entity) {
+    private NegativeListDTO negativeList;
+
+    public GDExportDTO(GDExport entity) {
         convertToDTO(entity, true);
     }
 
     @Override
-    public GD convertToEntity() {
-        GD entity = new GD();
-        return entity;
+    public GDExport convertToEntity() {
+        GDExport entity = new GDExport();
+
+        entity.setId(this.getId());
+        entity.setGdNumber(this.getGdNumber());
+        entity.setGdType(this.getGdType());
+        entity.setGdStatus(this.getGdStatus());
+        entity.setConsignmentCategory(this.getConsignmentCategory());
+        entity.setCollectorate(this.getCollectorate());
+        entity.setBlAwbNumber(this.getBlAwbNumber());
+        entity.setBlAwbDate(this.getBlAwbDate());
+        entity.setVirAirNumber(this.getVirAirNumber());
+
+        //Consignor Info
+        if(!AppUtility.isEmpty(this.getConsignorConsigneeInfo())) {
+            entity.setNtnFtn(this.getConsignorConsigneeInfo().getNtnFtn());
+            entity.setStrn(this.getConsignorConsigneeInfo().getStrn());
+            entity.setConsigneeName(this.getConsignorConsigneeInfo().getConsigneeName());
+            entity.setConsigneeAddress(this.getConsignorConsigneeInfo().getConsigneeAddress());
+            entity.setConsignorName(this.getConsignorConsigneeInfo().getConsignorName());
+            entity.setConsignorAddress(this.getConsignorConsigneeInfo().getConsignorAddress());
+        }
+
+        // Financial Information
+        if(!AppUtility.isEmpty(this.getFinancialInformation())) {
+            entity.setCurrency(this.getFinancialInformation().getCurrency());
+            entity.setInvoiceNumber(this.getFinancialInformation().getInvoiceNumber());
+            entity.setInvoiceDate(this.getFinancialInformation().getInvoiceDate());//AppUtility.formatedDate(pi.getInvoiceDate()));
+            entity.setTotalDeclaredValue(this.getFinancialInformation().getTotalDeclaredValue());
+            entity.setDeliveryTerm(this.getFinancialInformation().getDeliveryTerm());
+            entity.setFobValueUsd(this.getFinancialInformation().getFobValueUsd());
+            entity.setFreightUsd(this.getFinancialInformation().getFreightUsd());
+            entity.setCfrValueUsd(this.getFinancialInformation().getCfrValueUsd());
+            entity.setInsuranceUsd(this.getFinancialInformation().getInsuranceUsd());
+            entity.setLandingChargesUsd(this.getFinancialInformation().getLandingChargesUsd());
+            entity.setAssessedValueUsd(this.getFinancialInformation().getAssessedValueUsd());
+            entity.setOtherCharges(this.getFinancialInformation().getOtherCharges());
+            entity.setExchangeRate(this.getFinancialInformation().getExchangeRate());
+
+
+            //Financial Instruments.
+            if (!AppUtility.isEmpty(this.getFinancialInformation().getFinancialInstrument())) {
+                HashSet<GDFinancialInstrument> set = new HashSet<>();
+                for (GDFinancialInstrumentDTO dto : this.getFinancialInformation().getFinancialInstrument()) {
+                    GDFinancialInstrument fi = new GDFinancialInstrument();
+                    fi.setFinInsUniqueNumber(dto.getFinInsUniqueNumber());
+                    fi.setIban(dto.getExporterIban());
+                    fi.setModeOfPayment(dto.getModeOfPayment());
+                    fi.setGdExport(entity);
+                    set.add(fi);
+                }
+                entity.setGdFinancialInstrumentSet(set);
+            }
+        }
+
+        // General Information
+        if(!AppUtility.isEmpty(this.getGeneralInformation())){
+            entity.setNetWeight(this.getGeneralInformation().getNetWeight());
+            entity.setGrossWeight(this.getGeneralInformation().getGrossWeight());
+            entity.setPortOfShipment(this.getGeneralInformation().getPortOfShipment());
+            entity.setPlaceOfDelivery(this.getGeneralInformation().getPlaceOfDelivery());
+            entity.setPortOfDischarge(this.getGeneralInformation().getPortOfDischarge());
+            entity.setTerminalLocation(this.getGeneralInformation().getTerminalLocation());
+            entity.setConsignmentType(this.getGeneralInformation().getConsignmentType());
+            entity.setShippingLine(this.getGeneralInformation().getShippingLine());
+
+            entity.setPackagesInformationSet(this.getGeneralInformation().getPackagesInformation());
+            entity.setContainerVehicleInformationSet(this.getGeneralInformation().getContainerVehicleInformation());
+
+            for (GDContainerVehicleInfo vi : entity.getContainerVehicleInformationSet()) {
+                vi.setGdExport(entity);
+            }
+            for (GDPackageInfo pkg: entity.getPackagesInformationSet()) {
+                pkg.setGdExport(entity);
+            }
+        }
+        //item Information
+        if (!AppUtility.isEmpty(this.getItemInformation())) {
+            HashSet<ItemInformation> set = new HashSet<>();
+            for (ItemInformationExportDTO itemDTO : this.getItemInformation()) {
+                ItemInformation item = itemDTO.convertToEntity();
+                item.setGdExport(entity);
+                set.add(item);
+            }
+            entity.setItemInformationSet(set);
+        }
+
+        if(!AppUtility.isEmpty(this.getNegativeList())){
+            entity.setNegativeCountry(this.getNegativeList().getCountry());
+            entity.setNegativeSupplier(this.getNegativeList().getSupplier());
+            if(!AppUtility.isEmpty(this.getNegativeList().getCommodities())){
+                entity.setNegativeCommodities(this.getNegativeList().getCommodities().toString());
+            }
+        }
+    return entity;
     }
 
     @Override
-    public void convertToDTO(GD entity, boolean partialFill) {
+    public void convertToDTO(GDExport entity, boolean partialFill) {
 
         if (entity != null) {
+            this.setId(entity.getId());
             this.setGdNumber(entity.getGdNumber());
             this.setGdType(entity.getGdType());
+            this.setGdStatus(entity.getGdStatus());
             this.setConsignmentCategory(entity.getConsignmentCategory());
             this.setCollectorate(entity.getCollectorate());
             this.setBlAwbNumber(entity.getBlAwbNumber());
-            this.setBlAwbDate(AppUtility.formatedDate(entity.getBlAwbDate()));
+            this.setBlAwbDate(entity.getBlAwbDate());//AppUtility.formatedDate(entity.getBlAwbDate()));
             this.setVirAirNumber(entity.getVirAirNumber());
 
-           this.setConsignorConsigneeInfo((new ConsignorConsigneeDTO()).convertToDTO(entity));
-           this.setFinancialInformation(new GDFinancialInfoDTO().convertToDTO(entity.getFinancialTransaction()));
+            this.setConsignorConsigneeInfo((new ConsignorConsigneeDTO()).convertToDTO(entity));
+            this.setFinancialInformation(new GDFinancialInfoDTO().convertToDTO(entity));
+            this.setGeneralInformation((new GDGeneralInfoDTO()).convertToDTO(entity));
 
-           this.setGeneralInformation((new GDGeneralInfoDTO()).convertToDTO(entity));
+            NegativeListDTO negativeListDTO = new NegativeListDTO(entity.getNegativeCountry()
+                    , entity.getNegativeSupplier()
+                    ,entity.getNegativeCommodities());
+            this.setNegativeList(negativeListDTO);
 
-           // Item Information
-            if (!AppUtility.isEmpty(entity.getFinancialTransaction().getItemInformationSet())) {
-
+            // Item Information
+            if (!AppUtility.isEmpty(entity.getItemInformationSet())) {
                 HashSet<ItemInformationExportDTO> set = new HashSet<>();
-                for (ItemInformation item : entity.getFinancialTransaction().getItemInformationSet()) {
+                for (ItemInformation item : entity.getItemInformationSet()) {
                     set.add(new ItemInformationExportDTO(item));
                 }
                 this.setItemInformation(set);
@@ -70,14 +171,14 @@ public class GDExportDTO implements BaseDTO<GDExportDTO, GD> {
     }
 
     @Override
-    public GDExportDTO convertToNewDTO(GD entity, boolean partialFill) {
+    public GDExportDTO convertToNewDTO(GDExport entity, boolean partialFill) {
         GDExportDTO dto = new GDExportDTO();
         dto.convertToDTO(entity, partialFill);
         return dto;
     }
 
-
     @Data
+    @NoArgsConstructor
     public class ConsignorConsigneeDTO {
         /// Consignor and Consignee Information
         private String ntnFtn;
@@ -87,7 +188,7 @@ public class GDExportDTO implements BaseDTO<GDExportDTO, GD> {
         private String consignorName;
         private String consignorAddress;
 
-        public ConsignorConsigneeDTO convertToDTO(GD entity) {
+        public ConsignorConsigneeDTO convertToDTO(GDExport entity) {
             if (entity != null) {
                 this.setNtnFtn(entity.getNtnFtn());
                 this.setStrn(entity.getStrn());
@@ -99,39 +200,14 @@ public class GDExportDTO implements BaseDTO<GDExportDTO, GD> {
             return this;
         }
     }
-
     @Data
+    @NoArgsConstructor
     public class GDFinancialInfoDTO {
-        private String beneficiaryName;
-        private String beneficiaryAddress;
-        private String beneficiaryCountry;
-        private String beneficiaryIban;
 
-        private String exporterName;
-        private String exporterAddress;
-        private String exporterCountry;
-        private String modeOfPayment;
-        private String finInsUniqueNumber;
-
-        private BigDecimal openAccPercentage;
-        private BigDecimal advPayPercentage;
-        private BigDecimal docAgainstPayPercentage;
-        private BigDecimal docAgainstAcceptancePercentage;
-        private Integer ccDays;
-
-        private BigDecimal sightPercentage;
-        private BigDecimal usancePercentage;
-        private Integer lcDays;
-
-        private BigDecimal totalPercentage;
-
-        private String intendedPayDate;
-        private String transportDocDate;
-
-        private String invoiceCurrency;
+        private String currency;
         private String invoiceNumber;
-        private String invoiceDate;
-        private BigDecimal invoiceValue;
+        private Date invoiceDate;
+        private BigDecimal totalDeclaredValue;
         private String deliveryTerm;
         private BigDecimal fobValueUsd;
         private BigDecimal freightUsd;
@@ -141,75 +217,101 @@ public class GDExportDTO implements BaseDTO<GDExportDTO, GD> {
         private BigDecimal assessedValueUsd;
         private BigDecimal otherCharges;
         private BigDecimal exchangeRate;
+        private Set<GDFinancialInstrumentDTO> financialInstrument;
 
+        public GDFinancialInfoDTO convertToDTO( GDExport entity) {
+            if (entity != null) {
+                this.setCurrency(entity.getCurrency());
+                this.setInvoiceNumber(entity.getInvoiceNumber());
+                this.setInvoiceDate(entity.getInvoiceDate());//AppUtility.formatedDate(pi.getInvoiceDate()));
+                this.setTotalDeclaredValue(entity.getTotalDeclaredValue());
+                this.setDeliveryTerm(entity.getDeliveryTerm());
+                this.setFobValueUsd(entity.getFobValueUsd());
+                this.setFreightUsd(entity.getFreightUsd());
+                this.setCfrValueUsd(entity.getCfrValueUsd());
+                this.setInsuranceUsd(entity.getInsuranceUsd());
+                this.setLandingChargesUsd(entity.getLandingChargesUsd());
+                this.setAssessedValueUsd(entity.getAssessedValueUsd());
+                this.setOtherCharges(entity.getOtherCharges());
+                this.setExchangeRate(entity.getExchangeRate());
 
-        public GDFinancialInfoDTO convertToDTO( FinancialTransaction ft) {
-            if (ft != null) {
-                PaymentInformation pi = ft.getPaymentInformation();
-                this.setBeneficiaryName(pi.getBeneficiaryName());
-                this.setBeneficiaryAddress(pi.getBeneficiaryAddress());
-                this.setBeneficiaryCountry(pi.getBeneficiaryCountry());
-                this.setBeneficiaryIban(pi.getBeneficiaryIban());
-                this.setExporterName(pi.getExporterName());
-                this.setExporterAddress(pi.getExporterAddress());
-                this.setExporterCountry(pi.getExporterCountry());
-                this.setModeOfPayment(ft.getModeOfPayment());
-                this.setFinInsUniqueNumber(ft.getFinInsUniqueNumber());
-//                this.setInvoiceValue(pi.getTotalInvoiceValue());
-//                this.setInvoiceCurrency(pi.getInvoiceCurrency());
-                this.setInvoiceNumber(pi.getInvoiceNumber());
-                this.setInvoiceDate(AppUtility.formatedDate(pi.getInvoiceDate()));
-                this.setDeliveryTerm(pi.getDeliveryTerm());
-                this.setFobValueUsd(pi.getFobValueUsd());
-                this.setFreightUsd(pi.getFreightUsd());
-                this.setCfrValueUsd(pi.getCfrValueUsd());
-                this.setInsuranceUsd(pi.getInsuranceUsd());
-                this.setLandingChargesUsd(pi.getLandingChargesUsd());
-                this.setAssessedValueUsd(pi.getAssessedValueUsd());
-                this.setOtherCharges(pi.getOtherCharges());
-                this.setExchangeRate(pi.getExchangeRate());
-
-
-//                this.setOpenAccPercentage(ft.getOpenAccPercentage());
-//                this.setAdvPayPercentage(ft.getAdvPayPercentage());
-
-                if (!AppUtility.isEmpty(ft.getCcData())) {
-                    this.setDocAgainstPayPercentage(ft.getCcData().getDocAgainstPayPercentage());
-                    this.setDocAgainstAcceptancePercentage(ft.getCcData().getDocAgainstAcceptancePercentage());
-                    this.setCcDays(ft.getCcData().getDays());
-                }
-
-                if (!AppUtility.isEmpty(ft.getLcData()) ) {
-                    this.setSightPercentage(ft.getLcData().getSightPercentage());
-                    this.setUsancePercentage(ft.getLcData().getUsancePercentage());
-                    this.setLcDays(ft.getLcData().getDays());
-                    this.setTotalPercentage(ft.getLcData().getTotalPercentage());
+                // Financial Instrument..
+                if (!AppUtility.isEmpty(entity.getGdFinancialInstrumentSet())) {
+                    HashSet<GDFinancialInstrumentDTO> fiSet = new HashSet<>();
+                    for (GDFinancialInstrument gdFinancialInstrument : entity.getGdFinancialInstrumentSet()) {
+                        GDFinancialInstrumentDTO dto = new GDFinancialInstrumentDTO();
+                        dto.setExporterIban(gdFinancialInstrument.getIban());
+                        dto.setFinInsUniqueNumber(gdFinancialInstrument.getFinInsUniqueNumber());
+                        dto.setModeOfPayment(gdFinancialInstrument.getModeOfPayment());
+                        fiSet.add(dto);
+                    }
+                    this.setFinancialInstrument(fiSet);
                 }
             }
             return this;
         }
+
+    }
+    @Data
+    public static class  GDFinancialInstrumentDTO {
+        private String exporterIban;
+        private String modeOfPayment;
+        private String finInsUniqueNumber;
+
+        public GDFinancialInstrumentDTO() {
+        }
+
+        public GDFinancialInstrumentDTO(String exporterIban, String modeOfPayment, String finInsUniqueNumber) {
+            this.exporterIban = exporterIban;
+            this.modeOfPayment = modeOfPayment;
+            this.finInsUniqueNumber = finInsUniqueNumber;
+        }
     }
 
     @Data
+    @NoArgsConstructor
+    public class NegativeListDTO{
+        public String country;
+        public String supplier;
+        public List<String> commodities;
+
+        public NegativeListDTO(String country, String supplier, String commodities) {
+            this.country = country;
+            this.supplier = supplier;
+
+            if(!AppUtility.isEmpty(commodities)){
+                String [] comAry = commodities.split(" ");
+                if(!AppUtility.isEmpty(comAry)){
+                    this.commodities = Arrays.asList(comAry);
+                }
+            }else {
+                this.commodities = new ArrayList<>();
+            }
+
+        }
+    }
+
+    @Data
+    @NoArgsConstructor
     public class GDGeneralInfoDTO {
         private Set<GDPackageInfo> packagesInformation;
         private Set<GDContainerVehicleInfo> containerVehicleInformation;
         private String netWeight;
         private String grossWeight;
         private String portOfShipment;
-        private String portOfDelivery;
+        private String placeOfDelivery;
         private String portOfDischarge;
         private String terminalLocation;
 
         private String consignmentType;
         private String shippingLine;
 
-        public GDGeneralInfoDTO convertToDTO(GD entity) {
+        public GDGeneralInfoDTO convertToDTO(GDExport entity) {
             if (entity != null) {
                 this.setNetWeight(entity.getNetWeight());
                 this.setGrossWeight(entity.getGrossWeight());
                 this.setPortOfShipment(entity.getPortOfShipment());
-                this.setPortOfDelivery(entity.getPortOfDelivery());
+                this.setPlaceOfDelivery(entity.getPlaceOfDelivery());
                 this.setPortOfDischarge(entity.getPortOfDischarge());
                 this.setTerminalLocation(entity.getTerminalLocation());
 
@@ -222,6 +324,4 @@ public class GDExportDTO implements BaseDTO<GDExportDTO, GD> {
             return this;
         }
     }
-
-
 }

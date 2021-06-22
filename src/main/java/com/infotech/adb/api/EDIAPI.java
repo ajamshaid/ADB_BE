@@ -2,10 +2,7 @@ package com.infotech.adb.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.infotech.adb.dto.AccountDetailDTO;
-import com.infotech.adb.dto.GDImportDTO;
-import com.infotech.adb.dto.IBANVerificationRequest;
-import com.infotech.adb.dto.RequestParameter;
+import com.infotech.adb.dto.*;
 import com.infotech.adb.exceptions.CustomException;
 import com.infotech.adb.exceptions.DataValidationException;
 import com.infotech.adb.exceptions.NoDataFoundException;
@@ -72,6 +69,9 @@ public class EDIAPI {
                     break;
                 case "101": //5.1.2 Message 2 – Sharing of GD and Financial Information with AD by PSW
                     customResponse = this.shareImportGDFinInfoToBank(reqBodyStr , requestParameter);
+                    break;
+                case "102": //5.2.2 Message 2 – Sharing of GD and Financial Information with AD by PSW
+                    customResponse = this.shareExportGDFinInfoToBank(reqBodyStr , requestParameter);
                     break;
                 default: // Default Custom response
                     log.info("No Case Matched for processing code:" + processingCode);
@@ -181,6 +181,38 @@ public class EDIAPI {
         return customResponse;
     }
 
+    /**************************
+     // 5.2.2 Message 2 – Sharing of GD and Financial Information with AD by PSW
+     1. PSW will share the GD and financial information of export with AD.
+     2. AD receive the information and shares the acknowledgement with PSW.
+     **************************/
+    public CustomResponse shareExportGDFinInfoToBank( String requestString, RequestParameter requestParameter)
+            throws CustomException, DataValidationException, NoDataFoundException, JsonProcessingException {
+
+        JSONObject obj = new JSONObject(requestString);
+        String data = obj.getJSONObject("data").toString();
+
+        ObjectMapper mapper = new ObjectMapper();
+        GDExportDTO dto= mapper.readValue(data, GDExportDTO.class);
+        System.out.println("IN coming GD Info:"+dto);
+
+        if(!AppUtility.isEmpty(dto)) {
+         referenceService.updateGDExport(dto.convertToEntity());
+        }
+
+        ZonedDateTime requestTime = ZonedDateTime.now();
+        CustomResponse customResponse = null;
+
+        customResponse = ResponseUtility.successResponse("{}",AppConstants.PSWResponseCodes.OK,
+                "Updated GD and financial information."
+                ,requestParameter, false);
+
+        ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
+        String logMessage = "Sharing of GD and Financial Information with AD by PSW";
+
+        logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter, requestTime, responseBody);
+        return customResponse;
+    }
 
 }
 

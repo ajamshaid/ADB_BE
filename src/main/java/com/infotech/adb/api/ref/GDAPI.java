@@ -1,10 +1,12 @@
 package com.infotech.adb.api.ref;
 
+import com.infotech.adb.dto.GDExportDTO;
 import com.infotech.adb.dto.GDImportDTO;
 import com.infotech.adb.exceptions.CustomException;
 import com.infotech.adb.exceptions.DataValidationException;
 import com.infotech.adb.exceptions.NoDataFoundException;
 import com.infotech.adb.model.entity.GD;
+import com.infotech.adb.model.entity.GDExport;
 import com.infotech.adb.service.ReferenceService;
 import com.infotech.adb.util.AppConstants;
 import com.infotech.adb.util.AppUtility;
@@ -64,5 +66,33 @@ public class GDAPI {
      *  Export
      *************************/
 
+    @RequestMapping(value = "/export/", method = RequestMethod.GET)
+    public CustomResponse getAllGDExport()
+            throws CustomException, NoDataFoundException {
+
+        List<GDExport> refList = null;
+        try {
+            refList = referenceService.getAllGDExport();
+        } catch (Exception e) {
+            throw new CustomException(e);
+        }
+        return ResponseUtility.buildResponseList(refList, new GDExportDTO());
+    }
+
+    @RequestMapping(value = "/export/{id}", method = RequestMethod.GET)
+    public CustomResponse getImportGDExportById(@PathVariable Long id)
+            throws CustomException, DataValidationException, NoDataFoundException {
+
+        if (AppUtility.isEmpty(id)) {
+            throw new DataValidationException(messageBundle.getString("id.not.found"));
+        }
+        GDExport entity = null;
+        try {
+            entity = referenceService.getGDExportById(id);
+        } catch (Exception e) {
+            throw new CustomException(e);
+        }
+        return ResponseUtility.buildResponseObject(entity, new GDExportDTO(),true);
+    }
 
 }

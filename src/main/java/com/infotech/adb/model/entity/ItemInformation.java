@@ -1,5 +1,6 @@
 package com.infotech.adb.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -48,9 +49,13 @@ public class ItemInformation {
     private BigDecimal importOrExportValue;
 
     @ManyToOne
-    @JoinColumn(name="FIN_TRANSACTION_ID", nullable=false)
+    @JoinColumn(name="FIN_TRANSACTION_ID", nullable=true)
     private FinancialTransaction financialTransaction;
 
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name="GD_EXPORT_ID", nullable=true)
+    private GDExport gdExport;
 
     @Override
     public String toString() {

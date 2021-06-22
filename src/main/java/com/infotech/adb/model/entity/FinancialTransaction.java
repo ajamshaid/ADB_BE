@@ -86,8 +86,4 @@ public class FinancialTransaction {
 
     @OneToMany(mappedBy = "financialTransaction", fetch = FetchType.LAZY , cascade = CascadeType.ALL)
     private Set<ItemInformation> itemInformationSet;
-
-    @OneToMany(mappedBy = "financialTransaction", fetch = FetchType.LAZY , cascade = CascadeType.ALL)
-    private Set<FinTransMOP> finTransMOPSet;
-
 }

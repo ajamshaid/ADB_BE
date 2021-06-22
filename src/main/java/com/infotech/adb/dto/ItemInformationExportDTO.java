@@ -12,12 +12,12 @@ import java.math.BigDecimal;
 public class ItemInformationExportDTO implements BaseDTO<ItemInformationExportDTO, ItemInformation> {
     private Long id;
     private String hsCode;
-    private String goodsDescription;
     private BigDecimal quantity;
+    private BigDecimal unitPrice;
+    private BigDecimal totalValue;
+    private BigDecimal exportValue;
     private String uom;
-    private BigDecimal itemInvoiceValue;
-    private String countryOfOrigin;
-
+    private String goodsDescription;
     public ItemInformationExportDTO(ItemInformation entity) {
         convertToDTO(entity, true);
     }
@@ -27,11 +27,13 @@ public class ItemInformationExportDTO implements BaseDTO<ItemInformationExportDT
         ItemInformation entity = new ItemInformation();
         entity.setId(this.getId());
         entity.setHsCode(this.getHsCode());
+        entity.setUom(this.getUom());
+        entity.setUnitPrice(this.getUnitPrice());
+        entity.setTotalValue(this.getTotalValue());
+        entity.setImportOrExportValue(this.getExportValue());
         entity.setGoodsDescription(this.getGoodsDescription());
         entity.setQuantity(this.getQuantity());
-        entity.setUom(this.getUom());
-        entity.setCountryOfOrigin(this.getCountryOfOrigin());
-        entity.setImportOrExportValue(this.getItemInvoiceValue());
+
         return entity;
     }
 
@@ -44,8 +46,9 @@ public class ItemInformationExportDTO implements BaseDTO<ItemInformationExportDT
             this.setGoodsDescription(entity.getGoodsDescription());
             this.setQuantity(AppUtility.isEmpty(entity.getQuantity()) ? new BigDecimal("0" ) : entity.getQuantity());
             this.setUom(entity.getUom());
-            this.setCountryOfOrigin(entity.getCountryOfOrigin());
-            this.setItemInvoiceValue(entity.getImportOrExportValue());
+            this.setUnitPrice(entity.getUnitPrice());
+            this.setTotalValue(entity.getTotalValue());
+            this.setExportValue(entity.getImportOrExportValue());
         }
     }
 

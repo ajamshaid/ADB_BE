@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ibm.mq.*;
 import com.ibm.mq.constants.CMQC;
 import com.ibm.mq.constants.MQConstants;
-import com.infotech.adb.dto.GDImportDTO;
+import com.infotech.adb.dto.GDExportDTO;
 import com.infotech.adb.dto.RequestParameter;
 import com.opencsv.exceptions.CsvException;
 import org.json.JSONObject;
@@ -23,14 +23,19 @@ public class TestMain {
     public static void main(String args[]) throws CsvException, FileNotFoundException {
 
         String requestString = "{\n" +
+                "  \"messageId\": \"a1374655-5eb8-4a0e-9eb5-989521cd1ca8\",\n" +
+                "  \"timestamp\": \"20200925183412\",\n" +
+                "  \"senderId\": \"PSW\",\n" +
+                "  \"receiverId\": \"SCB\",\n" +
+                "  \"processingCode\": \"102\",\n" +
                 "  \"data\": {\n" +
                 "    \"gdNumber\": \"KPPI-HC-86-03-09-2020\",\n" +
                 "    \"gdStatus\": \"01\",\n" +
                 "    \"consignmentCategory\": \"Commercial\",\n" +
-                "    \"gdType\": \"Home Consumption\",\n" +
+                "    \"gdType\": \"Export Commercial Transaction\",\n" +
                 "    \"collectorate\": \"Qasim International Container Terminal\",\n" +
-                "    \"blAwbNumber\": \"BL-24923231\",\n" +
-                "    \"blAwbDate\": \"20210922\",\n" +
+                "    \"blAwbNumber\": \"BL- 010920\",\n" +
+                "    \"blAwbDate\": \"20201012\",\n" +
                 "    \"virAirNumber\": \"KEWB-0005-010112020\",\n" +
                 "    \"consignorConsigneeInfo\": {\n" +
                 "      \"ntnFtn\": \"0425425\",\n" +
@@ -38,18 +43,27 @@ public class TestMain {
                 "      \"consigneeName\": \"PSW\",\n" +
                 "      \"consigneeAddress\": \"PECHS\",\n" +
                 "      \"consignorName\": \"M/S. International Jute Traders\",\n" +
-                "      \"consignorAddress\": \"95, MOTIJHEEL COMMERCIAL AREA (2ND FLOOR)BANGLADESH.\"\n" +
+                "      \"consignorAddress\": \"95, MOTIJHEEL COMMERCIAL AREA (2ND FLOOR)\"\n" +
                 "    },\n" +
-                "    \"financialInfo\": {\n" +
-                "      \"importerIban\": \"PK35ASCM0000121234567890\",\n" +
-                "      \"modeOfPayment\": \"Letter of Credit\",\n" +
-                "      \"finInsUniqueNumber\": \"2009LCS3004700PK\",\n" +
+                "    \"financialInformation\": {\n" +
+                "      \"financialInstrument\": [\n" +
+                "        {\n" +
+                "          \"exporterIban\": \"PK35ASCM0000121234567890\",\n" +
+                "          \"modeOfPayment\": \"307\",\n" +
+                "          \"finInsUniqueNumber\": \"2009LCS3004700PK\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "          \"exporterIban\": \"PK35ASCM0000121234567890\",\n" +
+                "          \"modeOfPayment\": \"308\",\n" +
+                "          \"finInsUniqueNumber\": \"2009LCS2345700PK\"\n" +
+                "        }\n" +
+                "      ],\n" +
                 "      \"currency\": \"USD\",\n" +
-                "      \"invoiceNumber\": \"AS1234567\",\n" +
+                "      \"totalDeclaredValue\": 5000.000,\n" +
+                "      \"invoiceNumber\": \"1234567\",\n" +
                 "      \"invoiceDate\": \"20200223\",\n" +
-                "      \"totalDeclaredValue\": 5000.0002,\n" +
                 "      \"deliveryTerm\": \"CFR\",\n" +
-                "      \"fobValueUsd\": 1.0000,\n" +
+                "      \"fobValueUsd\": 100.0000,\n" +
                 "      \"freightUsd\": 1.0000,\n" +
                 "      \"cfrValueUsd\": 1.0000,\n" +
                 "      \"insuranceUsd\": 0.0000,\n" +
@@ -83,10 +97,12 @@ public class TestMain {
                 "      ],\n" +
                 "      \"netWeight\": \"1.89400 MT\",\n" +
                 "      \"grossWeight\": \"1.11400 MT\",\n" +
+                "      \"consignmentType\": \"Containerized\",\n" +
                 "      \"portOfShipment\": \"CHN\",\n" +
-                "      \"portOfDelivery\": \"DAV\",\n" +
+                "      \"placeOfDelivery\": \"CHN\",\n" +
                 "      \"portOfDischarge\": \"DAV\",\n" +
-                "      \"terminalLocation\": \"Qasim International Container Terminal\"\n" +
+                "      \"terminalLocation\": \"Qasim International Container Terminal\",\n" +
+                "      \"shippingLine\": \"Maersk\"\n" +
                 "    },\n" +
                 "    \"itemInformation\": [\n" +
                 "      {\n" +
@@ -94,7 +110,7 @@ public class TestMain {
                 "        \"quantity\": 6.0000,\n" +
                 "        \"unitPrice\": 20.0000,\n" +
                 "        \"totalValue\": 120.0000,\n" +
-                "        \"importValue\": 120.0000,\n" +
+                "        \"exportValue\": 120.0000,\n" +
                 "        \"uom\": \"KG\"\n" +
                 "      },\n" +
                 "      {\n" +
@@ -102,7 +118,7 @@ public class TestMain {
                 "        \"quantity\": 6.0000,\n" +
                 "        \"unitPrice\": 20.0000,\n" +
                 "        \"totalValue\": 120.0000,\n" +
-                "        \"importValue\": 120.0000,\n" +
+                "        \"exportValue\": 120.0000,\n" +
                 "        \"uom\": \"KG\"\n" +
                 "      }\n" +
                 "    ],\n" +
@@ -115,12 +131,7 @@ public class TestMain {
                 "      ]\n" +
                 "    }\n" +
                 "  },\n" +
-                "  \"messageId\": \"a1374655-5eb8-4a0e-9eb5-989521cd1ca8\",\n" +
-                "  \"processingCode\": \"101\",\n" +
-                "  \"receiverId\": \"SAUD\",\n" +
-                "  \"senderId\": \"PSW\",\n" +
-                "  \"signature\": \"82045ede93efbbcbea55da67c6655e9b\",\n" +
-                "  \"timestamp\": \"20200925183412\"\n" +
+                "  \"signature\": \"82045ede93efbbcbea55da67c6655e9b\"\n" +
                 "}";
 
 
@@ -131,10 +142,10 @@ public class TestMain {
 
         ObjectMapper mapper = new ObjectMapper();
         ///mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
-        RequestParameter<GDImportDTO> requestBody = new RequestParameter<>();
-        GDImportDTO dto = null;
+        RequestParameter<GDExportDTO> requestBody = new RequestParameter<>();
+        GDExportDTO dto = null;
         try {
-            dto = mapper.readValue(data, GDImportDTO.class);
+            dto = mapper.readValue(data, GDExportDTO.class);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }

@@ -33,6 +33,9 @@ public class ReferenceService {
     @Autowired
     private GDRepository gdRepository;
 
+    @Autowired
+    private GDExportRepository gdExportRepository;
+
     public List<AccountDetail> getAllAccountDetails() {
         log.info("getAllAccountDetails method called..");
         return accountDetailRepository.findAll();
@@ -145,5 +148,28 @@ public class ReferenceService {
     public GD updateGD(GD entity) {
         log.info("updateGD method called..");
         return gdRepository.save(entity);
+    }
+
+
+    /*************************************
+     * GD  METHODS
+     **************************************/
+    public List<GDExport> getAllGDExport() {
+        log.info("getAllGDExport method called..");
+        List<GDExport> refList = null;
+        refList= this.gdExportRepository.findAll();
+        return refList;
+    }
+
+    public GDExport getGDExportById(Long id) {
+        log.info("getGDExportById method called..");
+        Optional<GDExport> ref = gdExportRepository.findById(id);
+        return ref.get();
+    }
+
+    @Transactional
+    public GDExport updateGDExport(GDExport entity) {
+        log.info("updateGDExport method called..");
+        return gdExportRepository.save(entity);
     }
 }
