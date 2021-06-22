@@ -14,6 +14,7 @@ import java.util.*;
 public class GDImportDTO implements BaseDTO<GDImportDTO, GD> {
 
      // GD Fields
+     private Long id;
     private String gdNumber;
     private String gdType;
     private String gdStatus;
@@ -139,6 +140,7 @@ public class GDImportDTO implements BaseDTO<GDImportDTO, GD> {
     public void convertToDTO(GD entity, boolean partialFill) {
 
         if (entity != null) {
+            this.setId(entity.getId());
             this.setGdNumber(entity.getGdNumber());
             this.setGdType(entity.getGdType());
             this.setGdStatus(entity.getGdStatus());

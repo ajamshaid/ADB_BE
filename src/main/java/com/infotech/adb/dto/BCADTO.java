@@ -21,7 +21,7 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
     public String modeOfPayment;
     public String finInsUniqueNumber;
 
-    public String bcaDate;
+    public Date bcaDate;
     public String remarks;
 
     public BCAInformation bcaInformation;
@@ -39,7 +39,7 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
         entity.setIban(this.getIban());
         entity.setExporterName(this.getExporterName());
         entity.setExporterNtn(this.getExporterNtn());
-//        entity.setBcaDate(AppUtility.formatedDate(this.getBcaDate()));
+        entity.setBcaDate(this.getBcaDate());
         entity.setModeOfPayment(this.getModeOfPayment());
         entity.setRemarks(this.getRemarks());
         entity.setFinInsUniqueNumber(this.getFinInsUniqueNumber());
@@ -89,7 +89,7 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
             this.setIban(entity.getIban());
             this.setExporterName(entity.getExporterName());
             this.setExporterNtn(entity.getExporterNtn());
-            this.setBcaDate(AppUtility.formatedDate(entity.getBcaDate()));
+            this.setBcaDate(entity.getBcaDate());
             this.setModeOfPayment(entity.getModeOfPayment());
             this.setRemarks(entity.getRemarks());
             this.setFinInsUniqueNumber(entity.getFinInsUniqueNumber());
