@@ -60,8 +60,7 @@ public class EDIAPI {
             log.info("Valid Request with processing code:" + processingCode);
             switch (processingCode) {
                 case "301": // 4.1 Message 1, Verification of NTN,IBAN,Email and Mob
-                    RequestParameter.isValidIBANRequest(requestParameter,false);
-                    customResponse = this.verifyAccount(requestParameter);
+                    customResponse = this.verifyAccount(reqBodyStr, requestParameter);
                     break;
                 case "302": // 4.2.	Message 2 – Sharing of Account Details & Authorized Payment Modes with PSW by AD
                     RequestParameter.isValidIBANRequest(requestParameter,true);
@@ -92,13 +91,17 @@ public class EDIAPI {
      2. In Response, the AD will share the verification status of the shared IBAN, Email Address and Mobile
      No. with PSW.
      **************************/
-    public CustomResponse verifyAccount(RequestParameter<IBANVerificationRequest> requestBody)
+    public CustomResponse verifyAccount(String requestString, RequestParameter requestParameter)
             throws CustomException, DataValidationException, NoDataFoundException {
         ZonedDateTime requestTime = ZonedDateTime.now();
         CustomResponse customResponse = null;
         boolean isVerified = false;
         try {
-            IBANVerificationRequest ibanVerificationRequest = requestBody.getData();
+            JSONObject obj = new JSONObject(requestString);
+            String data = obj.getJSONObject("data").toString();
+            ObjectMapper mapper = new ObjectMapper();
+            IBANVerificationRequest ibanVerificationRequest = mapper.readValue(data, IBANVerificationRequest.class);
+
             isVerified = mqService.isAccountVerified(ibanVerificationRequest);
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e, null);
@@ -106,11 +109,11 @@ public class EDIAPI {
         customResponse = ResponseUtility.successResponse(null
                 , isVerified ? AppConstants.PSWResponseCodes.VERIFIED : AppConstants.PSWResponseCodes.UN_VERIFIED
                 , isVerified ? messageBundle.getString("account.verified") : messageBundle.getString("account.un-verified")
-                , requestBody, false
+                , requestParameter, false
         );
 
         ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
-        logRequestService.saveLogRequest("Verify Trader Profile From AD", RequestMethod.POST.name(), requestBody, requestTime, responseBody);
+        logRequestService.saveLogRequest("Verify Trader Profile From AD", RequestMethod.POST.name(), requestParameter, requestTime, responseBody);
         return customResponse;
     }
 
