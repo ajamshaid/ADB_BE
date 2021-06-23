@@ -77,10 +77,16 @@ public class FinancialTransactionAPI {
         try {
             entity = referenceService.updateFinancialTransaction(reqDTO.convertToEntity());
 
-            consumer.shareFinancialInformationImport(reqDTO);
+
 
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e, "");
+        }
+
+        try {
+            consumer.shareFinancialInformationImport(reqDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return ResponseUtility.buildResponseObject(entity, new FinancialTransactionImportDTO(), false);
     }
@@ -132,10 +138,17 @@ public class FinancialTransactionAPI {
         try {
             entity = referenceService.updateFinancialTransaction(reqDTO.convertToEntity());
 
-            consumer.shareFinancialInformationExport(reqDTO);
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e, "");
         }
+
+
+        try {
+            consumer.shareFinancialInformationExport(reqDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return ResponseUtility.buildResponseObject(entity, new FinancialTransactionExportDTO(), false);
     }
 
