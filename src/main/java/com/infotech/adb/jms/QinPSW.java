@@ -12,7 +12,7 @@ import javax.jms.JMSException;
 @Component
 public class QinPSW {
     static final String qName = "QIN_PSW"; // A queue from the default MQ Developer container config
-    static final long timeOut = 2 * 60 * 1000; // x * 1000 = x seconds
+    static final long timeOut = 1 * 60 * 1000; // x * 1000 = x seconds
 
     @Autowired
     JmsTemplate jmsTemplate;

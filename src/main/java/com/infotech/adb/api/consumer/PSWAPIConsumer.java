@@ -195,7 +195,22 @@ public class PSWAPIConsumer {
      return executeRequest(requestParameter, "Sharing Financial Transaction Data For Import with PSW by AD");
      }
 
+    /***********************************************************
+     5.2.1.	Message 1 – Share Financial Transaction Data with PSW by AD (Export)
+     ***********************************************************/
+     public ResponseUtility.APIResponse shareFinancialInformationExport(FinancialTransactionExportDTO dto)
+     throws HttpClientErrorException, JsonProcessingException {
 
+     RequestParameter<FinancialTransactionExportDTO> requestParameter = new RequestParameter<>(
+     UUID.randomUUID()
+     , AppConstants.AD_ID
+     , AppConstants.PSW.ID, "03"
+     , AppConstants.PSW.METHOD_ID_SHARE_FIN_TRANS_DATA_EXPORT
+     , AppConstants.AD_SIGNATURE);
+     requestParameter.setData(dto);
+
+     return executeRequest(requestParameter, "Sharing Financial Transaction Data for Export with PSW by AD");
+     }
 
     /***********************************************************
      4.11.	Message 11 – Update in Trader’s Email and Mobile Number Message by AD to PSW
@@ -252,22 +267,7 @@ public class PSWAPIConsumer {
 
 
 
-    /***********************************************************
-     5.2.1.	Message 1 – Share Financial Transaction Data with PSW by AD (Export)
-     ***********************************************************
-    public ResponseUtility.APIResponse shareFinancialInformationExport(FinancialTransactionExportDTO dto)
-            throws HttpClientErrorException, JsonProcessingException {
 
-        RequestParameter<FinancialTransactionExportDTO> requestParameter = new RequestParameter<>(
-                 UUID.randomUUID()
-                , AppConstants.AD_ID
-                , AppConstants.PSW.ID, "03"
-                , AppConstants.PSW.METHOD_ID_SHARE_FIN_TRANS_DATA_EXPORT
-                , AppConstants.AD_SIGNATURE);
-        requestParameter.setData(dto);
-
-        return executeRequest(requestParameter, "Sharing Financial Transaction Data for Export with PSW by AD");
-    }
 
     /***********************************************************
      5.2.3.	Message 3 – Sharing of BCA Information Export by AD with PSW

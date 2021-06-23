@@ -64,7 +64,7 @@ public class EDIAPI {
                     break;
                 case "302": // 4.2.	Message 2 – Sharing of Account Details & Authorized Payment Modes with PSW by AD
                     RequestParameter.isValidIBANRequest(requestParameter,true);
-                    customResponse = this.getAccountDetails(requestParameter);
+                    customResponse = this.getAccountDetails(reqBodyStr, requestParameter);
                     break;
                 case "101": //5.1.2 Message 2 – Sharing of GD and Financial Information with AD by PSW
                     customResponse = this.shareImportGDFinInfoToBank(reqBodyStr , requestParameter);
@@ -122,7 +122,7 @@ public class EDIAPI {
             1.PSW will request AD to share the user account details and authorized payment modes against IBAN.
             2. In Response the AD will share the user account details and authorized payment modes against IBAN.
     / **************************/
-    public CustomResponse getAccountDetails(RequestParameter<IBANVerificationRequest> requestBody)
+    public CustomResponse getAccountDetails(String requestString, RequestParameter requestParameter)
             throws CustomException, DataValidationException, NoDataFoundException {
         ZonedDateTime requestTime = ZonedDateTime.now();
         CustomResponse customResponse = null;
@@ -131,7 +131,13 @@ public class EDIAPI {
         String logMessage = "";
         boolean noData = false;
         try {
-            IBANVerificationRequest ibanVerificationRequest = requestBody.getData();
+
+            JSONObject obj = new JSONObject(requestString);
+            String data = obj.getJSONObject("data").toString();
+            ObjectMapper mapper = new ObjectMapper();
+            IBANVerificationRequest ibanVerificationRequest = mapper.readValue(data, IBANVerificationRequest.class);
+
+//            IBANVerificationRequest ibanVerificationRequest = requestBody.getData();
             accountDetailDTO = mqService.getAccountDetailsByIban(ibanVerificationRequest.getIban());
             noData = AppUtility.isEmpty(accountDetailDTO);
         } catch (Exception e) {
@@ -143,11 +149,11 @@ public class EDIAPI {
         customResponse = ResponseUtility.successResponse(accountDetailDTO
                 , noData ? AppConstants.PSWResponseCodes.NO_DATA_FOUND : AppConstants.PSWResponseCodes.OK
                 , message
-                , requestBody,false
+                , requestParameter,false
         );
 
         ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
-        logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestBody, requestTime, responseBody);
+        logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter, requestTime, responseBody);
         return customResponse;
     }
 
