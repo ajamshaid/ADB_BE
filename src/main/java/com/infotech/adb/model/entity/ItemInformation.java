@@ -37,7 +37,7 @@ public class ItemInformation {
     private String sample;
 
     @Column(name = "SAMPLE_VALUE",length = 20, nullable = true)
-    private String sampleValue;
+    private BigDecimal sampleValue;
 
     @Column(name = "UNIT_PRICE", precision=24, scale=4)
     private BigDecimal unitPrice;

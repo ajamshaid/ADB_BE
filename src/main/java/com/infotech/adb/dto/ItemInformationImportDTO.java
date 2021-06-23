@@ -17,7 +17,7 @@ public class ItemInformationImportDTO implements BaseDTO<ItemInformationImportDT
     private String uom;
     private String countryOfOrigin;
     private String sample;
-    private String sampleValue;
+    private BigDecimal sampleValue;
 
     private BigDecimal unitPrice;
     private BigDecimal totalValue;
