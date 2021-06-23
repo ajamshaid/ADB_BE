@@ -17,7 +17,7 @@ public class PaymentInformationExportDTO implements BaseDTO<PaymentInformationEx
     private String consigneeIban;
 
     private String portOfDischarge;
-    private String deliveryTerm;
+    private String deliveryTerms;
     //private BigDecimal totalValueOfShipment;
 
     private BigDecimal financialInstrumentValue;
@@ -37,7 +37,7 @@ public class PaymentInformationExportDTO implements BaseDTO<PaymentInformationEx
         entity.setBeneficiaryCountry(this.getConsigneeCountry());
         entity.setBeneficiaryIban(this.getConsigneeIban());
         entity.setPortOfDischarge(this.getPortOfDischarge());
-        entity.setDeliveryTerm(this.getDeliveryTerm());
+        entity.setDeliveryTerm(this.getDeliveryTerms());
         entity.setFinancialInstrumentCurrency(this.getFinancialInstrumentCurrency());
         entity.setFinancialInstrumentValue(this.getFinancialInstrumentValue());
         entity.setFinancialInstrumenExpiryDate(this.getExpiryDate());
@@ -54,7 +54,7 @@ public class PaymentInformationExportDTO implements BaseDTO<PaymentInformationEx
             this.setConsigneeCountry(entity.getBeneficiaryCountry());
             this.setConsigneeIban(entity.getBeneficiaryIban());
             this.setPortOfDischarge(entity.getPortOfDischarge());
-            this.setDeliveryTerm(entity.getDeliveryTerm());
+            this.setDeliveryTerms(entity.getDeliveryTerm());
         //    this.setTotalValueOfShipment(entity.getTotalValueOfShipment());
             this.setFinancialInstrumentCurrency(entity.getFinancialInstrumentCurrency());
             this.setFinancialInstrumentValue(entity.getFinancialInstrumentValue());

@@ -12,6 +12,7 @@ import com.infotech.adb.exceptions.NoDataFoundException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -68,24 +69,26 @@ public class ResponseUtility {
     @NoArgsConstructor
     @AllArgsConstructor
     @Data
+    @ToString
     public static class Message {
         private String code;
         private String description;
     }
     @NoArgsConstructor
     @Data
+    @ToString
     public static class APIResponse {
 
-        private String messageId;
-        private String timestamp;
-        private String senderId;
-        private String receiverId;
-        private String responseCode;
+        protected String messageId;
+        protected String timestamp;
+        protected String senderId;
+        protected String receiverId;
+        protected String responseCode;
 //        private String methodId;
-        private String signature;
-        private Message message;
+        protected String signature;
+        protected Message message;
 
-        private Object data;
+        protected Object data;
 
         public APIResponse(Object data, String responseCode, Message message, RequestParameter requestParameter) {
             this.data =  AppUtility.isEmpty(data)? "" : data;
@@ -122,6 +125,21 @@ public class ResponseUtility {
         public PSWAPIResponse(Object data, String responseCode, Message message, RequestParameter requestParameter) {
             super(data, responseCode, message, requestParameter);
             this.methodId = requestParameter.getMethodId();
+        }
+
+        @Override
+        public String toString() {
+            return "PSWAPIResponse{" +
+                    "messageId='" + messageId + '\'' +
+                    ", timestamp='" + timestamp + '\'' +
+                    ", senderId='" + senderId + '\'' +
+                    ", receiverId='" + receiverId + '\'' +
+                    ", responseCode='" + responseCode + '\'' +
+                    ", signature='" + signature + '\'' +
+                    ", message=" + message +
+                    ", data=" + data +
+                    ", methodId='" + methodId + '\'' +
+                    '}';
         }
     }
 

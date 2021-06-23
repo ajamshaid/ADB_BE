@@ -401,9 +401,10 @@ public class PSWAPIConsumer {
 
             System.out.println("=================" + apiResponse);
 
-            logRequest = LogRequest.buildNewObject(messageName, RequestMethod.POST.name(), requestParameter, requestTime, apiResponse);
-
-            logRequestService.createLogRequest(logRequest);
+            if(HttpStatus.OK.toString() == apiResponse.getResponseCode()) {
+                logRequest = LogRequest.buildNewObject(messageName, RequestMethod.POST.name(), requestParameter, requestTime, apiResponse);
+                logRequestService.createLogRequest(logRequest);
+            }
         } else {
             ///   logRequest = LogRequest.buildNewObject("Sharing of Update Information and Payment Mode By AD", RequestMethod.POST.name(),requestParameter, requestTime, authTokenResponse);
 
