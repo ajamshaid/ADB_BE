@@ -22,7 +22,8 @@ public class PaymentInformationExportDTO implements BaseDTO<PaymentInformationEx
 
     private BigDecimal financialInstrumentValue;
     private String financialInstrumentCurrency;
-    private Date expiryDate;
+    private String expiryDate;
+    private Date expiryDateDate;
 
     public PaymentInformationExportDTO(PaymentInformation entity) {
         convertToDTO(entity, true);
@@ -40,7 +41,7 @@ public class PaymentInformationExportDTO implements BaseDTO<PaymentInformationEx
         entity.setDeliveryTerm(this.getDeliveryTerms());
         entity.setFinancialInstrumentCurrency(this.getFinancialInstrumentCurrency());
         entity.setFinancialInstrumentValue(this.getFinancialInstrumentValue());
-        entity.setFinancialInstrumenExpiryDate(this.getExpiryDate());
+        entity.setFinancialInstrumenExpiryDate(this.getExpiryDateDate());
         return entity;
     }
 
@@ -58,7 +59,7 @@ public class PaymentInformationExportDTO implements BaseDTO<PaymentInformationEx
         //    this.setTotalValueOfShipment(entity.getTotalValueOfShipment());
             this.setFinancialInstrumentCurrency(entity.getFinancialInstrumentCurrency());
             this.setFinancialInstrumentValue(entity.getFinancialInstrumentValue());
-            this.setExpiryDate(entity.getFinancialInstrumenExpiryDate());
+            this.setExpiryDateDate(entity.getFinancialInstrumenExpiryDate());
 
         }
     }

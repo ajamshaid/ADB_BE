@@ -142,7 +142,7 @@ public class FinancialTransactionAPI {
             ResponseUtility.exceptionResponse(e, "");
         }
 
-
+        reqDTO.getPaymentInformation().setExpiryDate("20211012");
         try {
             consumer.shareFinancialInformationExport(reqDTO);
         } catch (Exception e) {
