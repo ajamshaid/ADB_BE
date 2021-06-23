@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 public class ItemInformationExportDTO implements BaseDTO<ItemInformationExportDTO, ItemInformation> {
     private Long id;
     private String hsCode;
+    private String countryOfOrigin;
     private BigDecimal quantity;
     private BigDecimal unitPrice;
     private BigDecimal totalValue;
@@ -27,6 +28,7 @@ public class ItemInformationExportDTO implements BaseDTO<ItemInformationExportDT
         ItemInformation entity = new ItemInformation();
         entity.setId(this.getId());
         entity.setHsCode(this.getHsCode());
+        entity.setCountryOfOrigin(this.getCountryOfOrigin());
         entity.setUom(this.getUom());
         entity.setUnitPrice(this.getUnitPrice());
         entity.setTotalValue(this.getTotalValue());
@@ -46,6 +48,7 @@ public class ItemInformationExportDTO implements BaseDTO<ItemInformationExportDT
             this.setGoodsDescription(entity.getGoodsDescription());
             this.setQuantity(AppUtility.isEmpty(entity.getQuantity()) ? new BigDecimal("0" ) : entity.getQuantity());
             this.setUom(entity.getUom());
+            this.setCountryOfOrigin(entity.getCountryOfOrigin());
             this.setUnitPrice(entity.getUnitPrice());
             this.setTotalValue(entity.getTotalValue());
             this.setExportValue(entity.getImportOrExportValue());
