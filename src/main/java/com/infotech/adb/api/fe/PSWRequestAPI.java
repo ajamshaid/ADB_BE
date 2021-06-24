@@ -47,12 +47,11 @@ public class PSWRequestAPI {
         CustomResponse customResponse = null;
 
         if(AppUtility.isEmpty(response)){ //if Un-successful Response
-
             ResponseUtility.exceptionResponse(new CustomException("Resquest update Failed.."),"");
-
         }else{
-            customResponse = ResponseUtility.successResponse("{}", AppConstants.PSWResponseCodes.OK,
-                "Updated authorized payment modes", null,false);
+            customResponse = ResponseUtility.successResponse("{}",
+                    response.getMessage().getCode(),
+                response.getMessage().getDescription(), null,false);
         }
         return customResponse;
     }
