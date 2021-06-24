@@ -105,10 +105,6 @@ public class RequestParameter<T> {
             sb.append(" Processing Code " + messageBundle.getString("missing.request.parameter"));
             isValid = false;
         }
-
-        if (!isValid) {
-            throw new DataValidationException(sb.toString());
-        }
         return isValid;
     }
 

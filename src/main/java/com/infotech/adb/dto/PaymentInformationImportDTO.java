@@ -21,7 +21,7 @@ public class PaymentInformationImportDTO implements BaseDTO<PaymentInformationIm
     private String exporterCountry;
 
     private String portOfShipment;
-    private String deliveryTerm;
+    private String deliveryTerms;
     private BigDecimal financialInstrumentValue;
     private String financialInstrumentCurrency;
     private BigDecimal exchangeRate;
@@ -43,7 +43,7 @@ public class PaymentInformationImportDTO implements BaseDTO<PaymentInformationIm
         entity.setExporterAddress(this.getExporterAddress());
         entity.setExporterCountry(this.getExporterCountry());
         entity.setPortOfShipment(this.getPortOfShipment());
-        entity.setDeliveryTerm(this.getDeliveryTerm());
+        entity.setDeliveryTerm(this.getDeliveryTerms());
         entity.setFinancialInstrumentCurrency(this.getFinancialInstrumentCurrency());
         entity.setFinancialInstrumentValue(this.getFinancialInstrumentValue());
         entity.setLcContractNo(this.getLcContractNo());
@@ -64,7 +64,7 @@ public class PaymentInformationImportDTO implements BaseDTO<PaymentInformationIm
             this.setExporterAddress(entity.getExporterAddress());
             this.setExporterCountry(entity.getExporterCountry());
             this.setPortOfShipment(entity.getPortOfShipment());
-            this.setDeliveryTerm(entity.getDeliveryTerm());
+            this.setDeliveryTerms(entity.getDeliveryTerm());
             this.setFinancialInstrumentCurrency(entity.getFinancialInstrumentCurrency());
             this.setFinancialInstrumentValue(entity.getFinancialInstrumentValue());
             this.setLcContractNo(entity.getLcContractNo());

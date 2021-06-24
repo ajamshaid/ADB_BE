@@ -1,12 +1,8 @@
 package com.infotech.adb.util;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ibm.mq.*;
 import com.ibm.mq.constants.CMQC;
 import com.ibm.mq.constants.MQConstants;
-import com.infotech.adb.dto.GDExportDTO;
-import com.infotech.adb.dto.RequestParameter;
 import com.opencsv.exceptions.CsvException;
 import org.json.JSONObject;
 
@@ -22,135 +18,48 @@ public class TestMain {
 
     public static void main(String args[]) throws CsvException, FileNotFoundException {
 
-        String requestString = "{\n" +
+        String a = "{\"mobileNumber\":\"0300 123\",\"iban\":\"PK123\",\"ntn\":\"ntn 123\",\"email\":\"123@psw.pk123\"}";
+        String aa = "{\"mobileNumber\":\"0300 123\",\"iban\":\"PK123\",\"ntn\":\"ntn 123\",\"email\":\"123@psw.pk123\"}";
+        String b = "{\"email\": \"123@psw.pk123\",\"iban\": \"PK123\",\"mobileNumber\": \"0300 123\",\"ntn\": \"ntn 123\"}";
+
+
+
+        System.out.println(AppUtility.buildSignature(a));
+        System.out.println(AppUtility.buildSignature(aa));
+        System.out.println(AppUtility.buildSignature(b));
+
+
+        String reqBodyStr = "{\n" +
+                "  \"data\":{\"iban\": \"PK123\",\"email\": \"123@psw.pk123\",\"mobileNumber\": \"0300 123\",\"ntn\": \"ntn 123\"},\n" +
                 "  \"messageId\": \"a1374655-5eb8-4a0e-9eb5-989521cd1ca8\",\n" +
-                "  \"timestamp\": \"20200925183412\",\n" +
+                "  \"processingCode\": \"301\",\n" +
+                "  \"receiverId\": \"SCBL\",\n" +
                 "  \"senderId\": \"PSW\",\n" +
-                "  \"receiverId\": \"SCB\",\n" +
-                "  \"processingCode\": \"102\",\n" +
-                "  \"data\": {\n" +
-                "    \"gdNumber\": \"KPPI-HC-86-03-09-2020\",\n" +
-                "    \"gdStatus\": \"01\",\n" +
-                "    \"consignmentCategory\": \"Commercial\",\n" +
-                "    \"gdType\": \"Export Commercial Transaction\",\n" +
-                "    \"collectorate\": \"Qasim International Container Terminal\",\n" +
-                "    \"blAwbNumber\": \"BL- 010920\",\n" +
-                "    \"blAwbDate\": \"20201012\",\n" +
-                "    \"virAirNumber\": \"KEWB-0005-010112020\",\n" +
-                "    \"consignorConsigneeInfo\": {\n" +
-                "      \"ntnFtn\": \"0425425\",\n" +
-                "      \"strn\": \"1700003019489\",\n" +
-                "      \"consigneeName\": \"PSW\",\n" +
-                "      \"consigneeAddress\": \"PECHS\",\n" +
-                "      \"consignorName\": \"M/S. International Jute Traders\",\n" +
-                "      \"consignorAddress\": \"95, MOTIJHEEL COMMERCIAL AREA (2ND FLOOR)\"\n" +
-                "    },\n" +
-                "    \"financialInformation\": {\n" +
-                "      \"financialInstrument\": [\n" +
-                "        {\n" +
-                "          \"exporterIban\": \"PK35ASCM0000121234567890\",\n" +
-                "          \"modeOfPayment\": \"307\",\n" +
-                "          \"finInsUniqueNumber\": \"2009LCS3004700PK\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "          \"exporterIban\": \"PK35ASCM0000121234567890\",\n" +
-                "          \"modeOfPayment\": \"308\",\n" +
-                "          \"finInsUniqueNumber\": \"2009LCS2345700PK\"\n" +
-                "        }\n" +
-                "      ],\n" +
-                "      \"currency\": \"USD\",\n" +
-                "      \"totalDeclaredValue\": 5000.000,\n" +
-                "      \"invoiceNumber\": \"1234567\",\n" +
-                "      \"invoiceDate\": \"20200223\",\n" +
-                "      \"deliveryTerm\": \"CFR\",\n" +
-                "      \"fobValueUsd\": 100.0000,\n" +
-                "      \"freightUsd\": 1.0000,\n" +
-                "      \"cfrValueUsd\": 1.0000,\n" +
-                "      \"insuranceUsd\": 0.0000,\n" +
-                "      \"landingChargesUsd\": 100.0000,\n" +
-                "      \"assessedValueUsd\": 50.0000,\n" +
-                "      \"otherCharges\": 0.0000,\n" +
-                "      \"exchangeRate\": 158.0000\n" +
-                "    },\n" +
-                "    \"generalInformation\": {\n" +
-                "      \"packagesInformation\": [\n" +
-                "        {\n" +
-                "          \"numberOfPackages\": 100.000,\n" +
-                "          \"packageType\": \"Box\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "          \"numberOfPackages\": 100.000,\n" +
-                "          \"packageType\": \"Pallete\"\n" +
-                "        }\n" +
-                "      ],\n" +
-                "      \"containerVehicleInformation\": [\n" +
-                "        {\n" +
-                "          \"containerOrTruckNumber\": \"ASF9999991\",\n" +
-                "          \"sealNumber\": \"SL2674\",\n" +
-                "          \"containerType\": \"20FT\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "          \"containerOrTruckNumber\": \"ASF9999992\",\n" +
-                "          \"sealNumber\": \"SL2674\",\n" +
-                "          \"containerType\": \"40FT\"\n" +
-                "        }\n" +
-                "      ],\n" +
-                "      \"netWeight\": \"1.89400 MT\",\n" +
-                "      \"grossWeight\": \"1.11400 MT\",\n" +
-                "      \"consignmentType\": \"Containerized\",\n" +
-                "      \"portOfShipment\": \"CHN\",\n" +
-                "      \"placeOfDelivery\": \"CHN\",\n" +
-                "      \"portOfDischarge\": \"DAV\",\n" +
-                "      \"terminalLocation\": \"Qasim International Container Terminal\",\n" +
-                "      \"shippingLine\": \"Maersk\"\n" +
-                "    },\n" +
-                "    \"itemInformation\": [\n" +
-                "      {\n" +
-                "        \"hsCode\": \"8446.1000\",\n" +
-                "        \"quantity\": 6.0000,\n" +
-                "        \"unitPrice\": 20.0000,\n" +
-                "        \"totalValue\": 120.0000,\n" +
-                "        \"exportValue\": 120.0000,\n" +
-                "        \"uom\": \"KG\"\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"hsCode\": \"9246.1000\",\n" +
-                "        \"quantity\": 6.0000,\n" +
-                "        \"unitPrice\": 20.0000,\n" +
-                "        \"totalValue\": 120.0000,\n" +
-                "        \"exportValue\": 120.0000,\n" +
-                "        \"uom\": \"KG\"\n" +
-                "      }\n" +
-                "    ],\n" +
-                "    \"negativeList\": {\n" +
-                "      \"country\": \"AUS\",\n" +
-                "      \"supplier\": \"M/S. International Jute Traders\",\n" +
-                "      \"commodities\": [\n" +
-                "        \"0402.1000\",\n" +
-                "        \"0402.2000\"\n" +
-                "      ]\n" +
-                "    }\n" +
-                "  },\n" +
-                "  \"signature\": \"82045ede93efbbcbea55da67c6655e9b\"\n" +
+                "  \"signature\": \"9dx0B7RdGlhsPWvWSbOSpDL6Zfp/1JdGombWxOnKT8U=\",\n" +
+                "  \"timestamp\": \"20200925183412\"\n" +
                 "}";
 
 
-//        String jsonString = ... ; //assign your JSON String here
-        JSONObject obj = new JSONObject(requestString);
-        String data = obj.getJSONObject("data").toString();
+        String[] abc =  reqBodyStr.split(",");
 
-
-        ObjectMapper mapper = new ObjectMapper();
-        ///mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
-        RequestParameter<GDExportDTO> requestBody = new RequestParameter<>();
-        GDExportDTO dto = null;
-        try {
-            dto = mapper.readValue(data, GDExportDTO.class);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+        for (String st : abc){
+            if(st.startsWith("data")){
+                System.out.println(st);
+            }
         }
 
-        System.out.println(requestBody);
+
+
+
+
+        JSONObject obj = new JSONObject(reqBodyStr);
+        String data = obj.getJSONObject("data").toString();
+
+        System.out.println("---------Data:"+data);
+//        System.out.println("---------Data2:"+springParser.parseMap(reqBodyStr).get("data"));
+
+
+
 
         // TestMain.ReadMSG();
         //testRandomUUID();
