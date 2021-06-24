@@ -65,7 +65,7 @@ public class BCAAPI {
         }
         BCA entity = null;
         try {
-            entity = referenceService.updateBCA(reqDTO.convertToEntity());
+            entity = referenceService.updateBCAAndShare(reqDTO);
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e, "");
         }

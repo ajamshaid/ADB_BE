@@ -2,7 +2,8 @@ package com.infotech.adb.api.ad;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.infotech.adb.api.consumer.PSWAPIConsumer;
-import com.infotech.adb.dto.*;
+import com.infotech.adb.dto.BCADTO;
+import com.infotech.adb.dto.RequestParameter;
 import com.infotech.adb.model.entity.User;
 import com.infotech.adb.model.repository.BDARepository;
 import com.infotech.adb.model.repository.FinancialTransactionRepository;
@@ -181,7 +182,7 @@ public class TestAPI_ToDel {
 
         return new ResponseEntity<>(pswApiConsumer.shareBCAInformationExport(dto), HttpStatus.OK);
     }
-
+/*
     //Testing for    6.1.	Message 1 – Sharing of Cash Margin Message by AD with PSW
     @RequestMapping(value = "/share-cash-margin", method = RequestMethod.GET)
     public ResponseEntity<?> shareCashMarginTest(
@@ -236,5 +237,5 @@ public class TestAPI_ToDel {
         TradeTransSettlementDTO dto = requestBody.getData();
 
         return new ResponseEntity<>(pswApiConsumer.settlementOfFinTrans(dto), HttpStatus.OK);
-    }
+    }*/
 }

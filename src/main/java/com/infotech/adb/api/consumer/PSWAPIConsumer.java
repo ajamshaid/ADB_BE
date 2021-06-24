@@ -5,10 +5,7 @@ import com.infotech.adb.config.RestTemplateResponseErrorHandler_ToDel;
 import com.infotech.adb.dto.*;
 import com.infotech.adb.model.entity.LogRequest;
 import com.infotech.adb.service.LogRequestService;
-import com.infotech.adb.util.AppConstants;
-import com.infotech.adb.util.HTTPClientUtils;
-import com.infotech.adb.util.PSWAuthTokenResponse;
-import com.infotech.adb.util.ResponseUtility;
+import com.infotech.adb.util.*;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -196,6 +193,23 @@ public class PSWAPIConsumer {
      }
 
     /***********************************************************
+     5.1.3.	Message 3 – Sharing of BDA Information Import by AD with PSW
+     ***********************************************************/
+     public ResponseUtility.APIResponse shareBDAInformationImport(BDADTO dto)
+     throws HttpClientErrorException, JsonProcessingException {
+
+     RequestParameter<BDADTO> requestParameter = new RequestParameter<>(
+     UUID.randomUUID()
+     , AppConstants.AD_ID
+     , AppConstants.PSW.ID, "03"
+     , AppConstants.PSW.METHOD_ID_SHARE_BDA_INFO_IMPORT
+     , AppConstants.AD_SIGNATURE);
+     requestParameter.setData(dto);
+
+     return executeRequest(requestParameter, "Sharing of BDA Information [Import] by AD with PSW");
+     }
+
+    /***********************************************************
      5.2.1.	Message 1 – Share Financial Transaction Data with PSW by AD (Export)
      ***********************************************************/
      public ResponseUtility.APIResponse shareFinancialInformationExport(FinancialTransactionExportDTO dto)
@@ -212,6 +226,22 @@ public class PSWAPIConsumer {
      return executeRequest(requestParameter, "Sharing Financial Transaction Data for Export with PSW by AD");
      }
 
+    /***********************************************************
+     5.2.3.	Message 3 – Sharing of BCA Information Export by AD with PSW
+     ***********************************************************/
+    public ResponseUtility.APIResponse shareBCAInformationExport(BCADTO dto)
+            throws HttpClientErrorException, JsonProcessingException {
+
+        RequestParameter<BCADTO> requestParameter = new RequestParameter<>(
+                UUID.randomUUID()
+                , AppConstants.AD_ID
+                , AppConstants.PSW.ID, "03"
+                , AppConstants.PSW.METHOD_ID_SHARE_BCA_INFO_EXPORT
+                , AppConstants.AD_SIGNATURE);
+        requestParameter.setData(dto);
+
+        return executeRequest(requestParameter, "Sharing of BCA Information [Export] by AD with PSW");
+    }
     /***********************************************************
      4.11.	Message 11 – Update in Trader’s Email and Mobile Number Message by AD to PSW
      ***********************************************************
@@ -248,48 +278,11 @@ public class PSWAPIConsumer {
     }
 
 
-    /***********************************************************
-     5.1.3.	Message 3 – Sharing of BDA Information Import by AD with PSW
-     ***********************************************************
-    public ResponseUtility.APIResponse shareBDAInformationImport(BDAImportDTO dto)
-            throws HttpClientErrorException, JsonProcessingException {
-
-        RequestParameter<BDAImportDTO> requestParameter = new RequestParameter<>(
-                 UUID.randomUUID()
-                , AppConstants.AD_ID
-                , AppConstants.PSW.ID, "03"
-                , AppConstants.PSW.METHOD_ID_SHARE_BDA_INFO_IMPORT
-                , AppConstants.AD_SIGNATURE);
-        requestParameter.setData(dto);
-
-        return executeRequest(requestParameter, "Sharing of BDA Information [Import] by AD with PSW");
-    }
-
-
-
-
-
-    /***********************************************************
-     5.2.3.	Message 3 – Sharing of BCA Information Export by AD with PSW
-     ***********************************************************/
-    public ResponseUtility.APIResponse shareBCAInformationExport(BCADTO dto)
-            throws HttpClientErrorException, JsonProcessingException {
-
-        RequestParameter<BCADTO> requestParameter = new RequestParameter<>(
-                 UUID.randomUUID()
-                , AppConstants.AD_ID
-                , AppConstants.PSW.ID, "03"
-                , AppConstants.PSW.METHOD_ID_SHARE_BCA_INFO_EXPORT
-                , AppConstants.AD_SIGNATURE);
-        requestParameter.setData(dto);
-
-        return executeRequest(requestParameter, "Sharing of BCA Information [Export] by AD with PSW");
-    }
 
 
     /***********************************************************
      6.	Sharing of Cash Margin Message by AD to PSW for Payment Mode - Open Account
-     ***********************************************************/
+     ***********************************************************
     public ResponseUtility.APIResponse shareCashMarginMessage(CashMarginDTO dto)
             throws HttpClientErrorException, JsonProcessingException {
 
@@ -307,7 +300,7 @@ public class PSWAPIConsumer {
 
     /***********************************************************
      7.1.3.	Message 1 – Sharing of Change of Bank request approval/rejection message by AD with PSW
-     ***********************************************************/
+     ***********************************************************
     public ResponseUtility.APIResponse shareCOBApprovalRejectionMsg(ChangeBankRequestDTO dto)
             throws HttpClientErrorException, JsonProcessingException {
 
@@ -325,7 +318,7 @@ public class PSWAPIConsumer {
 
     /***********************************************************
      9.1.	Message 1 – Cancellation of Financial Transaction by AD (Import/Export):
-     ***********************************************************/
+     ***********************************************************
     public ResponseUtility.APIResponse cancelFinancialTransaction(TradeTransactionDTO dto)
             throws HttpClientErrorException, JsonProcessingException {
 
@@ -342,7 +335,7 @@ public class PSWAPIConsumer {
 
     /***********************************************************
      10.1.	Message 1 – – Reversal of BDA/BCA Message by AD to PSW
-     ***********************************************************/
+     ***********************************************************
     public ResponseUtility.APIResponse reversalOfBdaBca(TradeTransBDAInfoDTO dto)
             throws HttpClientErrorException, JsonProcessingException {
 
@@ -359,7 +352,7 @@ public class PSWAPIConsumer {
 
     /***********************************************************
      11.1.	Message 1  – Settlement of Financial Transaction by AD (Import/Export):
-     ***********************************************************/
+     ***********************************************************
     public ResponseUtility.APIResponse settlementOfFinTrans(TradeTransSettlementDTO dto)
             throws HttpClientErrorException, JsonProcessingException {
 
@@ -393,7 +386,9 @@ public class PSWAPIConsumer {
         ZonedDateTime requestTime = ZonedDateTime.now();
         LogRequest logRequest = null;
         //Auth completed.
-        if (HttpStatus.OK.value() == authTokenResponse.getResponseCode()) {
+
+
+        if (!AppUtility.isEmpty(authTokenResponse.getResponseCode()) && HttpStatus.OK.value() == authTokenResponse.getResponseCode()) {
             UriComponents uriBuilder = UriComponentsBuilder.fromHttpUrl(
                     AppConstants.PSW.BASE_URL + AppConstants.PSW.API_UPDATE_URL).build();
 
@@ -411,6 +406,7 @@ public class PSWAPIConsumer {
                 logRequestService.createLogRequest(logRequest);
             }
         } else {
+            System.out.println("===================PSW AUthentication Failed======== Request Not Forwarded to PSW =================");
             ///   logRequest = LogRequest.buildNewObject("Sharing of Update Information and Payment Mode By AD", RequestMethod.POST.name(),requestParameter, requestTime, authTokenResponse);
 
         }

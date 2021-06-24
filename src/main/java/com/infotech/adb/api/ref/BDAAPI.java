@@ -65,7 +65,7 @@ public class BDAAPI {
         }
         BDA entity = null;
         try {
-            entity = referenceService.updateBDA(reqDTO.convertToEntity());
+            entity = referenceService.updateBDAAndShare(reqDTO);
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e, "");
         }

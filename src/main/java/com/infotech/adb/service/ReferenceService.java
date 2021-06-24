@@ -1,5 +1,9 @@
 package com.infotech.adb.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.infotech.adb.api.consumer.PSWAPIConsumer;
+import com.infotech.adb.dto.BCADTO;
+import com.infotech.adb.dto.BDADTO;
 import com.infotech.adb.model.entity.*;
 import com.infotech.adb.model.repository.*;
 import com.infotech.adb.util.AppUtility;
@@ -14,6 +18,9 @@ import java.util.Optional;
 @Service
 @Log4j2
 public class ReferenceService {
+
+    @Autowired
+    private PSWAPIConsumer consumer;
 
     @Autowired
     private AccountDetailRepository accountDetailRepository;
@@ -99,6 +106,12 @@ public class ReferenceService {
         return ref.get();
     }
 
+    public BDA updateBDAAndShare(BDADTO bdadto) throws JsonProcessingException {
+        BDA entity = this.updateBDA(bdadto.convertToEntity());
+        consumer.shareBDAInformationImport(bdadto);
+        return entity;
+    }
+
     @Transactional
     public BDA updateBDA(BDA entity) {
         log.info("updateBDA method called..");
@@ -119,6 +132,13 @@ public class ReferenceService {
         log.info("getBCAById method called..");
         Optional<BCA> ref = bcaRepository.findById(id);
         return ref.get();
+    }
+
+
+    public BCA updateBCAAndShare(BCADTO bcadto) throws JsonProcessingException {
+        BCA bca = this.updateBCA(bcadto.convertToEntity());
+        consumer.shareBCAInformationExport(bcadto);
+        return bca;
     }
 
     @Transactional
