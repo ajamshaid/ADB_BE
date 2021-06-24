@@ -17,7 +17,7 @@ public class PSWService {
     @Autowired
     PSWAPIConsumer consumer;
 
-    public ResponseUtility.APIResponse shareUpdatedAuthPMs(AccountDetailDTO dto) {
+    public ResponseUtility.APIResponse shareUpdatedAuthPMs(AccountPMDTO dto) {
         ResponseUtility.APIResponse pswResponse = null;
 
         try {

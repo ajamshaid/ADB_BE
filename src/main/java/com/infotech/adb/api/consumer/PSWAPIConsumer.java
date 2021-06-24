@@ -86,10 +86,10 @@ public class PSWAPIConsumer {
      4.3
      Message 3 – Sharing of updated authorized payment modes by AD with PSW
      ********************************************************************/
-    public ResponseUtility.APIResponse updateAccountAndPMInPWS(AccountDetailDTO dto)
+    public ResponseUtility.APIResponse updateAccountAndPMInPWS(AccountPMDTO dto)
             throws HttpClientErrorException, JsonProcessingException {
 
-        RequestParameter<AccountDetailDTO> requestParameter = new RequestParameter<>(
+        RequestParameter<AccountPMDTO> requestParameter = new RequestParameter<>(
                 UUID.randomUUID(),
                 AppConstants.AD_ID, AppConstants.PSW.ID, "03"
                 , AppConstants.PSW.METHOD_ID_UPDATE_INFO_AND_PM

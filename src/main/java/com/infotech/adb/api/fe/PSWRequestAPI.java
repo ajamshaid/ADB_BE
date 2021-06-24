@@ -1,7 +1,7 @@
 package com.infotech.adb.api.fe;
 
 
-import com.infotech.adb.dto.AccountDetailDTO;
+import com.infotech.adb.dto.AccountPMDTO;
 import com.infotech.adb.dto.BankNegativeCountriesDTO;
 import com.infotech.adb.dto.TraderProfileStatusDTO;
 import com.infotech.adb.exceptions.CustomException;
@@ -36,7 +36,7 @@ public class PSWRequestAPI {
 
 
     @RequestMapping(value = "/update-pm", method = RequestMethod.POST)
-    public CustomResponse updatePaymentModes(@RequestBody AccountDetailDTO dto)
+    public CustomResponse updatePaymentModes(@RequestBody AccountPMDTO dto)
             throws CustomException, DataValidationException, NoDataFoundException {
 
         log.debug("updatePaymentModes::IN Coming Request Data is:"+dto.toString());
