@@ -12,5 +12,5 @@ public class AccountPMDTO {
 
     private String iban;
     private Set<String> authorizedPaymentModesForImport;
-    private Set<String> authorizedPaymentModesForExports;
+    private Set<String> authorizedPaymentModesForExport;
 }
