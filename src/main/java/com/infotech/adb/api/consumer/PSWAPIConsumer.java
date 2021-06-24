@@ -397,6 +397,11 @@ public class PSWAPIConsumer {
             UriComponents uriBuilder = UriComponentsBuilder.fromHttpUrl(
                     AppConstants.PSW.BASE_URL + AppConstants.PSW.API_UPDATE_URL).build();
 
+            System.out.println("----------- Request Sent----------------");
+            System.out.println(""+requestParameter);
+
+            System.out.println("---------------------------");
+
             apiResponse = postRequest(uriBuilder.toUriString(), token, requestParameter);
 
             System.out.println("=================" + apiResponse);

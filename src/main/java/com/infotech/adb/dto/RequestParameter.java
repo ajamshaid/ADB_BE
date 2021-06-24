@@ -8,6 +8,7 @@ import com.infotech.adb.util.AppUtility;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.sql.Timestamp;
 import java.time.ZonedDateTime;
@@ -17,6 +18,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class RequestParameter<T> {
 
     private String messageId;
