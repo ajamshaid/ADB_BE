@@ -46,7 +46,7 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
 
         if(!AppUtility.isEmpty(this.getBcaInformation())) {
             entity.setBcaEventName(this.getBcaInformation().getBcaEventName());
-            entity.setEventDate(this.getBcaInformation().getEventDate());
+            entity.setEventDate(new Date());//this.getBcaInformation().getEventDate());
             entity.setRunningSerialNumber(this.getBcaInformation().getRunningSerialNumber());
             entity.setSwiftReference(this.getBcaInformation().getSwiftReference());
             entity.setBillNumber(this.getBcaInformation().getBillNumber());
@@ -178,7 +178,7 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
     public class BCAInformation {
 
         public String bcaEventName;
-        public Date eventDate;
+        public String eventDate;
         public String runningSerialNumber;
         public String swiftReference;
         public String billNumber;
@@ -192,7 +192,7 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
                 , String swiftReference, String billNumber, Date billDated, BigDecimal billAmount
                 , String invoiceNumber, Date invoiceDate, BigDecimal invoiceAmount) {
             this.bcaEventName = bcaEventName;
-            this.eventDate = eventDate ;//AppUtility.formatedDate(eventDate);
+            this.eventDate = AppUtility.formatedDate(eventDate);
             this.runningSerialNumber = runningSerialNumber;
             this.swiftReference = swiftReference;
             this.billNumber = billNumber;
