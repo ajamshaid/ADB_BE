@@ -21,7 +21,7 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
     public String modeOfPayment;
     public String finInsUniqueNumber;
 
-    public Date bcaDate;
+    public String bcaDate;
     public String remarks;
 
     public BCAInformation bcaInformation;
@@ -39,21 +39,21 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
         entity.setIban(this.getIban());
         entity.setExporterName(this.getExporterName());
         entity.setExporterNtn(this.getExporterNtn());
-        entity.setBcaDate(this.getBcaDate());
+        entity.setBcaDate(AppUtility.getDateFromString(this.getBcaDate()));
         entity.setModeOfPayment(this.getModeOfPayment());
         entity.setRemarks(this.getRemarks());
         entity.setFinInsUniqueNumber(this.getFinInsUniqueNumber());
 
         if(!AppUtility.isEmpty(this.getBcaInformation())) {
             entity.setBcaEventName(this.getBcaInformation().getBcaEventName());
-            entity.setEventDate(new Date());//this.getBcaInformation().getEventDate());
+            entity.setEventDate(AppUtility.getDateFromString(this.getBcaInformation().getEventDate()));
             entity.setRunningSerialNumber(this.getBcaInformation().getRunningSerialNumber());
             entity.setSwiftReference(this.getBcaInformation().getSwiftReference());
             entity.setBillNumber(this.getBcaInformation().getBillNumber());
-            entity.setBillDated(this.getBcaInformation().getBillDated());
+            entity.setBillDated(AppUtility.getDateFromString(this.getBcaInformation().getBillDated()));
             entity.setBillAmount(this.getBcaInformation().getBillAmount());
             entity.setInvoiceNumber(this.getBcaInformation().getInvoiceNumber());
-            entity.setInvoiceDate(this.getBcaInformation().getInvoiceDate());
+            entity.setInvoiceDate(AppUtility.getDateFromString(this.getBcaInformation().getInvoiceDate()));
             entity.setInvoiceAmount(this.getBcaInformation().getInvoiceAmount());
         }
 
@@ -67,7 +67,7 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
             entity.setBcaFc(this.getNetAmountRealized().getBcaFc());
             entity.setFcyExchangeRate(this.getNetAmountRealized().getFcyExchangeRate());
             entity.setBcaPkr(this.getNetAmountRealized().getBcaPkr());
-            entity.setDateOfRealized(this.getNetAmountRealized().getDateOfRealized());
+            entity.setDateOfRealized(AppUtility.getDateFromString(this.getNetAmountRealized().getDateOfRealized()));
             entity.setAdjustFromSpecialFcyAcc(this.getNetAmountRealized().getAdjustFromSpecialFcyAcc());
             entity.setCurrency(this.getNetAmountRealized().getCurrency());
             entity.setIsFinInsCurrencyDiff(this.getNetAmountRealized().getIsFinInsCurrencyDiff());
@@ -90,7 +90,7 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
             this.setIban(entity.getIban());
             this.setExporterName(entity.getExporterName());
             this.setExporterNtn(entity.getExporterNtn());
-            this.setBcaDate(entity.getBcaDate());
+            this.setBcaDate(AppUtility.formatedDate(entity.getBcaDate()));
             this.setModeOfPayment(entity.getModeOfPayment());
             this.setRemarks(entity.getRemarks());
             this.setFinInsUniqueNumber(entity.getFinInsUniqueNumber());
@@ -129,7 +129,7 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
         public BigDecimal bcaFc;
         public BigDecimal fcyExchangeRate;
         public BigDecimal bcaPkr;
-        public Date dateOfRealized;
+        public String dateOfRealized;
         public BigDecimal adjustFromSpecialFcyAcc;
 
 
@@ -145,7 +145,7 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
             this.bcaFc = bcaFc;
             this.fcyExchangeRate = fcyExchangeRate;
             this.bcaPkr = bcaPkr;
-            this.dateOfRealized = dateOfRealized;
+            this.dateOfRealized = AppUtility.formatedDate(dateOfRealized);
             this.adjustFromSpecialFcyAcc = adjustFromSpecialFcyAcc;
             this.currency = currency;
             this.isFinInsCurrencyDiff = isFinInsCurrencyDiff;
@@ -182,10 +182,10 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
         public String runningSerialNumber;
         public String swiftReference;
         public String billNumber;
-        public Date billDated;
+        public String billDated;
         public BigDecimal billAmount;
         public String invoiceNumber;
-        public Date invoiceDate;
+        public String invoiceDate;
         public BigDecimal invoiceAmount;
 
         public BCAInformation(String bcaEventName, Date eventDate, String runningSerialNumber
@@ -196,10 +196,10 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
             this.runningSerialNumber = runningSerialNumber;
             this.swiftReference = swiftReference;
             this.billNumber = billNumber;
-            this.billDated = billDated;//AppUtility.formatedDate(billDated);
+            this.billDated = AppUtility.formatedDate(billDated);
             this.billAmount = billAmount;
             this.invoiceNumber = invoiceNumber;
-            this.invoiceDate = invoiceDate;//AppUtility.formatedDate(invoiceDate);
+            this.invoiceDate = AppUtility.formatedDate(invoiceDate);
             this.invoiceAmount = invoiceAmount;
         }
     }

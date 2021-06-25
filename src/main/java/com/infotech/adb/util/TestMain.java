@@ -1,10 +1,12 @@
 package com.infotech.adb.util;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ibm.mq.*;
 import com.ibm.mq.constants.CMQC;
 import com.ibm.mq.constants.MQConstants;
 import com.opencsv.exceptions.CsvException;
-import org.json.JSONObject;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -16,7 +18,7 @@ public class TestMain {
     public static final int SET_SIZE_REQUIRED = 10;
     public static final int NUMBER_RANGE = 100;
 
-    public static void main(String args[]) throws CsvException, FileNotFoundException {
+    public static void main(String args[]) throws CsvException, FileNotFoundException, JsonProcessingException {
 
         String a = "{\"mobileNumber\":\"0300 123\",\"iban\":\"PK123\",\"ntn\":\"ntn 123\",\"email\":\"123@psw.pk123\"}";
         String aa = "{\"mobileNumber\":\"0300 123\",\"iban\":\"PK123\",\"ntn\":\"ntn 123\",\"email\":\"123@psw.pk123\"}";
@@ -39,23 +41,64 @@ public class TestMain {
                 "  \"timestamp\": \"20200925183412\"\n" +
                 "}";
 
-
-        String[] abc =  reqBodyStr.split(",");
-
-        for (String st : abc){
-            if(st.startsWith("data")){
-                System.out.println(st);
-            }
-        }
-
-
-
+        String reqBodyStr1 = "{\n" +
+                "  \"data\":{\"email\": \"123@psw.pk123\",\"iban\": \"PK123\",\"mobileNumber\": \"0300 123\",\"ntn\": \"ntn 123\"},\n" +
+                "  \"messageId\": \"a1374655-5eb8-4a0e-9eb5-989521cd1ca8\",\n" +
+                "  \"processingCode\": \"301\",\n" +
+                "  \"receiverId\": \"SCBL\",\n" +
+                "  \"senderId\": \"PSW\",\n" +
+                "  \"signature\": \"9dx0B7RdGlhsPWvWSbOSpDL6Zfp/1JdGombWxOnKT8U=\",\n" +
+                "  \"timestamp\": \"20200925183412\"\n" +
+                "}";
 
 
-        JSONObject obj = new JSONObject(reqBodyStr);
-        String data = obj.getJSONObject("data").toString();
+        String reqBodyStr2 = "{\n" +
 
-        System.out.println("---------Data:"+data);
+                "  \"messageId\": \"a1374655-5eb8-4a0e-9eb5-989521cd1ca8\",\n" +
+                "  \"processingCode\": \"301\",\n" +
+                "  \"receiverId\": \"SCBL\",\n" +
+                "  \"data\":{\"mobileNumber\": \"0300 123\",\"ntn\": \"ntn 123\",\"iban\": \"PK123\",\"email\": \"123@psw.pk123\"},\n" +
+                "  \"senderId\": \"PSW\",\n" +
+                "  \"signature\": \"9dx0B7RdGlhsPWvWSbOSpDL6Zfp/1JdGombWxOnKT8U=\",\n" +
+                "  \"timestamp\": \"20200925183412\"\n" +
+                "}";
+
+//
+//        String[] abc =  reqBodyStr.split(",");
+//
+//        for (String st : abc){
+//            if(st.startsWith("data")){
+//                System.out.println(st);
+//            }
+//        }
+
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode neoJsonNode = objectMapper.readTree(reqBodyStr);
+        JsonNode data = neoJsonNode.get("data");
+
+
+        JsonNode neoJsonNode1 = objectMapper.readTree(reqBodyStr1);
+        JsonNode data1 = neoJsonNode1.get("data");
+
+
+        JsonNode neoJsonNode2 = objectMapper.readTree(reqBodyStr2);
+        JsonNode data2 = neoJsonNode2.get("data");
+
+
+        System.out.println("-------------"+data.toString());
+        System.out.println("-------------1"+data1.toString());
+        System.out.println("-------------2"+data2.toString());
+
+
+        System.out.println(AppUtility.buildSignature(data.toString()));
+        System.out.println(AppUtility.buildSignature(data1.toString()));
+        System.out.println(AppUtility.buildSignature(data2.toString()));
+
+//        JSONObject obj = new JSONObject(reqBodyStr);
+//        String data = obj.getJSONObject("data").toString();
+
+        //System.out.println("---------Data:"+data);
 //        System.out.println("---------Data2:"+springParser.parseMap(reqBodyStr).get("data"));
 
 

@@ -1,11 +1,11 @@
 package com.infotech.adb.dto;
 
 import com.infotech.adb.model.entity.BDA;
+import com.infotech.adb.util.AppUtility;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -16,7 +16,7 @@ public class BDADTO implements BaseDTO<BDADTO, BDA> {
     public String iban;
     public String importerNtn;
     public String importerName;
-    public Date bdaDate;
+    public String bdaDate;
     public String modeOfPayment;
     public String finInsUniqueNumber;
     public BdaInformation bdaInformation;
@@ -31,7 +31,7 @@ public class BDADTO implements BaseDTO<BDADTO, BDA> {
         entity.setIban(this.getIban());
         entity.setImporterNtn(this.getImporterNtn());
         entity.setImporterName(this.getImporterName());
-        entity.setBdaDate(this.getBdaDate());
+      //  entity.setBdaDate(this.getBdaDate());
         entity.setModeOfPayment(this.getModeOfPayment());
         entity.setFinInsUniqueNumber(this.getFinInsUniqueNumber());
 
@@ -69,7 +69,7 @@ public class BDADTO implements BaseDTO<BDADTO, BDA> {
             this.setIban(entity.getIban());
             this.setImporterNtn(entity.getImporterNtn());
             this.setImporterName(entity.getImporterName());
-            this.setBdaDate(entity.getBdaDate());
+            this.setBdaDate(AppUtility.formatedDate(entity.getBdaDate()));
             this.setModeOfPayment(entity.getModeOfPayment());
             this.setFinInsUniqueNumber(entity.getFinInsUniqueNumber());
             this.setBdaInformation(new BdaInformation(entity.getTotalBdaAmountFcy(),entity.getTotalBdaAmountCurrency()
