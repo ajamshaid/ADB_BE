@@ -46,7 +46,8 @@ public class AppUtility {
 
     public static Date convertDateFromString(String date) {
         Date dt = null;
-        if(!isDate(date)) {
+        if(isDate(date)) {
+            //SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
             dt = new Date(date);
         }
         return dt;
