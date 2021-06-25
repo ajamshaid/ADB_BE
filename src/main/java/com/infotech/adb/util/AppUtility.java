@@ -44,9 +44,9 @@ public class AppUtility {
 
     }
 
-    public static Date getDateFromString(String date) {
+    public static Date convertDateFromString(String date) {
         Date dt = null;
-        if(!isEmpty(date)) {
+        if(!isDate(date)) {
             dt = new Date(date);
         }
         return dt;

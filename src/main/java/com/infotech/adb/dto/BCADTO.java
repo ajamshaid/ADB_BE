@@ -39,21 +39,21 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
         entity.setIban(this.getIban());
         entity.setExporterName(this.getExporterName());
         entity.setExporterNtn(this.getExporterNtn());
-        entity.setBcaDate(AppUtility.getDateFromString(this.getBcaDate()));
+        entity.setBcaDate(  AppUtility.convertDateFromString(this.getBcaDate()));
         entity.setModeOfPayment(this.getModeOfPayment());
         entity.setRemarks(this.getRemarks());
         entity.setFinInsUniqueNumber(this.getFinInsUniqueNumber());
 
         if(!AppUtility.isEmpty(this.getBcaInformation())) {
             entity.setBcaEventName(this.getBcaInformation().getBcaEventName());
-            entity.setEventDate(AppUtility.getDateFromString(this.getBcaInformation().getEventDate()));
+            entity.setEventDate(AppUtility.convertDateFromString(this.getBcaInformation().getEventDate()));
             entity.setRunningSerialNumber(this.getBcaInformation().getRunningSerialNumber());
             entity.setSwiftReference(this.getBcaInformation().getSwiftReference());
             entity.setBillNumber(this.getBcaInformation().getBillNumber());
-            entity.setBillDated(AppUtility.getDateFromString(this.getBcaInformation().getBillDated()));
+            entity.setBillDated(AppUtility.convertDateFromString(this.getBcaInformation().getBillDated()));
             entity.setBillAmount(this.getBcaInformation().getBillAmount());
             entity.setInvoiceNumber(this.getBcaInformation().getInvoiceNumber());
-            entity.setInvoiceDate(AppUtility.getDateFromString(this.getBcaInformation().getInvoiceDate()));
+            entity.setInvoiceDate(AppUtility.convertDateFromString(this.getBcaInformation().getInvoiceDate()));
             entity.setInvoiceAmount(this.getBcaInformation().getInvoiceAmount());
         }
 
@@ -67,7 +67,7 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
             entity.setBcaFc(this.getNetAmountRealized().getBcaFc());
             entity.setFcyExchangeRate(this.getNetAmountRealized().getFcyExchangeRate());
             entity.setBcaPkr(this.getNetAmountRealized().getBcaPkr());
-            entity.setDateOfRealized(AppUtility.getDateFromString(this.getNetAmountRealized().getDateOfRealized()));
+            entity.setDateOfRealized(AppUtility.convertDateFromString(this.getNetAmountRealized().getDateOfRealized()));
             entity.setAdjustFromSpecialFcyAcc(this.getNetAmountRealized().getAdjustFromSpecialFcyAcc());
             entity.setCurrency(this.getNetAmountRealized().getCurrency());
             entity.setIsFinInsCurrencyDiff(this.getNetAmountRealized().getIsFinInsCurrencyDiff());
