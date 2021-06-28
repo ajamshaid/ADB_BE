@@ -4,14 +4,22 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.infotech.adb.api.consumer.PSWAPIConsumer;
 import com.infotech.adb.dto.BCADTO;
 import com.infotech.adb.dto.BDADTO;
+import com.infotech.adb.dto.FinancialTransactionExportDTO;
+import com.infotech.adb.dto.FinancialTransactionImportDTO;
+import com.infotech.adb.exceptions.CustomException;
+import com.infotech.adb.exceptions.NoDataFoundException;
+import com.infotech.adb.jms.MqUtility;
 import com.infotech.adb.model.entity.*;
 import com.infotech.adb.model.repository.*;
 import com.infotech.adb.util.AppUtility;
+import com.infotech.adb.util.OpenCsvUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.InputStream;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,6 +50,71 @@ public class ReferenceService {
 
     @Autowired
     private GDExportRepository gdExportRepository;
+
+
+    @Transactional
+    public void parseCSVAndSaveAccountDetails(InputStream file) throws CustomException {
+        // Using ApacheCommons Csv Utils to parse CSV file
+        List<AccountDetail> acctDetailList = OpenCsvUtil.parseAccountDetailsFile(file);
+
+        if (AppUtility.isEmpty(acctDetailList)) {
+            throw new NoDataFoundException("No Data Found, No Valid Object/Empty in CVS File");
+        } else {
+            acctDetailList.forEach((acct -> {
+                acct.setCreatedOn(ZonedDateTime.now());
+                acct.setUpdatedOn(ZonedDateTime.now());
+
+                acct.setIban(acct.getIban().replaceAll("\\s+",""));
+                if (!AppUtility.isEmpty(acct.getAuthPMImport())) {
+                    acct.setAuthPMImport(acct.getAuthPMImport().replace(MqUtility.DELIMETER_DATA, ","));
+                }
+                if (!AppUtility.isEmpty(acct.getAuthPMExport())) {
+                    acct.setAuthPMExport(acct.getAuthPMExport().replace(MqUtility.DELIMETER_DATA, ","));
+                }
+            }
+            ));
+            // Save to database
+            accountDetailRepository.saveAll(acctDetailList);
+        }
+    }
+
+    @Transactional
+    public void parseCSVAndSaveBankNegList(InputStream file) throws CustomException {
+        // Using ApacheCommons Csv Utils to parse CSV file
+        List<BankNegativeList> bankNegativeLists = OpenCsvUtil.parseBankNegListFile(file);
+
+        if (AppUtility.isEmpty(bankNegativeLists)) {
+            throw new NoDataFoundException("No Data Found, No Valid Object/Empty in CVS File");
+        } else {
+            bankNegativeLists.forEach((negList -> {
+                if (!AppUtility.isEmpty(negList.getRestrictedCommoditiesForExport())) {
+                    negList.setRestrictedCommoditiesForExport(negList.getRestrictedCommoditiesForExport().replace(MqUtility.DELIMETER_DATA, ","));
+                }
+                if (!AppUtility.isEmpty(negList.getRestrictedCommoditiesForImport())) {
+                    negList.setRestrictedCommoditiesForImport(negList.getRestrictedCommoditiesForImport().replace(MqUtility.DELIMETER_DATA, ","));
+                }
+
+                if (!AppUtility.isEmpty(negList.getRestrictedCountriesForExport())) {
+                    negList.setRestrictedCountriesForExport(negList.getRestrictedCountriesForExport().replace(MqUtility.DELIMETER_DATA, ","));
+                }
+                if (!AppUtility.isEmpty(negList.getRestrictedCountriesForImport())) {
+                    negList.setRestrictedCountriesForImport(negList.getRestrictedCountriesForImport().replace(MqUtility.DELIMETER_DATA, ","));
+                }
+
+                if (!AppUtility.isEmpty(negList.getRestrictedSuppliersForExport())) {
+                    negList.setRestrictedSuppliersForExport(negList.getRestrictedSuppliersForExport().replace(MqUtility.DELIMETER_DATA, ","));
+                }
+                if (!AppUtility.isEmpty(negList.getRestrictedSuppliersForImport())) {
+                    negList.setRestrictedSuppliersForImport(negList.getRestrictedSuppliersForImport().replace(MqUtility.DELIMETER_DATA, ","));
+                }
+            }
+            ));
+            // save to DB
+            bankNegtiveListRepository.saveAll(bankNegativeLists);
+        }
+    }
+
+
 
     public List<AccountDetail> getAllAccountDetails() {
         log.info("getAllAccountDetails method called..");
@@ -82,6 +155,19 @@ public class ReferenceService {
         log.info("getAllFinancialTransactionById method called..");
         Optional<FinancialTransaction> ref = financialTransactionRepository.findById(id);
         return ref.get();
+    }
+
+
+    public FinancialTransaction updateFTImportAndShare(FinancialTransactionImportDTO dto) throws JsonProcessingException {
+        FinancialTransaction ft = this.updateFinancialTransaction(dto.convertToEntity());
+        consumer.shareFinancialInformationImport(dto);
+        return ft;
+    }
+
+    public FinancialTransaction updateFTExportAndShare(FinancialTransactionExportDTO dto) throws JsonProcessingException {
+        FinancialTransaction ft = this.updateFinancialTransaction(dto.convertToEntity());
+        consumer.shareFinancialInformationExport(dto);
+        return ft;
     }
 
     @Transactional

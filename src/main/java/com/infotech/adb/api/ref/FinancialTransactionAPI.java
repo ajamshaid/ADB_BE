@@ -63,7 +63,7 @@ public class FinancialTransactionAPI {
     }
 
     @RequestMapping(value = "/import/", method = RequestMethod.PUT)
-    public CustomResponse updateImportFT(@RequestBody FinancialTransactionImportDTO reqDTO , @RequestParam(value = "false", required = false) Boolean pushToPSW)
+    public CustomResponse updateImportFT(@RequestBody FinancialTransactionImportDTO reqDTO , @RequestParam(value = "pushToPSW",defaultValue = "false", required = false) Boolean pushToPSW)
             throws CustomException, DataValidationException, NoDataFoundException {
 
         if (AppUtility.isEmpty(reqDTO) || AppUtility.isEmpty(reqDTO.getFtId())) {
@@ -71,10 +71,7 @@ public class FinancialTransactionAPI {
         }
         FinancialTransaction entity = null;
         try {
-            entity = referenceService.updateFinancialTransaction(reqDTO.convertToEntity());
-
-
-
+            entity = pushToPSW ? referenceService.updateFTImportAndShare(reqDTO) : referenceService.updateFinancialTransaction(reqDTO.convertToEntity());
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e, "");
         }
@@ -121,7 +118,7 @@ public class FinancialTransactionAPI {
     }
 
     @RequestMapping(value = "/export/", method = RequestMethod.PUT)
-    public CustomResponse updateExportFT(@RequestBody FinancialTransactionExportDTO reqDTO)
+    public CustomResponse updateExportFT(@RequestBody FinancialTransactionExportDTO reqDTO, @RequestParam(value = "pushToPSW",defaultValue = "false", required = false) Boolean pushToPSW)
             throws CustomException, DataValidationException, NoDataFoundException {
 
         if (AppUtility.isEmpty(reqDTO) || AppUtility.isEmpty(reqDTO.getFtId())) {
@@ -129,13 +126,12 @@ public class FinancialTransactionAPI {
         }
         FinancialTransaction entity = null;
         try {
-            entity = referenceService.updateFinancialTransaction(reqDTO.convertToEntity());
+            entity = pushToPSW ? referenceService.updateFTExportAndShare(reqDTO) : referenceService.updateFinancialTransaction(reqDTO.convertToEntity());
 
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e, "");
         }
-
-        reqDTO.getPaymentInformation().setExpiryDate("20211012");
+//        reqDTO.getPaymentInformation().setExpiryDate("20211012");
         try {
             consumer.shareFinancialInformationExport(reqDTO);
         } catch (Exception e) {

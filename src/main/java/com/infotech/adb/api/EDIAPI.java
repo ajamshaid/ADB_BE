@@ -1,6 +1,7 @@
 package com.infotech.adb.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.infotech.adb.dto.*;
 import com.infotech.adb.exceptions.CustomException;
@@ -16,8 +17,6 @@ import com.infotech.adb.util.ResponseUtility;
 import io.swagger.annotations.Api;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.json.JsonParser;
-import org.springframework.boot.json.JsonParserFactory;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -54,9 +53,16 @@ public class EDIAPI {
         ObjectMapper mapper = new ObjectMapper();
         requestParameter = mapper.readValue(reqBodyStr, RequestParameter.class);
 
-        JsonParser springParser = JsonParserFactory.getJsonParser();
-        String data = springParser.parseMap(reqBodyStr).get("data").toString();
+//        JsonParser springParser = JsonParserFactory.getJsonParser();
+//        String data = springParser.parseMap(reqBodyStr).get("data").toString();
 
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode neoJsonNode = objectMapper.readTree(reqBodyStr);
+        JsonNode dataNode = neoJsonNode.get("data");
+
+        String data = dataNode.toString();
+
+        System.out.println(data.toString());
 
         if (!RequestParameter.isValidRequest(requestParameter)) {
             customResponse = ResponseUtility.successResponse(null

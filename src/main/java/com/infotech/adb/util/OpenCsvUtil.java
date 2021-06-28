@@ -2,6 +2,7 @@ package com.infotech.adb.util;
 
 import com.infotech.adb.exceptions.CustomException;
 import com.infotech.adb.model.entity.AccountDetail;
+import com.infotech.adb.model.entity.BankNegativeList;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,7 +18,7 @@ public class OpenCsvUtil {
 
     private static String csvExtension = "csv";
 
-    public static List<AccountDetail> parseCsvFile(InputStream is) throws CustomException {
+    public static List<AccountDetail> parseAccountDetailsFile(InputStream is) throws CustomException {
         String[] CSV_HEADER = { "IBAN","Account Status","AuthPM(IM)","AuthPM(EX)" };
         Reader fileReader = null;
 
@@ -50,6 +51,41 @@ public class OpenCsvUtil {
         }
 
         return acctBean;
+    }
+
+
+
+    public static List<BankNegativeList> parseBankNegListFile(InputStream is) throws CustomException {
+        String[] CSV_HEADER = { "Bank Code","Restricted Countries(IM)","Restricted Countries(EX)","Restricted Commodities(IM)","Restricted Commodities(EX)","Restricted Suppliers(IM)","Restricted Suppliers(EX)" };
+        Reader fileReader = null;
+        CsvToBean<BankNegativeList> csvToBean = null;
+        List<BankNegativeList> bean = new ArrayList<BankNegativeList>();
+
+        try {
+            fileReader = new InputStreamReader(is);
+
+            csvToBean = new CsvToBeanBuilder<BankNegativeList>(fileReader)
+                    .withType(BankNegativeList.class)
+                    //     .withMappingStrategy(mappingStrategy).withSkipLines(1)
+                    .withIgnoreLeadingWhiteSpace(true).build();
+
+            bean = csvToBean.parse();
+
+        } catch (Exception e) {
+            System.out.println("Reading CSV Error!");
+            e.printStackTrace();
+            throw new CustomException(e.getMessage());
+        } finally {
+            try {
+                fileReader.close();
+            } catch (IOException e) {
+                System.out.println("Closing fileReader/csvParser Error!");
+                e.printStackTrace();
+                throw new CustomException(e.getMessage());
+            }
+        }
+
+        return bean;
     }
 
     public static boolean isCSVFile(MultipartFile file) {
