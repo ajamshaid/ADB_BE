@@ -47,11 +47,13 @@ public class AppUtility {
 
     public static Date convertDateFromString(String date) {
         Date dt = null;
-        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-        try {
-            dt = sdf.parse(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if(!AppUtility.isEmpty(date)) {
+            SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+            try {
+                dt = sdf.parse(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
         return dt;
     }
