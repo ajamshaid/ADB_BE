@@ -12,6 +12,7 @@ import java.net.URLEncoder;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -46,9 +47,11 @@ public class AppUtility {
 
     public static Date convertDateFromString(String date) {
         Date dt = null;
-        if(isDate(date)) {
-            //SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-            dt = new Date(date);
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+        try {
+            dt = sdf.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
         return dt;
     }
