@@ -76,6 +76,7 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
             entity.setBalance(this.getNetAmountRealized().getBalance());
             entity.setAllowedDiscount(this.getNetAmountRealized().getAllowedDiscount());
             entity.setAllowedDiscountPercentage(this.getNetAmountRealized().getAllowedDiscountPercentage());
+            entity.setTotalBcaAmount(this.getNetAmountRealized().getTotalBcaAmount());
         }
         return entity;
     }
@@ -108,7 +109,9 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
                     , entity.getDateOfRealized(), entity.getAdjustFromSpecialFcyAcc(), entity.getCurrency()
                     , entity.getIsFinInsCurrencyDiff(), entity.getIsRemAmtSettledWithDiscount()
                     , entity.getAmountRealized(), entity.getBalance()
-                    , entity.getAllowedDiscount(), entity.getAllowedDiscountPercentage()));
+                    , entity.getAllowedDiscount(), entity.getAllowedDiscountPercentage()
+                    ,entity.getTotalBcaAmount()
+            ));
         }
 
     }
@@ -141,7 +144,9 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
         public BigDecimal balance;
 
 
-        public NetAmountRealized(BigDecimal bcaFc, BigDecimal fcyExchangeRate, BigDecimal bcaPkr, Date dateOfRealized, BigDecimal adjustFromSpecialFcyAcc, String currency, String isFinInsCurrencyDiff, String isRemAmtSettledWithDiscount, BigDecimal amountRealized, BigDecimal balance, BigDecimal allowedDiscount, BigDecimal allowedDiscountPercentage) {
+        public NetAmountRealized(BigDecimal bcaFc, BigDecimal fcyExchangeRate, BigDecimal bcaPkr, Date dateOfRealized, BigDecimal adjustFromSpecialFcyAcc, String currency, String isFinInsCurrencyDiff
+                , String isRemAmtSettledWithDiscount, BigDecimal amountRealized, BigDecimal balance, BigDecimal allowedDiscount
+                , BigDecimal allowedDiscountPercentage , BigDecimal totalBcaAmount) {
             this.bcaFc = bcaFc;
             this.fcyExchangeRate = fcyExchangeRate;
             this.bcaPkr = bcaPkr;
@@ -154,6 +159,7 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
             this.balance = balance;
             this.allowedDiscount = allowedDiscount;
             this.allowedDiscountPercentage = allowedDiscountPercentage;
+            this.totalBcaAmount = totalBcaAmount;
         }
     }
 

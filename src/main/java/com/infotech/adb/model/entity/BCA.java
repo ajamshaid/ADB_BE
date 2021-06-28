@@ -96,8 +96,11 @@ public class BCA {
     @Column(name = "Fcy_Exchange_Rate", precision = 24, scale = 4)
     public BigDecimal fcyExchangeRate;
 
-    @Column(name = "bca_Pkr", precision = 24, scale = 4)
+    @Column(name = "BCA_PKR", precision = 24, scale = 4)
     public BigDecimal bcaPkr;
+
+    @Column(name = "TTL_BCA_AMOUNT", precision = 24, scale = 4)
+    public BigDecimal totalBcaAmount;
 
     @Column(name = "date_Of_Realized", nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
