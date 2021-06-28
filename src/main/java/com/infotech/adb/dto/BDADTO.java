@@ -31,7 +31,7 @@ public class BDADTO implements BaseDTO<BDADTO, BDA> {
         entity.setIban(this.getIban());
         entity.setImporterNtn(this.getImporterNtn());
         entity.setImporterName(this.getImporterName());
-      //  entity.setBdaDate(this.getBdaDate());
+        entity.setBdaDate(AppUtility.convertDateFromString(this.getBdaDate()));
         entity.setModeOfPayment(this.getModeOfPayment());
         entity.setFinInsUniqueNumber(this.getFinInsUniqueNumber());
 
