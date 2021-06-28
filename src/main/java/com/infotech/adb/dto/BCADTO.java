@@ -39,7 +39,7 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
         entity.setIban(this.getIban());
         entity.setExporterName(this.getExporterName());
         entity.setExporterNtn(this.getExporterNtn());
-        entity.setBcaDate(  AppUtility.convertDateFromString(this.getBcaDate()));
+        entity.setBcaDate(AppUtility.convertDateFromString(this.getBcaDate()));
         entity.setModeOfPayment(this.getModeOfPayment());
         entity.setRemarks(this.getRemarks());
         entity.setFinInsUniqueNumber(this.getFinInsUniqueNumber());

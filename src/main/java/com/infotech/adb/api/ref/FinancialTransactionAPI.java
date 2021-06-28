@@ -16,7 +16,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -35,8 +34,7 @@ public class FinancialTransactionAPI {
     private PSWAPIConsumer consumer;
 
     @RequestMapping(value = "/import/", method = RequestMethod.GET)
-    public CustomResponse getAllImportFT(HttpServletRequest request,
-                                 @RequestParam(value = "status", required = false) String status)
+    public CustomResponse getAllImportFT()
             throws CustomException, NoDataFoundException {
 
         List<FinancialTransaction> refList = null;
@@ -49,8 +47,7 @@ public class FinancialTransactionAPI {
     }
 
     @RequestMapping(value = "/import/{id}", method = RequestMethod.GET)
-    public CustomResponse getImportFTById(HttpServletRequest request,
-                                    @PathVariable Long id)
+    public CustomResponse getImportFTById(@PathVariable Long id)
             throws CustomException, DataValidationException, NoDataFoundException {
 
         if (AppUtility.isEmpty(id)) {
@@ -66,8 +63,7 @@ public class FinancialTransactionAPI {
     }
 
     @RequestMapping(value = "/import/", method = RequestMethod.PUT)
-    public CustomResponse updateImportFT(HttpServletRequest request,
-                                     @RequestBody FinancialTransactionImportDTO reqDTO)
+    public CustomResponse updateImportFT(@RequestBody FinancialTransactionImportDTO reqDTO , @RequestParam(value = "false", required = false) Boolean pushToPSW)
             throws CustomException, DataValidationException, NoDataFoundException {
 
         if (AppUtility.isEmpty(reqDTO) || AppUtility.isEmpty(reqDTO.getFtId())) {
@@ -96,8 +92,7 @@ public class FinancialTransactionAPI {
      *************************/
 
     @RequestMapping(value = "/export/", method = RequestMethod.GET)
-    public CustomResponse getAllExportFT(HttpServletRequest request,
-                                 @RequestParam(value = "status", required = false) String status)
+    public CustomResponse getAllExportFT(@RequestParam(value = "status", required = false) String status)
             throws CustomException, NoDataFoundException {
 
         List<FinancialTransaction> refList = null;
@@ -110,8 +105,7 @@ public class FinancialTransactionAPI {
     }
 
     @RequestMapping(value = "/export/{id}", method = RequestMethod.GET)
-    public CustomResponse getExportFTById(HttpServletRequest request,
-                                  @PathVariable Long id)
+    public CustomResponse getExportFTById(@PathVariable Long id)
             throws CustomException, DataValidationException, NoDataFoundException {
 
         if (AppUtility.isEmpty(id)) {
@@ -127,8 +121,7 @@ public class FinancialTransactionAPI {
     }
 
     @RequestMapping(value = "/export/", method = RequestMethod.PUT)
-    public CustomResponse updateExportFT(HttpServletRequest request,
-                                         @RequestBody FinancialTransactionExportDTO reqDTO)
+    public CustomResponse updateExportFT(@RequestBody FinancialTransactionExportDTO reqDTO)
             throws CustomException, DataValidationException, NoDataFoundException {
 
         if (AppUtility.isEmpty(reqDTO) || AppUtility.isEmpty(reqDTO.getFtId())) {

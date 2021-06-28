@@ -1,11 +1,11 @@
 package com.infotech.adb.dto;
 
 import com.infotech.adb.model.entity.PaymentInformation;
+import com.infotech.adb.util.AppUtility;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -23,7 +23,6 @@ public class PaymentInformationExportDTO implements BaseDTO<PaymentInformationEx
     private BigDecimal financialInstrumentValue;
     private String financialInstrumentCurrency;
     private String expiryDate;
-    private Date expiryDateDate;
 
     public PaymentInformationExportDTO(PaymentInformation entity) {
         convertToDTO(entity, true);
@@ -41,7 +40,7 @@ public class PaymentInformationExportDTO implements BaseDTO<PaymentInformationEx
         entity.setDeliveryTerm(this.getDeliveryTerms());
         entity.setFinancialInstrumentCurrency(this.getFinancialInstrumentCurrency());
         entity.setFinancialInstrumentValue(this.getFinancialInstrumentValue());
-        entity.setFinancialInstrumenExpiryDate(this.getExpiryDateDate());
+        entity.setFinancialInstrumenExpiryDate(AppUtility.convertDateFromString(this.getExpiryDate()));
         return entity;
     }
 
@@ -59,7 +58,7 @@ public class PaymentInformationExportDTO implements BaseDTO<PaymentInformationEx
         //    this.setTotalValueOfShipment(entity.getTotalValueOfShipment());
             this.setFinancialInstrumentCurrency(entity.getFinancialInstrumentCurrency());
             this.setFinancialInstrumentValue(entity.getFinancialInstrumentValue());
-            this.setExpiryDateDate(entity.getFinancialInstrumenExpiryDate());
+            this.setExpiryDate(AppUtility.formatedDate(entity.getFinancialInstrumenExpiryDate()));
 
         }
     }

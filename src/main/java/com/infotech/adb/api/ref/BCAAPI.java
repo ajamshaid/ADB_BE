@@ -57,7 +57,7 @@ public class BCAAPI {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.PUT)
-    public CustomResponse updateBCA(@RequestBody BCADTO reqDTO)
+    public CustomResponse updateBCA(@RequestBody BCADTO reqDTO, @RequestParam(value = "pushToPSW",defaultValue = "false", required = false) Boolean pushToPSW)
             throws CustomException, DataValidationException, NoDataFoundException {
 
         if (AppUtility.isEmpty(reqDTO) || AppUtility.isEmpty(reqDTO.getId())) {
@@ -65,7 +65,7 @@ public class BCAAPI {
         }
         BCA entity = null;
         try {
-            entity = referenceService.updateBCAAndShare(reqDTO);
+            entity = pushToPSW ? referenceService.updateBCAAndShare(reqDTO) : referenceService.updateBCA(reqDTO.convertToEntity());
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e, "");
         }

@@ -57,7 +57,7 @@ public class BDAAPI {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.PUT)
-    public CustomResponse updateBDA(@RequestBody BDADTO reqDTO)
+    public CustomResponse updateBDA(@RequestBody BDADTO reqDTO, @RequestParam(value = "pushToPSW",defaultValue = "false", required = false) Boolean pushToPSW)
             throws CustomException, DataValidationException, NoDataFoundException {
 
         if (AppUtility.isEmpty(reqDTO) || AppUtility.isEmpty(reqDTO.getId())) {
@@ -65,7 +65,8 @@ public class BDAAPI {
         }
         BDA entity = null;
         try {
-            entity = referenceService.updateBDAAndShare(reqDTO);
+
+            entity = pushToPSW ? referenceService.updateBDAAndShare(reqDTO) : referenceService.updateBDA(reqDTO.convertToEntity());
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e, "");
         }

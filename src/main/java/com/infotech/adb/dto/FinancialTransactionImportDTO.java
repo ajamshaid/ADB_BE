@@ -2,13 +2,11 @@ package com.infotech.adb.dto;
 
 import com.infotech.adb.model.entity.FinancialTransaction;
 import com.infotech.adb.model.entity.ItemInformation;
-import com.infotech.adb.util.AppConstants;
 import com.infotech.adb.util.AppUtility;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -50,10 +48,10 @@ public class FinancialTransactionImportDTO implements BaseDTO<FinancialTransacti
         entity.setRemarks(this.getRemarks());
 
         if (!AppUtility.isEmpty(this.getFinancialTranInformation())) {
-            entity.setIntendedPaymentDate(this.getFinancialTranInformation().getIntendedPayDate());
-            entity.setTransportDocumentDate(this.getFinancialTranInformation().getTransportDocDate());
-            entity.setFinalDateOfShipment(this.getFinancialTranInformation().getFinalDateOfShipment());
-            entity.setFinInsExpiryDate(this.getFinancialTranInformation().getExpiryDate());
+            entity.setIntendedPaymentDate(AppUtility.convertDateFromString(this.getFinancialTranInformation().getIntendedPayDate()));
+            entity.setTransportDocumentDate(AppUtility.convertDateFromString(this.getFinancialTranInformation().getTransportDocDate()));
+            entity.setFinalDateOfShipment(AppUtility.convertDateFromString(this.getFinancialTranInformation().getFinalDateOfShipment()));
+            entity.setFinInsExpiryDate(AppUtility.convertDateFromString(this.getFinancialTranInformation().getExpiryDate()));
         }
         if(!AppUtility.isEmpty(this.getCashMargin())) {
             entity.setCashMarginPercentage(this.getCashMargin().getCashMarginPercentage());
@@ -106,10 +104,10 @@ public class FinancialTransactionImportDTO implements BaseDTO<FinancialTransacti
                 this.setFinancialTranInformation(new FinTranInformationDTO());
             }
 
-            this.getFinancialTranInformation().setFinalDateOfShipment(entity.getFinalDateOfShipment());
-            this.getFinancialTranInformation().setIntendedPayDate(entity.getIntendedPaymentDate());
-            this.getFinancialTranInformation().setTransportDocDate(entity.getTransportDocumentDate());
-            this.getFinancialTranInformation().setExpiryDate(entity.getFinInsExpiryDate());
+            this.getFinancialTranInformation().setFinalDateOfShipment(AppUtility.formatedDate(entity.getFinalDateOfShipment()));
+            this.getFinancialTranInformation().setIntendedPayDate(AppUtility.formatedDate(entity.getIntendedPaymentDate()));
+            this.getFinancialTranInformation().setTransportDocDate(AppUtility.formatedDate(entity.getTransportDocumentDate()));
+            this.getFinancialTranInformation().setExpiryDate(AppUtility.formatedDate(entity.getFinInsExpiryDate()));
 
 
             // Payment Information
@@ -150,10 +148,10 @@ public class FinancialTransactionImportDTO implements BaseDTO<FinancialTransacti
     @Data
     @NoArgsConstructor
     private class FinTranInformationDTO {
-        private Date intendedPayDate;
-        private java.util.Date transportDocDate;
-        private Date finalDateOfShipment;
-        private Date expiryDate;
+        private String intendedPayDate;
+        private String transportDocDate;
+        private String finalDateOfShipment;
+        private String expiryDate;
     }
 
     @Data
