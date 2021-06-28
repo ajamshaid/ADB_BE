@@ -34,17 +34,22 @@ public class RequestParameter<T> {
     public void setData(T data) {
         this.data = data;
 
+        ObjectMapper objectMapper = new ObjectMapper();
+//        JsonNode neoJsonNode = objectMapper.readTree(data);
+//        JsonNode dataNode = neoJsonNode.get("data");
+//
+//        String dataJson = data.toString();
         ObjectWriter ow = new ObjectMapper().writer();
-        String json = "";
+        String dataJson = "";
         try {
-            json = ow.writeValueAsString(data);
+            dataJson = ow.writeValueAsString(data);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
 
-        this.signature = AppUtility.buildSignature(json);
+        this.signature = AppUtility.buildSignature(dataJson);
         System.out.println("-----------------------------------");
-        System.out.println("Data json is:"+json);
+        System.out.println("Data json is:"+dataJson);
         System.out.println("The Signature is "+this.signature);
         System.out.println("-----------------------------------");
     }
@@ -66,17 +71,17 @@ public class RequestParameter<T> {
         return objectWriter.writeValueAsString(this);
     }
 
-    public RequestParameter newRequestParameter() {
-        RequestParameter newRParameter = new RequestParameter();
-        newRParameter.messageId = this.messageId;
-        newRParameter.timestamp = this.timestamp;
-        newRParameter.senderId = this.senderId;
-        newRParameter.receiverId = this.receiverId;
-        newRParameter.processingCode = this.processingCode;
-        newRParameter.methodId = this.methodId;
-        newRParameter.signature = this.signature;
-        return newRParameter;
-    }
+//    public RequestParameter newRequestParameter() {
+//        RequestParameter newRParameter = new RequestParameter();
+//        newRParameter.messageId = this.messageId;
+//        newRParameter.timestamp = this.timestamp;
+//        newRParameter.senderId = this.senderId;
+//        newRParameter.receiverId = this.receiverId;
+//        newRParameter.processingCode = this.processingCode;
+//        newRParameter.methodId = this.methodId;
+//        newRParameter.signature = this.signature;
+//        return newRParameter;
+//    }
 
     public static boolean isValidRequest(RequestParameter requestParameter) throws DataValidationException {
         boolean isValid = true;

@@ -112,7 +112,7 @@ public class ResponseUtility {
         }
 
         public String toJson() throws JsonProcessingException {
-            ObjectWriter objectWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
+            ObjectWriter objectWriter = new ObjectMapper().writer();
             return objectWriter.writeValueAsString(this);
         }
     }

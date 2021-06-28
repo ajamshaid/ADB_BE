@@ -393,13 +393,12 @@ public class PSWAPIConsumer {
                     AppConstants.PSW.BASE_URL + AppConstants.PSW.API_UPDATE_URL).build();
 
             System.out.println("----------- Request Sent----------------");
-            System.out.println(""+requestParameter);
-
+            System.out.println("RequestParameter Json:"+requestParameter.toJson());
             System.out.println("---------------------------");
 
             apiResponse = postRequest(uriBuilder.toUriString(), token, requestParameter);
 
-            System.out.println("=================" + apiResponse);
+            System.out.println("=================" + apiResponse.toJson());
 
             if(HttpStatus.OK.toString() == apiResponse.getResponseCode()) {
                 logRequest = LogRequest.buildNewObject(messageName, RequestMethod.POST.name(), requestParameter, requestTime, apiResponse);
