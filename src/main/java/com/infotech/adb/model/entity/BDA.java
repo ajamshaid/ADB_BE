@@ -81,6 +81,9 @@ public class BDA {
     @Column(name = "BDA_AMOUNT_PKR", precision = 24, scale = 4)
     public BigDecimal bdaAmountPkr;
 
+    @Column(name = "EXCHANGE_RATE_BDA", precision = 24, scale = 4)
+    public BigDecimal exchangeRateBda;
+
     @Column(name = "BDA_DOC_REF_NUMBER", length = 300, nullable = true)
     public String bdaDocumentRefNumber;
 
