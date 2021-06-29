@@ -20,47 +20,98 @@ public class TestMain {
 
     public static void main(String args[]) throws CsvException, FileNotFoundException, JsonProcessingException {
 
-        String a = "{\"mobileNumber\":\"0300 123\",\"iban\":\"PK123\",\"ntn\":\"ntn 123\",\"email\":\"123@psw.pk123\"}";
-        String aa = "{\"mobileNumber\":\"0300 123\",\"iban\":\"PK123\",\"ntn\":\"ntn 123\",\"email\":\"123@psw.pk123\"}";
-        String b = "{\"email\": \"123@psw.pk123\",\"iban\": \"PK123\",\"mobileNumber\": \"0300 123\",\"ntn\": \"ntn 123\"}";
-
-
-
-        System.out.println(AppUtility.buildSignature(a));
-        System.out.println(AppUtility.buildSignature(aa));
-        System.out.println(AppUtility.buildSignature(b));
-
-
-        String reqBodyStr = "{\n" +
-                "  \"data\":{\"iban\": \"PK123\",\"email\": \"123@psw.pk123\",\"mobileNumber\": \"0300 123\",\"ntn\": \"ntn 123\"},\n" +
-                "  \"messageId\": \"a1374655-5eb8-4a0e-9eb5-989521cd1ca8\",\n" +
-                "  \"processingCode\": \"301\",\n" +
-                "  \"receiverId\": \"SCBL\",\n" +
-                "  \"senderId\": \"PSW\",\n" +
-                "  \"signature\": \"9dx0B7RdGlhsPWvWSbOSpDL6Zfp/1JdGombWxOnKT8U=\",\n" +
-                "  \"timestamp\": \"20200925183412\"\n" +
-                "}";
-
-        String reqBodyStr1 = "{\n" +
-                "  \"data\":{\"email\": \"123@psw.pk123\",\"iban\": \"PK123\",\"mobileNumber\": \"0300 123\",\"ntn\": \"ntn 123\"},\n" +
-                "  \"messageId\": \"a1374655-5eb8-4a0e-9eb5-989521cd1ca8\",\n" +
-                "  \"processingCode\": \"301\",\n" +
-                "  \"receiverId\": \"SCBL\",\n" +
-                "  \"senderId\": \"PSW\",\n" +
-                "  \"signature\": \"9dx0B7RdGlhsPWvWSbOSpDL6Zfp/1JdGombWxOnKT8U=\",\n" +
-                "  \"timestamp\": \"20200925183412\"\n" +
-                "}";
-
-
         String reqBodyStr2 = "{\n" +
-
-                "  \"messageId\": \"a1374655-5eb8-4a0e-9eb5-989521cd1ca8\",\n" +
-                "  \"processingCode\": \"301\",\n" +
-                "  \"receiverId\": \"SCBL\",\n" +
-                "  \"data\":{\"mobileNumber\": \"0300 123\",\"ntn\": \"ntn 123\",\"iban\": \"PK123\",\"email\": \"123@psw.pk123\"},\n" +
-                "  \"senderId\": \"PSW\",\n" +
-                "  \"signature\": \"9dx0B7RdGlhsPWvWSbOSpDL6Zfp/1JdGombWxOnKT8U=\",\n" +
-                "  \"timestamp\": \"20200925183412\"\n" +
+                "   \"messageId\":\"a1374655-5eb8-4a0e-9eb5-989521cd1ca8\",\n" +
+                "   \"timestamp\":\"20200925183412\",\n" +
+                "   \"senderId\":\"PSW\",\n" +
+                "   \"receiverId\":\"SLB\",\n" +
+                "   \"processingCode\":\"101\",\n" +
+                "   \"data\":{\n" +
+                "      \"gdNumber\":\"KPPI-HC-86-03-09-2020\",\n" +
+                "      \"consignmentCategory\":\"Commercial\",\n" +
+                "      \"gdStatus\": \"03\",\n" +
+                "      \"gdType\":\"Home Consumption\",\n" +
+                "      \"collectorate\":\"Qasim International Container Terminal\",\n" +
+                "      \"blAwbNumber\":\"BL-24923231\",\n" +
+                "      \"blAwbDate\":\"20201012\",\n" +
+                "      \"virAirNumber\":\"KEWB-0005-010112020\",\n" +
+                "      \"consignorConsigneeInfo\":{\n" +
+                "         \"ntnFtn\":\"0425425\",\n" +
+                "         \"strn\":\"1700003019489\",\n" +
+                "         \"consigneeName\":\"PSW\",\n" +
+                "         \"consigneeAddress\":\"PECHS\",\n" +
+                "         \"consignorName\":\"M/S. International Jute Traders\",\n" +
+                "         \"consignorAddress\":\"95, MOTIJHEEL COMMERCIAL AREA (2ND FLOOR) BANGLADESH.\"\n" +
+                "      },\n" +
+                "      \"financialInfo\":{\n" +
+                "            \"importerIban\": \"PK88SAUD0000032000486666\",\n" +
+                "            \"modeOfPayment\": \"301\",\n" +
+                "            \"finInsUniqueNumber\": \"SLB-IMP-000002-29062021\",\n" +
+                "            \"currency\": \"USD\",\n" +
+                "            \"invoiceNumber\": \"AS1234567\",\n" +
+                "            \"invoiceDate\": \"20200223\",\n" +
+                "            \"totalDeclaredValue\": 5000.0002,\n" +
+                "            \"deliveryTerm\": \"CFR\",\n" +
+                "            \"fobValueUsd\": 1.0000,\n" +
+                "            \"freightUsd\": 1.0000,\n" +
+                "            \"cfrValueUsd\": 1.0000,\n" +
+                "            \"insuranceUsd\": 0.0000,\n" +
+                "            \"landingChargesUsd\": 100.0000,\n" +
+                "            \"assessedValueUsd\": 50.0000,\n" +
+                "            \"otherCharges\": 0.0000,\n" +
+                "            \"exchangeRate\": 158.0000\n" +
+                "\n" +
+                "      },\n" +
+                "      \"generalInformation\":{\n" +
+                "         \"packagesInformation\":[\n" +
+                "            {\n" +
+                "               \"numberOfPackages\":100,\n" +
+                "               \"packageType\":\"Box\"\n" +
+                "            },\n" +
+                "            {\n" +
+                "               \"numberOfPackages\":100,\n" +
+                "               \"packageType\":\"BULK\"\n" +
+                "            }\n" +
+                "         ],\n" +
+                "         \"containerVehicleInformation\":[\n" +
+                "            {\n" +
+                "               \"containerOrTruckNumber\":\"ASF9999991\",\n" +
+                "               \"sealNumber\":\"SL2674\",\n" +
+                "               \"containerType\":\"20FT\"\n" +
+                "            },\n" +
+                "            {\n" +
+                "               \"containerOrTruckNumber\":\"ASF9999992\",\n" +
+                "               \"sealNumber\":\"SL2674\",\n" +
+                "               \"containerType\":\"40FT\"\n" +
+                "            }\n" +
+                "         ],\n" +
+                "         \"netWeight\":\"1.89400 MT\",\n" +
+                "         \"grossWeight\":\"1.11400 MT\",\n" +
+                "         \"portOfShipment\":\"AUCHN\",\n" +
+                "         \"portOfDelivery\":\"AUCHN\",\n" +
+                "         \"portOfDischarge\":\"AUCHN\",\n" +
+                "         \"terminalLocation\":\"Qasim International Container Terminal\"\n" +
+                "      },\n" +
+                "      \"itemInformation\":[\n" +
+                "         {\n" +
+                "            \"hsCode\":\"8446.1000\",\n" +
+                "            \"quantity\":6.0000,\n" +
+                "            \"unitPrice\":20,\n" +
+                "            \"totalValue\":120,\n" +
+                "            \"importValue\":120,\n" +
+                "            \"uom\":\"KG\"\n" +
+                "         },\n" +
+                "         {\n" +
+                "            \"hsCode\":\"8446.1000\",\n" +
+                "            \"quantity\":6.0000,\n" +
+                "            \"unitPrice\":20,\n" +
+                "            \"totalValue\":120,\n" +
+                "            \"importValue\":120,\n" +
+                "            \"uom\":\"KG\"\n" +
+                "         }\n" +
+                "      ]\n" +
+                "   },\n" +
+                "   \"signature\":\"/HrgvYW2sIYK93YXqd46/KhXJ7unoId7vRkAdJmrs7Y=\"\n" +
                 "}";
 
 //
@@ -74,26 +125,13 @@ public class TestMain {
 
 
         ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode neoJsonNode = objectMapper.readTree(reqBodyStr);
-        JsonNode data = neoJsonNode.get("data");
-
-
-        JsonNode neoJsonNode1 = objectMapper.readTree(reqBodyStr1);
-        JsonNode data1 = neoJsonNode1.get("data");
-
 
         JsonNode neoJsonNode2 = objectMapper.readTree(reqBodyStr2);
         JsonNode data2 = neoJsonNode2.get("data");
 
 
-        System.out.println("-------------"+data.toString());
-        System.out.println("-------------1"+data1.toString());
         System.out.println("-------------2"+data2.toString());
-
-
-        System.out.println(AppUtility.buildSignature(data.toString()));
-        System.out.println(AppUtility.buildSignature(data1.toString()));
-        System.out.println(AppUtility.buildSignature(data2.toString()));
+        System.out.println("Signature is:"+AppUtility.buildSignature(data2.toString()));
 
 //        JSONObject obj = new JSONObject(reqBodyStr);
 //        String data = obj.getJSONObject("data").toString();

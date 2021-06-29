@@ -66,10 +66,10 @@ public class ReferenceService {
 
                 acct.setIban(acct.getIban().replaceAll("\\s+",""));
                 if (!AppUtility.isEmpty(acct.getAuthPMImport())) {
-                    acct.setAuthPMImport(acct.getAuthPMImport().replace(MqUtility.DELIMETER_DATA, ","));
+                    acct.setAuthPMImport(acct.getAuthPMImport().replace("|", ","));
                 }
                 if (!AppUtility.isEmpty(acct.getAuthPMExport())) {
-                    acct.setAuthPMExport(acct.getAuthPMExport().replace(MqUtility.DELIMETER_DATA, ","));
+                    acct.setAuthPMExport(acct.getAuthPMExport().replace("|", ","));
                 }
             }
             ));

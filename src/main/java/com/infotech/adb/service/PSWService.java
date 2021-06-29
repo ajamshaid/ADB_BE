@@ -26,8 +26,8 @@ public class PSWService {
     public ResponseUtility.APIResponse shareUpdatedAuthPMs(AccountPMDTO dto) {
         ResponseUtility.APIResponse pswResponse = null;
 
-        String authPMImport = String.join("|", dto.getAuthorizedPaymentModesForImport());
-        String authPMExp = String.join("|", dto.getAuthorizedPaymentModesForExport());
+        String authPMImport = String.join(",", dto.getAuthorizedPaymentModesForImport());
+        String authPMExp = String.join(",", dto.getAuthorizedPaymentModesForExport());
         accountDetailRepository.updateAuthPMByIBAN(dto.getIban(), authPMImport, authPMExp);
         try {
             pswResponse = consumer.updateAccountAndPMInPWS(dto);

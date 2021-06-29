@@ -246,9 +246,6 @@ public class PSWAPIConsumer {
     public ResponseUtility.APIResponse shareBCAInformationExport(BCADTO dto)
             throws HttpClientErrorException, JsonProcessingException {
 
-        dto.getNetAmountRealized().setDateOfRealized(dto.getBcaDate());
-        dto.setRemarks("Settled");
-
         RequestParameter<BCADTO> requestParameter = new RequestParameter<>(
                 UUID.randomUUID()
                 , AppConstants.AD_ID
