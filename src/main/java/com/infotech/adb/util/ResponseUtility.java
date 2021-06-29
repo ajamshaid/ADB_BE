@@ -73,6 +73,13 @@ public class ResponseUtility {
     public static class Message {
         private String code;
         private String description;
+
+        public static Message getDBUpdateButPSWRequestFaildMsg(){
+            ResponseUtility.Message msg = new ResponseUtility.Message();
+            msg.setCode(""+HttpStatus.OK.value());
+            msg.setDescription("Data Updated in DB but PSW API Reqeust Failed");
+            return  msg;
+        }
     }
     @NoArgsConstructor
     @Data
@@ -222,7 +229,7 @@ public class ResponseUtility {
      * @throws CustomException
      */
     public static void exceptionResponse(Exception e, String DBConstraint) throws CustomException {
-        e.printStackTrace();
+     //   e.printStackTrace();
         log.error(e);
         if(!AppUtility.isEmpty(DBConstraint)) {
             ResponseUtility.validateDBConstraint(e, DBConstraint, "Data");

@@ -47,7 +47,7 @@ public class PSWRequestAPI {
         CustomResponse customResponse = null;
 
         if(AppUtility.isEmpty(response)){ //if Un-successful Response
-            ResponseUtility.exceptionResponse(new CustomException("Resquest update Failed.."),"");
+            ResponseUtility.exceptionResponse(new CustomException("PSW Request update Failed.."),"Req Update Failed");
         }else{
             customResponse = ResponseUtility.successResponse("{}",
                     response.getMessage().getCode(),

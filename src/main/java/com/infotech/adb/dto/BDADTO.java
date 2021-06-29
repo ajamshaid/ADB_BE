@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 public class BDADTO implements BaseDTO<BDADTO, BDA> {
     private Long id;
     public String bdaUniqueIdNumber;
-    public String gdNumber;
+    public String[] gdNumber ={};
     public String iban;
     public String importerNtn;
     public String importerName;
@@ -26,7 +26,8 @@ public class BDADTO implements BaseDTO<BDADTO, BDA> {
         BDA entity = new BDA();
 
         entity.setId(this.getId());
-        entity.setGdNumber(this.getGdNumber());
+        //entity.setGdNumber(this.getGdNumber());
+        entity.setGdNumber(this.getGdNumber()[0]);
         entity.setBdaUniqueIdNumber(this.getBdaUniqueIdNumber());
         entity.setIban(this.getIban());
         entity.setImporterNtn(this.getImporterNtn());
@@ -64,7 +65,9 @@ public class BDADTO implements BaseDTO<BDADTO, BDA> {
     public void convertToDTO(BDA entity, boolean partialFill) {
         if (entity != null) {
             this.setId(entity.getId());
-            this.setGdNumber(entity.getGdNumber());
+            String[] gdNum = {entity.getGdNumber()};
+            this.setGdNumber(gdNum);
+            //this.setGdNumber(entity.getGdNumber());
             this.setBdaUniqueIdNumber(entity.getBdaUniqueIdNumber());
             this.setIban(entity.getIban());
             this.setImporterNtn(entity.getImporterNtn());
