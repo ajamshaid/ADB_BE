@@ -247,6 +247,7 @@ public class PSWAPIConsumer {
             throws HttpClientErrorException, JsonProcessingException {
 
         dto.getNetAmountRealized().setDateOfRealized(dto.getBcaDate());
+        dto.setRemarks("Settled");
 
         RequestParameter<BCADTO> requestParameter = new RequestParameter<>(
                 UUID.randomUUID()
