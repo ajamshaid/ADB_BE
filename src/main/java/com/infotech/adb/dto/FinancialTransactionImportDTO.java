@@ -115,18 +115,18 @@ public class FinancialTransactionImportDTO implements BaseDTO<FinancialTransacti
                 this.setPaymentInformation(new PaymentInformationImportDTO(entity.getPaymentInformation()));
             }
 
-       //     if (AppConstants.PAYMENT_MODE.IMPORT_OPEN_ACCOUNT.equals(entity.getModeOfPayment())) {
+     //      if (AppConstants.PAYMENT_MODE.IMPORT_OPEN_ACCOUNT.equals(entity.getModeOfPayment())) {
                 this.setCashMargin(new CashMarginDTO(entity.getCashMarginPercentage()
                         , entity.getCashMarginValue()));
-       //     }
+     //       }
 
-        //    if (!AppUtility.isEmpty(entity.getCcData()) && AppConstants.PAYMENT_MODE.IMPORT_CC.equals(entity.getModeOfPayment())) {
+      //      if (!AppUtility.isEmpty(entity.getCcData()) && AppConstants.PAYMENT_MODE.IMPORT_CC.equals(entity.getModeOfPayment())) {
                 this.setContractCollectionData(new CCDataDTO(entity.getCcData()));
-         //   }
-
-       ///     if (!AppUtility.isEmpty(entity.getLcData()) && AppConstants.PAYMENT_MODE.IMPORT_LC.equals(entity.getModeOfPayment())) {
-                this.setLcData(new LCDataDTO(entity.getLcData()));
        //     }
+
+         //   if (!AppUtility.isEmpty(entity.getLcData()) && AppConstants.PAYMENT_MODE.LC_VALUE.equals(entity.getModeOfPayment())) {
+                this.setLcData(new LCDataDTO(entity.getLcData()));
+          ///  }
 
             if (!AppUtility.isEmpty(entity.getItemInformationSet())) {
                 HashSet<ItemInformationImportDTO> set = new HashSet<>();

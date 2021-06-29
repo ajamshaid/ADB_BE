@@ -181,6 +181,20 @@ public class PSWAPIConsumer {
      public ResponseUtility.APIResponse shareFinancialInformationImport(FinancialTransactionImportDTO dto)
      throws HttpClientErrorException, JsonProcessingException {
 
+
+         if (AppConstants.PAYMENT_MODE.IMPORT_OPEN_ACCOUNT.equals(dto.getModeOfPayment())) {
+
+             dto.setContractCollectionData(null);
+             dto.setLcData(null);
+         }else if (AppConstants.PAYMENT_MODE.LC_VALUE.equals(dto.getModeOfPayment())) {
+             dto.setContractCollectionData(null);
+             dto.setCashMargin(null);
+
+         }else if (AppConstants.PAYMENT_MODE.IMPORT_CC.equals(dto.getModeOfPayment())) {
+             dto.setLcData(null);
+             dto.setCashMargin(null);
+         }
+
      RequestParameter<FinancialTransactionImportDTO> requestParameter = new RequestParameter<>(
      UUID.randomUUID()
      , AppConstants.AD_ID

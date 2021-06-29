@@ -1,6 +1,5 @@
 package com.infotech.adb.api.ref;
 
-import com.infotech.adb.api.consumer.PSWAPIConsumer;
 import com.infotech.adb.dto.FinancialTransactionExportDTO;
 import com.infotech.adb.dto.FinancialTransactionImportDTO;
 import com.infotech.adb.exceptions.CustomException;
@@ -30,8 +29,6 @@ public class FinancialTransactionAPI {
     @Autowired
     private ReferenceService referenceService;
 
-    @Autowired
-    private PSWAPIConsumer consumer;
 
     @RequestMapping(value = "/import/", method = RequestMethod.GET)
     public CustomResponse getAllImportFT()
@@ -74,12 +71,6 @@ public class FinancialTransactionAPI {
             entity = pushToPSW ? referenceService.updateFTImportAndShare(reqDTO) : referenceService.updateFinancialTransaction(reqDTO.convertToEntity());
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e, "");
-        }
-
-        try {
-            consumer.shareFinancialInformationImport(reqDTO);
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         return ResponseUtility.buildResponseObject(entity, new FinancialTransactionImportDTO(), false);
     }
@@ -132,12 +123,6 @@ public class FinancialTransactionAPI {
             ResponseUtility.exceptionResponse(e, "");
         }
 //        reqDTO.getPaymentInformation().setExpiryDate("20211012");
-        try {
-            consumer.shareFinancialInformationExport(reqDTO);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         return ResponseUtility.buildResponseObject(entity, new FinancialTransactionExportDTO(), false);
     }
 
