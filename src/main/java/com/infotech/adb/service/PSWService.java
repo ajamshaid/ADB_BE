@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.infotech.adb.api.consumer.PSWAPIConsumer;
 import com.infotech.adb.dto.*;
 import com.infotech.adb.model.repository.AccountDetailRepository;
-import com.infotech.adb.util.AppUtility;
 import com.infotech.adb.util.ResponseUtility;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +32,7 @@ public class PSWService {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        return checkPSWAPIResponse(pswResponse);
+        return pswResponse;
     }
 
     @Transactional
@@ -46,7 +45,7 @@ public class PSWService {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        return checkPSWAPIResponse(pswResponse);
+        return pswResponse;
     }
 
     public ResponseUtility.APIResponse shareNegativeListOfCountries(BankNegativeCountriesDTO dto) {
@@ -57,7 +56,7 @@ public class PSWService {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-       return checkPSWAPIResponse(pswResponse);
+       return pswResponse;
     }
 
     public ResponseUtility.APIResponse shareNegativeListOfCommodities(BankNegativeCommoditiesDTO dto) {
@@ -68,7 +67,7 @@ public class PSWService {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        return  checkPSWAPIResponse(pswResponse);
+        return  pswResponse;
     }
 
     public ResponseUtility.APIResponse shareNegativeListOfSuppliers(BankNegativeSuppliersDTO dto) {
@@ -80,14 +79,6 @@ public class PSWService {
             e.printStackTrace();
         }
 
-        return checkPSWAPIResponse(pswResponse);
-    }
-
-    private ResponseUtility.APIResponse checkPSWAPIResponse(ResponseUtility.APIResponse pswResponse){
-        if (AppUtility.isEmpty(pswResponse)) {
-            pswResponse = new ResponseUtility.APIResponse();
-            pswResponse.setMessage(ResponseUtility.Message.getDBUpdateButPSWRequestFaildMsg());
-        }
         return pswResponse;
     }
 }
