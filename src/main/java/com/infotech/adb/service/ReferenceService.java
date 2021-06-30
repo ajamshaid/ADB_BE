@@ -8,9 +8,9 @@ import com.infotech.adb.dto.FinancialTransactionExportDTO;
 import com.infotech.adb.dto.FinancialTransactionImportDTO;
 import com.infotech.adb.exceptions.CustomException;
 import com.infotech.adb.exceptions.NoDataFoundException;
-import com.infotech.adb.jms.MqUtility;
 import com.infotech.adb.model.entity.*;
 import com.infotech.adb.model.repository.*;
+import com.infotech.adb.util.AppConstants;
 import com.infotech.adb.util.AppUtility;
 import com.infotech.adb.util.OpenCsvUtil;
 import lombok.extern.log4j.Log4j2;
@@ -87,28 +87,31 @@ public class ReferenceService {
             throw new NoDataFoundException("No Data Found, No Valid Object/Empty in CVS File");
         } else {
             bankNegativeLists.forEach((negList -> {
+
+                negList.setBankCode(AppConstants.AD_ID);
                 if (!AppUtility.isEmpty(negList.getRestrictedCommoditiesForExport())) {
-                    negList.setRestrictedCommoditiesForExport(negList.getRestrictedCommoditiesForExport().replace(MqUtility.DELIMETER_DATA, ","));
+                    negList.setRestrictedCommoditiesForExport(negList.getRestrictedCommoditiesForExport().replace("|", ","));
                 }
                 if (!AppUtility.isEmpty(negList.getRestrictedCommoditiesForImport())) {
-                    negList.setRestrictedCommoditiesForImport(negList.getRestrictedCommoditiesForImport().replace(MqUtility.DELIMETER_DATA, ","));
+                    negList.setRestrictedCommoditiesForImport(negList.getRestrictedCommoditiesForImport().replace("|", ","));
                 }
 
                 if (!AppUtility.isEmpty(negList.getRestrictedCountriesForExport())) {
-                    negList.setRestrictedCountriesForExport(negList.getRestrictedCountriesForExport().replace(MqUtility.DELIMETER_DATA, ","));
+                    negList.setRestrictedCountriesForExport(negList.getRestrictedCountriesForExport().replace("|", ","));
                 }
                 if (!AppUtility.isEmpty(negList.getRestrictedCountriesForImport())) {
-                    negList.setRestrictedCountriesForImport(negList.getRestrictedCountriesForImport().replace(MqUtility.DELIMETER_DATA, ","));
+                    negList.setRestrictedCountriesForImport(negList.getRestrictedCountriesForImport().replace("|", ","));
                 }
 
                 if (!AppUtility.isEmpty(negList.getRestrictedSuppliersForExport())) {
-                    negList.setRestrictedSuppliersForExport(negList.getRestrictedSuppliersForExport().replace(MqUtility.DELIMETER_DATA, ","));
+                    negList.setRestrictedSuppliersForExport(negList.getRestrictedSuppliersForExport().replace("|", ","));
                 }
                 if (!AppUtility.isEmpty(negList.getRestrictedSuppliersForImport())) {
-                    negList.setRestrictedSuppliersForImport(negList.getRestrictedSuppliersForImport().replace(MqUtility.DELIMETER_DATA, ","));
+                    negList.setRestrictedSuppliersForImport(negList.getRestrictedSuppliersForImport().replace("|", ","));
                 }
             }
             ));
+
             // save to DB
             bankNegtiveListRepository.saveAll(bankNegativeLists);
         }
