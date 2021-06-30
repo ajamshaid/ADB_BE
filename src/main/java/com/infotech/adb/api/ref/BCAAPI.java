@@ -63,12 +63,19 @@ public class BCAAPI {
         if (AppUtility.isEmpty(reqDTO) || AppUtility.isEmpty(reqDTO.getId())) {
             throw new DataValidationException(messageBundle.getString("validation.error"));
         }
+
+        CustomResponse customResponse = null;
         BCA entity = null;
         try {
-            entity = pushToPSW ? referenceService.updateBCAAndShare(reqDTO) : referenceService.updateBCA(reqDTO.convertToEntity());
+            if (pushToPSW) {
+                customResponse = ResponseUtility.translatePSWAPIResponse(referenceService.updateBCAAndShare(reqDTO));
+            } else {
+                entity = referenceService.updateBCA(reqDTO.convertToEntity());
+                customResponse = ResponseUtility.buildResponseObject(entity, new BCADTO(), false);
+            }
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e, "");
         }
-        return ResponseUtility.buildResponseObject(entity, new BCADTO(), false);
+        return customResponse;
     }
 }

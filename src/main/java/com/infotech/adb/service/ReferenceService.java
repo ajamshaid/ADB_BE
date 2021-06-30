@@ -194,10 +194,9 @@ public class ReferenceService {
         return ref.get();
     }
 
-    public BDA updateBDAAndShare(BDADTO bdadto) throws JsonProcessingException {
+    public ResponseUtility.APIResponse updateBDAAndShare(BDADTO bdadto) throws JsonProcessingException {
         BDA entity = this.updateBDA(bdadto.convertToEntity());
-        consumer.shareBDAInformationImport(bdadto);
-        return entity;
+        return consumer.shareBDAInformationImport(bdadto);
     }
 
     @Transactional
@@ -223,10 +222,9 @@ public class ReferenceService {
     }
 
 
-    public BCA updateBCAAndShare(BCADTO bcadto) throws JsonProcessingException {
+    public ResponseUtility.APIResponse updateBCAAndShare(BCADTO bcadto) throws JsonProcessingException {
         BCA bca = this.updateBCA(bcadto.convertToEntity());
-        consumer.shareBCAInformationExport(bcadto);
-        return bca;
+        return consumer.shareBCAInformationExport(bcadto);
     }
 
     @Transactional
