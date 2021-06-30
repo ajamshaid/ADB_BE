@@ -326,18 +326,14 @@ public class ResponseUtility {
         CustomResponse customResponse = null;
 
         String respCode = pswResponse.getMessage().getCode();
-        if(respCode.equals(""+HttpStatus.OK.value())){
-
+        if(respCode.equals(""+HttpStatus.OK.value()) ){
             customResponse = ResponseUtility.successResponse("{}",
                     pswResponse.getMessage().getCode(),
                     pswResponse.getMessage().getDescription(), null,false);
-        }else if(){
-
         }
         else{
-            throw new CustomException(pswResponse.getMessage().getDescription());
+            throw new CustomException(pswResponse.getMessage().code+" - "+pswResponse.getMessage().getDescription());
         }
-
         return customResponse;
 
     }
