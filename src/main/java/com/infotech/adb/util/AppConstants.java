@@ -43,11 +43,16 @@ public class AppConstants {
         public final static String METHOD_ID_UPDATE_INFO_AND_PM = "1512";//MGS-4.3
         public final static String METHOD_ID_UPDATE_TRADER_ACCT_STATUS= "1516"; // MSG-4.4
 
-        public final static String METHOD_ID_SHARE_NEG_LIST_OF_COUNTRIES= "1554";//MGS-11.1
+        public final static String METHOD_ID_SHARE_NEG_LIST_OF_COUNTRIES= "1557";//MGS-11.1
+        public final static String METHOD_ID_SHARE_NEG_LIST_OF_COMMODITIES= "1558";//MGS-11.2
+        public final static String METHOD_ID_SHARE_NEG_LIST_OF_SUPPLIERS= "1559";//MGS-11.3
+
+       /*
+       public final static String METHOD_ID_SHARE_NEG_LIST_OF_COUNTRIES= "1554";//MGS-11.1
         public final static String METHOD_ID_SHARE_NEG_LIST_OF_COMMODITIES= "1555";//MGS-11.2
         public final static String METHOD_ID_SHARE_NEG_LIST_OF_SUPPLIERS= "1556";//MGS-11.3
 
-
+       */
         public final static String METHOD_ID_UPDATE_TRADERS_EMAIL_MOB= "1534"; //MGS-11
 
         //5.1.	Financial & GD Information Messages (Import)
