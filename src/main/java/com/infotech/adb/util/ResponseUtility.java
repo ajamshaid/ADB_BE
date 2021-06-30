@@ -325,12 +325,16 @@ public class ResponseUtility {
         ZonedDateTime requestTime = ZonedDateTime.now();
         CustomResponse customResponse = null;
 
-        if(pswResponse.getMessage().getCode().equals(""+HttpStatus.OK.value())){
+        String respCode = pswResponse.getMessage().getCode();
+        if(respCode.equals(""+HttpStatus.OK.value())){
 
             customResponse = ResponseUtility.successResponse("{}",
                     pswResponse.getMessage().getCode(),
                     pswResponse.getMessage().getDescription(), null,false);
-        }else{
+        }else if(){
+
+        }
+        else{
             throw new CustomException(pswResponse.getMessage().getDescription());
         }
 

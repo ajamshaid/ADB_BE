@@ -56,23 +56,31 @@ public class FinancialTransactionAPI {
         } catch (Exception e) {
             throw new CustomException(e);
         }
-        return ResponseUtility.buildResponseObject(entity, new FinancialTransactionImportDTO(),true);
+        return ResponseUtility.buildResponseObject(entity, new FinancialTransactionImportDTO(), true);
     }
 
     @RequestMapping(value = "/import/", method = RequestMethod.PUT)
-    public CustomResponse updateImportFT(@RequestBody FinancialTransactionImportDTO reqDTO , @RequestParam(value = "pushToPSW",defaultValue = "false", required = false) Boolean pushToPSW)
+    public CustomResponse updateImportFT(@RequestBody FinancialTransactionImportDTO reqDTO, @RequestParam(value = "pushToPSW", defaultValue = "false", required = false) Boolean pushToPSW)
             throws CustomException, DataValidationException, NoDataFoundException {
 
         if (AppUtility.isEmpty(reqDTO) || AppUtility.isEmpty(reqDTO.getFtId())) {
             throw new DataValidationException(messageBundle.getString("validation.error"));
         }
+
+        CustomResponse customResponse = null;
         FinancialTransaction entity = null;
         try {
-            entity = pushToPSW ? referenceService.updateFTImportAndShare(reqDTO) : referenceService.updateFinancialTransaction(reqDTO.convertToEntity());
+
+            if (pushToPSW) {
+                customResponse = ResponseUtility.translatePSWAPIResponse(referenceService.updateFTImportAndShare(reqDTO));
+            } else {
+                entity = referenceService.updateFinancialTransaction(reqDTO.convertToEntity());
+                customResponse = ResponseUtility.buildResponseObject(entity, new FinancialTransactionImportDTO(), false);
+            }
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e, "");
         }
-        return ResponseUtility.buildResponseObject(entity, new FinancialTransactionImportDTO(), false);
+        return customResponse;
     }
 
     /**********************
@@ -105,25 +113,29 @@ public class FinancialTransactionAPI {
         } catch (Exception e) {
             throw new CustomException(e);
         }
-        return ResponseUtility.buildResponseObject(entity, new FinancialTransactionExportDTO(),true);
+        return ResponseUtility.buildResponseObject(entity, new FinancialTransactionExportDTO(), true);
     }
 
     @RequestMapping(value = "/export/", method = RequestMethod.PUT)
-    public CustomResponse updateExportFT(@RequestBody FinancialTransactionExportDTO reqDTO, @RequestParam(value = "pushToPSW",defaultValue = "false", required = false) Boolean pushToPSW)
+    public CustomResponse updateExportFT(@RequestBody FinancialTransactionExportDTO reqDTO, @RequestParam(value = "pushToPSW", defaultValue = "false", required = false) Boolean pushToPSW)
             throws CustomException, DataValidationException, NoDataFoundException {
 
         if (AppUtility.isEmpty(reqDTO) || AppUtility.isEmpty(reqDTO.getFtId())) {
             throw new DataValidationException(messageBundle.getString("validation.error"));
         }
+
+        CustomResponse customResponse = null;
         FinancialTransaction entity = null;
         try {
-            entity = pushToPSW ? referenceService.updateFTExportAndShare(reqDTO) : referenceService.updateFinancialTransaction(reqDTO.convertToEntity());
-
+            if (pushToPSW) {
+                customResponse = ResponseUtility.translatePSWAPIResponse(referenceService.updateFTExportAndShare(reqDTO));
+            } else {
+                entity = referenceService.updateFinancialTransaction(reqDTO.convertToEntity());
+                customResponse = ResponseUtility.buildResponseObject(entity, new FinancialTransactionExportDTO(), false);
+            }
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e, "");
         }
-//        reqDTO.getPaymentInformation().setExpiryDate("20211012");
-        return ResponseUtility.buildResponseObject(entity, new FinancialTransactionExportDTO(), false);
+        return customResponse;
     }
-
 }

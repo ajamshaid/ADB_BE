@@ -13,6 +13,7 @@ import com.infotech.adb.model.repository.*;
 import com.infotech.adb.util.AppConstants;
 import com.infotech.adb.util.AppUtility;
 import com.infotech.adb.util.OpenCsvUtil;
+import com.infotech.adb.util.ResponseUtility;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -161,16 +162,14 @@ public class ReferenceService {
     }
 
 
-    public FinancialTransaction updateFTImportAndShare(FinancialTransactionImportDTO dto) throws JsonProcessingException {
+    public ResponseUtility.APIResponse updateFTImportAndShare(FinancialTransactionImportDTO dto) throws JsonProcessingException {
         FinancialTransaction ft = this.updateFinancialTransaction(dto.convertToEntity());
-        consumer.shareFinancialInformationImport(dto);
-        return ft;
+        return consumer.shareFinancialInformationImport(dto);
     }
 
-    public FinancialTransaction updateFTExportAndShare(FinancialTransactionExportDTO dto) throws JsonProcessingException {
+    public ResponseUtility.APIResponse updateFTExportAndShare(FinancialTransactionExportDTO dto) throws JsonProcessingException {
         FinancialTransaction ft = this.updateFinancialTransaction(dto.convertToEntity());
-        consumer.shareFinancialInformationExport(dto);
-        return ft;
+        return consumer.shareFinancialInformationExport(dto);
     }
 
     @Transactional
