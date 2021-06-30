@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.infotech.adb.api.consumer.PSWAPIConsumer;
 import com.infotech.adb.dto.*;
 import com.infotech.adb.model.repository.AccountDetailRepository;
-import com.infotech.adb.util.AppConstants;
 import com.infotech.adb.util.AppUtility;
 import com.infotech.adb.util.ResponseUtility;
 import lombok.extern.log4j.Log4j2;
@@ -34,12 +33,7 @@ public class PSWService {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-
-        if (AppUtility.isEmpty(pswResponse)) {
-            pswResponse = new ResponseUtility.APIResponse();
-            pswResponse.setMessage(ResponseUtility.Message.getDBUpdateButPSWRequestFaildMsg());
-        }
-        return pswResponse;
+        return checkPSWAPIResponse(pswResponse);
     }
 
     @Transactional
@@ -52,12 +46,7 @@ public class PSWService {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        if (AppUtility.isEmpty(pswResponse)) {
-            pswResponse = new ResponseUtility.APIResponse();
-            pswResponse.setMessage(ResponseUtility.Message.getDBUpdateButPSWRequestFaildMsg());
-        }
-
-        return pswResponse;
+        return checkPSWAPIResponse(pswResponse);
     }
 
     public ResponseUtility.APIResponse shareNegativeListOfCountries(BankNegativeCountriesDTO dto) {
@@ -68,12 +57,7 @@ public class PSWService {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        if (!AppUtility.isEmpty(pswResponse)) {
-            if (AppConstants.PSWResponseCodes.OK.equals(pswResponse.getMessage().getCode())) {
-                //@TODO // update in DB
-            }
-        }
-        return pswResponse;
+       return checkPSWAPIResponse(pswResponse);
     }
 
     public ResponseUtility.APIResponse shareNegativeListOfCommodities(BankNegativeCommoditiesDTO dto) {
@@ -84,12 +68,7 @@ public class PSWService {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        if (!AppUtility.isEmpty(pswResponse)) {
-            if (AppConstants.PSWResponseCodes.OK.equals(pswResponse.getMessage().getCode())) {
-                //@TODO // update in DB
-            }
-        }
-        return pswResponse;
+        return  checkPSWAPIResponse(pswResponse);
     }
 
     public ResponseUtility.APIResponse shareNegativeListOfSuppliers(BankNegativeSuppliersDTO dto) {
@@ -100,13 +79,15 @@ public class PSWService {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        if (!AppUtility.isEmpty(pswResponse)) {
-            if (AppConstants.PSWResponseCodes.OK.equals(pswResponse.getMessage().getCode())) {
-                //@TODO // update in DB
-            }
+
+        return checkPSWAPIResponse(pswResponse);
+    }
+
+    private ResponseUtility.APIResponse checkPSWAPIResponse(ResponseUtility.APIResponse pswResponse){
+        if (AppUtility.isEmpty(pswResponse)) {
+            pswResponse = new ResponseUtility.APIResponse();
+            pswResponse.setMessage(ResponseUtility.Message.getDBUpdateButPSWRequestFaildMsg());
         }
         return pswResponse;
     }
-
-
 }
