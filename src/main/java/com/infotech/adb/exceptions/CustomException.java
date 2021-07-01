@@ -25,14 +25,14 @@ public class CustomException extends Exception {
 
     public CustomException(Throwable cause) {
         super(cause);
-        cause.printStackTrace();
+      //  cause.printStackTrace();
         this.logger.error(cause.getMessage());
     }
 
     public CustomException(String message, Throwable cause) {
         super(message, cause);
         this.setMessage(message);
-        cause.printStackTrace();
+       // cause.printStackTrace();
         this.logger.error(this.message);
     }
 
