@@ -52,6 +52,9 @@ public class ReferenceService {
     @Autowired
     private ChangeBankRepository cobRepository;
 
+    @Autowired
+    private GDClearanceRepository gdClearanceRepository;
+
 
     @Transactional
     public void parseCSVAndSaveAccountDetails(InputStream file) throws CustomException {
@@ -299,5 +302,28 @@ public class ReferenceService {
     public ChangeOfBank updateCOB(ChangeOfBank entity) {
         log.info("updateCOB method called..");
         return cobRepository.save(entity);
+    }
+
+    /*************************************
+     * GD Clearance  METHODS
+     **************************************/
+
+    public List<GDClearance> getAllGDClearance() {
+        log.info("getAllCOB method called..");
+        List<GDClearance> refList = null;
+        refList= this.gdClearanceRepository.findAll();
+        return refList;
+    }
+
+    public GDClearance getGDClearanceById(Long id) {
+        log.info("getCOBById method called..");
+        Optional<GDClearance> ref = gdClearanceRepository.findById(id);
+        return ref.get();
+    }
+
+    @Transactional
+    public GDClearance updateGDClearance(GDClearance entity) {
+        log.info("updateCOB method called..");
+        return gdClearanceRepository.save(entity);
     }
 }

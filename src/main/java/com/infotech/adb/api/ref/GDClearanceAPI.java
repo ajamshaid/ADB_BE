@@ -1,12 +1,10 @@
 package com.infotech.adb.api.ref;
 
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.infotech.adb.dto.ChangeBankRequestDTO;
+import com.infotech.adb.dto.GDClearenceDTO;
 import com.infotech.adb.exceptions.CustomException;
 import com.infotech.adb.exceptions.DataValidationException;
 import com.infotech.adb.exceptions.NoDataFoundException;
-import com.infotech.adb.model.entity.ChangeOfBank;
+import com.infotech.adb.model.entity.GDClearance;
 import com.infotech.adb.service.ReferenceService;
 import com.infotech.adb.util.AppUtility;
 import com.infotech.adb.util.CustomResponse;
@@ -20,9 +18,9 @@ import java.util.ResourceBundle;
 
 
 @RestController
-@RequestMapping("/cob")
+@RequestMapping("/gd-clearance")
 @Log4j2
-public class COBAPI {
+public class GDClearanceAPI {
 
     private static final ResourceBundle messageBundle = ResourceBundle.getBundle("messages");
 
@@ -30,45 +28,45 @@ public class COBAPI {
     private ReferenceService referenceService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public CustomResponse getAllCOB()
+    public CustomResponse getAllGDClearance()
             throws CustomException, NoDataFoundException {
 
-        List<ChangeOfBank> refList = null;
+        List<GDClearance> refList = null;
         try {
-            refList = referenceService.getAllCOB();
+            refList = referenceService.getAllGDClearance();
         } catch (Exception e) {
             throw new CustomException(e);
         }
-        return ResponseUtility.buildResponseList(refList, new ChangeBankRequestDTO());
+        return ResponseUtility.buildResponseList(refList, new GDClearenceDTO());
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public CustomResponse getCOBById(@PathVariable Long id)
+    public CustomResponse getGDClearanceById(@PathVariable Long id)
             throws CustomException, DataValidationException, NoDataFoundException {
 
         if (AppUtility.isEmpty(id)) {
             throw new DataValidationException(messageBundle.getString("id.not.found"));
         }
-        ChangeOfBank entity = null;
+        GDClearance entity = null;
         try {
-            entity = referenceService.getCOBById(id);
+            entity = referenceService.getGDClearanceById(id);
         } catch (Exception e) {
             throw new CustomException(e);
         }
-        return ResponseUtility.buildResponseObject(entity, new ChangeBankRequestDTO(),true);
+        return ResponseUtility.buildResponseObject(entity, new GDClearenceDTO(),true);
     }
 
     @RequestMapping(value = "/", method = RequestMethod.PUT)
-    public CustomResponse updateCOB(@RequestBody ChangeBankRequestDTO reqDTO, @RequestParam(value = "pushToPSW",defaultValue = "false", required = false) Boolean pushToPSW)
+    public CustomResponse updateGDClearance(@RequestBody GDClearenceDTO reqDTO, @RequestParam(value = "pushToPSW",defaultValue = "false", required = false) Boolean pushToPSW)
             throws CustomException, DataValidationException, NoDataFoundException {
 
         if (AppUtility.isEmpty(reqDTO) || AppUtility.isEmpty(reqDTO.getId())) {
             throw new DataValidationException(messageBundle.getString("validation.error"));
         }
-        ChangeOfBank entity = null;
+        GDClearance entity = null;
 
-        entity = referenceService.updateCOB(reqDTO.convertToEntity());
+        entity = referenceService.updateGDClearance(reqDTO.convertToEntity());
 
-        return ResponseUtility.buildResponseObject(entity, new ChangeBankRequestDTO(), false);
+        return ResponseUtility.buildResponseObject(entity, new GDClearenceDTO(), false);
     }
 }

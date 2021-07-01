@@ -41,6 +41,7 @@ public class ChangeBankRequestDTO implements BaseDTO<ChangeBankRequestDTO , Chan
         entity.setTraderName(this.getTraderName());
         entity.setIban(this.getIban());
         entity.setFinInsUniqueNumber(this.getFinInsUniqueNumber());
+        entity.setCobStatus(this.getCobStatus());
 
         return entity;
     }
@@ -56,6 +57,7 @@ public class ChangeBankRequestDTO implements BaseDTO<ChangeBankRequestDTO , Chan
             this.setTradeType(entity.getTradeType());
             this.setTraderName(entity.getTraderName());
             this.setTraderNTN(entity.getTraderNTN());
+            this.setCobStatus(entity.getCobStatus());
 
         }
     }

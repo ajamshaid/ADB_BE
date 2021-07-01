@@ -1,15 +1,13 @@
 package com.infotech.adb.model.entity;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "CHANGE_OF_BANK")
+@Table(name = "GD_CLEARANCE")
 @Data
-public class ChangeOfBank {
+public class GDClearance {
     /*
      * Key Fields
      */
@@ -18,8 +16,6 @@ public class ChangeOfBank {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "COB_UNIQUE_NO")
-    private String cobUniqueIdNumber;
 
     @Column(name="TRADE_TYPE")
     private String tradeType;
@@ -33,9 +29,9 @@ public class ChangeOfBank {
     @Column(name = "IBAN")
     private String Iban;
 
-    @Column(name = "FIN_INS_UNIQUE_NO")
-    private String finInsUniqueNumber;
+    @Column(name = "GD_NUMBER")
+    private String gdNumber;
 
-    @Column(name = "COB_STATUS")
-    private String cobStatus;
+    @Column(name = "CLEARANCE_STATUS")
+    private String clearanceStatus;
 }
