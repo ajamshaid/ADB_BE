@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.ZonedDateTime;
 import java.util.ResourceBundle;
 
 @SuppressWarnings("rawtypes")
@@ -83,6 +82,13 @@ public class EDIAPI {
 
                 log.info("Valid Request with processing code:" + processingCode);
                 switch (processingCode) {
+                    case "101": //5.1.2 Message 2 – Sharing of GD and Financial Information with AD by PSW
+                        customResponse = this.shareImportGDFinInfoToBank(data, requestParameter);
+                        break;
+                    case "102": //5.2.2 Message 2 – Sharing of GD and Financial Information with AD by PSW
+                        customResponse = this.shareExportGDFinInfoToBank(data, requestParameter);
+                        break;
+
                     case "301": // 4.1 Message 1, Verification of NTN,IBAN,Email and Mob
                         customResponse = this.verifyAccount(data, requestParameter);
                         break;
@@ -90,12 +96,10 @@ public class EDIAPI {
                         RequestParameter.isValidIBANRequest(requestParameter, true);
                         customResponse = this.getAccountDetails(data, requestParameter);
                         break;
-                    case "101": //5.1.2 Message 2 – Sharing of GD and Financial Information with AD by PSW
-                        customResponse = this.shareImportGDFinInfoToBank(data, requestParameter);
+                    case "306": // 7.1.1 Message 1 – Sharing of Change of Bank request with AD
+                        customResponse = this.chageOfBankRequest(data, requestParameter);
                         break;
-                    case "102": //5.2.2 Message 2 – Sharing of GD and Financial Information with AD by PSW
-                        customResponse = this.shareExportGDFinInfoToBank(data, requestParameter);
-                        break;
+
                     default: // Default Custom response
                         log.info("No Case Matched for processing code:" + processingCode);
                         throw new DataValidationException("Invalid Request! No Processing Code Matched");
@@ -113,8 +117,7 @@ public class EDIAPI {
      No. with PSW.
      **************************/
     public CustomResponse verifyAccount(String data, RequestParameter requestParameter)
-            throws CustomException, DataValidationException, NoDataFoundException {
-        ZonedDateTime requestTime = ZonedDateTime.now();
+            throws CustomException, NoDataFoundException {
         CustomResponse customResponse = null;
         boolean isVerified = false;
         try {
@@ -132,7 +135,7 @@ public class EDIAPI {
         );
 
         ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
-        logRequestService.saveLogRequest("Verify Trader Profile From AD", RequestMethod.POST.name(), requestParameter, requestTime, responseBody);
+        logRequestService.saveLogRequest("Verify Trader Profile From AD", RequestMethod.POST.name(), requestParameter, responseBody);
         return customResponse;
     }
 
@@ -142,8 +145,7 @@ public class EDIAPI {
      2. In Response the AD will share the user account details and authorized payment modes against IBAN.
      / **************************/
     public CustomResponse getAccountDetails(String data, RequestParameter requestParameter)
-            throws CustomException, DataValidationException, NoDataFoundException {
-        ZonedDateTime requestTime = ZonedDateTime.now();
+            throws CustomException, NoDataFoundException {
         CustomResponse customResponse = null;
         AccountDetailDTO accountDetailDTO = null;
         String message = "";
@@ -169,7 +171,7 @@ public class EDIAPI {
         );
 
         ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
-        logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter, requestTime, responseBody);
+        logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter, responseBody);
         return customResponse;
     }
 
@@ -179,7 +181,7 @@ public class EDIAPI {
      2. AD receive the information and shares the acknowledgement with PSW.
      **************************/
     public CustomResponse shareImportGDFinInfoToBank(String data, RequestParameter requestParameter)
-            throws CustomException, DataValidationException, NoDataFoundException, JsonProcessingException {
+            throws NoDataFoundException, JsonProcessingException {
 
         ObjectMapper mapper = new ObjectMapper();
         GDImportDTO dto = mapper.readValue(data, GDImportDTO.class);
@@ -188,18 +190,16 @@ public class EDIAPI {
         if (!AppUtility.isEmpty(dto)) {
             referenceService.updateGD(dto.convertToEntity());
         }
-
-        ZonedDateTime requestTime = ZonedDateTime.now();
         CustomResponse customResponse = null;
 
         customResponse = ResponseUtility.successResponse("{}", AppConstants.PSWResponseCodes.OK,
-                "Updated GD and financial information."
+                "Updated [Import] GD and financial information."
                 , requestParameter, false);
 
         ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
-        String logMessage = "Sharing of GD and Financial Information with AD by PSW";
+        String logMessage = "Sharing of [Import] GD and Financial Information with AD by PSW";
 
-        logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter, requestTime, responseBody);
+        logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter, responseBody);
         return customResponse;
     }
 
@@ -209,7 +209,7 @@ public class EDIAPI {
      2. AD receive the information and shares the acknowledgement with PSW.
      **************************/
     public CustomResponse shareExportGDFinInfoToBank(String data, RequestParameter requestParameter)
-            throws CustomException, DataValidationException, NoDataFoundException, JsonProcessingException {
+            throws NoDataFoundException, JsonProcessingException {
 
         ObjectMapper mapper = new ObjectMapper();
         GDExportDTO dto = mapper.readValue(data, GDExportDTO.class);
@@ -219,19 +219,102 @@ public class EDIAPI {
             referenceService.updateGDExport(dto.convertToEntity());
         }
 
-        ZonedDateTime requestTime = ZonedDateTime.now();
-        CustomResponse customResponse = null;
-
-        customResponse = ResponseUtility.successResponse("{}", AppConstants.PSWResponseCodes.OK,
-                "Updated GD and financial information."
+        CustomResponse customResponse  = ResponseUtility.successResponse("{}", AppConstants.PSWResponseCodes.OK,
+                "Updated [Export] GD and financial information."
                 , requestParameter, false);
 
         ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
-        String logMessage = "Sharing of GD and Financial Information with AD by PSW";
+        String logMessage = "Sharing of [Export] GD and Financial Information with AD by PSW";
 
-        logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter, requestTime, responseBody);
+        logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter, responseBody);
         return customResponse;
     }
+
+    /**************************
+     // 7.1.	Message 1 – Sharing of Change of Bank request with AD
+     // 1. PSW will share the Change of Bank request with AD.
+     **************************/
+    public CustomResponse chageOfBankRequest(String data, RequestParameter requestParameter)
+            throws NoDataFoundException, JsonProcessingException {
+
+        ObjectMapper mapper = new ObjectMapper();
+        ChangeBankRequestDTO dto = mapper.readValue(data, ChangeBankRequestDTO.class);
+        System.out.println("IN coming COB Object is:" + dto);
+
+        if (!AppUtility.isEmpty(dto)) {
+            referenceService.updateCOB(dto.convertToEntity());
+        }
+        CustomResponse customResponse  = ResponseUtility.successResponse("{}",AppConstants.PSWResponseCodes.OK,
+                "Change of bank request received."
+                ,requestParameter, false);
+
+        ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
+        String logMessage = "Message 1 – Sharing of Change of Bank request with AD";
+
+        logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter, responseBody);
+        return customResponse;
+    }
+
+/*
+    public CustomResponse getBuildAndLogResponseByRequestType(RequestParameter requestBody
+            , String requestType)
+            throws CustomException, DataValidationException, NoDataFoundException {
+
+        CustomResponse customResponse = null;
+
+        if (RequestParameter.isValidIBANRequest(requestBody, true)) {
+            AccountDetailDTO accountDetail = null;
+            try {
+                IBANVerificationRequest ibanVerificationRequest = requestBody.getData();
+                accountDetail = mqService.getAccountDetailsByIban(ibanVerificationRequest.getIban());
+
+            } catch (Exception e) {
+                ResponseUtility.exceptionResponse(e, null);
+            }
+            boolean noData = AppUtility.isEmpty(accountDetail);
+            BaseDTO dto = null;
+            String message = "";
+            String logMessage = "";
+/*
+            if (AppConstants.REQ_TYPE_ACCT_DETAILS_WITH_PM.equals(requestType)) {
+                dto = noData ? null : new AccountDetailDTO();//accountDetail);
+                message = messageBundle.getString(noData ? "account.details.not.shared" : "account.details.shared");
+                logMessage = "Sharing of Account Details & Authorized Payment Modes";
+            } else if (AppConstants.REQ_TYPE_RES_COUNTRIES.equals(requestType)) {
+                dto = noData ? null : new RestrictedCountriesDTO(accountDetail);
+                message = messageBundle.getString(noData ? "negative.countries.not.shared" : "negative.countries.shared");
+                logMessage = "Sharing Negative List of Countries";
+            } else if (AppConstants.REQ_TYPE_RES_COMMODITIES.equals(requestType)) {
+                dto = noData ? null : new RestrictedCommoditiesDTO(accountDetail);
+                message = messageBundle.getString(noData ? "negative.commodities.not.shared" : "negative.commodities.shared");
+                logMessage = "Sharing Negative List of Countries";
+            } else if (AppConstants.REQ_TYPE_RES_SUPPLIERS.equals(requestType)) {
+                dto = noData ? null : new RestrictedSuppliersDTO(accountDetail);
+                message = messageBundle.getString(noData ? "negative.suppliers.not.shared" : "negative.suppliers.shared");
+                logMessage = "Sharing Negative List of Countries";
+            }
+ * /
+            customResponse = ResponseUtility.successResponse(dto
+                    , noData ? AppConstants.PSWResponseCodes.NO_DATA_FOUND : AppConstants.PSWResponseCodes.OK
+                    , message
+                    , requestBody,false
+            );
+            ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
+            logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestBody, responseBody);
+        }
+        return customResponse;
+    }
+
+    //**************************
+    // 4.2.	Message 2 – Sharing of Account Details & Authorized Payment Modes with PSW by AD
+    // ************************* * /
+@RequestMapping(value = "/account/details", method = RequestMethod.POST)
+public CustomResponse getAccountDetails(@RequestBody RequestParameter<IBANVerificationRequest> requestBody)
+        throws CustomException, DataValidationException, NoDataFoundException {
+    return getBuildAndLogResponseByRequestType(requestBody, AppConstants.REQ_TYPE_ACCT_DETAILS_WITH_PM);
+}
+
+ */
 
 }
 

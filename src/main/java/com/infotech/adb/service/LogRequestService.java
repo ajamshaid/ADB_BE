@@ -23,8 +23,7 @@ public class LogRequestService {
     private LogRequestRepository logRequestRepository;
 
 
-    public void saveLogRequest(String messageName, String messageType, RequestParameter requestBody,
-                                ZonedDateTime requestTime, ResponseUtility.APIResponse responseBody) {
+    public void saveLogRequest(String messageName, String messageType, RequestParameter requestBody, ResponseUtility.APIResponse responseBody) {
         LogRequest logRequest = new LogRequest();
         logRequest.setReceiverId(requestBody.getReceiverId());
         logRequest.setSenderId(requestBody.getSenderId());
@@ -37,7 +36,7 @@ public class LogRequestService {
             log.error("-- LogRequest without payload's will be saved as error occurred while parsing Request/Response payload :" + e.getMessage());
             e.printStackTrace();
         }
-        logRequest.setRequestTime(requestTime);
+        logRequest.setRequestTime(ZonedDateTime.now());
         logRequest.setResponseTime(ZonedDateTime.now());
         logRequest.setCreatedOn(ZonedDateTime.now());
         logRequest.setResponseCode(responseBody.getResponseCode());

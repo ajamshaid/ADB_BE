@@ -98,7 +98,7 @@ public class ResponseUtility {
         protected Object data;
 
         public APIResponse(Object data, String responseCode, Message message, RequestParameter requestParameter) {
-            this.data =  AppUtility.isEmpty(data)? "" : data;
+            this.data =  AppUtility.isEmpty(data)? new Object() : data;
             this.message = message;
             this.responseCode = responseCode;
             if(!AppUtility.isEmpty(requestParameter)) {
@@ -337,5 +337,4 @@ public class ResponseUtility {
         return customResponse;
 
     }
-
 }

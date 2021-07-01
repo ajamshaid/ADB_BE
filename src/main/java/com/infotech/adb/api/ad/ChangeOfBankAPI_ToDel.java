@@ -55,7 +55,7 @@ public class ChangeOfBankAPI_ToDel {
         ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
         String logMessage = "Message 1 – Sharing of Change of Bank request with AD";
 
-        logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestBody, requestTime, responseBody);
+        logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestBody, responseBody);
         return customResponse;
     }
 
@@ -82,7 +82,7 @@ public class ChangeOfBankAPI_ToDel {
        ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
        String logMessage = "7.1.5.\tMessage 1 – Sharing of Change of Bank request approval/rejection message by other selected AD with PSW ";
 
-       logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestBody, requestTime, responseBody);
+       logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestBody, responseBody);
        return customResponse;
    }
 }
