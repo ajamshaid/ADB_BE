@@ -1,7 +1,6 @@
 package com.infotech.adb.dto;
 
 import com.infotech.adb.model.entity.CancellationOfFT;
-import com.infotech.adb.model.entity.ChangeOfBank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,14 +9,14 @@ import lombok.NoArgsConstructor;
 public class CancellationOfFTDTO implements BaseDTO<CancellationOfFTDTO, CancellationOfFT> {
 
     private Long id;
-    private String tradeType;
+    private String tradeTranType;
     private String traderNTN;
     private String traderName;
     private String Iban;
     private String finInsUniqueNumber;
 
     public CancellationOfFTDTO(String id ,  String tradeType, String traderNTN, String traderName, String iban, String finInsUniqueNumber) {
-        this.tradeType = tradeType;
+        this.tradeTranType = tradeType;
         this.traderNTN = traderNTN;
         this.traderName = traderName;
         Iban = iban;
@@ -31,7 +30,7 @@ public class CancellationOfFTDTO implements BaseDTO<CancellationOfFTDTO, Cancell
         CancellationOfFT entity = new CancellationOfFT();
 
         entity.setId(this.getId());
-        entity.setTradeType(this.getTradeType());
+        entity.setTradeType(this.getTradeTranType());
         entity.setTraderNTN(this.getTraderNTN());
         entity.setTraderName(this.getTraderName());
         entity.setIban(this.getIban());
@@ -48,7 +47,7 @@ public class CancellationOfFTDTO implements BaseDTO<CancellationOfFTDTO, Cancell
             this.setId(entity.getId());
             this.setIban(entity.getIban());
             this.setFinInsUniqueNumber(entity.getFinInsUniqueNumber());
-            this.setTradeType(entity.getTradeType());
+            this.setTradeTranType(entity.getTradeType());
             this.setTraderName(entity.getTraderName());
             this.setTraderNTN(entity.getTraderNTN());
 

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 public class GDClearanceDTO implements BaseDTO<GDClearanceDTO, GDClearance> {
 
     private Long id;
-    private String tradeType;
+    private String tradeTranType;
     private String traderNTN;
     private String traderName;
     private String Iban;
@@ -18,7 +18,7 @@ public class GDClearanceDTO implements BaseDTO<GDClearanceDTO, GDClearance> {
 
     public GDClearanceDTO(String id , String tradeType, String traderNTN, String traderName, String iban, String gdNumber) {
 
-        this.tradeType = tradeType;
+        this.tradeTranType = tradeType;
         this.traderNTN = traderNTN;
         this.traderName = traderName;
         Iban = iban;
@@ -31,7 +31,7 @@ public class GDClearanceDTO implements BaseDTO<GDClearanceDTO, GDClearance> {
         GDClearance entity = new GDClearance();
 
         entity.setId(this.getId());
-        entity.setTradeType(this.getTradeType());
+        entity.setTradeType(this.getTradeTranType());
         entity.setTraderNTN(this.getTraderNTN());
         entity.setTraderName(this.getTraderName());
         entity.setIban(this.getIban());
@@ -48,7 +48,7 @@ public class GDClearanceDTO implements BaseDTO<GDClearanceDTO, GDClearance> {
 
             this.setId(entity.getId());
             this.setIban(entity.getIban());
-            this.setTradeType(entity.getTradeType());
+            this.setTradeTranType(entity.getTradeType());
             this.setTraderName(entity.getTraderName());
             this.setTraderNTN(entity.getTraderNTN());
             this.setGdNumber(entity.getGdNumber());
