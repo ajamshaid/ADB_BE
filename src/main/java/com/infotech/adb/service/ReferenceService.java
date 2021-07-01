@@ -2,10 +2,7 @@ package com.infotech.adb.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.infotech.adb.api.consumer.PSWAPIConsumer;
-import com.infotech.adb.dto.BCADTO;
-import com.infotech.adb.dto.BDADTO;
-import com.infotech.adb.dto.FinancialTransactionExportDTO;
-import com.infotech.adb.dto.FinancialTransactionImportDTO;
+import com.infotech.adb.dto.*;
 import com.infotech.adb.exceptions.CustomException;
 import com.infotech.adb.exceptions.NoDataFoundException;
 import com.infotech.adb.jms.MqUtility;
@@ -50,6 +47,9 @@ public class ReferenceService {
 
     @Autowired
     private GDExportRepository gdExportRepository;
+
+    @Autowired
+    private ChangeBankRepository cobRepository;
 
 
     @Transactional
@@ -277,5 +277,27 @@ public class ReferenceService {
     public GDExport updateGDExport(GDExport entity) {
         log.info("updateGDExport method called..");
         return gdExportRepository.save(entity);
+    }
+
+    /*************************************
+     * COB  METHODS
+     **************************************/
+    public List<ChangeOfBank> getAllCOB() {
+        log.info("getAllCOB method called..");
+        List<ChangeOfBank> refList = null;
+        refList= this.cobRepository.findAll();
+        return refList;
+    }
+
+    public ChangeOfBank getCOBById(Long id) {
+        log.info("getCOBById method called..");
+        Optional<ChangeOfBank> ref = cobRepository.findById(id);
+        return ref.get();
+    }
+
+    @Transactional
+    public ChangeOfBank updateCOB(ChangeOfBank entity) {
+        log.info("updateCOB method called..");
+        return cobRepository.save(entity);
     }
 }
