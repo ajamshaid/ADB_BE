@@ -55,6 +55,9 @@ public class ReferenceService {
     @Autowired
     private GDClearanceRepository gdClearanceRepository;
 
+    @Autowired
+    private CancellationOfFTRepository cancellationOfFTRepository;
+
 
     @Transactional
     public void parseCSVAndSaveAccountDetails(InputStream file) throws CustomException {
@@ -325,5 +328,27 @@ public class ReferenceService {
     public GDClearance updateGDClearance(GDClearance entity) {
         log.info("updateCOB method called..");
         return gdClearanceRepository.save(entity);
+    }
+
+    /*************************************
+     * Cancellation of FT  METHODS
+     **************************************/
+    public List<CancellationOfFT> getAllCancellationOfFT() {
+        log.info("getAllCOB method called..");
+        List<CancellationOfFT> refList = null;
+        refList= this.cancellationOfFTRepository.findAll();
+        return refList;
+    }
+
+    public CancellationOfFT getCancellationOfFTById(Long id) {
+        log.info("getCOBById method called..");
+        Optional<CancellationOfFT> ref = cancellationOfFTRepository.findById(id);
+        return ref.get();
+    }
+
+    @Transactional
+    public CancellationOfFT updateCancellationOfFT(CancellationOfFT entity) {
+        log.info("updateCOB method called..");
+        return cancellationOfFTRepository.save(entity);
     }
 }

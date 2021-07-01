@@ -5,9 +5,9 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "GD_CLEARANCE")
+@Table(name = "CANCELLATION_OF_FT")
 @Data
-public class GDClearance {
+public class CancellationOfFT {
     /*
      * Key Fields
      */
@@ -28,9 +28,7 @@ public class GDClearance {
     @Column(name = "IBAN")
     private String Iban;
 
-    @Column(name = "GD_NUMBER")
-    private String gdNumber;
+    @Column(name = "FIN_INS_UNIQUE_NO")
+    private String finInsUniqueNumber;
 
-    @Column(name = "CLEARANCE_STATUS")
-    private String clearanceStatus;
 }
