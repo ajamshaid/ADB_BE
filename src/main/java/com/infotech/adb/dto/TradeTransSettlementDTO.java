@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class TradeTransSettlementDTO extends TradeTransactionDTO {
+public class TradeTransSettlementDTO extends TradeTransactionDTO_TODEL {
 
     private List<String> bcaBdaUniqueIdNumber;
     private BigDecimal finInsValue;

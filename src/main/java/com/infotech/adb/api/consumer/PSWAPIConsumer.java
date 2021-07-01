@@ -38,7 +38,7 @@ public class PSWAPIConsumer {
                 HTTPClientUtils.getClientHttpRequestFactory(
                         AppConstants.PSW.CLIENT_ID, AppConstants.PSW.CLIENT_SECRET));
 
-        System.out.println("AppConstants.PSW.BASE_URL :"+AppConstants.PSW.BASE_URL);
+        System.out.println("AppConstants.PSW.BASE_URL :" + AppConstants.PSW.BASE_URL);
 
         UriComponents uriBuilder = UriComponentsBuilder.fromHttpUrl(
                 AppConstants.PSW.BASE_URL + AppConstants.PSW.API_AUTH).build();
@@ -46,7 +46,7 @@ public class PSWAPIConsumer {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
-        MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("grant_type", AppConstants.PSW.AUT_GRANT_TYPE);
         map.add("client_id", AppConstants.PSW.CLIENT_ID);
         map.add("client_secret", AppConstants.PSW.CLIENT_SECRET);
@@ -66,7 +66,7 @@ public class PSWAPIConsumer {
             authTokenResponse.setResponseCode(result.getStatusCodeValue());
             authTokenResponse.setMessage("Authentication Successful.");
 
-            System.out.println("------------------AuthTokem Response"+authTokenResponse);
+            System.out.println("------------------AuthTokem Response" + authTokenResponse);
         } catch (HttpStatusCodeException ex) {
             HttpStatus statusCode = ex.getStatusCode();
             if (HttpStatus.UNAUTHORIZED == statusCode) {
@@ -76,7 +76,6 @@ public class PSWAPIConsumer {
         }
         return authTokenResponse;
     }
-
 
 
     /*********************************************************************
@@ -117,7 +116,6 @@ public class PSWAPIConsumer {
     }
 
 
-
     /***********************************************************
      11.1    Message 1 – Sharing negative list of countries by AD with PSW / Sharing
      update in negative list of countries by AD with PSW
@@ -137,14 +135,14 @@ public class PSWAPIConsumer {
     }
 
     /***********************************************************
-    11.2 Message 2 – Sharing Negative List of Commodities by AD with PSW/ Sharing
+     11.2 Message 2 – Sharing Negative List of Commodities by AD with PSW/ Sharing
      update in negative list of Commodities by AD with PSW
      ***********************************************************/
     public ResponseUtility.APIResponse shareNegativeListOfCommodities(BankNegativeCommoditiesDTO dto)
             throws HttpClientErrorException, JsonProcessingException {
 
         RequestParameter<BankNegativeCommoditiesDTO> requestParameter = new RequestParameter<>(
-                 UUID.randomUUID()
+                UUID.randomUUID()
                 , AppConstants.AD_ID
                 , AppConstants.PSW.ID, "03"
                 , AppConstants.PSW.METHOD_ID_SHARE_NEG_LIST_OF_COMMODITIES
@@ -153,6 +151,7 @@ public class PSWAPIConsumer {
 
         return executeRequest(requestParameter, "11.2 Message 2 – Sharing Updated Negative List of Commodities with PSW");
     }
+
     /***********************************************************
      11.3 Message 3 – Sharing Negative List of Suppliers by AD with PSW/ Sharing
      update in negative list of Suppliers by AD with PSW
@@ -161,7 +160,7 @@ public class PSWAPIConsumer {
             throws HttpClientErrorException, JsonProcessingException {
 
         RequestParameter<BankNegativeSuppliersDTO> requestParameter = new RequestParameter<>(
-                 UUID.randomUUID()
+                UUID.randomUUID()
                 , AppConstants.AD_ID
                 , AppConstants.PSW.ID, "03"
                 , AppConstants.PSW.METHOD_ID_SHARE_NEG_LIST_OF_SUPPLIERS
@@ -174,67 +173,67 @@ public class PSWAPIConsumer {
     /***********************************************************
      5.1.1.	Message 1 – Share Financial Transaction Data with PSW by AD (IMPORT)
      ***********************************************************/
-     public ResponseUtility.APIResponse shareFinancialInformationImport(FinancialTransactionImportDTO dto)
-     throws HttpClientErrorException, JsonProcessingException {
+    public ResponseUtility.APIResponse shareFinancialInformationImport(FinancialTransactionImportDTO dto)
+            throws HttpClientErrorException, JsonProcessingException {
 
 
-         if (AppConstants.PAYMENT_MODE.IMPORT_OPEN_ACCOUNT.equals(dto.getModeOfPayment())) {
+        if (AppConstants.PAYMENT_MODE.IMPORT_OPEN_ACCOUNT.equals(dto.getModeOfPayment())) {
 
-             dto.setContractCollectionData(null);
-             dto.setLcData(null);
-         }else if (AppConstants.PAYMENT_MODE.LC_VALUE.equals(dto.getModeOfPayment())) {
-             dto.setContractCollectionData(null);
-             dto.setCashMargin(null);
+            dto.setContractCollectionData(null);
+            dto.setLcData(null);
+        } else if (AppConstants.PAYMENT_MODE.LC_VALUE.equals(dto.getModeOfPayment())) {
+            dto.setContractCollectionData(null);
+            dto.setCashMargin(null);
 
-         }else if (AppConstants.PAYMENT_MODE.IMPORT_CC.equals(dto.getModeOfPayment())) {
-             dto.setLcData(null);
-             dto.setCashMargin(null);
-         }
+        } else if (AppConstants.PAYMENT_MODE.IMPORT_CC.equals(dto.getModeOfPayment())) {
+            dto.setLcData(null);
+            dto.setCashMargin(null);
+        }
 
-     RequestParameter<FinancialTransactionImportDTO> requestParameter = new RequestParameter<>(
-     UUID.randomUUID()
-     , AppConstants.AD_ID
-     , AppConstants.PSW.ID, "03"
-     , AppConstants.PSW.METHOD_ID_SHARE_FIN_TRANS_DATA_IMPORT
-     , AppConstants.AD_SIGNATURE);
-     requestParameter.setData(dto);
+        RequestParameter<FinancialTransactionImportDTO> requestParameter = new RequestParameter<>(
+                UUID.randomUUID()
+                , AppConstants.AD_ID
+                , AppConstants.PSW.ID, "03"
+                , AppConstants.PSW.METHOD_ID_SHARE_FIN_TRANS_DATA_IMPORT
+                , AppConstants.AD_SIGNATURE);
+        requestParameter.setData(dto);
 
-     return executeRequest(requestParameter, "5.1.1. Message 1 – Share Financial Transaction Data with PSW by AD (IMPORT)");
-     }
+        return executeRequest(requestParameter, "5.1.1. Message 1 – Share Financial Transaction Data with PSW by AD (IMPORT)");
+    }
 
     /***********************************************************
      5.1.3.	Message 3 – Sharing of BDA Information Import by AD with PSW
      ***********************************************************/
-     public ResponseUtility.APIResponse shareBDAInformationImport(BDADTO dto)
-     throws HttpClientErrorException, JsonProcessingException {
+    public ResponseUtility.APIResponse shareBDAInformationImport(BDADTO dto)
+            throws HttpClientErrorException, JsonProcessingException {
 
-     RequestParameter<BDADTO> requestParameter = new RequestParameter<>(
-     UUID.randomUUID()
-     , AppConstants.AD_ID
-     , AppConstants.PSW.ID, "03"
-     , AppConstants.PSW.METHOD_ID_SHARE_BDA_INFO_IMPORT
-     , AppConstants.AD_SIGNATURE);
-     requestParameter.setData(dto);
+        RequestParameter<BDADTO> requestParameter = new RequestParameter<>(
+                UUID.randomUUID()
+                , AppConstants.AD_ID
+                , AppConstants.PSW.ID, "03"
+                , AppConstants.PSW.METHOD_ID_SHARE_BDA_INFO_IMPORT
+                , AppConstants.AD_SIGNATURE);
+        requestParameter.setData(dto);
 
-     return executeRequest(requestParameter, "5.1.3. Message 3 – Sharing of BDA Information Import by AD with PSW");
-     }
+        return executeRequest(requestParameter, "5.1.3. Message 3 – Sharing of BDA Information Import by AD with PSW");
+    }
 
     /***********************************************************
      5.2.1.	Message 1 – Share Financial Transaction Data with PSW by AD (Export)
      ***********************************************************/
-     public ResponseUtility.APIResponse shareFinancialInformationExport(FinancialTransactionExportDTO dto)
-     throws HttpClientErrorException, JsonProcessingException {
+    public ResponseUtility.APIResponse shareFinancialInformationExport(FinancialTransactionExportDTO dto)
+            throws HttpClientErrorException, JsonProcessingException {
 
-     RequestParameter<FinancialTransactionExportDTO> requestParameter = new RequestParameter<>(
-     UUID.randomUUID()
-     , AppConstants.AD_ID
-     , AppConstants.PSW.ID, "03"
-     , AppConstants.PSW.METHOD_ID_SHARE_FIN_TRANS_DATA_EXPORT
-     , AppConstants.AD_SIGNATURE);
-     requestParameter.setData(dto);
+        RequestParameter<FinancialTransactionExportDTO> requestParameter = new RequestParameter<>(
+                UUID.randomUUID()
+                , AppConstants.AD_ID
+                , AppConstants.PSW.ID, "03"
+                , AppConstants.PSW.METHOD_ID_SHARE_FIN_TRANS_DATA_EXPORT
+                , AppConstants.AD_SIGNATURE);
+        requestParameter.setData(dto);
 
-     return executeRequest(requestParameter, "5.2.1. Message 1 – Share Financial Transaction Data with PSW by AD (Export)");
-     }
+        return executeRequest(requestParameter, "5.2.1. Message 1 – Share Financial Transaction Data with PSW by AD (Export)");
+    }
 
     /***********************************************************
      5.2.3.	Message 3 – Sharing of BCA Information Export by AD with PSW
@@ -256,42 +255,54 @@ public class PSWAPIConsumer {
     /***********************************************************
      6.1 Message 1 – Sharing of GD Clearance Message by AD with PSW (Import/Export):
      ***********************************************************/
-     public ResponseUtility.APIResponse shareGDClearanceMsg(GDClearanceDTO dto)
-     throws HttpClientErrorException, JsonProcessingException {
+    public ResponseUtility.APIResponse shareGDClearanceMsg(GDClearanceDTO dto)
+            throws HttpClientErrorException, JsonProcessingException {
 
-     RequestParameter<GDClearanceDTO> requestParameter = new RequestParameter<>(
-     UUID.randomUUID()
-     , AppConstants.AD_ID
-     , AppConstants.PSW.ID, "03"
-     , AppConstants.PSW.METHOD_ID_SHARE_GD_CLEARANCE_MESSAGE
-     , AppConstants.AD_SIGNATURE);
-     requestParameter.setData(dto);
+        RequestParameter<GDClearanceDTO> requestParameter = new RequestParameter<>(
+                UUID.randomUUID()
+                , AppConstants.AD_ID
+                , AppConstants.PSW.ID, "03"
+                , AppConstants.PSW.METHOD_ID_SHARE_GD_CLEARANCE_MESSAGE
+                , AppConstants.AD_SIGNATURE);
+        requestParameter.setData(dto);
 
-     return executeRequest(requestParameter, "6.1 Message 1 – Sharing of GD Clearance Message by AD with PSW (Import/Export)");
-     }
+        return executeRequest(requestParameter, "6.1 Message 1 – Sharing of GD Clearance Message by AD with PSW (Import/Export)");
+    }
 
 
     /***********************************************************
      7.2.1.	Message 2 – Sharing of Change of Bank request approval/rejection message by AD with PSW
      ***********************************************************/
-     public ResponseUtility.APIResponse shareCOBApprovalRejectionMsg(ChangeBankRequestDTO dto)
-     throws HttpClientErrorException, JsonProcessingException {
+    public ResponseUtility.APIResponse shareCOBApprovalRejectionMsg(ChangeBankRequestDTO dto)
+            throws HttpClientErrorException, JsonProcessingException {
 
-     RequestParameter<ChangeBankRequestDTO> requestParameter = new RequestParameter<>(
-     UUID.randomUUID()
-     , AppConstants.AD_ID
-     , AppConstants.PSW.ID, "03"
-     , AppConstants.PSW.METHOD_ID_SHARE_COB_APPROVAL_REJECTION_MESSAGE
-     , AppConstants.AD_SIGNATURE);
-     requestParameter.setData(dto);
+        RequestParameter<ChangeBankRequestDTO> requestParameter = new RequestParameter<>(
+                UUID.randomUUID()
+                , AppConstants.AD_ID
+                , AppConstants.PSW.ID, "03"
+                , AppConstants.PSW.METHOD_ID_SHARE_COB_APPROVAL_REJECTION_MESSAGE
+                , AppConstants.AD_SIGNATURE);
+        requestParameter.setData(dto);
 
-     return executeRequest(requestParameter, "7.2.1.Message 2 – Sharing of Change of Bank request approval/rejection message by AD with PSW");
-     }
+        return executeRequest(requestParameter, "7.2.1.Message 2 – Sharing of Change of Bank request approval/rejection message by AD with PSW");
+    }
 
+    /***********************************************************
+     8.1.	Message 1 – Cancellation of Financial Transaction by AD (Import/Export):
+     ***********************************************************/
+    public ResponseUtility.APIResponse cancellationOfFinancialTransaction(CancellationOfFTDTO dto)
+            throws HttpClientErrorException, JsonProcessingException {
 
+        RequestParameter<CancellationOfFTDTO> requestParameter = new RequestParameter<>(
+                UUID.randomUUID()
+                , AppConstants.AD_ID
+                , AppConstants.PSW.ID, "03"
+                , AppConstants.PSW.METHOD_ID_CANCELLATION_OF_FT
+                , AppConstants.AD_SIGNATURE);
+        requestParameter.setData(dto);
 
-
-
+        return executeRequest(requestParameter, "Cancellation of Financial Transaction by AD (Import/Export)");
+    }
 
 
 
@@ -300,112 +311,112 @@ public class PSWAPIConsumer {
     /***********************************************************
      4.11.	Message 11 – Update in Trader’s Email and Mobile Number Message by AD to PSW
      ***********************************************************
-    public ResponseUtility.APIResponse updateTraderProfile(TraderProfileDTO dto)
-            throws HttpClientErrorException, JsonProcessingException {
+     public ResponseUtility.APIResponse updateTraderProfile(TraderProfileDTO dto)
+     throws HttpClientErrorException, JsonProcessingException {
 
-        RequestParameter<TraderProfileDTO> requestParameter = new RequestParameter<>(
-                 UUID.randomUUID()
-                , AppConstants.AD_ID
-                , AppConstants.PSW.ID, "03"
-                , AppConstants.PSW.METHOD_ID_UPDATE_TRADERS_EMAIL_MOB
-                , AppConstants.AD_SIGNATURE);
-        requestParameter.setData(dto);
+     RequestParameter<TraderProfileDTO> requestParameter = new RequestParameter<>(
+     UUID.randomUUID()
+     , AppConstants.AD_ID
+     , AppConstants.PSW.ID, "03"
+     , AppConstants.PSW.METHOD_ID_UPDATE_TRADERS_EMAIL_MOB
+     , AppConstants.AD_SIGNATURE);
+     requestParameter.setData(dto);
 
-        return executeRequest(requestParameter, "Update in Trader’s Email and Mobile Number Message by AD to PSW");
-    }
+     return executeRequest(requestParameter, "Update in Trader’s Email and Mobile Number Message by AD to PSW");
+     }
 
 
-    /***********************************************************
+     /***********************************************************
      5.1.1.	Message 1 – Share Financial Transaction Data with PSW by AD (IMPORT)
      ***********************************************************
-    public ResponseUtility.APIResponse shareFinancialInformationImport(FinancialTransactionImportDTO dto)
-            throws HttpClientErrorException, JsonProcessingException {
+     public ResponseUtility.APIResponse shareFinancialInformationImport(FinancialTransactionImportDTO dto)
+     throws HttpClientErrorException, JsonProcessingException {
 
-        RequestParameter<FinancialTransactionImportDTO> requestParameter = new RequestParameter<>(
-                 UUID.randomUUID()
-                , AppConstants.AD_ID
-                , AppConstants.PSW.ID, "03"
-                , AppConstants.PSW.METHOD_ID_SHARE_FIN_TRANS_DATA_IMPORT
-                , AppConstants.AD_SIGNATURE);
-        requestParameter.setData(dto);
+     RequestParameter<FinancialTransactionImportDTO> requestParameter = new RequestParameter<>(
+     UUID.randomUUID()
+     , AppConstants.AD_ID
+     , AppConstants.PSW.ID, "03"
+     , AppConstants.PSW.METHOD_ID_SHARE_FIN_TRANS_DATA_IMPORT
+     , AppConstants.AD_SIGNATURE);
+     requestParameter.setData(dto);
 
-        return executeRequest(requestParameter, "Sharing Financial Transaction Data For Import with PSW by AD");
-    }
-
-
+     return executeRequest(requestParameter, "Sharing Financial Transaction Data For Import with PSW by AD");
+     }
 
 
-    /***********************************************************
+
+
+     /***********************************************************
      6.	Sharing of Cash Margin Message by AD to PSW for Payment Mode - Open Account
      ***********************************************************
-    public ResponseUtility.APIResponse shareCashMarginMessage(CashMarginDTO dto)
-            throws HttpClientErrorException, JsonProcessingException {
+     public ResponseUtility.APIResponse shareCashMarginMessage(CashMarginDTO dto)
+     throws HttpClientErrorException, JsonProcessingException {
 
-        RequestParameter<CashMarginDTO> requestParameter = new RequestParameter<>(
-                 UUID.randomUUID()
-                , AppConstants.AD_ID
-                , AppConstants.PSW.ID, "03"
-                , AppConstants.PSW.METHOD_ID_SHARE_CASH_MARGIN_MESSAGE
-                , AppConstants.AD_SIGNATURE);
-        requestParameter.setData(dto);
+     RequestParameter<CashMarginDTO> requestParameter = new RequestParameter<>(
+     UUID.randomUUID()
+     , AppConstants.AD_ID
+     , AppConstants.PSW.ID, "03"
+     , AppConstants.PSW.METHOD_ID_SHARE_CASH_MARGIN_MESSAGE
+     , AppConstants.AD_SIGNATURE);
+     requestParameter.setData(dto);
 
-        return executeRequest(requestParameter, "Sharing of Cash Margin Message by AD to PSW for Payment Mode - Open Account");
-    }
+     return executeRequest(requestParameter, "Sharing of Cash Margin Message by AD to PSW for Payment Mode - Open Account");
+     }
 
 
-    /***********************************************************
+     /***********************************************************
      9.1.	Message 1 – Cancellation of Financial Transaction by AD (Import/Export):
      ***********************************************************
-    public ResponseUtility.APIResponse cancelFinancialTransaction(TradeTransactionDTO dto)
-            throws HttpClientErrorException, JsonProcessingException {
+     public ResponseUtility.APIResponse cancelFinancialTransaction(TradeTransactionDTO dto)
+     throws HttpClientErrorException, JsonProcessingException {
 
-        RequestParameter<TradeTransactionDTO> requestParameter = new RequestParameter<>(
-                 UUID.randomUUID()
-                , AppConstants.AD_ID
-                , AppConstants.PSW.ID, "03"
-                , AppConstants.PSW.METHOD_ID_FIN_TRANS_CANCELLATION
-                , AppConstants.AD_SIGNATURE);
-        requestParameter.setData(dto);
+     RequestParameter<TradeTransactionDTO> requestParameter = new RequestParameter<>(
+     UUID.randomUUID()
+     , AppConstants.AD_ID
+     , AppConstants.PSW.ID, "03"
+     , AppConstants.PSW.METHOD_ID_FIN_TRANS_CANCELLATION
+     , AppConstants.AD_SIGNATURE);
+     requestParameter.setData(dto);
 
-        return executeRequest(requestParameter, "Cancellation of Financial Transaction by AD (Import/Export)");
-    }
+     return executeRequest(requestParameter, "Cancellation of Financial Transaction by AD (Import/Export)");
+     }
 
-    /***********************************************************
+     /***********************************************************
      10.1.	Message 1 – – Reversal of BDA/BCA Message by AD to PSW
      ***********************************************************
-    public ResponseUtility.APIResponse reversalOfBdaBca(TradeTransBDAInfoDTO dto)
-            throws HttpClientErrorException, JsonProcessingException {
+     public ResponseUtility.APIResponse reversalOfBdaBca(TradeTransBDAInfoDTO dto)
+     throws HttpClientErrorException, JsonProcessingException {
 
-        RequestParameter<TradeTransBDAInfoDTO> requestParameter = new RequestParameter<>(
-                 UUID.randomUUID()
-                , AppConstants.AD_ID
-                , AppConstants.PSW.ID, "03"
-                , AppConstants.PSW.METHOD_ID_REVERSAL_OF_BDA_BCA
-                , AppConstants.AD_SIGNATURE);
-        requestParameter.setData(dto);
+     RequestParameter<TradeTransBDAInfoDTO> requestParameter = new RequestParameter<>(
+     UUID.randomUUID()
+     , AppConstants.AD_ID
+     , AppConstants.PSW.ID, "03"
+     , AppConstants.PSW.METHOD_ID_REVERSAL_OF_BDA_BCA
+     , AppConstants.AD_SIGNATURE);
+     requestParameter.setData(dto);
 
-        return executeRequest(requestParameter, "– Reversal of BDA/BCA Message by AD to PSW");
-    }
+     return executeRequest(requestParameter, "– Reversal of BDA/BCA Message by AD to PSW");
+     }
 
-    /***********************************************************
+     /***********************************************************
      11.1.	Message 1  – Settlement of Financial Transaction by AD (Import/Export):
      ***********************************************************
-    public ResponseUtility.APIResponse settlementOfFinTrans(TradeTransSettlementDTO dto)
-            throws HttpClientErrorException, JsonProcessingException {
+     public ResponseUtility.APIResponse settlementOfFinTrans(TradeTransSettlementDTO dto)
+     throws HttpClientErrorException, JsonProcessingException {
 
-        RequestParameter<TradeTransSettlementDTO> requestParameter = new RequestParameter<>(
-                 UUID.randomUUID()
-                , AppConstants.AD_ID
-                , AppConstants.PSW.ID, "03"
-                , AppConstants.PSW.METHOD_ID_FIN_TRANS_SETTLEMENT
-                , AppConstants.AD_SIGNATURE);
-        requestParameter.setData(dto);
+     RequestParameter<TradeTransSettlementDTO> requestParameter = new RequestParameter<>(
+     UUID.randomUUID()
+     , AppConstants.AD_ID
+     , AppConstants.PSW.ID, "03"
+     , AppConstants.PSW.METHOD_ID_FIN_TRANS_SETTLEMENT
+     , AppConstants.AD_SIGNATURE);
+     requestParameter.setData(dto);
 
-        return executeRequest(requestParameter, "– Settlement of Financial Transaction by AD (Import/Export):");
-    }
+     return executeRequest(requestParameter, "– Settlement of Financial Transaction by AD (Import/Export):");
+     }
 
 
-    /*********************************************
+     /*********************************************
      *   Private Methods......
      ***********************************************/
 
@@ -430,7 +441,7 @@ public class PSWAPIConsumer {
                     AppConstants.PSW.BASE_URL + AppConstants.PSW.API_UPDATE_URL).build();
 
             System.out.println("----------- Request Sent----------------");
-            System.out.println("RequestParameter Json:"+requestParameter.toJson());
+            System.out.println("RequestParameter Json:" + requestParameter.toJson());
             System.out.println("---------------------------");
 
             apiResponse = postRequest(uriBuilder.toUriString(), token, requestParameter);
@@ -440,7 +451,7 @@ public class PSWAPIConsumer {
             logRequest = LogRequest.buildNewObject(messageName, RequestMethod.POST.name(), requestParameter, requestTime, apiResponse);
             logRequestService.createLogRequest(logRequest);
 
-            if(HttpStatus.OK.toString() == apiResponse.getMessage().getCode()) {
+            if (HttpStatus.OK.toString() == apiResponse.getMessage().getCode()) {
                 System.out.println("===================PSW  OK response =================");
             }
         } else {
@@ -453,6 +464,7 @@ public class PSWAPIConsumer {
 
     /**
      * Rest Template Post Request Execution...
+     *
      * @param uri
      * @param token
      * @param requestParameter
@@ -492,9 +504,9 @@ public class PSWAPIConsumer {
 
             AccountDetailDTO accountDetail = new AccountDetailDTO();
             accountDetail.setIban("PK 123213123");
-         //   accountDetail.setAccountType("701");
+            //   accountDetail.setAccountType("701");
 
-        //    pswApiConsumer.updateAccountAndPMInPWS(accountDetail);
+            //    pswApiConsumer.updateAccountAndPMInPWS(accountDetail);
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();

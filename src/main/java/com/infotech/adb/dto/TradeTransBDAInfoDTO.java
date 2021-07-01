@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class TradeTransBDAInfoDTO extends TradeTransactionDTO {
+public class TradeTransBDAInfoDTO extends TradeTransactionDTO_TODEL {
     private String bcaBdaUniqueIdNumber;
     private String gdNumber;
 

@@ -357,6 +357,11 @@ public class ReferenceService {
         return ref.get();
     }
 
+    public ResponseUtility.APIResponse updateCancellationOfFTAndShare(CancellationOfFTDTO dto) throws JsonProcessingException {
+        this.updateCancellationOfFT(dto.convertToEntity());
+        return consumer.cancellationOfFinancialTransaction(dto);
+    }
+
     @Transactional
     public CancellationOfFT updateCancellationOfFT(CancellationOfFT entity) {
         log.info("updateCOB method called..");

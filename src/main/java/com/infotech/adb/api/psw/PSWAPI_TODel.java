@@ -78,8 +78,8 @@ public class PSWAPI_TODel {
         }else if(requestBody.getMethodId().equals(AppConstants.PSW.METHOD_ID_SHARE_COB_APPROVAL_REJECTION_MESSAGE)) {
             System.out.println("-------- PSW Received -->[Sharing of Change of Bank request approval/rejection message by AD with PSW :" + AppConstants.PSW.METHOD_ID_SHARE_COB_APPROVAL_REJECTION_MESSAGE);
             return getOKResponse(requestBody, " Change of bank request status received ",requestBody.getMethodId());
-        }else if(requestBody.getMethodId().equals(AppConstants.PSW.METHOD_ID_FIN_TRANS_CANCELLATION)) {
-            System.out.println("-------- PSW Received -->[Cancellation of Financial Transaction by AD (Import/Export) :" + AppConstants.PSW.METHOD_ID_FIN_TRANS_CANCELLATION);
+        }else if(requestBody.getMethodId().equals(AppConstants.PSW.METHOD_ID_CANCELLATION_OF_FT)) {
+            System.out.println("-------- PSW Received -->[Cancellation of Financial Transaction by AD (Import/Export) :" + AppConstants.PSW.METHOD_ID_CANCELLATION_OF_FT);
             return getOKResponse(requestBody, " Financial transaction cancelled ",requestBody.getMethodId());
         }else if(requestBody.getMethodId().equals(AppConstants.PSW.METHOD_ID_REVERSAL_OF_BDA_BCA)) {
             System.out.println("-------- PSW Received -->[– Reversal of BDA/BCA Message by AD to PSW" + AppConstants.PSW.METHOD_ID_REVERSAL_OF_BDA_BCA);

@@ -2,12 +2,10 @@ package com.infotech.adb.api.ref;
 
 
 import com.infotech.adb.dto.CancellationOfFTDTO;
-import com.infotech.adb.dto.ChangeBankRequestDTO;
 import com.infotech.adb.exceptions.CustomException;
 import com.infotech.adb.exceptions.DataValidationException;
 import com.infotech.adb.exceptions.NoDataFoundException;
 import com.infotech.adb.model.entity.CancellationOfFT;
-import com.infotech.adb.model.entity.ChangeOfBank;
 import com.infotech.adb.service.ReferenceService;
 import com.infotech.adb.util.AppUtility;
 import com.infotech.adb.util.CustomResponse;
@@ -62,14 +60,22 @@ public class CancellationOfFTAPI {
     @RequestMapping(value = "/", method = RequestMethod.PUT)
     public CustomResponse updateCancellationOfFT(@RequestBody CancellationOfFTDTO reqDTO, @RequestParam(value = "pushToPSW",defaultValue = "false", required = false) Boolean pushToPSW)
             throws CustomException, DataValidationException, NoDataFoundException {
-
         if (AppUtility.isEmpty(reqDTO) || AppUtility.isEmpty(reqDTO.getId())) {
             throw new DataValidationException(messageBundle.getString("validation.error"));
         }
         CancellationOfFT entity = null;
+        CustomResponse customResponse = null;
+        try {
+            if (pushToPSW) {
+                customResponse = ResponseUtility.translatePSWAPIResponse(referenceService.updateCancellationOfFTAndShare(reqDTO));
+            } else {
+                entity = referenceService.updateCancellationOfFT(reqDTO.convertToEntity());
+                customResponse = ResponseUtility.successResponse(entity,"200","Record Updated Successfully");
+            }
+        } catch (Exception e) {
+            ResponseUtility.exceptionResponse(e, "");
+        }
+        return customResponse;
 
-        entity = referenceService.updateCancellationOfFT(reqDTO.convertToEntity());
-
-        return ResponseUtility.buildResponseObject(entity, new CancellationOfFTDTO(), false);
     }
 }
