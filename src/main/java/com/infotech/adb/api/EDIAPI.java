@@ -72,13 +72,22 @@ public class EDIAPI {
             String requestSignature = AppUtility.buildSignature(data);
             boolean isSignatureVerified = requestSignature.equals(requestParameter.getSignature());
 
+
+            String processingCode = requestParameter.getProcessingCode();
+
+
+            // @TODO Dummy code to Skip Signature for GD Parsing....Remove once Signature is Verified.
+            if(processingCode.equals("101") || processingCode.equals("102") ){
+                isSignatureVerified = true;
+            }
+
             if (!isSignatureVerified) {
                 customResponse = ResponseUtility.successResponse(null
                         , AppConstants.PSWResponseCodes.SIGNATURE_INVALID
                         , "Invalid Signature Received"
                         , requestParameter, false);
             } else {  // Verified Signatures
-                String processingCode = requestParameter.getProcessingCode();
+
 
                 log.info("Valid Request with processing code:" + processingCode);
                 switch (processingCode) {

@@ -16,7 +16,7 @@ public class ItemInformationExportDTO implements BaseDTO<ItemInformationExportDT
     private BigDecimal quantity;
     private BigDecimal unitPrice;
     private BigDecimal totalValue;
-    private BigDecimal itemInvoiceValue;
+    private BigDecimal exportValue;
     private String uom;
     private String goodsDescription;
     public ItemInformationExportDTO(ItemInformation entity) {
@@ -32,7 +32,7 @@ public class ItemInformationExportDTO implements BaseDTO<ItemInformationExportDT
         entity.setUom(this.getUom());
         entity.setUnitPrice(this.getUnitPrice());
         entity.setTotalValue(this.getTotalValue());
-        entity.setImportOrExportValue(this.getItemInvoiceValue());
+        entity.setImportOrExportValue(this.getExportValue());
         entity.setGoodsDescription(this.getGoodsDescription());
         entity.setQuantity(this.getQuantity());
 
@@ -51,7 +51,7 @@ public class ItemInformationExportDTO implements BaseDTO<ItemInformationExportDT
             this.setCountryOfOrigin(entity.getCountryOfOrigin());
             this.setUnitPrice(entity.getUnitPrice());
             this.setTotalValue(entity.getTotalValue());
-            this.setItemInvoiceValue(entity.getImportOrExportValue());
+            this.setExportValue(entity.getImportOrExportValue());
         }
     }
 
