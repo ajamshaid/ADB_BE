@@ -63,13 +63,18 @@ public class BDAAPI {
         if (AppUtility.isEmpty(reqDTO) || AppUtility.isEmpty(reqDTO.getId())) {
             throw new DataValidationException(messageBundle.getString("validation.error"));
         }
+        CustomResponse customResponse = null;
         BDA entity = null;
         try {
-
-            entity = pushToPSW ? referenceService.updateBDAAndShare(reqDTO) : referenceService.updateBDA(reqDTO.convertToEntity());
+            if (pushToPSW) {
+                customResponse = ResponseUtility.translatePSWAPIResponse(referenceService.updateBDAAndShare(reqDTO));
+            } else {
+                entity = referenceService.updateBDA(reqDTO.convertToEntity());
+                customResponse = ResponseUtility.buildResponseObject(entity, new BDADTO(), false);
+            }
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e, "");
         }
-        return ResponseUtility.buildResponseObject(entity, new BDADTO(), false);
+        return customResponse;
     }
 }

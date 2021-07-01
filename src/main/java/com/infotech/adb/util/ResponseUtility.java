@@ -20,6 +20,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -83,7 +84,6 @@ public class ResponseUtility {
     }
     @NoArgsConstructor
     @Data
-    @ToString
     public static class APIResponse {
 
         protected String messageId;
@@ -121,6 +121,20 @@ public class ResponseUtility {
         public String toJson() throws JsonProcessingException {
             ObjectWriter objectWriter = new ObjectMapper().writer();
             return objectWriter.writeValueAsString(this);
+        }
+
+        @Override
+        public String toString() {
+            return "APIResponse{" +
+                    "messageId='" + messageId + '\'' +
+                    ", timestamp='" + timestamp + '\'' +
+                    ", senderId='" + senderId + '\'' +
+                    ", receiverId='" + receiverId + '\'' +
+                    ", responseCode='" + responseCode + '\'' +
+                    ", signature='" + signature + '\'' +
+                    ", message=" + message +
+                    ", data=" +(AppUtility.isEmpty(data) ? "" :data.toString() )+
+                    '}';
         }
     }
 
@@ -300,6 +314,28 @@ public class ResponseUtility {
         if (!AppUtility.isEmpty(entityObject))
             return ResponseUtility.createdResponse(baseObject.convertToNewDTO(entityObject,false),""+responseCode,responseMsg,requestBody);
         throw new NoDataFoundException();
+    }
+
+    public static CustomResponse translatePSWAPIResponse(ResponseUtility.APIResponse pswResponse) throws CustomException {
+        if (AppUtility.isEmpty(pswResponse)) {
+            pswResponse = new ResponseUtility.APIResponse();
+            pswResponse.setMessage(ResponseUtility.Message.getDBUpdateButPSWRequestFaildMsg());
+        }
+
+        ZonedDateTime requestTime = ZonedDateTime.now();
+        CustomResponse customResponse = null;
+
+        String respCode = pswResponse.getMessage().getCode();
+        if(respCode.equals(""+HttpStatus.OK.value()) ){
+            customResponse = ResponseUtility.successResponse("{}",
+                    pswResponse.getMessage().getCode(),
+                    pswResponse.getMessage().getDescription(), null,false);
+        }
+        else{
+            throw new CustomException(pswResponse.getMessage().code+" - "+pswResponse.getMessage().getDescription());
+        }
+        return customResponse;
+
     }
 
 }

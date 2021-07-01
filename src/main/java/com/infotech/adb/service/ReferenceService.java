@@ -5,11 +5,12 @@ import com.infotech.adb.api.consumer.PSWAPIConsumer;
 import com.infotech.adb.dto.*;
 import com.infotech.adb.exceptions.CustomException;
 import com.infotech.adb.exceptions.NoDataFoundException;
-import com.infotech.adb.jms.MqUtility;
 import com.infotech.adb.model.entity.*;
 import com.infotech.adb.model.repository.*;
+import com.infotech.adb.util.AppConstants;
 import com.infotech.adb.util.AppUtility;
 import com.infotech.adb.util.OpenCsvUtil;
+import com.infotech.adb.util.ResponseUtility;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -66,10 +67,10 @@ public class ReferenceService {
 
                 acct.setIban(acct.getIban().replaceAll("\\s+",""));
                 if (!AppUtility.isEmpty(acct.getAuthPMImport())) {
-                    acct.setAuthPMImport(acct.getAuthPMImport().replace(MqUtility.DELIMETER_DATA, ","));
+                    acct.setAuthPMImport(acct.getAuthPMImport().replace("|", ","));
                 }
                 if (!AppUtility.isEmpty(acct.getAuthPMExport())) {
-                    acct.setAuthPMExport(acct.getAuthPMExport().replace(MqUtility.DELIMETER_DATA, ","));
+                    acct.setAuthPMExport(acct.getAuthPMExport().replace("|", ","));
                 }
             }
             ));
@@ -87,28 +88,31 @@ public class ReferenceService {
             throw new NoDataFoundException("No Data Found, No Valid Object/Empty in CVS File");
         } else {
             bankNegativeLists.forEach((negList -> {
+
+                negList.setBankCode(AppConstants.AD_ID);
                 if (!AppUtility.isEmpty(negList.getRestrictedCommoditiesForExport())) {
-                    negList.setRestrictedCommoditiesForExport(negList.getRestrictedCommoditiesForExport().replace(MqUtility.DELIMETER_DATA, ","));
+                    negList.setRestrictedCommoditiesForExport(negList.getRestrictedCommoditiesForExport().replace("|", ","));
                 }
                 if (!AppUtility.isEmpty(negList.getRestrictedCommoditiesForImport())) {
-                    negList.setRestrictedCommoditiesForImport(negList.getRestrictedCommoditiesForImport().replace(MqUtility.DELIMETER_DATA, ","));
+                    negList.setRestrictedCommoditiesForImport(negList.getRestrictedCommoditiesForImport().replace("|", ","));
                 }
 
                 if (!AppUtility.isEmpty(negList.getRestrictedCountriesForExport())) {
-                    negList.setRestrictedCountriesForExport(negList.getRestrictedCountriesForExport().replace(MqUtility.DELIMETER_DATA, ","));
+                    negList.setRestrictedCountriesForExport(negList.getRestrictedCountriesForExport().replace("|", ","));
                 }
                 if (!AppUtility.isEmpty(negList.getRestrictedCountriesForImport())) {
-                    negList.setRestrictedCountriesForImport(negList.getRestrictedCountriesForImport().replace(MqUtility.DELIMETER_DATA, ","));
+                    negList.setRestrictedCountriesForImport(negList.getRestrictedCountriesForImport().replace("|", ","));
                 }
 
                 if (!AppUtility.isEmpty(negList.getRestrictedSuppliersForExport())) {
-                    negList.setRestrictedSuppliersForExport(negList.getRestrictedSuppliersForExport().replace(MqUtility.DELIMETER_DATA, ","));
+                    negList.setRestrictedSuppliersForExport(negList.getRestrictedSuppliersForExport().replace("|", ","));
                 }
                 if (!AppUtility.isEmpty(negList.getRestrictedSuppliersForImport())) {
-                    negList.setRestrictedSuppliersForImport(negList.getRestrictedSuppliersForImport().replace(MqUtility.DELIMETER_DATA, ","));
+                    negList.setRestrictedSuppliersForImport(negList.getRestrictedSuppliersForImport().replace("|", ","));
                 }
             }
             ));
+
             // save to DB
             bankNegtiveListRepository.saveAll(bankNegativeLists);
         }
@@ -158,16 +162,14 @@ public class ReferenceService {
     }
 
 
-    public FinancialTransaction updateFTImportAndShare(FinancialTransactionImportDTO dto) throws JsonProcessingException {
+    public ResponseUtility.APIResponse updateFTImportAndShare(FinancialTransactionImportDTO dto) throws JsonProcessingException {
         FinancialTransaction ft = this.updateFinancialTransaction(dto.convertToEntity());
-        consumer.shareFinancialInformationImport(dto);
-        return ft;
+        return consumer.shareFinancialInformationImport(dto);
     }
 
-    public FinancialTransaction updateFTExportAndShare(FinancialTransactionExportDTO dto) throws JsonProcessingException {
+    public ResponseUtility.APIResponse updateFTExportAndShare(FinancialTransactionExportDTO dto) throws JsonProcessingException {
         FinancialTransaction ft = this.updateFinancialTransaction(dto.convertToEntity());
-        consumer.shareFinancialInformationExport(dto);
-        return ft;
+        return consumer.shareFinancialInformationExport(dto);
     }
 
     @Transactional
@@ -192,10 +194,9 @@ public class ReferenceService {
         return ref.get();
     }
 
-    public BDA updateBDAAndShare(BDADTO bdadto) throws JsonProcessingException {
+    public ResponseUtility.APIResponse updateBDAAndShare(BDADTO bdadto) throws JsonProcessingException {
         BDA entity = this.updateBDA(bdadto.convertToEntity());
-        consumer.shareBDAInformationImport(bdadto);
-        return entity;
+        return consumer.shareBDAInformationImport(bdadto);
     }
 
     @Transactional
@@ -221,10 +222,9 @@ public class ReferenceService {
     }
 
 
-    public BCA updateBCAAndShare(BCADTO bcadto) throws JsonProcessingException {
+    public ResponseUtility.APIResponse updateBCAAndShare(BCADTO bcadto) throws JsonProcessingException {
         BCA bca = this.updateBCA(bcadto.convertToEntity());
-        consumer.shareBCAInformationExport(bcadto);
-        return bca;
+        return consumer.shareBCAInformationExport(bcadto);
     }
 
     @Transactional

@@ -246,9 +246,6 @@ public class PSWAPIConsumer {
     public ResponseUtility.APIResponse shareBCAInformationExport(BCADTO dto)
             throws HttpClientErrorException, JsonProcessingException {
 
-        dto.getNetAmountRealized().setDateOfRealized(dto.getBcaDate());
-        dto.setRemarks("Settled");
-
         RequestParameter<BCADTO> requestParameter = new RequestParameter<>(
                 UUID.randomUUID()
                 , AppConstants.AD_ID
@@ -415,11 +412,13 @@ public class PSWAPIConsumer {
 
             apiResponse = postRequest(uriBuilder.toUriString(), token, requestParameter);
 
-            System.out.println("=================" + apiResponse.toJson());
+            System.out.println("======API Response TO_STRING===========" + apiResponse.toString());
 
-            if(HttpStatus.OK.toString() == apiResponse.getResponseCode()) {
-                logRequest = LogRequest.buildNewObject(messageName, RequestMethod.POST.name(), requestParameter, requestTime, apiResponse);
-                logRequestService.createLogRequest(logRequest);
+            logRequest = LogRequest.buildNewObject(messageName, RequestMethod.POST.name(), requestParameter, requestTime, apiResponse);
+            logRequestService.createLogRequest(logRequest);
+
+            if(HttpStatus.OK.toString() == apiResponse.getMessage().getCode()) {
+                System.out.println("===================PSW  OK response =================");
             }
         } else {
             System.out.println("===================PSW AUthentication Failed======== Request Not Forwarded to PSW =================");
