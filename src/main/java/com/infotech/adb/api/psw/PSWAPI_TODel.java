@@ -72,8 +72,8 @@ public class PSWAPI_TODel {
         }else if(requestBody.getMethodId().equals(AppConstants.PSW.METHOD_ID_SHARE_BCA_INFO_EXPORT)) {
             System.out.println("-------- PSW Received -->[Share BCA Information for Export] Request :" + AppConstants.PSW.METHOD_ID_SHARE_BCA_INFO_EXPORT);
             return getOKResponse(requestBody, " Updated BCA Information  for Export ",requestBody.getMethodId());
-        }else if(requestBody.getMethodId().equals(AppConstants.PSW.METHOD_ID_SHARE_CASH_MARGIN_MESSAGE)) {
-            System.out.println("-------- PSW Received -->[Sharing of Cash Margin Message by AD to PSW for Payment Mode - Open Account :" + AppConstants.PSW.METHOD_ID_SHARE_CASH_MARGIN_MESSAGE);
+        }else if(requestBody.getMethodId().equals(AppConstants.PSW.METHOD_ID_SHARE_GD_CLEARANCE_MESSAGE)) {
+            System.out.println("-------- PSW Received -->[Sharing of Cash Margin Message by AD to PSW for Payment Mode - Open Account :" + AppConstants.PSW.METHOD_ID_SHARE_GD_CLEARANCE_MESSAGE);
             return getOKResponse(requestBody, " Cash Margin Information Received ",requestBody.getMethodId());
         }else if(requestBody.getMethodId().equals(AppConstants.PSW.METHOD_ID_SHARE_COB_APPROVAL_REJECTION_MESSAGE)) {
             System.out.println("-------- PSW Received -->[Sharing of Change of Bank request approval/rejection message by AD with PSW :" + AppConstants.PSW.METHOD_ID_SHARE_COB_APPROVAL_REJECTION_MESSAGE);

@@ -1,6 +1,6 @@
 package com.infotech.adb.api.ref;
 
-import com.infotech.adb.dto.GDClearenceDTO;
+import com.infotech.adb.dto.GDClearanceDTO;
 import com.infotech.adb.exceptions.CustomException;
 import com.infotech.adb.exceptions.DataValidationException;
 import com.infotech.adb.exceptions.NoDataFoundException;
@@ -37,7 +37,7 @@ public class GDClearanceAPI {
         } catch (Exception e) {
             throw new CustomException(e);
         }
-        return ResponseUtility.buildResponseList(refList, new GDClearenceDTO());
+        return ResponseUtility.buildResponseList(refList, new GDClearanceDTO());
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -53,20 +53,28 @@ public class GDClearanceAPI {
         } catch (Exception e) {
             throw new CustomException(e);
         }
-        return ResponseUtility.buildResponseObject(entity, new GDClearenceDTO(),true);
+        return ResponseUtility.buildResponseObject(entity, new GDClearanceDTO(),true);
     }
 
     @RequestMapping(value = "/", method = RequestMethod.PUT)
-    public CustomResponse updateGDClearance(@RequestBody GDClearenceDTO reqDTO, @RequestParam(value = "pushToPSW",defaultValue = "false", required = false) Boolean pushToPSW)
+    public CustomResponse updateGDClearance(@RequestBody GDClearanceDTO reqDTO, @RequestParam(value = "pushToPSW",defaultValue = "false", required = false) Boolean pushToPSW)
             throws CustomException, DataValidationException, NoDataFoundException {
 
         if (AppUtility.isEmpty(reqDTO) || AppUtility.isEmpty(reqDTO.getId())) {
             throw new DataValidationException(messageBundle.getString("validation.error"));
         }
         GDClearance entity = null;
-
-        entity = referenceService.updateGDClearance(reqDTO.convertToEntity());
-
-        return ResponseUtility.buildResponseObject(entity, new GDClearenceDTO(), false);
+        CustomResponse customResponse = null;
+        try {
+            if (pushToPSW) {
+                customResponse = ResponseUtility.translatePSWAPIResponse(referenceService.updateGDClearanceAndShare(reqDTO));
+            } else {
+                entity = referenceService.updateGDClearance(reqDTO.convertToEntity());
+                customResponse = ResponseUtility.successResponse(entity,"200","Record Updated Successfully");
+            }
+        } catch (Exception e) {
+            ResponseUtility.exceptionResponse(e, "");
+        }
+        return customResponse;
     }
 }

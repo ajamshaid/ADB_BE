@@ -264,7 +264,7 @@ public class ReferenceService {
 
 
     /*************************************
-     * GD  METHODS
+     * GD Export METHODS
      **************************************/
     public List<GDExport> getAllGDExport() {
         log.info("getAllGDExport method called..");
@@ -301,6 +301,11 @@ public class ReferenceService {
         return ref.get();
     }
 
+    public ResponseUtility.APIResponse updateCOBAndShare(ChangeBankRequestDTO dto) throws JsonProcessingException {
+        this.updateCOB(dto.convertToEntity());
+        return consumer.shareCOBApprovalRejectionMsg(dto);
+    }
+
     @Transactional
     public ChangeOfBank updateCOB(ChangeOfBank entity) {
         log.info("updateCOB method called..");
@@ -322,6 +327,12 @@ public class ReferenceService {
         log.info("getCOBById method called..");
         Optional<GDClearance> ref = gdClearanceRepository.findById(id);
         return ref.get();
+    }
+
+
+    public ResponseUtility.APIResponse updateGDClearanceAndShare(GDClearanceDTO dto) throws JsonProcessingException {
+        this.updateGDClearance(dto.convertToEntity());
+        return consumer.shareGDClearanceMsg(dto);
     }
 
     @Transactional

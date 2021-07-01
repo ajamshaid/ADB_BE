@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class GDClearenceDTO implements BaseDTO<GDClearenceDTO, GDClearance> {
+public class GDClearanceDTO implements BaseDTO<GDClearanceDTO, GDClearance> {
 
     private Long id;
     private String tradeType;
@@ -16,7 +16,7 @@ public class GDClearenceDTO implements BaseDTO<GDClearenceDTO, GDClearance> {
     private String gdNumber;
     private String clearanceStatus;
 
-    public GDClearenceDTO(String id ,  String tradeType, String traderNTN, String traderName, String iban, String gdNumber) {
+    public GDClearanceDTO(String id , String tradeType, String traderNTN, String traderName, String iban, String gdNumber) {
 
         this.tradeType = tradeType;
         this.traderNTN = traderNTN;
@@ -58,8 +58,8 @@ public class GDClearenceDTO implements BaseDTO<GDClearenceDTO, GDClearance> {
     }
 
     @Override
-    public GDClearenceDTO convertToNewDTO(GDClearance entity, boolean partialFill) {
-        GDClearenceDTO dto = new GDClearenceDTO();
+    public GDClearanceDTO convertToNewDTO(GDClearance entity, boolean partialFill) {
+        GDClearanceDTO dto = new GDClearanceDTO();
         dto.convertToDTO(entity, partialFill);
         return dto;
     }

@@ -75,7 +75,7 @@ public class FinancialTransactionAPI {
                 customResponse = ResponseUtility.translatePSWAPIResponse(referenceService.updateFTImportAndShare(reqDTO));
             } else {
                 entity = referenceService.updateFinancialTransaction(reqDTO.convertToEntity());
-                customResponse = ResponseUtility.buildResponseObject(entity, new FinancialTransactionImportDTO(), false);
+                customResponse = ResponseUtility.successResponse(entity,"200","Record Updated Successfully");
             }
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e, "");
@@ -131,7 +131,7 @@ public class FinancialTransactionAPI {
                 customResponse = ResponseUtility.translatePSWAPIResponse(referenceService.updateFTExportAndShare(reqDTO));
             } else {
                 entity = referenceService.updateFinancialTransaction(reqDTO.convertToEntity());
-                customResponse = ResponseUtility.buildResponseObject(entity, new FinancialTransactionExportDTO(), false);
+                customResponse = ResponseUtility.successResponse(entity,"200","Record Updated Successfully");
             }
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e, "");

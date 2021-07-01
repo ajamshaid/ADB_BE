@@ -70,7 +70,7 @@ public class BDAAPI {
                 customResponse = ResponseUtility.translatePSWAPIResponse(referenceService.updateBDAAndShare(reqDTO));
             } else {
                 entity = referenceService.updateBDA(reqDTO.convertToEntity());
-                customResponse = ResponseUtility.buildResponseObject(entity, new BDADTO(), false);
+                customResponse = ResponseUtility.successResponse(entity,"200","Record Updated Successfully");
             }
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e, "");

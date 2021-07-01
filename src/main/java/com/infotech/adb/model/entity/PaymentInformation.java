@@ -1,5 +1,6 @@
 package com.infotech.adb.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -95,7 +96,7 @@ public class PaymentInformation {
     private BigDecimal otherCharges;
 
 
-
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name="FIN_TRANSACTION_ID", nullable=false)
     private FinancialTransaction financialTransaction;

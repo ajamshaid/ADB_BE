@@ -71,7 +71,7 @@ public class BCAAPI {
                 customResponse = ResponseUtility.translatePSWAPIResponse(referenceService.updateBCAAndShare(reqDTO));
             } else {
                 entity = referenceService.updateBCA(reqDTO.convertToEntity());
-                customResponse = ResponseUtility.buildResponseObject(entity, new BCADTO(), false);
+                customResponse = ResponseUtility.successResponse(entity,"200","Record Updated Successfully");
             }
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e, "");

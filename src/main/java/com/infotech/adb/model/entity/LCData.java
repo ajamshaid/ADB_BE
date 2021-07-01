@@ -1,5 +1,6 @@
 package com.infotech.adb.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -37,6 +38,7 @@ public class LCData {
     /*
      * Entity Specific Fields
      */
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name="FIN_TRANSACTION_ID", nullable=false)
     private FinancialTransaction financialTransaction;

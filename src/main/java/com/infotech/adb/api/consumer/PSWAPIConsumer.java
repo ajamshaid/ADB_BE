@@ -95,13 +95,12 @@ public class PSWAPIConsumer {
 //        AccountDetailDTO dto = null; ///new AccountDetailDTO(accountDetail);
         requestParameter.setData(dto);
 
-        return executeRequest(requestParameter, "Sharing of Update Information and Payment Mode By AD");
+        return executeRequest(requestParameter, "4.3 Message 3 – Sharing of Update Information and Payment Mode By AD");
     }
 
 
     /***********************************************************
-     4.4
-     Message 4 – Trader Profile Active/Inactive Message by AD to PSW
+     4.4  Message 4 – Trader Profile Active/Inactive Message by AD to PSW
      ***********************************************************/
     public ResponseUtility.APIResponse updateTraderProfileAccountStatus(TraderProfileStatusDTO dto)
             throws HttpClientErrorException, JsonProcessingException {
@@ -114,14 +113,13 @@ public class PSWAPIConsumer {
                 , AppConstants.AD_SIGNATURE);
         requestParameter.setData(dto);
 
-        return executeRequest(requestParameter, "Trader Profile Active/Inactive Message by AD to PSW");
+        return executeRequest(requestParameter, "4.4 Message4 - Trader Profile Active/Inactive Message by AD to PSW");
     }
 
 
 
     /***********************************************************
-     11.1
-     Message 1 – Sharing negative list of countries by AD with PSW / Sharing
+     11.1    Message 1 – Sharing negative list of countries by AD with PSW / Sharing
      update in negative list of countries by AD with PSW
      ***********************************************************/
     public ResponseUtility.APIResponse shareNegativeListOfCountries(BankNegativeCountriesDTO restrictedDTO)
@@ -135,12 +133,11 @@ public class PSWAPIConsumer {
                 , AppConstants.AD_SIGNATURE);
         requestParameter.setData(restrictedDTO);
 
-        return executeRequest(requestParameter, "Sharing Updated Negative List of Countries with PSW");
+        return executeRequest(requestParameter, "11.1 Message 1 – Sharing Updated Negative List of Countries with PSW");
     }
 
     /***********************************************************
-    11.2
-     Message 2 – Sharing Negative List of Commodities by AD with PSW/ Sharing
+    11.2 Message 2 – Sharing Negative List of Commodities by AD with PSW/ Sharing
      update in negative list of Commodities by AD with PSW
      ***********************************************************/
     public ResponseUtility.APIResponse shareNegativeListOfCommodities(BankNegativeCommoditiesDTO dto)
@@ -154,11 +151,10 @@ public class PSWAPIConsumer {
                 , AppConstants.AD_SIGNATURE);
         requestParameter.setData(dto);
 
-        return executeRequest(requestParameter, "Sharing Updated Negative List of Commodities with PSW");
+        return executeRequest(requestParameter, "11.2 Message 2 – Sharing Updated Negative List of Commodities with PSW");
     }
     /***********************************************************
-     11.3
-     Message 3 – Sharing Negative List of Suppliers by AD with PSW/ Sharing
+     11.3 Message 3 – Sharing Negative List of Suppliers by AD with PSW/ Sharing
      update in negative list of Suppliers by AD with PSW
      ***********************************************************/
     public ResponseUtility.APIResponse shareNegativeListOfSuppliers(BankNegativeSuppliersDTO dto)
@@ -172,7 +168,7 @@ public class PSWAPIConsumer {
                 , AppConstants.AD_SIGNATURE);
         requestParameter.setData(dto);
 
-        return executeRequest(requestParameter, "Sharing Updated Negative List of Suppliers with PSW");
+        return executeRequest(requestParameter, "11.3 Message 3 Sharing Updated Negative List of Suppliers with PSW");
     }
 
     /***********************************************************
@@ -203,7 +199,7 @@ public class PSWAPIConsumer {
      , AppConstants.AD_SIGNATURE);
      requestParameter.setData(dto);
 
-     return executeRequest(requestParameter, "Sharing Financial Transaction Data For Import with PSW by AD");
+     return executeRequest(requestParameter, "5.1.1. Message 1 – Share Financial Transaction Data with PSW by AD (IMPORT)");
      }
 
     /***********************************************************
@@ -220,7 +216,7 @@ public class PSWAPIConsumer {
      , AppConstants.AD_SIGNATURE);
      requestParameter.setData(dto);
 
-     return executeRequest(requestParameter, "Sharing of BDA Information [Import] by AD with PSW");
+     return executeRequest(requestParameter, "5.1.3. Message 3 – Sharing of BDA Information Import by AD with PSW");
      }
 
     /***********************************************************
@@ -237,7 +233,7 @@ public class PSWAPIConsumer {
      , AppConstants.AD_SIGNATURE);
      requestParameter.setData(dto);
 
-     return executeRequest(requestParameter, "Sharing Financial Transaction Data for Export with PSW by AD");
+     return executeRequest(requestParameter, "5.2.1. Message 1 – Share Financial Transaction Data with PSW by AD (Export)");
      }
 
     /***********************************************************
@@ -254,8 +250,53 @@ public class PSWAPIConsumer {
                 , AppConstants.AD_SIGNATURE);
         requestParameter.setData(dto);
 
-        return executeRequest(requestParameter, "Sharing of BCA Information [Export] by AD with PSW");
+        return executeRequest(requestParameter, "5.2.3. Message 3 – Sharing of BCA Information Export by AD with PSW");
     }
+
+    /***********************************************************
+     6.1 Message 1 – Sharing of GD Clearance Message by AD with PSW (Import/Export):
+     ***********************************************************/
+     public ResponseUtility.APIResponse shareGDClearanceMsg(GDClearanceDTO dto)
+     throws HttpClientErrorException, JsonProcessingException {
+
+     RequestParameter<GDClearanceDTO> requestParameter = new RequestParameter<>(
+     UUID.randomUUID()
+     , AppConstants.AD_ID
+     , AppConstants.PSW.ID, "03"
+     , AppConstants.PSW.METHOD_ID_SHARE_GD_CLEARANCE_MESSAGE
+     , AppConstants.AD_SIGNATURE);
+     requestParameter.setData(dto);
+
+     return executeRequest(requestParameter, "6.1 Message 1 – Sharing of GD Clearance Message by AD with PSW (Import/Export)");
+     }
+
+
+    /***********************************************************
+     7.2.1.	Message 2 – Sharing of Change of Bank request approval/rejection message by AD with PSW
+     ***********************************************************/
+     public ResponseUtility.APIResponse shareCOBApprovalRejectionMsg(ChangeBankRequestDTO dto)
+     throws HttpClientErrorException, JsonProcessingException {
+
+     RequestParameter<ChangeBankRequestDTO> requestParameter = new RequestParameter<>(
+     UUID.randomUUID()
+     , AppConstants.AD_ID
+     , AppConstants.PSW.ID, "03"
+     , AppConstants.PSW.METHOD_ID_SHARE_COB_APPROVAL_REJECTION_MESSAGE
+     , AppConstants.AD_SIGNATURE);
+     requestParameter.setData(dto);
+
+     return executeRequest(requestParameter, "7.2.1.Message 2 – Sharing of Change of Bank request approval/rejection message by AD with PSW");
+     }
+
+
+
+
+
+
+
+
+
+
     /***********************************************************
      4.11.	Message 11 – Update in Trader’s Email and Mobile Number Message by AD to PSW
      ***********************************************************
@@ -309,24 +350,6 @@ public class PSWAPIConsumer {
         requestParameter.setData(dto);
 
         return executeRequest(requestParameter, "Sharing of Cash Margin Message by AD to PSW for Payment Mode - Open Account");
-    }
-
-
-    /***********************************************************
-     7.1.3.	Message 1 – Sharing of Change of Bank request approval/rejection message by AD with PSW
-     ***********************************************************
-    public ResponseUtility.APIResponse shareCOBApprovalRejectionMsg(ChangeBankRequestDTO dto)
-            throws HttpClientErrorException, JsonProcessingException {
-
-        RequestParameter<ChangeBankRequestDTO> requestParameter = new RequestParameter<>(
-                 UUID.randomUUID()
-                , AppConstants.AD_ID
-                , AppConstants.PSW.ID, "03"
-                , AppConstants.PSW.METHOD_ID_SHARE_COB_APPROVAL_REJECTION_MESSAGE
-                , AppConstants.AD_SIGNATURE);
-        requestParameter.setData(dto);
-
-        return executeRequest(requestParameter, "Sharing of Change of Bank request approval/rejection message by AD with PSW");
     }
 
 

@@ -48,6 +48,7 @@ public class ItemInformation {
     @Column(name = "IMPORT_OR_EXPORT_VALUE", precision=24, scale=4)
     private BigDecimal importOrExportValue;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name="FIN_TRANSACTION_ID", nullable=true)
     private FinancialTransaction financialTransaction;

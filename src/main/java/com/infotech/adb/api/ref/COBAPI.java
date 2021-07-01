@@ -1,7 +1,6 @@
 package com.infotech.adb.api.ref;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.infotech.adb.dto.ChangeBankRequestDTO;
 import com.infotech.adb.exceptions.CustomException;
 import com.infotech.adb.exceptions.DataValidationException;
@@ -66,9 +65,17 @@ public class COBAPI {
             throw new DataValidationException(messageBundle.getString("validation.error"));
         }
         ChangeOfBank entity = null;
-
-        entity = referenceService.updateCOB(reqDTO.convertToEntity());
-
-        return ResponseUtility.buildResponseObject(entity, new ChangeBankRequestDTO(), false);
+        CustomResponse customResponse = null;
+        try {
+            if (pushToPSW) {
+                customResponse = ResponseUtility.translatePSWAPIResponse(referenceService.updateCOBAndShare(reqDTO));
+            } else {
+                entity = referenceService.updateCOB(reqDTO.convertToEntity());
+                customResponse = ResponseUtility.successResponse(entity,"200","Record Updated Successfully");
+            }
+        } catch (Exception e) {
+            ResponseUtility.exceptionResponse(e, "");
+        }
+        return customResponse;
     }
 }

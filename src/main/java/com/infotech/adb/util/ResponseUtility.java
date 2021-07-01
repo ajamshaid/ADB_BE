@@ -78,7 +78,7 @@ public class ResponseUtility {
         public static Message getDBUpdateButPSWRequestFaildMsg(){
             ResponseUtility.Message msg = new ResponseUtility.Message();
             msg.setCode(""+HttpStatus.OK.value());
-            msg.setDescription("Data Updated in DB but PSW API Reqeust Failed");
+            msg.setDescription("Data Updated in DB but Push to PSW API Request <<Failed>>");
             return  msg;
         }
     }
@@ -289,17 +289,12 @@ public class ResponseUtility {
      @return
    */
     @SuppressWarnings("rawtypes")
-    public static CustomResponse createdResponse(Object data, String code, String responseMessage,
+    public static CustomResponse createdResponse(Object data, String responseMessage,
                                                  RequestParameter requestParameter) {
-
-        String message = AppUtility.isEmpty(responseMessage)
-                ? messageBundle.getString("generic.success")
-                : responseMessage;
-
         return CustomResponse
                 .status(HttpStatus.CREATED)
                 .body(buildAPIResponse(data, ""+HttpStatus.CREATED.value(),
-                        new Message(HttpStatus.CREATED.value()+"", message)
+                        new Message(HttpStatus.CREATED.value()+"", responseMessage)
                         , requestParameter,false));
     }
 
@@ -312,7 +307,7 @@ public class ResponseUtility {
 //
     public static <B, E> CustomResponse buildResponseObject(E entityObject, BaseDTO<B, E> baseObject, int responseCode, String responseMsg, RequestParameter requestBody) {
         if (!AppUtility.isEmpty(entityObject))
-            return ResponseUtility.createdResponse(baseObject.convertToNewDTO(entityObject,false),""+responseCode,responseMsg,requestBody);
+            return ResponseUtility.createdResponse(baseObject.convertToNewDTO(entityObject,false),responseMsg,requestBody);
         throw new NoDataFoundException();
     }
 
