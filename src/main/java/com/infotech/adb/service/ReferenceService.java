@@ -61,6 +61,9 @@ public class ReferenceService {
     @Autowired
     private ReversalOfBdaBcaRepository reversalOfBdaBcaRepository;
 
+    @Autowired
+    private SettlementOfFIRepository settlementOfFIRepository;
+
 
     @Transactional
     public void parseCSVAndSaveAccountDetails(InputStream file) throws CustomException {
@@ -396,5 +399,32 @@ public class ReferenceService {
     public ReversalOfBdaBca updateReversal(ReversalOfBdaBca entity) {
         log.info("updateReversal method called..");
         return reversalOfBdaBcaRepository.save(entity);
+    }
+
+    /*************************************
+     * Settlement Of FI  METHODS
+     **************************************/
+    public List<SettelmentOfFI> getAllSettlementOfFI() {
+        log.info("getAllCOB method called..");
+        List<SettelmentOfFI> refList = null;
+        refList= this.settlementOfFIRepository.findAll();
+        return refList;
+    }
+
+    public SettelmentOfFI getSettlementOfFIById(Long id) {
+        log.info("getCOBById method called..");
+        Optional<SettelmentOfFI> ref = settlementOfFIRepository.findById(id);
+        return ref.get();
+    }
+
+    public ResponseUtility.APIResponse updateSettlementOfFIAndShare(SettelmentOfFIDTO dto) throws JsonProcessingException {
+        this.updateSettlementOfFI(dto.convertToEntity());
+        return null;
+    }
+
+    @Transactional
+    public SettelmentOfFI updateSettlementOfFI(SettelmentOfFI entity) {
+        log.info("updateCOB method called..");
+        return settlementOfFIRepository.save(entity);
     }
 }
