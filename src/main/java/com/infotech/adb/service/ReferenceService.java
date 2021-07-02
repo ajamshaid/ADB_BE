@@ -58,6 +58,9 @@ public class ReferenceService {
     @Autowired
     private CancellationOfFTRepository cancellationOfFTRepository;
 
+    @Autowired
+    private ReversalOfBdaBcaRepository reversalOfBdaBcaRepository;
+
 
     @Transactional
     public void parseCSVAndSaveAccountDetails(InputStream file) throws CustomException {
@@ -366,5 +369,32 @@ public class ReferenceService {
     public CancellationOfFT updateCancellationOfFT(CancellationOfFT entity) {
         log.info("updateCOB method called..");
         return cancellationOfFTRepository.save(entity);
+    }
+
+    /*************************************
+     * Reversal of BDA/BCA  METHODS
+     **************************************/
+    public List<ReversalOfBdaBca> getAllReversal() {
+        log.info("getAllReversal method called..");
+        List<ReversalOfBdaBca> refList = null;
+        refList= this.reversalOfBdaBcaRepository.findAll();
+        return refList;
+    }
+
+    public ReversalOfBdaBca getReversalById(Long id) {
+        log.info("getReversalById method called..");
+        Optional<ReversalOfBdaBca> ref = reversalOfBdaBcaRepository.findById(id);
+        return ref.get();
+    }
+
+    public ResponseUtility.APIResponse updateRevBcaBdaAndShare(ReversalOfBdaBcaDTO dto) throws JsonProcessingException {
+        this.updateReversal(dto.convertToEntity());
+        return null;
+    }
+
+    @Transactional
+    public ReversalOfBdaBca updateReversal(ReversalOfBdaBca entity) {
+        log.info("updateReversal method called..");
+        return reversalOfBdaBcaRepository.save(entity);
     }
 }
