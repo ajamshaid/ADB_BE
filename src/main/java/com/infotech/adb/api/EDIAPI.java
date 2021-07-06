@@ -78,7 +78,7 @@ public class EDIAPI {
 
             // @TODO Dummy code to Skip Signature for GD Parsing....Remove once Signature is Verified.
             if(processingCode.equals("101") || processingCode.equals("102") ){
-                isSignatureVerified = true;
+           //     isSignatureVerified = true;
             }
 
             if (!isSignatureVerified) {
