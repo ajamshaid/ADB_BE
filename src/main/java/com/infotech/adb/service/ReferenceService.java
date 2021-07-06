@@ -64,6 +64,9 @@ public class ReferenceService {
     @Autowired
     private SettlementOfFIRepository settlementOfFIRepository;
 
+    @Autowired
+    private COBGdFtRepository cobGdFtRepository;
+
 
     @Transactional
     public void parseCSVAndSaveAccountDetails(InputStream file) throws CustomException {
@@ -426,5 +429,32 @@ public class ReferenceService {
     public SettelmentOfFI updateSettlementOfFI(SettelmentOfFI entity) {
         log.info("updateCOB method called..");
         return settlementOfFIRepository.save(entity);
+    }
+
+    /*************************************
+     * COB GD and FT  METHODS
+     **************************************/
+    public List<COBGdFt> getAllCOBGdFt() {
+        log.info("getAllCOB method called..");
+        List<COBGdFt> refList = null;
+        refList= this.cobGdFtRepository.findAll();
+        return refList;
+    }
+
+    public COBGdFt getCOBGdFtById(Long id) {
+        log.info("getCOBById method called..");
+        Optional<COBGdFt> ref = cobGdFtRepository.findById(id);
+        return ref.get();
+    }
+
+    public ResponseUtility.APIResponse updateCOBGdFtAndShare(COBGdFtDTO dto) throws JsonProcessingException {
+        this.updateCOBGdFt(dto.convertToEntity());
+        return null;
+    }
+
+    @Transactional
+    public COBGdFt updateCOBGdFt(COBGdFt entity) {
+        log.info("updateCOB method called..");
+        return cobGdFtRepository.save(entity);
     }
 }
