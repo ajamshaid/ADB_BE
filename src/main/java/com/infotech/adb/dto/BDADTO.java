@@ -43,7 +43,7 @@ public class BDADTO implements BaseDTO<BDADTO, BDA> {
             entity.setSampleAmountCurrency(this.getBdaInformation().getSampleAmountCurrency());
             entity.setNetBdaAmountFcy(this.getBdaInformation().getNetBdaAmountFcy());
             entity.setNetBdaAmountCurrency(this.getBdaInformation().getNetBdaAmountCurrency());
-            entity.setExchangeRateFcy(this.getBdaInformation().getExchangeRateFcy());
+            entity.setExchangeRateFiFcy(this.getBdaInformation().getExchangeRateFiFcy());
             entity.setNetBdaAmountPkr(this.getBdaInformation().getNetBdaAmountPkr());
             entity.setAmountInWords(this.getBdaInformation().getAmountInWords());
             entity.setCurrencyFcy(this.getBdaInformation().getCurrencyFcy());
@@ -60,7 +60,7 @@ public class BDADTO implements BaseDTO<BDADTO, BDA> {
             entity.setRemarks(this.getBdaInformation().getRemarks());
             entity.setBalanceBdaAmountFcy(this.getBdaInformation().getBalanceBdaAmountFcy());
 
-            entity.setExchangeRateBda(this.getBdaInformation().getExchangeRateBda());
+            entity.setExchangeRateFcy(this.getBdaInformation().getExchangeRateFcy());
         }
         return entity;
     }
@@ -82,12 +82,12 @@ public class BDADTO implements BaseDTO<BDADTO, BDA> {
             this.setBdaInformation(new BdaInformation(entity.getTotalBdaAmountFcy(),entity.getTotalBdaAmountCurrency()
                     ,entity.getSampleAmountExclude(),entity.getSampleAmountCurrency()
                     ,entity.getNetBdaAmountFcy(),entity.getNetBdaAmountCurrency()
-                    ,entity.getExchangeRateFcy(),entity.getNetBdaAmountPkr()
+                    ,entity.getExchangeRateFiFcy(),entity.getNetBdaAmountPkr()
                     ,entity.getAmountInWords(), entity.getCurrencyFcy(), entity.getBdaAmountFcy()
                     ,entity.getBdaAmountPkr(),entity.getBdaDocumentRefNumber(), entity.getCommissionAmountFcy()
                     ,entity.getCommissionAmountPkr(), entity.getFedFcy(), entity.getFedAmountPkr()
                     ,entity.getSwiftChargesPkr(),entity.getOtherChargesPkr(),entity.getRemarks()
-                    ,entity.getBalanceBdaAmountFcy() ,entity.getExchangeRateBda()
+                    ,entity.getBalanceBdaAmountFcy() ,entity.getExchangeRateFcy()
             ));
         }
     }
@@ -108,13 +108,13 @@ public class BDADTO implements BaseDTO<BDADTO, BDA> {
         public String sampleAmountCurrency;
         public BigDecimal netBdaAmountFcy;
         public String netBdaAmountCurrency;
-        public BigDecimal exchangeRateFcy;
+        public BigDecimal exchangeRateFiFcy;
         public BigDecimal netBdaAmountPkr;
         public String amountInWords;
         public String currencyFcy;
         public BigDecimal bdaAmountFcy;
         public BigDecimal bdaAmountPkr;
-        public BigDecimal exchangeRateBda;
+        public BigDecimal exchangeRateFcy;
         public String bdaDocumentRefNumber;
         public BigDecimal commisionAmountFcy;
         public BigDecimal commisionAmountPkr;
@@ -128,19 +128,19 @@ public class BDADTO implements BaseDTO<BDADTO, BDA> {
         public BdaInformation(BigDecimal totalBdaAmountFcy, String totalBdaAmountCurrency
                 , BigDecimal sampleAmountExclude, String sampleAmountCurrency
                 , BigDecimal netBdaAmountFcy, String netBdaAmountCurrency
-                , BigDecimal exchangeRateFcy, BigDecimal netBdaAmountPkr
+                , BigDecimal exchangeRateFiFcy, BigDecimal netBdaAmountPkr
                 , String amountInWords, String currencyFcy, BigDecimal bdaAmountFcy
                 , BigDecimal bdaAmountPkr, String bdaDocumentRefNumber, BigDecimal commisionAmountFcy
                 , BigDecimal commisionAmountPkr, BigDecimal fedFcy, BigDecimal fedAmountPkr
                 , BigDecimal swiftChargesPkr, BigDecimal otherChargesPkr, String remarks
-                , BigDecimal balanceBdaAmountFcy, BigDecimal exchangeRateBda) {
+                , BigDecimal balanceBdaAmountFcy, BigDecimal exchangeRateFcy) {
             this.totalBdaAmountFcy = totalBdaAmountFcy;
             this.totalBdaAmountCurrency = totalBdaAmountCurrency;
             this.sampleAmountExclude = sampleAmountExclude;
             this.sampleAmountCurrency = sampleAmountCurrency;
             this.netBdaAmountFcy = netBdaAmountFcy;
             this.netBdaAmountCurrency = netBdaAmountCurrency;
-            this.exchangeRateFcy = exchangeRateFcy;
+            this.exchangeRateFiFcy = exchangeRateFiFcy;
             this.netBdaAmountPkr = netBdaAmountPkr;
             this.amountInWords = amountInWords;
             this.currencyFcy = currencyFcy;
@@ -155,7 +155,7 @@ public class BDADTO implements BaseDTO<BDADTO, BDA> {
             this.otherChargesPkr = otherChargesPkr;
             this.remarks = remarks;
             this.balanceBdaAmountFcy = balanceBdaAmountFcy;
-            this.exchangeRateBda = exchangeRateBda;
+            this.exchangeRateFcy = exchangeRateFcy;
         }
     }
 

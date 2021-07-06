@@ -21,7 +21,7 @@ public class GDImportDTO implements BaseDTO<GDImportDTO, GD> {
     private String consignmentCategory;
     private String collectorate;
     private String blAwbNumber;
-    private Date blAwbDate;
+    private String blAwbDate;
     private String virAirNumber;
 
     private ConsignorConsigneeDTO consignorConsigneeInfo;
@@ -46,7 +46,7 @@ public class GDImportDTO implements BaseDTO<GDImportDTO, GD> {
         entity.setConsignmentCategory(this.getConsignmentCategory());
         entity.setCollectorate(this.getCollectorate());
         entity.setBlAwbNumber(this.getBlAwbNumber());
-        entity.setBlAwbDate(this.getBlAwbDate());
+        entity.setBlAwbDate(AppUtility.convertDateFromString(this.getBlAwbDate()));
         entity.setVirAirNumber(this.getVirAirNumber());
 
         //Consignor Info
@@ -78,7 +78,7 @@ public class GDImportDTO implements BaseDTO<GDImportDTO, GD> {
 
             pi.setFinancialInstrumentCurrency(this.getFinancialInfo().getCurrency());
             pi.setInvoiceNumber(this.getFinancialInfo().getInvoiceNumber());
-            pi.setInvoiceDate(this.getFinancialInfo().getInvoiceDate());
+            pi.setInvoiceDate(AppUtility.convertDateFromString(this.getFinancialInfo().getInvoiceDate()));
             pi.setTotalDeclaredValue(this.getFinancialInfo().getTotalDeclaredValue());
 
             pi.setDeliveryTerm(this.getFinancialInfo().getDeliveryTerm());
@@ -147,7 +147,7 @@ public class GDImportDTO implements BaseDTO<GDImportDTO, GD> {
             this.setConsignmentCategory(entity.getConsignmentCategory());
             this.setCollectorate(entity.getCollectorate());
             this.setBlAwbNumber(entity.getBlAwbNumber());
-            this.setBlAwbDate(entity.getBlAwbDate());
+            this.setBlAwbDate(AppUtility.formatedDate(entity.getBlAwbDate()));
             this.setVirAirNumber(entity.getVirAirNumber());
 
            this.setConsignorConsigneeInfo((new ConsignorConsigneeDTO()).convertToDTO(entity));
@@ -210,7 +210,7 @@ public class GDImportDTO implements BaseDTO<GDImportDTO, GD> {
         private String finInsUniqueNumber;
         private String currency;
         private String invoiceNumber;
-        private Date invoiceDate;
+        private String invoiceDate;
         private BigDecimal totalDeclaredValue;
         private String deliveryTerm;
         private BigDecimal fobValueUsd;
@@ -231,7 +231,7 @@ public class GDImportDTO implements BaseDTO<GDImportDTO, GD> {
                 this.setCurrency(pi.getFinancialInstrumentCurrency());
 
                 this.setInvoiceNumber(pi.getInvoiceNumber());
-                this.setInvoiceDate(pi.getInvoiceDate());//AppUtility.formatedDate(pi.getInvoiceDate()));
+                this.setInvoiceDate(AppUtility.formatedDate(pi.getInvoiceDate()));
                 this.setTotalDeclaredValue(pi.getTotalDeclaredValue());
 
                 this.setDeliveryTerm(pi.getDeliveryTerm());

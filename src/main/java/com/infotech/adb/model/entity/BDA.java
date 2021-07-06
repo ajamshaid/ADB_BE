@@ -63,6 +63,9 @@ public class BDA {
     @Column(name = "NET_BDA_AMOUNT_CURRENCY", length = 3, nullable = true)
     public String netBdaAmountCurrency;
 
+    @Column(name = "EXCHANGE_RATE_FI_FCY", precision = 24, scale = 4)
+    public BigDecimal exchangeRateFiFcy;
+
     @Column(name = "EXCHANGE_RATE_FCY", precision = 24, scale = 4)
     public BigDecimal exchangeRateFcy;
 
@@ -81,8 +84,6 @@ public class BDA {
     @Column(name = "BDA_AMOUNT_PKR", precision = 24, scale = 4)
     public BigDecimal bdaAmountPkr;
 
-    @Column(name = "EXCHANGE_RATE_BDA", precision = 24, scale = 4)
-    public BigDecimal exchangeRateBda;
 
     @Column(name = "BDA_DOC_REF_NUMBER", length = 300, nullable = true)
     public String bdaDocumentRefNumber;
