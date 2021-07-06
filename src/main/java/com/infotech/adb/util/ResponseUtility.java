@@ -1,6 +1,7 @@
 package com.infotech.adb.util;
 
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -27,6 +28,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 @Log4j2
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class ResponseUtility {
 
     private static final ResourceBundle messageBundle = ResourceBundle.getBundle("messages");
@@ -84,18 +86,19 @@ public class ResponseUtility {
     }
     @NoArgsConstructor
     @Data
+    @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
     public static class APIResponse {
 
-        protected String messageId;
-        protected String timestamp;
-        protected String senderId;
-        protected String receiverId;
-        protected String responseCode;
+        public String messageId;
+        public String timestamp;
+        public String senderId;
+        public String receiverId;
+        public String responseCode;
 //        private String methodId;
-        protected String signature;
-        protected Message message;
+        public String signature;
+        public Message message;
 
-        protected Object data;
+        public Object data;
 
         public APIResponse(Object data, String responseCode, Message message, RequestParameter requestParameter) {
             this.data =  AppUtility.isEmpty(data)? new Object() : data;
@@ -151,7 +154,7 @@ public class ResponseUtility {
         @Override
         public String toString() {
             return "PSWAPIResponse{" +
-                    "messageId='" + messageId + '\'' +
+                    "messageId='" + messageId+ '\'' +
                     ", timestamp='" + timestamp + '\'' +
                     ", senderId='" + senderId + '\'' +
                     ", receiverId='" + receiverId + '\'' +
