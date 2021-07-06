@@ -183,7 +183,7 @@ public class MQMessageParser {
             bca.setBillAmount(AppUtility.isBigDecimal(ftDetailsAry[9]) ? new BigDecimal(ftDetailsAry[9]): null);
             bca.setAgentCommissionFcy(AppUtility.isBigDecimal(ftDetailsAry[10]) ? new BigDecimal(ftDetailsAry[10]): null);
             bca.setWithholdingTaxPkr(AppUtility.isBigDecimal(ftDetailsAry[11]) ? new BigDecimal(ftDetailsAry[11]): null);
-            bca.setBcaFc(AppUtility.isBigDecimal(ftDetailsAry[12]) ? new BigDecimal(ftDetailsAry[12]): null);
+            bca.setBcaAmountFcy(AppUtility.isBigDecimal(ftDetailsAry[12]) ? new BigDecimal(ftDetailsAry[12]): null);
             bca.setBcaPkr(AppUtility.isBigDecimal(ftDetailsAry[13]) ? new BigDecimal(ftDetailsAry[13]): null);
 
             System.out.println("BCA-<>" + bca);

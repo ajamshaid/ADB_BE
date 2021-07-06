@@ -64,7 +64,7 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
             entity.setEdsPkr(this.getDeductions().getEdsPkr());
         }
         if(!AppUtility.isEmpty(this.getNetAmountRealized())) {
-            entity.setBcaFc(this.getNetAmountRealized().getBcaFc());
+            entity.setBcaAmountFcy(this.getNetAmountRealized().getBcaAmountFcy());
             entity.setFcyExchangeRate(this.getNetAmountRealized().getFcyExchangeRate());
             entity.setBcaPkr(this.getNetAmountRealized().getBcaPkr());
             entity.setDateOfRealized(AppUtility.convertDateFromString(this.getNetAmountRealized().getDateOfRealized()));
@@ -105,7 +105,7 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
             this.setDeductions(new Deductions(entity.getForeignBankChargesFcy(), entity.getAgentCommissionFcy()
                     , entity.getWithholdingTaxPkr(), entity.getEdsPkr()));
 
-            this.setNetAmountRealized(new NetAmountRealized(entity.getBcaFc(), entity.getFcyExchangeRate(), entity.getBcaPkr()
+            this.setNetAmountRealized(new NetAmountRealized(entity.getBcaAmountFcy(), entity.getFcyExchangeRate(), entity.getBcaPkr()
                     , entity.getDateOfRealized(), entity.getAdjustFromSpecialFcyAcc(), entity.getCurrency()
                     , entity.getIsFinInsCurrencyDiff(), entity.getIsRemAmtSettledWithDiscount()
                     , entity.getAmountRealized(), entity.getBalance()
@@ -129,7 +129,7 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
         private String isFinInsCurrencyDiff;
         public String currency;
 
-        public BigDecimal bcaFc;
+        public BigDecimal bcaAmountFcy;
         public BigDecimal fcyExchangeRate;
         public BigDecimal bcaPkr;
         public String dateOfRealized;
@@ -147,7 +147,7 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
         public NetAmountRealized(BigDecimal bcaFc, BigDecimal fcyExchangeRate, BigDecimal bcaPkr, Date dateOfRealized, BigDecimal adjustFromSpecialFcyAcc, String currency, String isFinInsCurrencyDiff
                 , String isRemAmtSettledWithDiscount, BigDecimal amountRealized, BigDecimal balance, BigDecimal allowedDiscount
                 , BigDecimal allowedDiscountPercentage , BigDecimal totalBcaAmount) {
-            this.bcaFc = bcaFc;
+            this.bcaAmountFcy = bcaFc;
             this.fcyExchangeRate = fcyExchangeRate;
             this.bcaPkr = bcaPkr;
             this.dateOfRealized = AppUtility.formatedDate(dateOfRealized);

@@ -90,8 +90,8 @@ public class BCA {
     @Column(name = "EDS_Pkr", precision = 24, scale = 4)
     public BigDecimal edsPkr;
 
-    @Column(name = "BCA_FC", precision = 24, scale = 4)
-    public BigDecimal bcaFc;
+    @Column(name = "BCA_AMOUNT_FCY", precision = 24, scale = 4)
+    public BigDecimal bcaAmountFcy;
 
     @Column(name = "Fcy_Exchange_Rate", precision = 24, scale = 4)
     public BigDecimal fcyExchangeRate;
