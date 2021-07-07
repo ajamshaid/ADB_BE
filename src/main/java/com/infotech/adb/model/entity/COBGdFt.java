@@ -34,6 +34,14 @@ public class COBGdFt {
     private GD gd;
 
     @OneToOne
+    @JoinColumn(name="GD_EXPORT_ID")
+    private GDExport gdExport;
+
+    @OneToOne
     @JoinColumn(name="BDA_ID")
     private BDA bda;
+
+    @OneToOne
+    @JoinColumn(name="BCA_ID")
+    private BCA bca;
 }
