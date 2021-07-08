@@ -3,6 +3,7 @@ package com.infotech.adb.model.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "SETTLEMENT_OF_FI")
@@ -31,12 +32,12 @@ public class SettelmentOfFI {
     @Column(name = "FIN_INS_UNIQUE_NO")
     private String finInsUniqueNumber;
 
-    @Column(name = "FIN_INS_VALUE")
-    private String finInsValue;
+    @Column(name = "FIN_INS_VALUE",precision=20, scale=5)
+    private BigDecimal finInsValue;
 
-    @Column(name = "TOTAL_VALUE_OF_SHARED_BCA_BDA")
-    private String totalValueOfSharedBCABDA;
+    @Column(name = "TOTAL_VALUE_OF_SHARED_BCA_BDA" ,precision=20, scale=5)
+    private BigDecimal totalValueOfSharedBCABDA;
 
-    @Column(name = "BALANCE")
-    private String balance;
+    @Column(name = "BALANCE",precision=20, scale=5)
+    private BigDecimal balance;
 }

@@ -4,6 +4,7 @@ import com.infotech.adb.model.entity.SettelmentOfFI;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,18 +18,9 @@ public class SettelmentOfFIDTO implements BaseDTO<SettelmentOfFIDTO, SettelmentO
     private String traderName;
     private String finInsUniqueNumber;
     private List<String> bdaBcaUniqueIdNumber;
-    private String finInsValue;
-    private String totalValueOfSharedBCABDA;
-    private String balance;
-
-    public SettelmentOfFIDTO(String id , String tradeType, String traderNTN, String traderName,  String finInsUniqueNumber) {
-        this.tradeTranType = tradeType;
-        this.traderNTN = traderNTN;
-        this.traderName = traderName;
-        this.finInsUniqueNumber = finInsUniqueNumber;
-
-    }
-
+    private BigDecimal finInsValue;
+    private BigDecimal totalValueOfSharedBCABDA;
+    private BigDecimal balance;
 
     @Override
     public SettelmentOfFI convertToEntity() {
