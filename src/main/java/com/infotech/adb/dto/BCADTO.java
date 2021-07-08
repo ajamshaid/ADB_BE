@@ -129,7 +129,7 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
         private String isFinInsCurrencyDiff;
         public String currency;
 
-        public BigDecimal bcaFcy;
+        public BigDecimal bcaFc;
         public BigDecimal bcaAmountFcy;
         public BigDecimal fcyExchangeRate;
         public BigDecimal bcaPkr;
@@ -149,7 +149,7 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
                 , String isRemAmtSettledWithDiscount, BigDecimal amountRealized, BigDecimal balance, BigDecimal allowedDiscount
                 , BigDecimal allowedDiscountPercentage , BigDecimal totalBcaAmount) {
             this.bcaAmountFcy = bcaFc;
-            this.bcaFcy = bcaFc;
+            this.bcaFc = bcaFc;
             this.fcyExchangeRate = fcyExchangeRate;
             this.bcaPkr = bcaPkr;
             this.dateOfRealized = AppUtility.formatedDate(dateOfRealized);

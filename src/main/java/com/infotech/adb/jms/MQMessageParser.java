@@ -190,4 +190,39 @@ public class MQMessageParser {
         }
         return bca;
     }
+
+    public CancellationOfFT parseAndBuildCFT(String data) {
+        //Sharing of Cancellation of FT
+        CancellationOfFT cft = new CancellationOfFT();
+        if (!AppUtility.isEmpty(data)) {
+            String[] ftDetailsAry = data.split(MqUtility.DELIMETER_DATA);
+            cft.setTradeType(ftDetailsAry[0]);
+            cft.setTraderNTN(ftDetailsAry[1]);
+            cft.setTraderName(ftDetailsAry[2]);
+            cft.setIban(ftDetailsAry[3]);
+            cft.setFinInsUniqueNumber(ftDetailsAry[4]);
+
+            System.out.println("CFT-<>" + cft);
+        }
+        return cft;
+    }
+
+    public  ReversalOfBdaBca parseAndBuildRevBDABCA(String data) {
+        // Reversal of BDA/BCA
+        ReversalOfBdaBca entity = new ReversalOfBdaBca();
+        if (!AppUtility.isEmpty(data)) {
+            String[] ftDetailsAry = data.split(MqUtility.DELIMETER_DATA);
+
+            entity.setTradeType(ftDetailsAry[0]);
+            entity.setTraderNTN(ftDetailsAry[1]);
+            entity.setTraderName(ftDetailsAry[2]);
+            entity.setIban(ftDetailsAry[3]);
+            entity.setFinInsUniqueNumber(ftDetailsAry[4]);
+            entity.setBdaBcaUniqueIdNumber(ftDetailsAry[5]);
+
+            System.out.println("Entity-<>" + entity);
+        }
+        return entity;
+    }
+
 }

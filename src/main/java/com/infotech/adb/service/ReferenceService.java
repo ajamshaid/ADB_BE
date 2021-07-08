@@ -393,13 +393,13 @@ public class ReferenceService {
         return ref.get();
     }
 
-    public ResponseUtility.APIResponse updateRevBcaBdaAndShare(ReversalOfBdaBcaDTO dto) throws JsonProcessingException {
-        this.updateReversal(dto.convertToEntity());
+    public ResponseUtility.APIResponse updateReveralBCABDAAndShare(ReversalOfBdaBcaDTO dto) throws JsonProcessingException {
+        this.updateReversalBDABCA(dto.convertToEntity());
         return null;
     }
 
     @Transactional
-    public ReversalOfBdaBca updateReversal(ReversalOfBdaBca entity) {
+    public ReversalOfBdaBca updateReversalBDABCA(ReversalOfBdaBca entity) {
         log.info("updateReversal method called..");
         return reversalOfBdaBcaRepository.save(entity);
     }

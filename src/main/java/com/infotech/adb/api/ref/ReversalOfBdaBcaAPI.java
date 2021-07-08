@@ -69,9 +69,9 @@ public class ReversalOfBdaBcaAPI {
         CustomResponse customResponse = null;
         try {
             if (pushToPSW) {
-                customResponse = ResponseUtility.translatePSWAPIResponse(referenceService.updateRevBcaBdaAndShare(reqDTO));
+                customResponse = ResponseUtility.translatePSWAPIResponse(referenceService.updateReveralBCABDAAndShare(reqDTO));
             } else {
-                entity = referenceService.updateReversal(reqDTO.convertToEntity());
+                entity = referenceService.updateReversalBDABCA(reqDTO.convertToEntity());
                 customResponse = ResponseUtility.successResponse(entity,"200","Record Updated Successfully");
             }
         } catch (Exception e) {

@@ -1,8 +1,6 @@
 package com.infotech.adb.jms;
 
-import com.infotech.adb.model.entity.BCA;
-import com.infotech.adb.model.entity.BDA;
-import com.infotech.adb.model.entity.FinancialTransaction;
+import com.infotech.adb.model.entity.*;
 import com.infotech.adb.service.ReferenceService;
 import com.infotech.adb.util.AppUtility;
 import lombok.extern.log4j.Log4j2;
@@ -60,6 +58,22 @@ public class QoutPSWListner {
                 try {
                     BCA bca = mqMessageParser.parseAndBuildBCAExport(replyMessage.getReqResStr());
                     referenceService.updateBCA(bca);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }else if (MqUtility.MSG_TYPE_CANCELLATION_OF_FT.equals(replyMessage.getType())) {
+                // IF Message 8.1  Cancellation of FT
+                try {
+                    CancellationOfFT cft = mqMessageParser.parseAndBuildCFT(replyMessage.getReqResStr());
+                    referenceService.updateCancellationOfFT(cft);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }else if (MqUtility.MSG_TYPE_REVERSAL_OF_BDA_BCA.equals(replyMessage.getType())) {
+                // IF Message 9.1 Reversal of BDA/BCA
+                try {
+                    ReversalOfBdaBca entity = mqMessageParser.parseAndBuildRevBDABCA(replyMessage.getReqResStr());
+                    referenceService.updateReversalBDABCA(entity);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
