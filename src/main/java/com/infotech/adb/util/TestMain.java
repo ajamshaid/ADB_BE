@@ -76,7 +76,7 @@ public class TestMain {
             entity.setTraderName(ftDetailsAry[2]);
             entity.setIban(ftDetailsAry[3]);
             entity.setFinInsUniqueNumber(ftDetailsAry[4]);
-            entity.setBdaBcaUniqueIdNumber(ftDetailsAry[5]);
+            entity.setBcaBdaUniqueIdNumber(ftDetailsAry[5]);
 
             System.out.println("Entity-<>" + entity);
         }

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 public class ReversalOfBdaBcaDTO implements BaseDTO<ReversalOfBdaBcaDTO, ReversalOfBdaBca> {
 
     private Long id;
-    private String bdaBcaUniqueIdNumber;
+    private String bcaBdaUniqueIdNumber;
     private String tradeTranType;
     private String traderNTN;
     private String traderName;
@@ -31,7 +31,7 @@ public class ReversalOfBdaBcaDTO implements BaseDTO<ReversalOfBdaBcaDTO, Reversa
         ReversalOfBdaBca entity = new ReversalOfBdaBca();
 
         entity.setId(this.getId());
-        entity.setBdaBcaUniqueIdNumber(this.getBdaBcaUniqueIdNumber());
+        entity.setBcaBdaUniqueIdNumber(this.getBcaBdaUniqueIdNumber());
         entity.setTradeType(this.getTradeTranType());
         entity.setTraderNTN(this.getTraderNTN());
         entity.setTraderName(this.getTraderName());
@@ -46,7 +46,7 @@ public class ReversalOfBdaBcaDTO implements BaseDTO<ReversalOfBdaBcaDTO, Reversa
         if(entity != null){
 
             this.setId(entity.getId());
-            this.setBdaBcaUniqueIdNumber(entity.getBdaBcaUniqueIdNumber());
+            this.setBcaBdaUniqueIdNumber(entity.getBcaBdaUniqueIdNumber());
             this.setIban(entity.getIban());
             this.setFinInsUniqueNumber(entity.getFinInsUniqueNumber());
             this.setTradeTranType(entity.getTradeType());

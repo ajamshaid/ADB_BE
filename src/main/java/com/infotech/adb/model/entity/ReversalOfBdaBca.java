@@ -17,7 +17,7 @@ public class ReversalOfBdaBca {
     private Long id;
 
     @Column(name = "BDA_BCA_UNIQUE_NO")
-    private String bdaBcaUniqueIdNumber;
+    private String bcaBdaUniqueIdNumber;
 
     @Column(name="TRADE_TYPE")
     private String tradeType;
