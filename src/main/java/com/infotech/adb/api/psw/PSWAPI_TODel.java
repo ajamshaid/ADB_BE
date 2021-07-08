@@ -84,8 +84,8 @@ public class PSWAPI_TODel {
         }else if(requestBody.getMethodId().equals(AppConstants.PSW.METHOD_ID_REVERSAL_OF_BDA_BCA)) {
             System.out.println("-------- PSW Received -->[– Reversal of BDA/BCA Message by AD to PSW" + AppConstants.PSW.METHOD_ID_REVERSAL_OF_BDA_BCA);
             return getOKResponse(requestBody, " BCA/BDA information reversed ",requestBody.getMethodId());
-        }else if(requestBody.getMethodId().equals(AppConstants.PSW.METHOD_ID_FIN_TRANS_SETTLEMENT)) {
-            System.out.println("-------- PSW Received -->[– Settlement of Financial Transaction by AD (Import/Export):" + AppConstants.PSW.METHOD_ID_FIN_TRANS_SETTLEMENT);
+        }else if(requestBody.getMethodId().equals(AppConstants.PSW.METHOD_ID_SETTLEMENT_FIN_INST)) {
+            System.out.println("-------- PSW Received -->[– Settlement of Financial Transaction by AD (Import/Export):" + AppConstants.PSW.METHOD_ID_SETTLEMENT_FIN_INST);
             return getOKResponse(requestBody, " Financial Transaction settled ",requestBody.getMethodId());
         }
 

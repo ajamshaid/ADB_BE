@@ -8,14 +8,14 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class TradeTransSettlementDTO extends TradeTransactionDTO_TODEL {
+public class TradeTransSettlementDTO_TODEL extends TradeTransactionDTO_TODEL {
 
     private List<String> bcaBdaUniqueIdNumber;
     private BigDecimal finInsValue;
     private BigDecimal totalValueOfSharedBCABDA;
     private BigDecimal balance;
 
-    public TradeTransSettlementDTO(String tradeTranType, String traderNTN, String traderName
+    public TradeTransSettlementDTO_TODEL(String tradeTranType, String traderNTN, String traderName
             , String iban, String finInsUniqueNumber, List<String> bcaBdaUniqueIdNumber
             , BigDecimal finInsValue, BigDecimal totalValueOfSharedBCABDA, BigDecimal balance) {
         super(tradeTranType, traderNTN, traderName, iban, finInsUniqueNumber);

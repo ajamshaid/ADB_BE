@@ -395,7 +395,7 @@ public class ReferenceService {
 
     public ResponseUtility.APIResponse updateReveralBCABDAAndShare(ReversalOfBdaBcaDTO dto) throws JsonProcessingException {
         this.updateReversalBDABCA(dto.convertToEntity());
-        return null;
+        return consumer.reversalOfBdaBca(dto);
     }
 
     @Transactional
@@ -422,7 +422,7 @@ public class ReferenceService {
 
     public ResponseUtility.APIResponse updateSettlementOfFIAndShare(SettelmentOfFIDTO dto) throws JsonProcessingException {
         this.updateSettlementOfFI(dto.convertToEntity());
-        return null;
+        return consumer.settlementOfFinInstrument(dto);
     }
 
     @Transactional

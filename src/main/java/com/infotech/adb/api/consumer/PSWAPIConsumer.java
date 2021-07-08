@@ -304,90 +304,13 @@ public class PSWAPIConsumer {
         return executeRequest(requestParameter, "Cancellation of Financial Transaction by AD (Import/Export)");
     }
 
-
-
-
-
     /***********************************************************
-     4.11.	Message 11 – Update in Trader’s Email and Mobile Number Message by AD to PSW
-     ***********************************************************
-     public ResponseUtility.APIResponse updateTraderProfile(TraderProfileDTO dto)
+     9.1.	Message 1 – Reversal of BDA/BCA Message by AD to PSW
+     ***********************************************************/
+     public ResponseUtility.APIResponse reversalOfBdaBca(ReversalOfBdaBcaDTO dto)
      throws HttpClientErrorException, JsonProcessingException {
 
-     RequestParameter<TraderProfileDTO> requestParameter = new RequestParameter<>(
-     UUID.randomUUID()
-     , AppConstants.AD_ID
-     , AppConstants.PSW.ID, "03"
-     , AppConstants.PSW.METHOD_ID_UPDATE_TRADERS_EMAIL_MOB
-     , AppConstants.AD_SIGNATURE);
-     requestParameter.setData(dto);
-
-     return executeRequest(requestParameter, "Update in Trader’s Email and Mobile Number Message by AD to PSW");
-     }
-
-
-     /***********************************************************
-     5.1.1.	Message 1 – Share Financial Transaction Data with PSW by AD (IMPORT)
-     ***********************************************************
-     public ResponseUtility.APIResponse shareFinancialInformationImport(FinancialTransactionImportDTO dto)
-     throws HttpClientErrorException, JsonProcessingException {
-
-     RequestParameter<FinancialTransactionImportDTO> requestParameter = new RequestParameter<>(
-     UUID.randomUUID()
-     , AppConstants.AD_ID
-     , AppConstants.PSW.ID, "03"
-     , AppConstants.PSW.METHOD_ID_SHARE_FIN_TRANS_DATA_IMPORT
-     , AppConstants.AD_SIGNATURE);
-     requestParameter.setData(dto);
-
-     return executeRequest(requestParameter, "Sharing Financial Transaction Data For Import with PSW by AD");
-     }
-
-
-
-
-     /***********************************************************
-     6.	Sharing of Cash Margin Message by AD to PSW for Payment Mode - Open Account
-     ***********************************************************
-     public ResponseUtility.APIResponse shareCashMarginMessage(CashMarginDTO dto)
-     throws HttpClientErrorException, JsonProcessingException {
-
-     RequestParameter<CashMarginDTO> requestParameter = new RequestParameter<>(
-     UUID.randomUUID()
-     , AppConstants.AD_ID
-     , AppConstants.PSW.ID, "03"
-     , AppConstants.PSW.METHOD_ID_SHARE_CASH_MARGIN_MESSAGE
-     , AppConstants.AD_SIGNATURE);
-     requestParameter.setData(dto);
-
-     return executeRequest(requestParameter, "Sharing of Cash Margin Message by AD to PSW for Payment Mode - Open Account");
-     }
-
-
-     /***********************************************************
-     9.1.	Message 1 – Cancellation of Financial Transaction by AD (Import/Export):
-     ***********************************************************
-     public ResponseUtility.APIResponse cancelFinancialTransaction(TradeTransactionDTO dto)
-     throws HttpClientErrorException, JsonProcessingException {
-
-     RequestParameter<TradeTransactionDTO> requestParameter = new RequestParameter<>(
-     UUID.randomUUID()
-     , AppConstants.AD_ID
-     , AppConstants.PSW.ID, "03"
-     , AppConstants.PSW.METHOD_ID_FIN_TRANS_CANCELLATION
-     , AppConstants.AD_SIGNATURE);
-     requestParameter.setData(dto);
-
-     return executeRequest(requestParameter, "Cancellation of Financial Transaction by AD (Import/Export)");
-     }
-
-     /***********************************************************
-     10.1.	Message 1 – – Reversal of BDA/BCA Message by AD to PSW
-     ***********************************************************
-     public ResponseUtility.APIResponse reversalOfBdaBca(TradeTransBDAInfoDTO dto)
-     throws HttpClientErrorException, JsonProcessingException {
-
-     RequestParameter<TradeTransBDAInfoDTO> requestParameter = new RequestParameter<>(
+     RequestParameter<ReversalOfBdaBcaDTO> requestParameter = new RequestParameter<>(
      UUID.randomUUID()
      , AppConstants.AD_ID
      , AppConstants.PSW.ID, "03"
@@ -398,23 +321,22 @@ public class PSWAPIConsumer {
      return executeRequest(requestParameter, "– Reversal of BDA/BCA Message by AD to PSW");
      }
 
-     /***********************************************************
+    /***********************************************************
      11.1.	Message 1  – Settlement of Financial Transaction by AD (Import/Export):
-     ***********************************************************
-     public ResponseUtility.APIResponse settlementOfFinTrans(TradeTransSettlementDTO dto)
+     ***********************************************************/
+     public ResponseUtility.APIResponse settlementOfFinInstrument(SettelmentOfFIDTO dto)
      throws HttpClientErrorException, JsonProcessingException {
 
-     RequestParameter<TradeTransSettlementDTO> requestParameter = new RequestParameter<>(
+     RequestParameter<SettelmentOfFIDTO> requestParameter = new RequestParameter<>(
      UUID.randomUUID()
      , AppConstants.AD_ID
      , AppConstants.PSW.ID, "03"
-     , AppConstants.PSW.METHOD_ID_FIN_TRANS_SETTLEMENT
+     , AppConstants.PSW.METHOD_ID_SETTLEMENT_FIN_INST
      , AppConstants.AD_SIGNATURE);
      requestParameter.setData(dto);
 
      return executeRequest(requestParameter, "– Settlement of Financial Transaction by AD (Import/Export):");
      }
-
 
      /*********************************************
      *   Private Methods......
