@@ -1,9 +1,11 @@
 package com.infotech.adb.dto;
 
-import com.infotech.adb.model.entity.ReversalOfBdaBca;
 import com.infotech.adb.model.entity.SettelmentOfFI;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -14,7 +16,7 @@ public class SettelmentOfFIDTO implements BaseDTO<SettelmentOfFIDTO, SettelmentO
     private String traderNTN;
     private String traderName;
     private String finInsUniqueNumber;
-    private String bdaBcaUniqueIdNumber;
+    private List<String> bdaBcaUniqueIdNumber;
     private String finInsValue;
     private String totalValueOfSharedBCABDA;
     private String balance;
@@ -33,7 +35,7 @@ public class SettelmentOfFIDTO implements BaseDTO<SettelmentOfFIDTO, SettelmentO
         SettelmentOfFI entity = new SettelmentOfFI();
 
         entity.setId(this.getId());
-        entity.setBdaBcaUniqueIdNumber(this.getBdaBcaUniqueIdNumber());
+        entity.setBdaBcaUniqueIdNumber(this.getBdaBcaUniqueIdNumber().get(0));
         entity.setTradeType(this.getTradeTranType());
         entity.setTraderNTN(this.getTraderNTN());
         entity.setTraderName(this.getTraderName());
@@ -50,7 +52,11 @@ public class SettelmentOfFIDTO implements BaseDTO<SettelmentOfFIDTO, SettelmentO
         if(entity != null){
 
             this.setId(entity.getId());
-            this.setBdaBcaUniqueIdNumber(entity.getBdaBcaUniqueIdNumber());
+            List<String> unqNumList = new ArrayList<>();
+
+            unqNumList.add(entity.getBdaBcaUniqueIdNumber());
+
+            this.setBdaBcaUniqueIdNumber(unqNumList);
             this.setFinInsUniqueNumber(entity.getFinInsUniqueNumber());
             this.setTradeTranType(entity.getTradeType());
             this.setTraderName(entity.getTraderName());
