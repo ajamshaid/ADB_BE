@@ -19,7 +19,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.UUID;
 
 
@@ -353,7 +353,7 @@ public class PSWAPIConsumer {
         String token = authTokenResponse.getApiToken();
         ResponseUtility.APIResponse apiResponse = null;
 
-        ZonedDateTime requestTime = ZonedDateTime.now();
+        Date requestTime = AppUtility.getCurrentTimeStamp();
         LogRequest logRequest = null;
         //Auth completed.
 

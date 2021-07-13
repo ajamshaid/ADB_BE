@@ -3,6 +3,7 @@ package com.infotech.adb.model.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.infotech.adb.dto.RequestParameter;
+import com.infotech.adb.util.AppUtility;
 import com.infotech.adb.util.ResponseUtility;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,6 +12,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.time.ZonedDateTime;
+import java.util.Date;
 
 @EqualsAndHashCode(callSuper = false)
 @Data
@@ -37,10 +39,10 @@ public class LogRequest extends BaseEntity {
     private String responsePayload;
 
     @Column(name = "REQUEST_TIME", columnDefinition = "TIMESTAMP DEFAULT NOW()")
-    private ZonedDateTime requestTime;
+    private Date requestTime;
 
     @Column(name = "RESPONSE_TIME", columnDefinition = "TIMESTAMP DEFAULT NOW()")
-    private ZonedDateTime responseTime;
+    private Date responseTime;
 
     @Column(name = "SENDER_ID", nullable = false)
     private String senderId;
@@ -52,7 +54,7 @@ public class LogRequest extends BaseEntity {
     }
 
 
-    public static LogRequest buildNewObject(String messageName, String messageType, RequestParameter requestBody, ZonedDateTime requestTime, ResponseUtility.APIResponse apiResponse) throws
+    public static LogRequest buildNewObject(String messageName, String messageType, RequestParameter requestBody, Date requestTime, ResponseUtility.APIResponse apiResponse) throws
         JsonProcessingException {
             LogRequest logRequest = new LogRequest();
             logRequest.setMsgIdentifier(messageName);
@@ -60,7 +62,7 @@ public class LogRequest extends BaseEntity {
             logRequest.setSenderId(requestBody.getSenderId());
             logRequest.setRequestMethod(messageType);
             logRequest.setRequestTime(requestTime);
-            logRequest.setResponseTime(ZonedDateTime.now());
+            logRequest.setResponseTime(AppUtility.getCurrentTimeStamp());
             logRequest.setCreatedOn(ZonedDateTime.now());
             logRequest.setResponseCode(apiResponse.getMessage().getCode());
             logRequest.setResponseMessage(apiResponse.getMessage().getDescription());

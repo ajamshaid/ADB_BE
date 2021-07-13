@@ -1,12 +1,12 @@
 package com.infotech.adb.dto;
 
 import com.infotech.adb.model.entity.LogRequest;
-import com.infotech.adb.util.AppUtility;
 import com.infotech.adb.util.JsonUtils;
 import com.infotech.adb.util.ResponseUtility;
 import lombok.Data;
 
 import java.time.ZonedDateTime;
+import java.util.Date;
 
 @Data
 public class LogRequestDTO implements BaseDTO<LogRequestDTO, LogRequest> {
@@ -21,9 +21,8 @@ public class LogRequestDTO implements BaseDTO<LogRequestDTO, LogRequest> {
     private RequestParameter requestPayload;
     private ResponseUtility.APIResponse responsePayload;
     private String requestMethod;
-    private ZonedDateTime requestTime;
-    private ZonedDateTime responseTime;
-    private String requestFormattedTime;
+    private Date requestTime;
+    private Date responseTime;
 
     public LogRequestDTO() {
     }
@@ -36,8 +35,8 @@ public class LogRequestDTO implements BaseDTO<LogRequestDTO, LogRequest> {
     public LogRequest convertToEntity() {
         LogRequest logRequest = new LogRequest();
         logRequest.setId(this.id);
-        logRequest.setResponseTime(this.responseTime);
-        logRequest.setRequestTime(this.requestTime);
+//        logRequest.setResponseTime(this.responseTime);
+//        logRequest.setRequestTime(this.requestTime);
         logRequest.setMsgIdentifier(this.messageName);
         logRequest.setCreatedOn(this.createdOn);
         logRequest.setRequestMethod(this.requestMethod);
@@ -55,7 +54,7 @@ public class LogRequestDTO implements BaseDTO<LogRequestDTO, LogRequest> {
         this.messageName = entity.getMsgIdentifier();
         this.createdOn = entity.getCreatedOn();
         this.requestMethod = entity.getRequestMethod();
-        this.requestFormattedTime = AppUtility.formatZonedDateTime("HH:mm a", entity.getRequestTime());
+//        this.requestFormattedTime = AppUtility.formatZonedDateTime("HH:mm a", entity.getRe);
         this.responsePayload = JsonUtils.jsonToObject(entity.getResponsePayload(), ResponseUtility.PSWAPIResponse.class);
         this.requestPayload = JsonUtils.jsonToObject(entity.getRequestPayload(), RequestParameter.class);
     }

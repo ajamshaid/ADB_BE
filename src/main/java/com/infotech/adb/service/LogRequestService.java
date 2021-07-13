@@ -36,8 +36,8 @@ public class LogRequestService {
             log.error("-- LogRequest without payload's will be saved as error occurred while parsing Request/Response payload :" + e.getMessage());
             e.printStackTrace();
         }
-        logRequest.setRequestTime(ZonedDateTime.now());
-        logRequest.setResponseTime(ZonedDateTime.now());
+        logRequest.setRequestTime(AppUtility.getCurrentTimeStamp());
+        logRequest.setResponseTime(AppUtility.getCurrentTimeStamp());
         logRequest.setCreatedOn(ZonedDateTime.now());
         logRequest.setResponseCode(responseBody.getResponseCode());
         logRequest.setResponseMessage(responseBody.getMessage().getDescription());
