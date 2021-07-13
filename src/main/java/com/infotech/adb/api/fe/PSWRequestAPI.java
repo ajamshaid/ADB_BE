@@ -2,9 +2,8 @@ package com.infotech.adb.api.fe;
 
 
 import com.infotech.adb.dto.*;
-import com.infotech.adb.exceptions.CustomException;
-import com.infotech.adb.exceptions.DataValidationException;
 import com.infotech.adb.exceptions.NoDataFoundException;
+import com.infotech.adb.exceptions.PSWAPIException;
 import com.infotech.adb.service.PSWService;
 import com.infotech.adb.util.CustomResponse;
 import com.infotech.adb.util.ResponseUtility;
@@ -27,7 +26,7 @@ public class PSWRequestAPI {
 
     @RequestMapping(value = "/update-pm", method = RequestMethod.POST)
     public CustomResponse updatePaymentModes(@RequestBody AccountPMDTO dto)
-            throws CustomException, DataValidationException, NoDataFoundException {
+            throws PSWAPIException,  NoDataFoundException {
         log.debug("updatePaymentModes:: IN Coming Request Data is:" + dto.toString());
         ResponseUtility.APIResponse response = pswService.shareUpdatedAuthPMs(dto);
         return ResponseUtility.translatePSWAPIResponse(response);
@@ -35,7 +34,7 @@ public class PSWRequestAPI {
 
     @RequestMapping(value = "/activate-tp", method = RequestMethod.POST)
     public CustomResponse updateTraderProfileStatus(@RequestBody TraderProfileStatusDTO dto)
-            throws CustomException, DataValidationException, NoDataFoundException {
+            throws PSWAPIException,  NoDataFoundException {
         log.debug("updateTraderProfileStatus:: IN Coming Request Data is:" + dto.toString());
         ResponseUtility.APIResponse response = pswService.updateTraderProfileStatus(dto);
         return ResponseUtility.translatePSWAPIResponse(response);
@@ -43,7 +42,7 @@ public class PSWRequestAPI {
 
     @RequestMapping(value = "/update/neg-countries", method = RequestMethod.POST)
     public CustomResponse updateNegativeCountries(@RequestBody BankNegativeCountriesDTO dto)
-            throws CustomException, DataValidationException, NoDataFoundException {
+            throws PSWAPIException, NoDataFoundException {
 
         log.debug("updateNegativeCountries:: IN Coming Request Data is:" + dto.toString());
         ResponseUtility.APIResponse response;
@@ -53,7 +52,7 @@ public class PSWRequestAPI {
 
     @RequestMapping(value = "/update/neg-commodities", method = RequestMethod.POST)
     public CustomResponse updateNegativeCommodities(@RequestBody BankNegativeCommoditiesDTO dto)
-            throws CustomException, DataValidationException, NoDataFoundException {
+            throws PSWAPIException, NoDataFoundException {
         log.debug("updateNegativeCommodities:: IN Coming Request Data is:" + dto.toString());
         ResponseUtility.APIResponse response;
         response = pswService.shareNegativeListOfCommodities(dto);
@@ -62,7 +61,7 @@ public class PSWRequestAPI {
 
     @RequestMapping(value = "/update/neg-suppliers", method = RequestMethod.POST)
     public CustomResponse updateNegativeSuppliers(@RequestBody BankNegativeSuppliersDTO dto)
-            throws CustomException, DataValidationException, NoDataFoundException {
+            throws PSWAPIException, NoDataFoundException {
 
         log.debug("updateNegativeSuppliers:: IN Coming Request Data is:" + dto.toString());
         ResponseUtility.APIResponse response;

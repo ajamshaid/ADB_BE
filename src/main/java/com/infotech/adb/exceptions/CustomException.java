@@ -2,11 +2,8 @@ package com.infotech.adb.exceptions;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 @SuppressWarnings("serial")
-@ResponseStatus(value = HttpStatus.NOT_FOUND)
 public class CustomException extends Exception {
 
     String message = "Sorry for the inconvenience. The system will be restored shortly";

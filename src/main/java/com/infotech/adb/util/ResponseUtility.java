@@ -10,6 +10,7 @@ import com.infotech.adb.dto.RequestParameter;
 import com.infotech.adb.exceptions.CustomException;
 import com.infotech.adb.exceptions.DBConstraintViolationException;
 import com.infotech.adb.exceptions.NoDataFoundException;
+import com.infotech.adb.exceptions.PSWAPIException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -79,7 +80,8 @@ public class ResponseUtility {
 
         public static Message getDBUpdateButPSWRequestFaildMsg(){
             ResponseUtility.Message msg = new ResponseUtility.Message();
-            msg.setCode(""+HttpStatus.OK.value());
+            //msg.setCode(""+HttpStatus.OK.value());
+            msg.setCode("404");
             msg.setDescription("Data Updated in DB but Push to PSW API Request <<Failed>>");
             return  msg;
         }
@@ -314,7 +316,7 @@ public class ResponseUtility {
         throw new NoDataFoundException();
     }
 
-    public static CustomResponse translatePSWAPIResponse(ResponseUtility.APIResponse pswResponse) throws CustomException {
+    public static CustomResponse translatePSWAPIResponse(ResponseUtility.APIResponse pswResponse) throws PSWAPIException {
         if (AppUtility.isEmpty(pswResponse)) {
             pswResponse = new ResponseUtility.APIResponse();
             pswResponse.setMessage(ResponseUtility.Message.getDBUpdateButPSWRequestFaildMsg());
@@ -330,7 +332,7 @@ public class ResponseUtility {
                     pswResponse.getMessage().getDescription(), null,false);
         }
         else{
-            throw new CustomException(pswResponse.getMessage().code+" - "+pswResponse.getMessage().getDescription());
+            throw new PSWAPIException(pswResponse) ;
         }
         return customResponse;
 
