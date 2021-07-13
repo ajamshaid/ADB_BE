@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 @Log4j2
@@ -35,7 +36,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private Collection<? extends GrantedAuthority> getGrantedAuthorities(String username) {
-        return null;
+        return new ArrayList<>();
     }
 
     public List<User> findAllUsers() {

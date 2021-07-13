@@ -41,12 +41,13 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         endpoints.pathMapping("/oauth/token", "/saud/connect/token");
         endpoints.tokenStore(tokenStore())
                 .authenticationManager(authManager);
+
     }
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer oauthServer) {
-        //oauthServer.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()");
+        oauthServer.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()");
 
-        oauthServer.allowFormAuthenticationForClients();
+     //   oauthServer.allowFormAuthenticationForClients();
     }
 }
