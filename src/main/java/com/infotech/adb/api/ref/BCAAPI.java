@@ -1,9 +1,11 @@
 package com.infotech.adb.api.ref;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.infotech.adb.dto.BCADTO;
 import com.infotech.adb.exceptions.CustomException;
 import com.infotech.adb.exceptions.DataValidationException;
 import com.infotech.adb.exceptions.NoDataFoundException;
+import com.infotech.adb.exceptions.PSWAPIException;
 import com.infotech.adb.model.entity.BCA;
 import com.infotech.adb.service.ReferenceService;
 import com.infotech.adb.util.AppUtility;
@@ -58,7 +60,7 @@ public class BCAAPI {
 
     @RequestMapping(value = "/", method = RequestMethod.PUT)
     public CustomResponse updateBCA(@RequestBody BCADTO reqDTO, @RequestParam(value = "pushToPSW",defaultValue = "false", required = false) Boolean pushToPSW)
-            throws CustomException, DataValidationException, NoDataFoundException {
+            throws PSWAPIException, DataValidationException, NoDataFoundException {
 
         if (AppUtility.isEmpty(reqDTO) || AppUtility.isEmpty(reqDTO.getId())) {
             throw new DataValidationException(messageBundle.getString("validation.error"));
@@ -73,8 +75,8 @@ public class BCAAPI {
                 entity = referenceService.updateBCA(reqDTO.convertToEntity());
                 customResponse = ResponseUtility.successResponse(entity,"200","Record Updated Successfully");
             }
-        } catch (Exception e) {
-            ResponseUtility.exceptionResponse(e, "");
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
         }
         return customResponse;
     }

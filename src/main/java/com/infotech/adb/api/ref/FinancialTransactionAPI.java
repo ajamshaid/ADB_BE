@@ -1,10 +1,12 @@
 package com.infotech.adb.api.ref;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.infotech.adb.dto.FinancialTransactionExportDTO;
 import com.infotech.adb.dto.FinancialTransactionImportDTO;
 import com.infotech.adb.exceptions.CustomException;
 import com.infotech.adb.exceptions.DataValidationException;
 import com.infotech.adb.exceptions.NoDataFoundException;
+import com.infotech.adb.exceptions.PSWAPIException;
 import com.infotech.adb.model.entity.FinancialTransaction;
 import com.infotech.adb.service.ReferenceService;
 import com.infotech.adb.util.AppConstants;
@@ -61,7 +63,7 @@ public class FinancialTransactionAPI {
 
     @RequestMapping(value = "/import/", method = RequestMethod.PUT)
     public CustomResponse updateImportFT(@RequestBody FinancialTransactionImportDTO reqDTO, @RequestParam(value = "pushToPSW", defaultValue = "false", required = false) Boolean pushToPSW)
-            throws CustomException, DataValidationException, NoDataFoundException {
+            throws PSWAPIException, DataValidationException, NoDataFoundException {
 
         if (AppUtility.isEmpty(reqDTO) || AppUtility.isEmpty(reqDTO.getFtId())) {
             throw new DataValidationException(messageBundle.getString("validation.error"));
@@ -77,8 +79,8 @@ public class FinancialTransactionAPI {
                 entity = referenceService.updateFinancialTransaction(reqDTO.convertToEntity());
                 customResponse = ResponseUtility.successResponse(entity,"200","Record Updated Successfully");
             }
-        } catch (Exception e) {
-            ResponseUtility.exceptionResponse(e, "");
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
         }
         return customResponse;
     }
@@ -118,7 +120,7 @@ public class FinancialTransactionAPI {
 
     @RequestMapping(value = "/export/", method = RequestMethod.PUT)
     public CustomResponse updateExportFT(@RequestBody FinancialTransactionExportDTO reqDTO, @RequestParam(value = "pushToPSW", defaultValue = "false", required = false) Boolean pushToPSW)
-            throws CustomException, DataValidationException, NoDataFoundException {
+            throws PSWAPIException, DataValidationException, NoDataFoundException {
 
         if (AppUtility.isEmpty(reqDTO) || AppUtility.isEmpty(reqDTO.getFtId())) {
             throw new DataValidationException(messageBundle.getString("validation.error"));
@@ -133,8 +135,8 @@ public class FinancialTransactionAPI {
                 entity = referenceService.updateFinancialTransaction(reqDTO.convertToEntity());
                 customResponse = ResponseUtility.successResponse(entity,"200","Record Updated Successfully");
             }
-        } catch (Exception e) {
-            ResponseUtility.exceptionResponse(e, "");
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
         }
         return customResponse;
     }

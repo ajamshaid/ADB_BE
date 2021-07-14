@@ -82,7 +82,7 @@ public class ResponseUtility {
             ResponseUtility.Message msg = new ResponseUtility.Message();
             //msg.setCode(""+HttpStatus.OK.value());
             msg.setCode("404");
-            msg.setDescription("Data Updated in DB but Push to PSW API Request <<Failed>>");
+            msg.setDescription("Data Updated in DB but <<Failed>> to Push to PSW API Request");
             return  msg;
         }
     }

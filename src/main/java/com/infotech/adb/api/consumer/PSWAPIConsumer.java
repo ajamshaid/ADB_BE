@@ -3,7 +3,6 @@ package com.infotech.adb.api.consumer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.infotech.adb.config.RestTemplateResponseErrorHandler_ToDel;
 import com.infotech.adb.dto.*;
-import com.infotech.adb.model.entity.LogRequest;
 import com.infotech.adb.service.LogRequestService;
 import com.infotech.adb.util.*;
 import lombok.extern.log4j.Log4j2;
@@ -94,7 +93,7 @@ public class PSWAPIConsumer {
 //        AccountDetailDTO dto = null; ///new AccountDetailDTO(accountDetail);
         requestParameter.setData(dto);
 
-        return executeRequest(requestParameter, "4.3 Message 3 – Sharing of Update Information and Payment Mode By AD");
+        return executeRequest(requestParameter, "4.3 - Sharing of Update Information and Payment Mode By AD");
     }
 
 
@@ -112,7 +111,7 @@ public class PSWAPIConsumer {
                 , AppConstants.AD_SIGNATURE);
         requestParameter.setData(dto);
 
-        return executeRequest(requestParameter, "4.4 Message4 - Trader Profile Active/Inactive Message by AD to PSW");
+        return executeRequest(requestParameter, "4.4 - Trader Profile Active/Inactive Message by AD to PSW");
     }
 
 
@@ -131,7 +130,7 @@ public class PSWAPIConsumer {
                 , AppConstants.AD_SIGNATURE);
         requestParameter.setData(restrictedDTO);
 
-        return executeRequest(requestParameter, "11.1 Message 1 – Sharing Updated Negative List of Countries with PSW");
+        return executeRequest(requestParameter, "11.1 – Sharing Updated Negative List of Countries with PSW");
     }
 
     /***********************************************************
@@ -149,7 +148,7 @@ public class PSWAPIConsumer {
                 , AppConstants.AD_SIGNATURE);
         requestParameter.setData(dto);
 
-        return executeRequest(requestParameter, "11.2 Message 2 – Sharing Updated Negative List of Commodities with PSW");
+        return executeRequest(requestParameter, "11.2 – Sharing Updated Negative List of Commodities with PSW");
     }
 
     /***********************************************************
@@ -167,7 +166,7 @@ public class PSWAPIConsumer {
                 , AppConstants.AD_SIGNATURE);
         requestParameter.setData(dto);
 
-        return executeRequest(requestParameter, "11.3 Message 3 Sharing Updated Negative List of Suppliers with PSW");
+        return executeRequest(requestParameter, "11.3 - Sharing Updated Negative List of Suppliers with PSW");
     }
 
     /***********************************************************
@@ -198,7 +197,7 @@ public class PSWAPIConsumer {
                 , AppConstants.AD_SIGNATURE);
         requestParameter.setData(dto);
 
-        return executeRequest(requestParameter, "5.1.1. Message 1 – Share Financial Transaction Data with PSW by AD (IMPORT)");
+        return executeRequest(requestParameter, "5.1.1 – (IMPORT) Share Financial Transaction Data with PSW by AD ");
     }
 
     /***********************************************************
@@ -215,7 +214,7 @@ public class PSWAPIConsumer {
                 , AppConstants.AD_SIGNATURE);
         requestParameter.setData(dto);
 
-        return executeRequest(requestParameter, "5.1.3. Message 3 – Sharing of BDA Information Import by AD with PSW");
+        return executeRequest(requestParameter, "5.1.3 – Sharing of BDA Information Import by AD with PSW");
     }
 
     /***********************************************************
@@ -232,7 +231,7 @@ public class PSWAPIConsumer {
                 , AppConstants.AD_SIGNATURE);
         requestParameter.setData(dto);
 
-        return executeRequest(requestParameter, "5.2.1. Message 1 – Share Financial Transaction Data with PSW by AD (Export)");
+        return executeRequest(requestParameter, "5.2.1 – (Export) Share Financial Transaction Data with PSW by AD ");
     }
 
     /***********************************************************
@@ -249,7 +248,7 @@ public class PSWAPIConsumer {
                 , AppConstants.AD_SIGNATURE);
         requestParameter.setData(dto);
 
-        return executeRequest(requestParameter, "5.2.3. Message 3 – Sharing of BCA Information Export by AD with PSW");
+        return executeRequest(requestParameter, "5.2.3 – Sharing of BCA Information Export by AD with PSW");
     }
 
     /***********************************************************
@@ -266,7 +265,7 @@ public class PSWAPIConsumer {
                 , AppConstants.AD_SIGNATURE);
         requestParameter.setData(dto);
 
-        return executeRequest(requestParameter, "6.1 Message 1 – Sharing of GD Clearance Message by AD with PSW (Import/Export)");
+        return executeRequest(requestParameter, "6.1 – Sharing of GD Clearance Message by AD with PSW (Import/Export)");
     }
 
 
@@ -284,7 +283,7 @@ public class PSWAPIConsumer {
                 , AppConstants.AD_SIGNATURE);
         requestParameter.setData(dto);
 
-        return executeRequest(requestParameter, "7.2.1.Message 2 – Sharing of Change of Bank request approval/rejection message by AD with PSW");
+        return executeRequest(requestParameter, "7.2.1 – Sharing of Change of Bank request approval/rejection message by AD with PSW");
     }
 
     /***********************************************************
@@ -301,7 +300,7 @@ public class PSWAPIConsumer {
                 , AppConstants.AD_SIGNATURE);
         requestParameter.setData(dto);
 
-        return executeRequest(requestParameter, "Cancellation of Financial Transaction by AD (Import/Export)");
+        return executeRequest(requestParameter, "8.1 - Cancellation of Financial Transaction by AD (Import/Export)");
     }
 
     /***********************************************************
@@ -318,11 +317,11 @@ public class PSWAPIConsumer {
      , AppConstants.AD_SIGNATURE);
      requestParameter.setData(dto);
 
-     return executeRequest(requestParameter, "– Reversal of BDA/BCA Message by AD to PSW");
+     return executeRequest(requestParameter, "9.1 – Reversal of BDA/BCA Message by AD to PSW");
      }
 
     /***********************************************************
-     11.1.	Message 1  – Settlement of Financial Transaction by AD (Import/Export):
+     10.1 Message 1 – Settlement of Financial Instrument by AD (Import/Export)
      ***********************************************************/
      public ResponseUtility.APIResponse settlementOfFinInstrument(SettelmentOfFIDTO dto)
      throws HttpClientErrorException, JsonProcessingException {
@@ -335,7 +334,7 @@ public class PSWAPIConsumer {
      , AppConstants.AD_SIGNATURE);
      requestParameter.setData(dto);
 
-     return executeRequest(requestParameter, "– Settlement of Financial Transaction by AD (Import/Export):");
+     return executeRequest(requestParameter, "10.1 – Settlement of Financial Instrument by AD (Import/Export)");
      }
 
      /*********************************************
@@ -354,7 +353,6 @@ public class PSWAPIConsumer {
         ResponseUtility.APIResponse apiResponse = null;
 
         Date requestTime = AppUtility.getCurrentTimeStamp();
-        LogRequest logRequest = null;
         //Auth completed.
 
 
@@ -370,8 +368,7 @@ public class PSWAPIConsumer {
 
             System.out.println("======API Response TO_STRING===========" + apiResponse.toString());
 
-            logRequest = LogRequest.buildNewObject(messageName, RequestMethod.POST.name(), requestParameter, requestTime, apiResponse);
-            logRequestService.createLogRequest(logRequest);
+            logRequestService.saveLogRequest(messageName,RequestMethod.POST.name(), requestParameter,requestTime, apiResponse);
 
             if (HttpStatus.OK.toString() == apiResponse.getMessage().getCode()) {
                 System.out.println("===================PSW  OK response =================");

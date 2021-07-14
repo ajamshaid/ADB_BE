@@ -52,10 +52,8 @@ public class LogRequest extends BaseEntity {
 
     public LogRequest() {
     }
-
-
-    public static LogRequest buildNewObject(String messageName, String messageType, RequestParameter requestBody, Date requestTime, ResponseUtility.APIResponse apiResponse) throws
-        JsonProcessingException {
+    public static LogRequest buildNewObject(String messageName, String messageType, RequestParameter requestBody
+            ,Date requestTime ,ResponseUtility.APIResponse apiResponse){
             LogRequest logRequest = new LogRequest();
             logRequest.setMsgIdentifier(messageName);
             logRequest.setReceiverId(requestBody.getReceiverId());
@@ -66,8 +64,12 @@ public class LogRequest extends BaseEntity {
             logRequest.setCreatedOn(ZonedDateTime.now());
             logRequest.setResponseCode(apiResponse.getMessage().getCode());
             logRequest.setResponseMessage(apiResponse.getMessage().getDescription());
+        try {
             logRequest.setRequestPayload(requestBody.toJson());
             logRequest.setResponsePayload(apiResponse.toJson());
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
         return  logRequest;
     }
 }

@@ -1,6 +1,5 @@
 package com.infotech.adb.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.infotech.adb.dto.RequestParameter;
 import com.infotech.adb.model.entity.LogRequest;
 import com.infotech.adb.model.repository.LogRequestRepository;
@@ -9,8 +8,10 @@ import com.infotech.adb.util.ResponseUtility;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,28 +23,13 @@ public class LogRequestService {
     @Autowired
     private LogRequestRepository logRequestRepository;
 
+    public void saveLogRequest(String messageName, String messageType, RequestParameter requestBody, Date requestTime, ResponseUtility.APIResponse apiResponse) {
 
-    public void saveLogRequest(String messageName, String messageType, RequestParameter requestBody, ResponseUtility.APIResponse responseBody) {
-        LogRequest logRequest = new LogRequest();
-        logRequest.setReceiverId(requestBody.getReceiverId());
-        logRequest.setSenderId(requestBody.getSenderId());
-        logRequest.setMsgIdentifier(messageName);
-        logRequest.setRequestMethod(messageType);
-        try {
-            logRequest.setRequestPayload(requestBody.toJson());
-            logRequest.setResponsePayload(responseBody.toJson());
-        } catch (JsonProcessingException e) {
-            log.error("-- LogRequest without payload's will be saved as error occurred while parsing Request/Response payload :" + e.getMessage());
-            e.printStackTrace();
-        }
-        logRequest.setRequestTime(AppUtility.getCurrentTimeStamp());
-        logRequest.setResponseTime(AppUtility.getCurrentTimeStamp());
-        logRequest.setCreatedOn(ZonedDateTime.now());
-        logRequest.setResponseCode(responseBody.getResponseCode());
-        logRequest.setResponseMessage(responseBody.getMessage().getDescription());
-   //     System.out.println("Going to save Log Request :"+logRequest);
-        System.out.println("-------Saving Log object to DB is disabled for testing-----");
-   //     this.createLogRequest(logRequest);
+
+        LogRequest logRequest = LogRequest.buildNewObject(messageName, RequestMethod.POST.name(), requestBody, requestTime, apiResponse);;
+        System.out.println("Going to save Log Request :"+logRequest);
+   //     System.out.println("-------Saving Log object to DB is disabled for testing-----");
+        this.createLogRequest(logRequest);
     }
 
     public List<LogRequest> getAllLogRequests(Boolean isSuspended) {

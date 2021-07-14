@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.ResourceBundle;
 
 @SuppressWarnings("rawtypes")
@@ -128,6 +129,7 @@ public class EDIAPI {
     public CustomResponse verifyAccount(String data, RequestParameter requestParameter)
             throws CustomException, NoDataFoundException {
         CustomResponse customResponse = null;
+        Date requestTime = AppUtility.getCurrentTimeStamp();
         boolean isVerified = false;
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -144,7 +146,7 @@ public class EDIAPI {
         );
 
         ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
-        logRequestService.saveLogRequest("Verify Trader Profile From AD", RequestMethod.POST.name(), requestParameter, responseBody);
+        logRequestService.saveLogRequest("Verify Trader Profile From AD", RequestMethod.POST.name(), requestParameter,requestTime, responseBody);
         return customResponse;
     }
 
@@ -157,6 +159,7 @@ public class EDIAPI {
             throws CustomException, NoDataFoundException {
         CustomResponse customResponse = null;
         AccountDetailDTO accountDetailDTO = null;
+        Date requestTime = AppUtility.getCurrentTimeStamp();
         String message = "";
         String logMessage = "";
         boolean noData = false;
@@ -180,7 +183,7 @@ public class EDIAPI {
         );
 
         ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
-        logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter, responseBody);
+        logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter,requestTime, responseBody);
         return customResponse;
     }
 
@@ -194,6 +197,7 @@ public class EDIAPI {
 
         ObjectMapper mapper = new ObjectMapper();
         GDImportDTO dto = mapper.readValue(data, GDImportDTO.class);
+        Date requestTime = AppUtility.getCurrentTimeStamp();
         System.out.println("IN coming GD Info:" + dto);
 
         if (!AppUtility.isEmpty(dto)) {
@@ -208,7 +212,7 @@ public class EDIAPI {
         ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
         String logMessage = "Sharing of [Import] GD and Financial Information with AD by PSW";
 
-        logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter, responseBody);
+        logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter,requestTime, responseBody);
         return customResponse;
     }
 
@@ -222,6 +226,7 @@ public class EDIAPI {
 
         ObjectMapper mapper = new ObjectMapper();
         GDExportDTO dto = mapper.readValue(data, GDExportDTO.class);
+        Date requestTime = AppUtility.getCurrentTimeStamp();
         System.out.println("IN coming GD Info:" + dto);
 
         if (!AppUtility.isEmpty(dto)) {
@@ -235,7 +240,7 @@ public class EDIAPI {
         ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
         String logMessage = "Sharing of [Export] GD and Financial Information with AD by PSW";
 
-        logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter, responseBody);
+        logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter,requestTime, responseBody);
         return customResponse;
     }
 
@@ -248,6 +253,7 @@ public class EDIAPI {
 
         ObjectMapper mapper = new ObjectMapper();
         ChangeBankRequestDTO dto = mapper.readValue(data, ChangeBankRequestDTO.class);
+        Date requestTime = AppUtility.getCurrentTimeStamp();
         System.out.println("IN coming COB Object is:" + dto);
 
         if (!AppUtility.isEmpty(dto)) {
@@ -260,7 +266,7 @@ public class EDIAPI {
         ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
         String logMessage = "Message 1 – Sharing of Change of Bank request with AD";
 
-        logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter, responseBody);
+        logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter,requestTime, responseBody);
         return customResponse;
     }
 
