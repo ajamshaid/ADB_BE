@@ -1,5 +1,6 @@
 package com.infotech.adb.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -111,5 +112,10 @@ public class BDA {
 
     @Column(name = "BALANCE_BDA_AMOUNT_FCY", precision = 24, scale = 4)
     public BigDecimal balanceBdaAmountFcy;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name="COB_GD_FT_ID", nullable=true)
+    private COBGdFt cobGdFt;
 }
 

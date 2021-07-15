@@ -1,10 +1,14 @@
 package com.infotech.adb.dto;
 
+import com.infotech.adb.model.entity.BDA;
 import com.infotech.adb.model.entity.COBGdFt;
-import com.infotech.adb.model.entity.FinancialTransaction;
+import com.infotech.adb.model.entity.GD;
 import com.infotech.adb.util.AppUtility;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -14,12 +18,16 @@ public class COBGdFtDTO implements BaseDTO<COBGdFtDTO, COBGdFt> {
     private String tradeTranType;
 
     private FinancialTransactionImportDTO financialInstrumentInfo;
-    private GDImportDTO gdImport;
-    private BDADTO bdaInfo;
 
-    private FinancialTransactionExportDTO financialTransactionExportInfo;
-    private GDExportDTO gdExport;
-    private BCADTO bcaInfo;
+    private Set<GDImportDTO> gdInfo;
+    private Set<BDADTO> bankAdviceInfo;
+
+//    private GDImportDTO gdImport;
+
+
+//    private FinancialTransactionExportDTO financialTransactionExportInfo;
+//    private GDExportDTO gdExport;
+//    private BCADTO bcaInfo;
 
     @Override
     public COBGdFt convertToEntity() {
@@ -28,12 +36,29 @@ public class COBGdFtDTO implements BaseDTO<COBGdFtDTO, COBGdFt> {
         entity.setCobUniqueIdNumber((this.getCobUniqueIdNumber()));
         entity.setTradeTranType(this.getTradeTranType());
         entity.setFt(this.financialInstrumentInfo.convertToEntity());
-        entity.setGd(this.gdImport.convertToEntity());
-        entity.setBda(this.bdaInfo.convertToEntity());
-        entity.setFt(this.financialTransactionExportInfo.convertToEntity());
-        entity.setGdExport(this.gdExport.convertToEntity());
-        entity.setBca(this.bcaInfo.convertToEntity());
+        entity.getFt().setType("COB_IMPORT");
 
+        // GD Sets
+        if (!AppUtility.isEmpty(this.getGdInfo())) {
+            HashSet<GD> set = new HashSet<>();
+            for (GDImportDTO dto : this.getGdInfo()) {
+                GD en = dto.convertToEntity();
+                en.setCobGdFt(entity);
+                set.add(en);
+            }
+            entity.setGdSet(set);
+        }
+
+        // Bank Advice Sets
+        if (!AppUtility.isEmpty(this.getBankAdviceInfo())) {
+            HashSet<BDA> set = new HashSet<>();
+            for (BDADTO dto : this.getBankAdviceInfo()) {
+                BDA en = dto.convertToEntity();
+                en.setCobGdFt(entity);
+                set.add(en);
+            }
+            entity.setBdaSet(set);
+        }
       return entity;
     }
 
@@ -48,26 +73,22 @@ public class COBGdFtDTO implements BaseDTO<COBGdFtDTO, COBGdFt> {
             this.financialInstrumentInfo = new FinancialTransactionImportDTO(entity.getFt());
         }
 
-        if (!AppUtility.isEmpty(entity.getGd())) {
-            this.gdImport = new GDImportDTO(entity.getGd());
+        // Import GDs
+        if (!AppUtility.isEmpty(entity.getGdSet())) {
+            HashSet<GDImportDTO> set = new HashSet<>();
+            for (GD gd : entity.getGdSet()) {
+                set.add(new GDImportDTO(gd));
+            }
+            this.setGdInfo(set);
         }
 
-        if (!AppUtility.isEmpty(entity.getBda())) {
-            this.bdaInfo = new BDADTO();
-            this.bdaInfo = this.bdaInfo.convertToNewDTO(entity.getBda(), true);
-        }
-
-        if (!AppUtility.isEmpty(entity.getFt())) {
-            this.financialTransactionExportInfo = new FinancialTransactionExportDTO(entity.getFt());
-        }
-
-        if (!AppUtility.isEmpty(entity.getGdExport())) {
-            this.gdExport = new GDExportDTO(entity.getGdExport());
-        }
-
-        if(!AppUtility.isEmpty(entity.getBca())){
-            this.bcaInfo = new BCADTO();
-            this.bcaInfo = this.bcaInfo.convertToNewDTO(entity.getBca(),true);
+        // Import GDs
+        if (!AppUtility.isEmpty(entity.getBdaSet())) {
+            HashSet<BDADTO> set = new HashSet<>();
+            for (BDA ref : entity.getBdaSet()) {
+                set.add(new BDADTO(ref));
+            }
+            this.setBankAdviceInfo(set);
         }
     }
 
@@ -77,5 +98,4 @@ public class COBGdFtDTO implements BaseDTO<COBGdFtDTO, COBGdFt> {
         dto.convertToDTO(entity, partialFill);
         return dto;
     }
-
 }

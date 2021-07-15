@@ -1,5 +1,6 @@
 package com.infotech.adb.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -107,4 +108,9 @@ public class GD {
 
     @OneToMany(mappedBy = "gd", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<GDContainerVehicleInfo> containerVehicleInformationSet;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name="COB_GD_FT_ID", nullable=true)
+    private COBGdFt cobGdFt;
 }

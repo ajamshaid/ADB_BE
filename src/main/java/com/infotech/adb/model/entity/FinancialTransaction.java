@@ -21,7 +21,7 @@ public class FinancialTransaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "TYPE",length = 10, nullable = false)
+    @Column(name = "TYPE",length = 10, nullable = true)
     private String type;
     
     @Column(name = "NTN",length = 9, nullable = true)

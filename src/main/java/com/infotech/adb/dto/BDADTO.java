@@ -21,6 +21,10 @@ public class BDADTO implements BaseDTO<BDADTO, BDA> {
     public String finInsUniqueNumber;
     public BdaInformation bdaInformation;
 
+    public BDADTO(BDA entity) {
+        convertToDTO(entity, true);
+    }
+
     @Override
     public BDA convertToEntity() {
         BDA entity = new BDA();

@@ -5,9 +5,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
-@Table(name = "COB_GD_FT_INFO")
+@Table(name = "COB_GD_FT")
 @Getter
 @Setter
 public class COBGdFt {
@@ -25,23 +26,15 @@ public class COBGdFt {
     @Column(name = "TRADE_TYPE")
     private String tradeTranType;
 
-    @OneToOne
-    @JoinColumn(name="FT_ID")
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY , cascade = CascadeType.ALL)
+    @JoinColumn(name="FT_ID", nullable=false )
     private FinancialTransaction ft;
 
-    @OneToOne
-    @JoinColumn(name="GD_ID")
-    private GD gd;
+    @OneToMany(mappedBy = "cobGdFt", fetch = FetchType.LAZY , cascade = CascadeType.ALL)
+    private Set<GD> gdSet;
 
-    @OneToOne
-    @JoinColumn(name="GD_EXPORT_ID")
-    private GDExport gdExport;
+    @OneToMany(mappedBy = "cobGdFt", fetch = FetchType.LAZY , cascade = CascadeType.ALL)
+    private Set<BDA> bdaSet;
 
-    @OneToOne
-    @JoinColumn(name="BDA_ID")
-    private BDA bda;
-
-    @OneToOne
-    @JoinColumn(name="BCA_ID")
-    private BCA bca;
-}
+    }

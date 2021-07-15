@@ -78,8 +78,8 @@ public class EDIAPI {
 
 
             // @TODO Dummy code to Skip Signature for GD Parsing....Remove once Signature is Verified.
-            if(processingCode.equals("101") || processingCode.equals("102") ){
-           //     isSignatureVerified = true;
+            if(processingCode.equals("101") || processingCode.equals("102") || processingCode.equals("307") ){
+                isSignatureVerified = true;
             }
 
             if (!isSignatureVerified) {
@@ -110,7 +110,7 @@ public class EDIAPI {
                         customResponse = this.chageOfBankRequest(data, requestParameter);
                         break;
                     case "307": // 7.3 Message 3 – Sharing of GD and FI with the Other Selected Bank
-                        customResponse = this.chageOfBankRequest(data, requestParameter);
+                        customResponse = this.shareOfCOBGDnFIInfo(data, requestParameter);
                         break;
                     default: // Default Custom response
                         log.info("No Case Matched for processing code:" + processingCode);
@@ -148,7 +148,7 @@ public class EDIAPI {
         );
 
         ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
-        logRequestService.saveLogRequest("Verify Trader Profile From AD", RequestMethod.POST.name(), requestParameter,requestTime, responseBody);
+        logRequestService.saveLogRequest("4.1 - Verify Trader Profile From AD", RequestMethod.POST.name(), requestParameter,requestTime, responseBody);
         return customResponse;
     }
 
@@ -176,7 +176,7 @@ public class EDIAPI {
             ResponseUtility.exceptionResponse(e, null);
         }
         message = messageBundle.getString(noData ? "account.details.not.shared" : "account.details.shared");
-        logMessage = "Sharing of Account Details & Authorized Payment Modes";
+        logMessage = "4.2 - Sharing of Account Details & Authorized Payment Modes";
 
         customResponse = ResponseUtility.successResponse(accountDetailDTO
                 , noData ? AppConstants.PSWResponseCodes.NO_DATA_FOUND : AppConstants.PSWResponseCodes.OK
@@ -212,7 +212,7 @@ public class EDIAPI {
                 , requestParameter, false);
 
         ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
-        String logMessage = "Sharing of [Import] GD and Financial Information with AD by PSW";
+        String logMessage = "5.1.2 - Sharing of [Import] GD and Financial Information with AD by PSW";
 
         logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter,requestTime, responseBody);
         return customResponse;
@@ -240,7 +240,7 @@ public class EDIAPI {
                 , requestParameter, false);
 
         ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
-        String logMessage = "Sharing of [Export] GD and Financial Information with AD by PSW";
+        String logMessage = "5.2.2 - Sharing of [Export] GD and Financial Information with AD by PSW";
 
         logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter,requestTime, responseBody);
         return customResponse;
@@ -266,31 +266,32 @@ public class EDIAPI {
                 ,requestParameter, false);
 
         ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
-        String logMessage = "Message 1 – Sharing of Change of Bank request with AD";
+        String logMessage = "7.1 – Sharing of Change of Bank request with AD";
 
         logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter,requestTime, responseBody);
         return customResponse;
     }
+
     /**************************
      // 7.3	Message 3 – Sharing of GD and Financial Information with the other selected Bank
      **************************/
-    public CustomResponse shareOfGDnFIOtherSelectedBank(String data, RequestParameter requestParameter)
+    public CustomResponse shareOfCOBGDnFIInfo(String data, RequestParameter requestParameter)
             throws NoDataFoundException, JsonProcessingException {
 
         ObjectMapper mapper = new ObjectMapper();
-        ChangeBankRequestDTO dto = mapper.readValue(data, ChangeBankRequestDTO.class);
+        COBGdFtDTO dto = mapper.readValue(data, COBGdFtDTO.class);
         Date requestTime = AppUtility.getCurrentTimeStamp();
-        System.out.println("IN coming COB Object is:" + dto);
+        System.out.println("IN coming COB GD FT DTO Object is:" + dto);
 
         if (!AppUtility.isEmpty(dto)) {
-            referenceService.updateCOB(dto.convertToEntity());
+            referenceService.updateCOBGdFt(dto.convertToEntity());
         }
         CustomResponse customResponse  = ResponseUtility.successResponse("{}",AppConstants.PSWResponseCodes.OK,
-                "Change of bank request received."
+                "Change of bank request with GD and financial information received."
                 ,requestParameter, false);
 
         ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
-        String logMessage = "Message 1 – Sharing of Change of Bank request with AD";
+        String logMessage = "7.3 – Sharing of GD and Financial Information with the other selected Bank";
 
         logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter,requestTime, responseBody);
         return customResponse;

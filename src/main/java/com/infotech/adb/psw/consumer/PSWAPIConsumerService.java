@@ -1,7 +1,7 @@
 package com.infotech.adb.psw.consumer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.infotech.adb.config.RestTemplateResponseErrorHandler_ToDel;
+import com.infotech.adb.config.RestTemplateResponseErrorHandler;
 import com.infotech.adb.dto.*;
 import com.infotech.adb.service.LogRequestService;
 import com.infotech.adb.util.*;
@@ -394,7 +394,7 @@ public class PSWAPIConsumerService {
         HttpEntity<RequestParameter> request = new HttpEntity<>(requestParameter, headers);
 
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.setErrorHandler(new RestTemplateResponseErrorHandler_ToDel());
+        restTemplate.setErrorHandler(new RestTemplateResponseErrorHandler());
 
         ResponseEntity<ResponseUtility.PSWAPIResponse> response = restTemplate.postForEntity(uri, request, ResponseUtility.PSWAPIResponse.class);
         return response.getBody();
