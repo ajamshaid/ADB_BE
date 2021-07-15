@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -56,7 +55,6 @@ public class LogRequestService {
 
     public LogRequest updateLogRequest(LogRequest logRequest) {
         log.info("updateLogRequest method called..");
-        logRequest.setUpdatedOn(ZonedDateTime.now());
         return logRequestRepository.save(logRequest);
     }
 

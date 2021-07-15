@@ -1,4 +1,4 @@
-package com.infotech.adb.api.consumer;
+package com.infotech.adb.psw.consumer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.infotech.adb.config.RestTemplateResponseErrorHandler_ToDel;
@@ -8,7 +8,7 @@ import com.infotech.adb.util.*;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,8 +23,8 @@ import java.util.UUID;
 
 
 @Log4j2
-@Service
-public class PSWAPIConsumer {
+@Component
+public class PSWAPIConsumerService {
 
     @Autowired
     private LogRequestService logRequestService;
@@ -415,10 +415,10 @@ public class PSWAPIConsumer {
 
         System.out.println("-----Hello----");
 
-        PSWAPIConsumer pswApiConsumer = new PSWAPIConsumer();
+        PSWAPIConsumerService pswApiConsumerService = new PSWAPIConsumerService();
 
         try {
-            PSWAuthTokenResponse authTokenResponse = pswApiConsumer.getAuthorizationToken();
+            PSWAuthTokenResponse authTokenResponse = pswApiConsumerService.getAuthorizationToken();
             System.out.println("-------------PSWAuthTokenResponse: " + authTokenResponse);
 
             AccountDetailDTO accountDetail = new AccountDetailDTO();

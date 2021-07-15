@@ -1,12 +1,12 @@
 package com.infotech.adb.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.infotech.adb.api.consumer.PSWAPIConsumer;
 import com.infotech.adb.dto.*;
 import com.infotech.adb.exceptions.CustomException;
 import com.infotech.adb.exceptions.NoDataFoundException;
 import com.infotech.adb.model.entity.*;
 import com.infotech.adb.model.repository.*;
+import com.infotech.adb.psw.consumer.PSWAPIConsumerService;
 import com.infotech.adb.util.AppConstants;
 import com.infotech.adb.util.AppUtility;
 import com.infotech.adb.util.OpenCsvUtil;
@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.InputStream;
-import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +25,7 @@ import java.util.Optional;
 public class ReferenceService {
 
     @Autowired
-    private PSWAPIConsumer consumer;
+    private PSWAPIConsumerService pswAPIConsumerService;
 
     @Autowired
     private AccountDetailRepository accountDetailRepository;
@@ -77,9 +76,6 @@ public class ReferenceService {
             throw new NoDataFoundException("No Data Found, No Valid Object/Empty in CVS File");
         } else {
             acctDetailList.forEach((acct -> {
-                acct.setCreatedOn(ZonedDateTime.now());
-                acct.setUpdatedOn(ZonedDateTime.now());
-
                 acct.setIban(acct.getIban().replaceAll("\\s+",""));
                 if (!AppUtility.isEmpty(acct.getAuthPMImport())) {
                     acct.setAuthPMImport(acct.getAuthPMImport().replace("|", ","));
@@ -179,12 +175,12 @@ public class ReferenceService {
 
     public ResponseUtility.APIResponse updateFTImportAndShare(FinancialTransactionImportDTO dto) throws JsonProcessingException {
         FinancialTransaction ft = this.updateFinancialTransaction(dto.convertToEntity());
-        return consumer.shareFinancialInformationImport(dto);
+        return pswAPIConsumerService.shareFinancialInformationImport(dto);
     }
 
     public ResponseUtility.APIResponse updateFTExportAndShare(FinancialTransactionExportDTO dto) throws JsonProcessingException {
         FinancialTransaction ft = this.updateFinancialTransaction(dto.convertToEntity());
-        return consumer.shareFinancialInformationExport(dto);
+        return pswAPIConsumerService.shareFinancialInformationExport(dto);
     }
 
     @Transactional
@@ -211,7 +207,7 @@ public class ReferenceService {
 
     public ResponseUtility.APIResponse updateBDAAndShare(BDADTO bdadto) throws JsonProcessingException {
         BDA entity = this.updateBDA(bdadto.convertToEntity());
-        return consumer.shareBDAInformationImport(bdadto);
+        return pswAPIConsumerService.shareBDAInformationImport(bdadto);
     }
 
     @Transactional
@@ -239,7 +235,7 @@ public class ReferenceService {
 
     public ResponseUtility.APIResponse updateBCAAndShare(BCADTO bcadto) throws JsonProcessingException {
         BCA bca = this.updateBCA(bcadto.convertToEntity());
-        return consumer.shareBCAInformationExport(bcadto);
+        return pswAPIConsumerService.shareBCAInformationExport(bcadto);
     }
 
     @Transactional
@@ -312,7 +308,7 @@ public class ReferenceService {
 
     public ResponseUtility.APIResponse updateCOBAndShare(ChangeBankRequestDTO dto) throws JsonProcessingException {
         this.updateCOB(dto.convertToEntity());
-        return consumer.shareCOBApprovalRejectionMsg(dto);
+        return pswAPIConsumerService.shareCOBApprovalRejectionMsg(dto);
     }
 
     @Transactional
@@ -341,7 +337,7 @@ public class ReferenceService {
 
     public ResponseUtility.APIResponse updateGDClearanceAndShare(GDClearanceDTO dto) throws JsonProcessingException {
         this.updateGDClearance(dto.convertToEntity());
-        return consumer.shareGDClearanceMsg(dto);
+        return pswAPIConsumerService.shareGDClearanceMsg(dto);
     }
 
     @Transactional
@@ -368,7 +364,7 @@ public class ReferenceService {
 
     public ResponseUtility.APIResponse updateCancellationOfFTAndShare(CancellationOfFTDTO dto) throws JsonProcessingException {
         this.updateCancellationOfFT(dto.convertToEntity());
-        return consumer.cancellationOfFinancialTransaction(dto);
+        return pswAPIConsumerService.cancellationOfFinancialTransaction(dto);
     }
 
     @Transactional
@@ -395,7 +391,7 @@ public class ReferenceService {
 
     public ResponseUtility.APIResponse updateReveralBCABDAAndShare(ReversalOfBdaBcaDTO dto) throws JsonProcessingException {
         this.updateReversalBDABCA(dto.convertToEntity());
-        return consumer.reversalOfBdaBca(dto);
+        return pswAPIConsumerService.reversalOfBdaBca(dto);
     }
 
     @Transactional
@@ -422,7 +418,7 @@ public class ReferenceService {
 
     public ResponseUtility.APIResponse updateSettlementOfFIAndShare(SettelmentOfFIDTO dto) throws JsonProcessingException {
         this.updateSettlementOfFI(dto.convertToEntity());
-        return consumer.settlementOfFinInstrument(dto);
+        return pswAPIConsumerService.settlementOfFinInstrument(dto);
     }
 
     @Transactional

@@ -5,11 +5,7 @@ import com.infotech.adb.util.AppConstants;
 import com.opencsv.bean.CsvBindByName;
 import lombok.Data;
 
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "ACCOUNT_DETAIL"
@@ -20,8 +16,12 @@ import javax.persistence.UniqueConstraint;
 )
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
-public class AccountDetail extends BaseEntity {
+public class AccountDetail {
 
+    @Id
+    @Column(name = "ID", unique = true, nullable = false, updatable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @CsvBindByName(column = "IBAN")
   //  @CsvBindByPosition(position = 0)

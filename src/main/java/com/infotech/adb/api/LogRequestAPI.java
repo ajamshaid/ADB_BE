@@ -1,4 +1,4 @@
-package com.infotech.adb.api.ad;
+package com.infotech.adb.api;
 
 import com.infotech.adb.dto.LogRequestDTO;
 import com.infotech.adb.exceptions.CustomException;
@@ -6,7 +6,6 @@ import com.infotech.adb.exceptions.DataValidationException;
 import com.infotech.adb.exceptions.NoDataFoundException;
 import com.infotech.adb.model.entity.LogRequest;
 import com.infotech.adb.service.LogRequestService;
-import com.infotech.adb.util.AppConstants;
 import com.infotech.adb.util.AppUtility;
 import com.infotech.adb.util.CustomResponse;
 import com.infotech.adb.util.ResponseUtility;
@@ -24,7 +23,7 @@ import java.util.ResourceBundle;
 @RequestMapping("/logrequest")
 @Log4j2
 @Api(tags = "Logs")
-public class LogRequestController {
+public class LogRequestAPI {
 
     private static final ResourceBundle messageBundle = ResourceBundle.getBundle("messages");
 

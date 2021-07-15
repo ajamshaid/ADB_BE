@@ -1,9 +1,9 @@
 package com.infotech.adb.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.infotech.adb.api.consumer.PSWAPIConsumer;
 import com.infotech.adb.dto.*;
 import com.infotech.adb.model.repository.AccountDetailRepository;
+import com.infotech.adb.psw.consumer.PSWAPIConsumerService;
 import com.infotech.adb.util.ResponseUtility;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class PSWService {
 
     @Autowired
-    PSWAPIConsumer consumer;
+    PSWAPIConsumerService pswapiConsumerService;
 
     @Autowired
     AccountDetailRepository accountDetailRepository;
@@ -28,7 +28,7 @@ public class PSWService {
         String authPMExp = String.join(",", dto.getAuthorizedPaymentModesForExport());
         accountDetailRepository.updateAuthPMByIBAN(dto.getIban(), authPMImport, authPMExp);
         try {
-            pswResponse = consumer.updateAccountAndPMInPWS(dto);
+            pswResponse = pswapiConsumerService.updateAccountAndPMInPWS(dto);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -41,7 +41,7 @@ public class PSWService {
 
         accountDetailRepository.updateStatusByIBAN(dto.getIban(), dto.getAccountStatus());
         try {
-            pswResponse = consumer.updateTraderProfileAccountStatus(dto);
+            pswResponse = pswapiConsumerService.updateTraderProfileAccountStatus(dto);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -52,7 +52,7 @@ public class PSWService {
         ResponseUtility.APIResponse pswResponse = null;
 
         try {
-            pswResponse = consumer.shareNegativeListOfCountries(dto);
+            pswResponse = pswapiConsumerService.shareNegativeListOfCountries(dto);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -63,7 +63,7 @@ public class PSWService {
         ResponseUtility.APIResponse pswResponse = null;
 
         try {
-            pswResponse = consumer.shareNegativeListOfCommodities(dto);
+            pswResponse = pswapiConsumerService.shareNegativeListOfCommodities(dto);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -74,7 +74,7 @@ public class PSWService {
         ResponseUtility.APIResponse pswResponse = null;
 
         try {
-            pswResponse = consumer.shareNegativeListOfSuppliers(dto);
+            pswResponse = pswapiConsumerService.shareNegativeListOfSuppliers(dto);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }

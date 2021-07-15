@@ -2,10 +2,10 @@ package com.infotech.adb.service;
 
 import com.infotech.adb.dto.AccountDetailDTO;
 import com.infotech.adb.dto.IBANVerificationRequest;
-import com.infotech.adb.jms.MqUtility;
-import com.infotech.adb.jms.QinPSW;
 import com.infotech.adb.model.entity.AccountDetail;
 import com.infotech.adb.model.repository.AccountDetailRepository;
+import com.infotech.adb.silkbank.jms.MQUtility;
+import com.infotech.adb.silkbank.jms.QueueIN;
 import com.infotech.adb.util.AppConstants;
 import com.infotech.adb.util.AppUtility;
 import lombok.extern.log4j.Log4j2;
@@ -24,7 +24,7 @@ public class MQServices {
     private AccountDetailRepository accountDetailRepository;
 
     @Autowired
-    private QinPSW qinPSW;
+    private QueueIN queueIN;
 
     // Store Csv File's data to database
 
@@ -32,7 +32,7 @@ public class MQServices {
         log.info("isAccountDetailExists method called..");
         boolean isVerified = false;
         try {
-            MqUtility.MqMessage replyMessage = qinPSW.putMessage(MqUtility.buildAccountVerificationMessage(req));
+            MQUtility.MqMessage replyMessage = queueIN.putMessage(MQUtility.buildAccountVerificationMessage(req));
             if (AppConstants.PSWResponseCodes.VERIFIED.equals(replyMessage.getReqResStr())) {
                 isVerified = true;
             }
@@ -48,16 +48,16 @@ public class MQServices {
         log.info("getAccountDetailsByIban method called..");
 
         AccountDetailDTO dto = null;
-        MqUtility.MqMessage replyMessage = null;
+        MQUtility.MqMessage replyMessage = null;
         try {
-            replyMessage = qinPSW.putMessage(MqUtility.buildGetAccountDetailsMessage(iban));
+            replyMessage = queueIN.putMessage(MQUtility.buildGetAccountDetailsMessage(iban));
         } catch (JMSException e) {
             log.error(e.getMessage());
             e.printStackTrace();
         }
         if (!AppUtility.isEmpty(replyMessage) && !AppUtility.isEmpty(replyMessage.getReqResStr())) {
             //  Parse format as  IBAN|ACC_TITLE|ACCT_NUM|ACCT_STATUS|NTN|CNIC
-            String[] acctDtlAry = replyMessage.getReqResStr().split(MqUtility.DELIMETER_DATA);
+            String[] acctDtlAry = replyMessage.getReqResStr().split(MQUtility.DELIMETER_DATA);
             if (!AppUtility.isEmpty(acctDtlAry) && acctDtlAry.length >= 6) {
                 dto = new AccountDetailDTO();
                 dto.setIban(acctDtlAry[0]);

@@ -1,4 +1,4 @@
-package com.infotech.adb.jms;
+package com.infotech.adb.silkbank.jms;
 
 import com.infotech.adb.model.entity.*;
 import com.infotech.adb.service.ReferenceService;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Log4j2
 @Component
-public class QoutPSWListner {
+public class QueueOutListner {
 
     @Autowired
     ReferenceService referenceService;
@@ -26,9 +26,9 @@ public class QoutPSWListner {
         System.out.println("========================================");
 
         String name = Thread.currentThread().getName();
-        MqUtility.MqMessage replyMessage = MqUtility.parseReplyMessage(msg);
+        MQUtility.MqMessage replyMessage = MQUtility.parseReplyMessage(msg);
         if (!AppUtility.isEmpty(replyMessage)) { //IF Valid Expected Format Message. Else Ignore
-            if (MqUtility.MSG_TYPE_FIN_TRANS_IMPORT.equals(replyMessage.getType())) {
+            if (MQUtility.MSG_TYPE_FIN_TRANS_IMPORT.equals(replyMessage.getType())) {
                 // IF Message 5.1.1  Import Share Financial Transaction Data with PSW
 
                 try {
@@ -37,7 +37,7 @@ public class QoutPSWListner {
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
-            } else if (MqUtility.MSG_TYPE_BDA_IMPORT.equals(replyMessage.getType())) {
+            } else if (MQUtility.MSG_TYPE_BDA_IMPORT.equals(replyMessage.getType())) {
                 // IF Message 5.1.3  BDA Import
                 try {
                     BDA bda = mqMessageParser.parseAndBuildBDAInfoImport(replyMessage.getReqResStr());
@@ -45,7 +45,7 @@ public class QoutPSWListner {
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
-            }  else if (MqUtility.MSG_TYPE_FIN_TRANS_EXPORT.equals(replyMessage.getType())) {
+            }  else if (MQUtility.MSG_TYPE_FIN_TRANS_EXPORT.equals(replyMessage.getType())) {
                 // IF Message 5.2.1  Export Share Financial Transaction Data with PSW
                 try {
                     FinancialTransaction ft = mqMessageParser.parseAndBuildFTExport(replyMessage.getReqResStr());
@@ -53,7 +53,7 @@ public class QoutPSWListner {
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
-            } else if (MqUtility.MSG_TYPE_BCA_EXPORT.equals(replyMessage.getType())) {
+            } else if (MQUtility.MSG_TYPE_BCA_EXPORT.equals(replyMessage.getType())) {
                 // IF Message 5.2.3  BDA Import
                 try {
                     BCA bca = mqMessageParser.parseAndBuildBCAExport(replyMessage.getReqResStr());
@@ -61,7 +61,7 @@ public class QoutPSWListner {
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
-            }else if (MqUtility.MSG_TYPE_CANCELLATION_OF_FT.equals(replyMessage.getType())) {
+            }else if (MQUtility.MSG_TYPE_CANCELLATION_OF_FT.equals(replyMessage.getType())) {
                 // IF Message 8.1  Cancellation of FT
                 try {
                     CancellationOfFT cft = mqMessageParser.parseAndBuildCFT(replyMessage.getReqResStr());
@@ -69,7 +69,7 @@ public class QoutPSWListner {
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
-            }else if (MqUtility.MSG_TYPE_REVERSAL_OF_BDA_BCA.equals(replyMessage.getType())) {
+            }else if (MQUtility.MSG_TYPE_REVERSAL_OF_BDA_BCA.equals(replyMessage.getType())) {
                 // IF Message 9.1 Reversal of BDA/BCA
                 try {
                     ReversalOfBdaBca entity = mqMessageParser.parseAndBuildRevBDABCA(replyMessage.getReqResStr());
@@ -78,7 +78,7 @@ public class QoutPSWListner {
                     ex.printStackTrace();
                 }
             } else {
-                MqUtility.MqMessage reqMessage = MqUtility.objectLockingMap.get(replyMessage.getId());
+                MQUtility.MqMessage reqMessage = MQUtility.objectLockingMap.get(replyMessage.getId());
                 if (AppUtility.isEmpty(reqMessage)) {
                     System.out.println("NO Object Found in ObjectLockingMap for Incoming message:" + replyMessage);
                 } else {
@@ -87,7 +87,7 @@ public class QoutPSWListner {
 
                         synchronized (reqMessage) {
                             // Replace Request Message with Reply Message on Map to be get from Waiter Thread...
-                            MqUtility.objectLockingMap.put(reqMessage.getId(), replyMessage);
+                            MQUtility.objectLockingMap.put(reqMessage.getId(), replyMessage);
                             System.out.println(name + "-> Notifying back to Waiting Thread at MessageId:" + reqMessage.getId());
                             reqMessage.notify();
                         }

@@ -1,4 +1,4 @@
-package com.infotech.adb.jms;
+package com.infotech.adb.silkbank.jms;
 
 import com.infotech.adb.model.entity.*;
 import com.infotech.adb.util.AppConstants;
@@ -16,7 +16,7 @@ public class MQMessageParser {
         FinancialTransaction ft = new FinancialTransaction();
         ft.setType(AppConstants.TYPE_EXPORT);
         if (!AppUtility.isEmpty(data)) {
-            String[] ftDetailsAry = data.split(MqUtility.DELIMETER_DATA);
+            String[] ftDetailsAry = data.split(MQUtility.DELIMETER_DATA);
             ft.setNtn(ftDetailsAry[0]);
 
             ft.setName(ftDetailsAry[1]);
@@ -36,9 +36,9 @@ public class MQMessageParser {
                 pi.setFinancialInstrumenExpiryDate(new Date(ftDetailsAry[8]));
             }
 
-            String[] hsCodeAry = ftDetailsAry.length >= 10 ? ftDetailsAry[9].split(MqUtility.DELIMETER_MULTIPLE_DATA) : new String[]{};
-            String[] qtyAry = ftDetailsAry.length >= 11 ? ftDetailsAry[10].split(MqUtility.DELIMETER_MULTIPLE_DATA) : new String[]{};
-            String[] descAry = ftDetailsAry.length >= 12 ? ftDetailsAry[11].split(MqUtility.DELIMETER_MULTIPLE_DATA) : new String[]{};
+            String[] hsCodeAry = ftDetailsAry.length >= 10 ? ftDetailsAry[9].split(MQUtility.DELIMETER_MULTIPLE_DATA) : new String[]{};
+            String[] qtyAry = ftDetailsAry.length >= 11 ? ftDetailsAry[10].split(MQUtility.DELIMETER_MULTIPLE_DATA) : new String[]{};
+            String[] descAry = ftDetailsAry.length >= 12 ? ftDetailsAry[11].split(MQUtility.DELIMETER_MULTIPLE_DATA) : new String[]{};
 
 
             Set<ItemInformation> itemInformationSet = new HashSet<>(hsCodeAry.length);
@@ -74,7 +74,7 @@ public class MQMessageParser {
         ft.setType(AppConstants.TYPE_IMPORT);
 
         if (!AppUtility.isEmpty(data)) {
-            String[] ftDetailsAry = data.split(MqUtility.DELIMETER_DATA);
+            String[] ftDetailsAry = data.split(MQUtility.DELIMETER_DATA);
             ft.setNtn(ftDetailsAry[0]);
 
             ft.setName(ftDetailsAry[1]);
@@ -96,9 +96,9 @@ public class MQMessageParser {
             pi.setLcContractNo(ftDetailsAry[11]);
 
 
-            String[] hsCodeAry = ftDetailsAry[12].split(MqUtility.DELIMETER_MULTIPLE_DATA);
-            String[] qtyAry = ftDetailsAry[13].split(MqUtility.DELIMETER_MULTIPLE_DATA);
-            String[] descAry = ftDetailsAry[14].split(MqUtility.DELIMETER_MULTIPLE_DATA);
+            String[] hsCodeAry = ftDetailsAry[12].split(MQUtility.DELIMETER_MULTIPLE_DATA);
+            String[] qtyAry = ftDetailsAry[13].split(MQUtility.DELIMETER_MULTIPLE_DATA);
+            String[] descAry = ftDetailsAry[14].split(MQUtility.DELIMETER_MULTIPLE_DATA);
 
             Set<ItemInformation> itemInformationSet = new HashSet<>(hsCodeAry.length);
             for (int index = 0; index < hsCodeAry.length; index++) {
@@ -134,7 +134,7 @@ public class MQMessageParser {
      //   ft.setType(AppConstants.TYPE_IMPORT);
 
         if (!AppUtility.isEmpty(data)) {
-            String[] ftDetailsAry = data.split(MqUtility.DELIMETER_DATA);
+            String[] ftDetailsAry = data.split(MQUtility.DELIMETER_DATA);
             bda.setImporterNtn(ftDetailsAry[0]);
             bda.setImporterName(ftDetailsAry[1]);
             bda.setIban(ftDetailsAry[2]);
@@ -163,7 +163,7 @@ public class MQMessageParser {
         //   ft.setType(AppConstants.TYPE_IMPORT);
 
         if (!AppUtility.isEmpty(data)) {
-            String[] ftDetailsAry = data.split(MqUtility.DELIMETER_DATA);
+            String[] ftDetailsAry = data.split(MQUtility.DELIMETER_DATA);
             bca.setExporterNtn(ftDetailsAry[0]);
             bca.setExporterName(ftDetailsAry[1]);
             bca.setIban(ftDetailsAry[2]);
@@ -195,7 +195,7 @@ public class MQMessageParser {
         //Sharing of Cancellation of FT
         CancellationOfFT cft = new CancellationOfFT();
         if (!AppUtility.isEmpty(data)) {
-            String[] ftDetailsAry = data.split(MqUtility.DELIMETER_DATA);
+            String[] ftDetailsAry = data.split(MQUtility.DELIMETER_DATA);
             cft.setTradeType(ftDetailsAry[0]);
             cft.setTraderNTN(ftDetailsAry[1]);
             cft.setTraderName(ftDetailsAry[2]);
@@ -211,7 +211,7 @@ public class MQMessageParser {
         // Reversal of BDA/BCA
         ReversalOfBdaBca entity = new ReversalOfBdaBca();
         if (!AppUtility.isEmpty(data)) {
-            String[] ftDetailsAry = data.split(MqUtility.DELIMETER_DATA);
+            String[] ftDetailsAry = data.split(MQUtility.DELIMETER_DATA);
 
             entity.setTradeType(ftDetailsAry[0]);
             entity.setTraderNTN(ftDetailsAry[1]);

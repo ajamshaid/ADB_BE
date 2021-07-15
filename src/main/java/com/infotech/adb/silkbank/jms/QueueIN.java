@@ -1,4 +1,4 @@
-package com.infotech.adb.jms;
+package com.infotech.adb.silkbank.jms;
 
 import com.infotech.adb.util.AppUtility;
 import lombok.extern.log4j.Log4j2;
@@ -10,7 +10,7 @@ import javax.jms.JMSException;
 
 @Log4j2
 @Component
-public class QinPSW {
+public class QueueIN {
     static final String qName = "QIN_PSW"; // A queue from the default MQ Developer container config
     static final long timeOut = 1 * 60 * 1000; // x * 1000 = x seconds
 
@@ -18,13 +18,13 @@ public class QinPSW {
     JmsTemplate jmsTemplate;
     //@TODO JMSTemplate is not closing Que Connection. Please check.
 
-    public MqUtility.MqMessage putMessage(MqUtility.MqMessage message) throws JMSException {
+    public MQUtility.MqMessage putMessage(MQUtility.MqMessage message) throws JMSException {
 
         // Create the JMS Template object to control connections and sessions.
         //JmsTemplate jmsTemplate = context.getBean(JmsTemplate.class);
         // jmsTemplate.setReceiveTimeout(15 * 1000); // How long to wait for a reply - milliseconds
 
-        MqUtility.objectLockingMap.put(message.getId(),message);
+        MQUtility.objectLockingMap.put(message.getId(),message);
 
         log.info("Placing Message["+message.getType()+"] on Queue["+qName+"] with MessageID="+message.getId());
         jmsTemplate.convertAndSend(qName, message.getReqResStr());
@@ -46,7 +46,7 @@ public class QinPSW {
             message.setDesc("Request Interrupted/Timeout");
         }
 
-        message = MqUtility.objectLockingMap.remove(message.getId());
+        message = MQUtility.objectLockingMap.remove(message.getId());
 
         log.debug(threadName+"-> Notified at time:"+AppUtility.getCurrentTimeStampString());
         log.debug(threadName+"-> Returned Message is: "+message);

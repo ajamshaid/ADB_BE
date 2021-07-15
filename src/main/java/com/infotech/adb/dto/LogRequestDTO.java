@@ -38,7 +38,6 @@ public class LogRequestDTO implements BaseDTO<LogRequestDTO, LogRequest> {
 //        logRequest.setResponseTime(this.responseTime);
 //        logRequest.setRequestTime(this.requestTime);
         logRequest.setMsgIdentifier(this.messageName);
-        logRequest.setCreatedOn(this.createdOn);
         logRequest.setRequestMethod(this.requestMethod);
         return logRequest;
     }
@@ -52,7 +51,6 @@ public class LogRequestDTO implements BaseDTO<LogRequestDTO, LogRequest> {
         this.responseTime = entity.getResponseTime();
         this.requestTime = entity.getRequestTime();
         this.messageName = entity.getMsgIdentifier();
-        this.createdOn = entity.getCreatedOn();
         this.requestMethod = entity.getRequestMethod();
 //        this.requestFormattedTime = AppUtility.formatZonedDateTime("HH:mm a", entity.getRe);
         this.responsePayload = JsonUtils.jsonToObject(entity.getResponsePayload(), ResponseUtility.PSWAPIResponse.class);

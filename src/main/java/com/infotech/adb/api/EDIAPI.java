@@ -109,7 +109,9 @@ public class EDIAPI {
                     case "306": // 7.1.1 Message 1 – Sharing of Change of Bank request with AD
                         customResponse = this.chageOfBankRequest(data, requestParameter);
                         break;
-
+                    case "307": // 7.3 Message 3 – Sharing of GD and FI with the Other Selected Bank
+                        customResponse = this.chageOfBankRequest(data, requestParameter);
+                        break;
                     default: // Default Custom response
                         log.info("No Case Matched for processing code:" + processingCode);
                         throw new DataValidationException("Invalid Request! No Processing Code Matched");
@@ -269,68 +271,29 @@ public class EDIAPI {
         logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter,requestTime, responseBody);
         return customResponse;
     }
+    /**************************
+     // 7.3	Message 3 – Sharing of GD and Financial Information with the other selected Bank
+     **************************/
+    public CustomResponse shareOfGDnFIOtherSelectedBank(String data, RequestParameter requestParameter)
+            throws NoDataFoundException, JsonProcessingException {
 
-/*
-    public CustomResponse getBuildAndLogResponseByRequestType(RequestParameter requestBody
-            , String requestType)
-            throws CustomException, DataValidationException, NoDataFoundException {
+        ObjectMapper mapper = new ObjectMapper();
+        ChangeBankRequestDTO dto = mapper.readValue(data, ChangeBankRequestDTO.class);
+        Date requestTime = AppUtility.getCurrentTimeStamp();
+        System.out.println("IN coming COB Object is:" + dto);
 
-        CustomResponse customResponse = null;
-
-        if (RequestParameter.isValidIBANRequest(requestBody, true)) {
-            AccountDetailDTO accountDetail = null;
-            try {
-                IBANVerificationRequest ibanVerificationRequest = requestBody.getData();
-                accountDetail = mqService.getAccountDetailsByIban(ibanVerificationRequest.getIban());
-
-            } catch (Exception e) {
-                ResponseUtility.exceptionResponse(e, null);
-            }
-            boolean noData = AppUtility.isEmpty(accountDetail);
-            BaseDTO dto = null;
-            String message = "";
-            String logMessage = "";
-/*
-            if (AppConstants.REQ_TYPE_ACCT_DETAILS_WITH_PM.equals(requestType)) {
-                dto = noData ? null : new AccountDetailDTO();//accountDetail);
-                message = messageBundle.getString(noData ? "account.details.not.shared" : "account.details.shared");
-                logMessage = "Sharing of Account Details & Authorized Payment Modes";
-            } else if (AppConstants.REQ_TYPE_RES_COUNTRIES.equals(requestType)) {
-                dto = noData ? null : new RestrictedCountriesDTO(accountDetail);
-                message = messageBundle.getString(noData ? "negative.countries.not.shared" : "negative.countries.shared");
-                logMessage = "Sharing Negative List of Countries";
-            } else if (AppConstants.REQ_TYPE_RES_COMMODITIES.equals(requestType)) {
-                dto = noData ? null : new RestrictedCommoditiesDTO(accountDetail);
-                message = messageBundle.getString(noData ? "negative.commodities.not.shared" : "negative.commodities.shared");
-                logMessage = "Sharing Negative List of Countries";
-            } else if (AppConstants.REQ_TYPE_RES_SUPPLIERS.equals(requestType)) {
-                dto = noData ? null : new RestrictedSuppliersDTO(accountDetail);
-                message = messageBundle.getString(noData ? "negative.suppliers.not.shared" : "negative.suppliers.shared");
-                logMessage = "Sharing Negative List of Countries";
-            }
- * /
-            customResponse = ResponseUtility.successResponse(dto
-                    , noData ? AppConstants.PSWResponseCodes.NO_DATA_FOUND : AppConstants.PSWResponseCodes.OK
-                    , message
-                    , requestBody,false
-            );
-            ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
-            logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestBody, responseBody);
+        if (!AppUtility.isEmpty(dto)) {
+            referenceService.updateCOB(dto.convertToEntity());
         }
+        CustomResponse customResponse  = ResponseUtility.successResponse("{}",AppConstants.PSWResponseCodes.OK,
+                "Change of bank request received."
+                ,requestParameter, false);
+
+        ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
+        String logMessage = "Message 1 – Sharing of Change of Bank request with AD";
+
+        logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter,requestTime, responseBody);
         return customResponse;
     }
-
-    //**************************
-    // 4.2.	Message 2 – Sharing of Account Details & Authorized Payment Modes with PSW by AD
-    // ************************* * /
-@RequestMapping(value = "/account/details", method = RequestMethod.POST)
-public CustomResponse getAccountDetails(@RequestBody RequestParameter<IBANVerificationRequest> requestBody)
-        throws CustomException, DataValidationException, NoDataFoundException {
-    return getBuildAndLogResponseByRequestType(requestBody, AppConstants.REQ_TYPE_ACCT_DETAILS_WITH_PM);
 }
-
- */
-
-}
-
 

@@ -8,10 +8,7 @@ import com.infotech.adb.util.ResponseUtility;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import java.time.ZonedDateTime;
+import javax.persistence.*;
 import java.util.Date;
 
 @EqualsAndHashCode(callSuper = false)
@@ -19,7 +16,12 @@ import java.util.Date;
 @Entity
 @Table(name = "LOG_REQUEST")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LogRequest extends BaseEntity {
+public class LogRequest {
+
+    @Id
+    @Column(name = "ID", unique = true, nullable = false, updatable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "RESPONSE_MESSAGE", nullable = false)
     private String responseMessage;
@@ -61,7 +63,6 @@ public class LogRequest extends BaseEntity {
             logRequest.setRequestMethod(messageType);
             logRequest.setRequestTime(requestTime);
             logRequest.setResponseTime(AppUtility.getCurrentTimeStamp());
-            logRequest.setCreatedOn(ZonedDateTime.now());
             logRequest.setResponseCode(apiResponse.getMessage().getCode());
             logRequest.setResponseMessage(apiResponse.getMessage().getDescription());
         try {

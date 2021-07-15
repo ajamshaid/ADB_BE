@@ -1,4 +1,4 @@
-package com.infotech.adb.jms;
+package com.infotech.adb.silkbank.jms;
 
 import com.infotech.adb.dto.IBANVerificationRequest;
 import com.infotech.adb.util.AppUtility;
@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Objects;
 
 @Log4j2
-public class MqUtility {
+public class MQUtility {
 
 
     public static final String MSG_TYPE_ACCT_VERIFICATION = "PSW001";
@@ -27,7 +27,7 @@ public class MqUtility {
     public static final String DELIMETER_DATA = "\\|";
     public static final String DELIMETER_MULTIPLE_DATA = "\\^";
 
-    public static HashMap<String, MqUtility.MqMessage> objectLockingMap = new HashMap<>();
+    public static HashMap<String, MQUtility.MqMessage> objectLockingMap = new HashMap<>();
 
 
     // Message 4.1 Acct Verification Message

@@ -1,4 +1,4 @@
-package com.infotech.adb.api.fe;
+package com.infotech.adb.api;
 
 
 import com.infotech.adb.dto.*;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/psw")
 @Log4j2
 @Api(tags = "@psw")
-public class PSWRequestAPI {
+public class PushToPSWAPI {
 
     @Autowired
     private PSWService pswService;

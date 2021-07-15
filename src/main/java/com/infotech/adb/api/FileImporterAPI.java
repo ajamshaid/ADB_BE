@@ -5,13 +5,12 @@ import com.infotech.adb.exceptions.CustomException;
 import com.infotech.adb.exceptions.DataValidationException;
 import com.infotech.adb.service.ReferenceService;
 import com.infotech.adb.util.AppConstants;
+import com.infotech.adb.util.CustomResponse;
 import com.infotech.adb.util.OpenCsvUtil;
 import com.infotech.adb.util.ResponseUtility;
 import io.swagger.annotations.Api;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,7 +27,7 @@ public class FileImporterAPI {
     private ReferenceService referenceService;
 
     @PostMapping("/iban")
-    public ResponseEntity<?> uploadTraderProfilesFile(@RequestParam("csvfile") MultipartFile csvfile) throws CustomException {
+    public CustomResponse uploadTraderProfilesFile(@RequestParam("csvfile") MultipartFile csvfile) throws CustomException {
 
         String message = "";
 
@@ -47,11 +46,12 @@ public class FileImporterAPI {
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e, AppConstants.DBConstraints.UNIQ_IBAN);
         }
-        return new ResponseEntity<>(csvfile.getOriginalFilename() + " : Upload File Successfully!", HttpStatus.OK);
+
+        return ResponseUtility.successResponse(null, null , csvfile.getOriginalFilename() + " : Upload File Successfully!");
     }
 
     @PostMapping("/neg-list")
-    public ResponseEntity<?> uploadBankNegList(@RequestParam("csvfile") MultipartFile csvfile) throws CustomException {
+    public CustomResponse uploadBankNegList(@RequestParam("csvfile") MultipartFile csvfile) throws CustomException {
 
         String message = "";
         // Checking the upload-file's name before processing
@@ -69,6 +69,6 @@ public class FileImporterAPI {
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e, AppConstants.DBConstraints.UNIQ_IBAN);
         }
-        return new ResponseEntity<>(csvfile.getOriginalFilename() + " : Upload File Successfully!", HttpStatus.OK);
+        return ResponseUtility.successResponse(null, null , csvfile.getOriginalFilename() + " : Upload File Successfully!");
     }
 }

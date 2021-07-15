@@ -2,8 +2,8 @@ package com.infotech.adb.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.infotech.adb.jms.MqUtility;
 import com.infotech.adb.model.entity.ReversalOfBdaBca;
+import com.infotech.adb.silkbank.jms.MQUtility;
 import com.opencsv.exceptions.CsvException;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
@@ -69,7 +69,7 @@ public class TestMain {
         //Sharing of Cancellation of FT
         ReversalOfBdaBca entity = new ReversalOfBdaBca();
         if (!AppUtility.isEmpty(data)) {
-            String[] ftDetailsAry = data.split(MqUtility.DELIMETER_DATA);
+            String[] ftDetailsAry = data.split(MQUtility.DELIMETER_DATA);
 
             entity.setTradeType(ftDetailsAry[0]);
             entity.setTraderNTN(ftDetailsAry[1]);
