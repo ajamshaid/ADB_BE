@@ -68,7 +68,7 @@ public class GDImportDTO implements BaseDTO<GDImportDTO, GD> {
 
             if(!AppUtility.isEmpty(this.getFinancialInfo().getModeOfPayment()) &&
             AppConstants.PAYMENT_MODE.LETTER_OF_CREDIT.equalsIgnoreCase(this.getFinancialInfo().getModeOfPayment())){
-                ft.setModeOfPayment(AppConstants.PAYMENT_MODE.LC_VALUE);
+                ft.setModeOfPayment(AppConstants.PAYMENT_MODE.IMP_LC_VALUE);
             }else{
                 ft.setModeOfPayment(this.getFinancialInfo().getModeOfPayment());
             }

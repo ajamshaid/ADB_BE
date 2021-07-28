@@ -23,10 +23,16 @@ public class AppConstants {
 
         public final static String LETTER_OF_CREDIT = "Letter of Credit";
 
-        public final static String LC_VALUE = "301";
-        public final static String IMPORT_OPEN_ACCOUNT = "302";
-        public final static String IMPORT_ADVANCE_PAYMENT = "303";
-        public final static String IMPORT_CC = "304";
+        public final static String IMP_LC_VALUE = "301";
+        public final static String IMP_OPEN_ACCOUNT_VALUE = "302";
+        public final static String IMP_ADV_PAYMENT_VALUE = "303";
+        public final static String IMP_CC_VALUE = "304";
+        public final static String IMP_REMITTANCE_NOT_INVOLVED_VALUE = "309";
+
+        public final static String EXP_OPEN_ACCOUNT_VALUE = "305";
+        public final static String EXP_ADV_PAYMENT_VALUE = "306";
+        public final static String EXP_WITH_LC_VALUE = "307";
+        public final static String EXP_WITH_OUT_LC_VALUE = "308";
 
     }
     public static class PSW {

@@ -278,14 +278,24 @@ public class EDIAPI {
     public CustomResponse shareOfCOBGDnFIInfo(String data, RequestParameter requestParameter)
             throws NoDataFoundException, JsonProcessingException {
 
-        ObjectMapper mapper = new ObjectMapper();
-        COBGdFtDTO dto = mapper.readValue(data, COBGdFtDTO.class);
-        Date requestTime = AppUtility.getCurrentTimeStamp();
-        System.out.println("IN coming COB GD FT DTO Object is:" + dto);
 
-        if (!AppUtility.isEmpty(dto)) {
-            referenceService.updateCOBGdFt(dto.convertToEntity());
+//        JsonParser springParser = JsonParserFactory.getJsonParser();
+////        String data = springParser.parseMap(reqBodyStr).get("data").toString();
+
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode node = mapper.readTree(data);
+        String tradeType = node.get("tradeTranType").textValue();
+        if("01".equals(tradeType)) {
+            COBGdFtDTOImport dto = new COBGdFtDTOImport();
+            dto = mapper.readValue(data, COBGdFtDTOImport.class);
+            System.out.println("IN coming COB GD FT DTO Object is:" + dto);
+            if (!AppUtility.isEmpty(dto)) {
+                referenceService.updateCOBGdFt(dto.convertToEntity());
+            }
+        }else if("02".equals(tradeType)) {
+            System.out.println("I am export COB");
         }
+        Date requestTime = AppUtility.getCurrentTimeStamp();
         CustomResponse customResponse  = ResponseUtility.successResponse("{}",AppConstants.PSWResponseCodes.OK,
                 "Change of bank request with GD and financial information received."
                 ,requestParameter, false);

@@ -26,7 +26,7 @@ public class LogRequestService {
 
 
         LogRequest logRequest = LogRequest.buildNewObject(messageName, RequestMethod.POST.name(), requestBody, requestTime, apiResponse);;
-        System.out.println("Going to save Log Request :"+logRequest);
+        System.out.println("Going to save Log Request :"+logRequest.getResponseMessage());
    //     System.out.println("-------Saving Log object to DB is disabled for testing-----");
         this.createLogRequest(logRequest);
     }
