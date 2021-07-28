@@ -2,16 +2,13 @@ package com.infotech.adb.exceptions;
 
 import com.infotech.adb.util.ResponseUtility;
 import lombok.Data;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.log4j.Log4j2;
 
 @SuppressWarnings("serial")
 @Data
+@Log4j2
 public class PSWAPIException extends Exception {
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    ResponseUtility.APIResponse apiResponse;
+ ResponseUtility.APIResponse apiResponse;
 
     public PSWAPIException() {
         super();
@@ -25,6 +22,6 @@ public class PSWAPIException extends Exception {
     public PSWAPIException(Throwable cause) {
         super(cause);
       //  cause.printStackTrace();
-        this.logger.error(cause.getMessage());
+        log.error(cause.getMessage());
     }
 }

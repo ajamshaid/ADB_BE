@@ -7,8 +7,8 @@
         </Console>
         <!-- File Appender -->
         <!--disable while creating build-->
-        <RollingFile name="File" fileName="C:/ADBroker/appLog.log"
-                     filePattern="C:/ADBroker/appLog-%d{yyyy-MM-dd}-%i.log">
+        <RollingFile name="File" fileName="D:/ADBroker/sc.log"
+                     filePattern="D:/ADBroker/sc-%d{yyyy-MM-dd}-%i.log">
             <PatternLayout pattern="%d{yyyy-MMM-dd HH:mm:ss a} [%t] %-5level %logger{36} - %msg%n"/>
             <Policies>
                 <SizeBasedTriggeringPolicy size="40MB"/>
@@ -37,7 +37,7 @@
 
     <Loggers>
         <!-- Log everything in custom package -->
-        <Logger name="com.infotech" level="debug" additivity="false">
+        <Logger name="com.infotech.adb" level="debug" additivity="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="File"/>
         </Logger>
@@ -62,7 +62,7 @@
             <AppenderRef ref="File"/>
         </Logger>
 
-        <Root level="debug">
+        <Root level="error">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="File"/>
         </Root>

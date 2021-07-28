@@ -3,6 +3,7 @@ package com.infotech.adb;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,8 +18,8 @@ import org.springframework.web.filter.CommonsRequestLoggingFilter;
 @SpringBootApplication
 @EnableJms
 @EnableTransactionManagement
+@Log4j2
 public class AdcApplication extends SpringBootServletInitializer {
-
 
     @Value("${psw.base.url}")
     private static String PSW_BASE_URL;
@@ -35,14 +36,13 @@ public class AdcApplication extends SpringBootServletInitializer {
         ConfigurableApplicationContext context = SpringApplication.run(AdcApplication.class, args);
         printStarted();
         System.out.println("--------------"+PSW_BASE_URL);
-//        WMQRequestor wmqRequestor = context.getBean(WMQRequestor.class);
-//
-//        try {
-//            WMQMessage message = new WMQMessage("123456","send me");
-//            wmqRequestor.sendMessageToPWSQIN(message);
-//        } catch (JMSException e) {
-//            e.printStackTrace();
-//        }
+
+
+        log.info("Info level log message");
+        log.debug("Debug level log message");
+        log.error("Error level log message");
+
+
 
     }
 

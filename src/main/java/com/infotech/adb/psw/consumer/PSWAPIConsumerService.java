@@ -37,7 +37,7 @@ public class PSWAPIConsumerService {
                 HTTPClientUtils.getClientHttpRequestFactory(
                         AppConstants.PSW.CLIENT_ID, AppConstants.PSW.CLIENT_SECRET));
 
-        System.out.println("AppConstants.PSW.BASE_URL :" + AppConstants.PSW.BASE_URL);
+        log.info("AppConstants.PSW.BASE_URL :" + AppConstants.PSW.BASE_URL);
 
         UriComponents uriBuilder = UriComponentsBuilder.fromHttpUrl(
                 AppConstants.PSW.BASE_URL + AppConstants.PSW.API_AUTH).build();
@@ -57,7 +57,6 @@ public class PSWAPIConsumerService {
         try {
             ResponseEntity<String> result = restTemplate.postForEntity(uriBuilder.toUri(), request, String.class);
 
-            System.out.println("________________Status Code:" + result.getStatusCode());
             log.debug("________________Status Code:" + result.getStatusCode());
             log.debug("________________Body:" + result.getBody());
 
@@ -66,6 +65,7 @@ public class PSWAPIConsumerService {
             authTokenResponse.setMessage("Authentication Successful.");
 
             System.out.println("------------------AuthTokem Response" + authTokenResponse);
+            log.debug("------------------AuthTokem Response" + authTokenResponse);
         } catch (HttpStatusCodeException ex) {
             HttpStatus statusCode = ex.getStatusCode();
             if (HttpStatus.UNAUTHORIZED == statusCode) {

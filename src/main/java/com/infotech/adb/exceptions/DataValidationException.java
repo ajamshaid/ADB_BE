@@ -1,16 +1,14 @@
 package com.infotech.adb.exceptions;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @SuppressWarnings("serial")
 @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+@Log4j2
 public class DataValidationException extends Exception {
     String message = "Data is not valid";
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public DataValidationException() {
         super();
@@ -19,7 +17,7 @@ public class DataValidationException extends Exception {
     public DataValidationException(String message) {
         super(message);
         this.message = message;
-        logger.error(message);
+        log.error(message);
     }
 
     public DataValidationException(Throwable cause) {
@@ -29,7 +27,7 @@ public class DataValidationException extends Exception {
     public DataValidationException(String message, Throwable cause) {
         super(message, cause);
         this.message = message;
-        logger.error(message);
+        log.error(message);
     }
 
     @Override

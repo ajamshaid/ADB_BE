@@ -1,14 +1,13 @@
 package com.infotech.adb.exceptions;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.log4j.Log4j2;
 
 @SuppressWarnings("serial")
+
+@Log4j2
 public class CustomException extends Exception {
 
     String message = "Sorry for the inconvenience. The system will be restored shortly";
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public CustomException() {
         super();
@@ -17,20 +16,20 @@ public class CustomException extends Exception {
     public CustomException(String message) {
         super(message);
         this.message = message;
-        this.logger.error(message);
+        log.error(message);
     }
 
     public CustomException(Throwable cause) {
         super(cause);
       //  cause.printStackTrace();
-        this.logger.error(cause.getMessage());
+        log.error(cause.getMessage());
     }
 
     public CustomException(String message, Throwable cause) {
         super(message, cause);
         this.setMessage(message);
        // cause.printStackTrace();
-        this.logger.error(this.message);
+        log.error(this.message);
     }
 
     @Override
