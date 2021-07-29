@@ -2,7 +2,8 @@ package com.infotech.adb.api.ref;
 
 
 import com.infotech.adb.dto.COBGdFtDTO;
-import com.infotech.adb.dto.COBGdFtDTOImport;
+import com.infotech.adb.dto.COBGdFtExportDTO;
+import com.infotech.adb.dto.COBGdFtImportDTO;
 import com.infotech.adb.exceptions.CustomException;
 import com.infotech.adb.exceptions.DataValidationException;
 import com.infotech.adb.exceptions.NoDataFoundException;
@@ -62,9 +63,9 @@ public class COBGdFtAPI {
 
         COBGdFtDTO dto = null;
         if("01".equalsIgnoreCase(entity.getTradeTranType())){
-            dto = new COBGdFtDTOImport();
+            dto = new COBGdFtImportDTO();
         }else{
-
+            dto = new COBGdFtExportDTO();
         }
         return ResponseUtility.buildResponseObject(entity, dto,true);
     }

@@ -1,5 +1,6 @@
 package com.infotech.adb.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -132,6 +133,11 @@ public class BCA {
 
     @Column(name = "REMARKS", length = 300)
     public String remarks;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name="COB_GD_FT_ID", nullable=true )
+    private COBGdFt cobGdFt;
 
 }
 

@@ -1,6 +1,7 @@
 package com.infotech.adb.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.infotech.adb.dto.*;
@@ -277,23 +278,26 @@ public class EDIAPI {
      **************************/
     public CustomResponse shareOfCOBGDnFIInfo(String data, RequestParameter requestParameter)
             throws NoDataFoundException, JsonProcessingException {
-
-
-//        JsonParser springParser = JsonParserFactory.getJsonParser();
-////        String data = springParser.parseMap(reqBodyStr).get("data").toString();
-
         ObjectMapper mapper = new ObjectMapper();
         JsonNode node = mapper.readTree(data);
         String tradeType = node.get("tradeTranType").textValue();
+
         if("01".equals(tradeType)) {
-            COBGdFtDTOImport dto = new COBGdFtDTOImport();
-            dto = mapper.readValue(data, COBGdFtDTOImport.class);
+
+            COBGdFtImportDTO dto = mapper.readValue(data, COBGdFtImportDTO.class);
             System.out.println("IN coming COB GD FT DTO Object is:" + dto);
             if (!AppUtility.isEmpty(dto)) {
                 referenceService.updateCOBGdFt(dto.convertToEntity());
             }
         }else if("02".equals(tradeType)) {
-            System.out.println("I am export COB");
+            System.out.println("------------I am export COB----------");
+            mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+            COBGdFtExportDTO dto = mapper.readValue(data, COBGdFtExportDTO.class);
+
+            System.out.println("IN coming COB GD FT DTO Object is:" + dto);
+            if (!AppUtility.isEmpty(dto)) {
+                referenceService.updateCOBGdFt(dto.convertToEntity());
+            }
         }
         Date requestTime = AppUtility.getCurrentTimeStamp();
         CustomResponse customResponse  = ResponseUtility.successResponse("{}",AppConstants.PSWResponseCodes.OK,

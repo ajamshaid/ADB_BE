@@ -31,10 +31,19 @@ public class COBGdFt {
     @JoinColumn(name="FT_ID", nullable=false )
     private FinancialTransaction ft;
 
+
+    // Import GD and BDA
     @OneToMany(mappedBy = "cobGdFt", fetch = FetchType.LAZY , cascade = CascadeType.ALL)
     private Set<GD> gdSet;
 
     @OneToMany(mappedBy = "cobGdFt", fetch = FetchType.LAZY , cascade = CascadeType.ALL)
     private Set<BDA> bdaSet;
 
-    }
+    // Export GD and BCA
+    @OneToMany(mappedBy = "cobGdFt", fetch = FetchType.LAZY , cascade = CascadeType.ALL)
+    private Set<GDExport> gdExportSet;
+
+    @OneToMany(mappedBy = "cobGdFt", fetch = FetchType.LAZY , cascade = CascadeType.ALL)
+    private Set<BCA> bcaSet;
+
+}

@@ -1,8 +1,8 @@
 package com.infotech.adb.dto;
 
-import com.infotech.adb.model.entity.BDA;
+import com.infotech.adb.model.entity.BCA;
 import com.infotech.adb.model.entity.COBGdFt;
-import com.infotech.adb.model.entity.GD;
+import com.infotech.adb.model.entity.GDExport;
 import com.infotech.adb.util.AppUtility;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,10 +12,10 @@ import java.util.Set;
 
 @Data
 @NoArgsConstructor
-public class COBGdFtDTOImport extends COBGdFtDTO {
-    private FinancialTransactionImportDTO financialInstrumentInfo;
-    private Set<GDImportDTO> gdInfo;
-    private Set<BDADTO> bankAdviceInfo;
+public class COBGdFtExportDTO extends COBGdFtDTO {
+    private FinancialTransactionExportDTO financialInstrumentInfo;
+    private Set<GDExportDTO> gdInfo;
+    private Set<BCADTO> bankAdviceInfo;
 
     @Override
     public COBGdFt convertToEntity() {
@@ -24,28 +24,28 @@ public class COBGdFtDTOImport extends COBGdFtDTO {
         entity.setCobUniqueIdNumber((this.getCobUniqueIdNumber()));
         entity.setTradeTranType(this.getTradeTranType());
         entity.setFt(this.financialInstrumentInfo.convertToEntity());
-        entity.getFt().setType("COB_IMPORT");
+        entity.getFt().setType("COB_EXPORT");
 
         // GD Sets
         if (!AppUtility.isEmpty(this.getGdInfo())) {
-            HashSet<GD> set = new HashSet<>();
-            for (GDImportDTO dto : this.getGdInfo()) {
-                GD en = dto.convertToEntity();
+            HashSet<GDExport> set = new HashSet<>();
+            for (GDExportDTO dto : this.getGdInfo()) {
+                GDExport en = dto.convertToEntity();
                 en.setCobGdFt(entity);
                 set.add(en);
             }
-            entity.setGdSet(set);
+            entity.setGdExportSet(set);
         }
 
         // Bank Advice Sets
         if (!AppUtility.isEmpty(this.getBankAdviceInfo())) {
-            HashSet<BDA> set = new HashSet<>();
-            for (BDADTO dto : this.getBankAdviceInfo()) {
-                BDA en = dto.convertToEntity();
+            HashSet<BCA> set = new HashSet<>();
+            for (BCADTO dto : this.getBankAdviceInfo()) {
+                BCA en = dto.convertToEntity();
                 en.setCobGdFt(entity);
                 set.add(en);
             }
-            entity.setBdaSet(set);
+            entity.setBcaSet(set);
         }
       return entity;
     }
@@ -58,31 +58,31 @@ public class COBGdFtDTOImport extends COBGdFtDTO {
         this.tradeTranType = entity.getTradeTranType();
 
         if (!AppUtility.isEmpty(entity.getFt())) {
-            this.financialInstrumentInfo = new FinancialTransactionImportDTO(entity.getFt());
+            this.financialInstrumentInfo = new FinancialTransactionExportDTO(entity.getFt());
         }
 
-        // Import GDs
-        if (!AppUtility.isEmpty(entity.getGdSet())) {
-            HashSet<GDImportDTO> set = new HashSet<>();
-            for (GD gd : entity.getGdSet()) {
-                set.add(new GDImportDTO(gd));
+        // Export GDs
+        if (!AppUtility.isEmpty(entity.getGdExportSet())) {
+            HashSet<GDExportDTO> set = new HashSet<>();
+            for (GDExport gd : entity.getGdExportSet()) {
+                set.add(new GDExportDTO(gd));
             }
             this.setGdInfo(set);
         }
 
-        // Import GDs
-        if (!AppUtility.isEmpty(entity.getBdaSet())) {
-            HashSet<BDADTO> set = new HashSet<>();
-            for (BDA ref : entity.getBdaSet()) {
-                set.add(new BDADTO(ref));
+        // Export BCA
+        if (!AppUtility.isEmpty(entity.getBcaSet())) {
+            HashSet<BCADTO> set = new HashSet<>();
+            for (BCA ref : entity.getBcaSet()) {
+                set.add(new BCADTO(ref));
             }
             this.setBankAdviceInfo(set);
         }
     }
 
     @Override
-    public COBGdFtDTOImport convertToNewDTO(COBGdFt entity, boolean partialFill) {
-        COBGdFtDTOImport dto = new COBGdFtDTOImport();
+    public COBGdFtExportDTO convertToNewDTO(COBGdFt entity, boolean partialFill) {
+        COBGdFtExportDTO dto = new COBGdFtExportDTO();
         dto.convertToDTO(entity, partialFill);
         return dto;
     }

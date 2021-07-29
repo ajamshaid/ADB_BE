@@ -443,11 +443,6 @@ public class ReferenceService {
         return ref.get();
     }
 
-    public ResponseUtility.APIResponse updateCOBGdFtAndShare(COBGdFtDTOImport dto) throws JsonProcessingException {
-        this.updateCOBGdFt(dto.convertToEntity());
-        return null;
-    }
-
     @Transactional
     public COBGdFt updateCOBGdFt(COBGdFt entity) {
         log.info("updateCOB method called..");

@@ -29,6 +29,10 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
 
     public NetAmountRealized netAmountRealized;
 
+    public BCADTO(BCA entity) {
+        convertToDTO(entity, true);
+    }
+
     @Override
     public BCA convertToEntity() {
         BCA entity = new BCA();
