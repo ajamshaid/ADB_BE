@@ -58,6 +58,30 @@ public class GDClearanceAPI {
         return ResponseUtility.buildResponseObject(entity, new GDClearanceDTO(),true);
     }
 
+
+    @RequestMapping(value = "/", method = RequestMethod.POST)
+    public CustomResponse saveGDClearance(@RequestBody GDClearanceDTO reqDTO, @RequestParam(value = "pushToPSW",defaultValue = "false", required = false) Boolean pushToPSW)
+            throws PSWAPIException, DataValidationException, NoDataFoundException {
+
+        if (AppUtility.isEmpty(reqDTO)) {
+            throw new DataValidationException(messageBundle.getString("validation.error"));
+        }
+        GDClearance entity = null;
+        CustomResponse customResponse = null;
+        try {
+            if (pushToPSW) {
+                customResponse = ResponseUtility.translatePSWAPIResponse(referenceService.updateGDClearanceAndShare(reqDTO));
+            } else {
+                entity = referenceService.updateGDClearance(reqDTO.convertToEntity());
+                customResponse = ResponseUtility.successResponse(entity,"200","Record Added Successfully");
+            }
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return customResponse;
+    }
+
+
     @RequestMapping(value = "/", method = RequestMethod.PUT)
     public CustomResponse updateGDClearance(@RequestBody GDClearanceDTO reqDTO, @RequestParam(value = "pushToPSW",defaultValue = "false", required = false) Boolean pushToPSW)
             throws PSWAPIException, DataValidationException, NoDataFoundException {
