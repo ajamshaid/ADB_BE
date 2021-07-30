@@ -223,6 +223,15 @@ public class PSWAPIConsumerService {
     public ResponseUtility.APIResponse shareFinancialInformationExport(FinancialTransactionExportDTO dto)
             throws HttpClientErrorException, JsonProcessingException {
 
+        if (AppConstants.PAYMENT_MODE.EXP_WITH_LC_VALUE.equals(dto.getModeOfPayment())) {
+            dto.setContractCollectionData(null);
+        } else if (AppConstants.PAYMENT_MODE.EXP_WITH_OUT_LC_VALUE.equals(dto.getModeOfPayment())) {
+            dto.setLcData(null);
+        }else {
+            dto.setLcData(null);
+            dto.setContractCollectionData(null);
+        }
+
         RequestParameter<FinancialTransactionExportDTO> requestParameter = new RequestParameter<>(
                 UUID.randomUUID()
                 , AppConstants.AD_ID
