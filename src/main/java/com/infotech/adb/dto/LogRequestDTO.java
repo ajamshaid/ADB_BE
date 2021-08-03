@@ -1,6 +1,7 @@
 package com.infotech.adb.dto;
 
 import com.infotech.adb.model.entity.LogRequest;
+import com.infotech.adb.util.AppUtility;
 import com.infotech.adb.util.JsonUtils;
 import com.infotech.adb.util.ResponseUtility;
 import lombok.Data;
@@ -53,7 +54,9 @@ public class LogRequestDTO implements BaseDTO<LogRequestDTO, LogRequest> {
         this.messageName = entity.getMsgIdentifier();
         this.requestMethod = entity.getRequestMethod();
 //        this.requestFormattedTime = AppUtility.formatZonedDateTime("HH:mm a", entity.getRe);
-        this.responsePayload = JsonUtils.jsonToObject(entity.getResponsePayload(), ResponseUtility.PSWAPIResponse.class);
+        if(!AppUtility.isEmpty(entity.getResponsePayload()))
+            this.responsePayload = JsonUtils.jsonToObject(entity.getResponsePayload(), ResponseUtility.PSWAPIResponse.class);
+        if(!AppUtility.isEmpty(entity.getRequestPayload()))
         this.requestPayload = JsonUtils.jsonToObject(entity.getRequestPayload(), RequestParameter.class);
     }
 
