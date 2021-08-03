@@ -66,8 +66,10 @@ public class LogRequest {
             logRequest.setResponseCode(apiResponse.getMessage().getCode());
             logRequest.setResponseMessage(apiResponse.getMessage().getDescription());
         try {
-            logRequest.setRequestPayload(requestBody.toJson());
-            logRequest.setResponsePayload(apiResponse.toJson());
+            if(!AppUtility.isEmpty(requestBody))
+                logRequest.setRequestPayload(requestBody.toJson());
+            if(!AppUtility.isEmpty(apiResponse))
+                logRequest.setResponsePayload(apiResponse.toJson());
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
