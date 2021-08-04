@@ -1,9 +1,14 @@
 package com.infotech.adb.model.entity;
 
+import com.infotech.adb.util.AppConstants;
+
 import javax.persistence.*;
 
 @Entity
-@Table(name = "USER")
+@Table(name = "USER"  ,uniqueConstraints = {
+        @UniqueConstraint(
+                columnNames = {"USERNAME"}
+                ,name= AppConstants.DBConstraints.UNIQ_USERNAME)})
 public class User {
     /*
      * Key Fields
@@ -19,10 +24,25 @@ public class User {
     @Column(name = "USERNAME")
     private String username;
 
+    @Column(name = "NAME")
+    private String name;
+
+    @Column(name = "EMAIL")
+    private String email;
+
+    @Column(name = "JOBTITLE")
+    private String jobTitle;
+
+    @Column(name = "PHONENUMBER")
+    private String phoneNumber;
+
     @Column(name = "PASSWORD")
     private String password;
 
-    @Column (name = "IS_ACTIVE")
+    @Column(name = "CONFIRMPASSWORD")
+    private String confirmPassword;
+
+    @Column(name = "IS_ACTIVE")
     private boolean isActive;
 
     /*
@@ -36,9 +56,7 @@ public class User {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
-    }
+    public String getUsername() { return username; }
 
     public void setUsername(String username) {
         this.username = username;
@@ -50,6 +68,46 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getJobTitle() {
+        return jobTitle;
+    }
+
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public boolean isActive() {

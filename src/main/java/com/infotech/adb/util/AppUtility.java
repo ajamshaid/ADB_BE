@@ -85,6 +85,11 @@ public class AppUtility {
         AppUtility.decimalPercision = decimalPercision;
     }
 
+    public static String getResourceMessage(String key) {
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("messages");
+        return resourceBundle.getString(key);
+    }
+
     public static ResourceBundle getResourceBundle() {
         if (null == resourceBundle) {
             resourceBundle = ResourceBundle.getBundle("GUIConstants.MESSAGE_BUNDLE", Locale.US);

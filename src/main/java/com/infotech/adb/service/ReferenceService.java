@@ -3,6 +3,7 @@ package com.infotech.adb.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.infotech.adb.dto.*;
 import com.infotech.adb.exceptions.CustomException;
+import com.infotech.adb.exceptions.DataValidationException;
 import com.infotech.adb.exceptions.NoDataFoundException;
 import com.infotech.adb.model.entity.*;
 import com.infotech.adb.model.repository.*;
@@ -13,10 +14,13 @@ import com.infotech.adb.util.OpenCsvUtil;
 import com.infotech.adb.util.ResponseUtility;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.InputStream;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,6 +69,9 @@ public class ReferenceService {
 
     @Autowired
     private COBGdFtRepository cobGdFtRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
 
     @Transactional
@@ -447,5 +454,46 @@ public class ReferenceService {
     public COBGdFt updateCOBGdFt(COBGdFt entity) {
         log.info("updateCOB method called..");
         return cobGdFtRepository.save(entity);
+    }
+
+    /*************************************
+     * USER METHODS
+     **************************************/
+
+    public List<User> getAllUser() {
+        log.info("getAllUser method called..");
+        List<User> refList = null;
+        refList= this.userRepository.findAll();
+        return refList;
+    }
+
+    public User getUserById(Long id) {
+        log.info("getUserById method called..");
+        Optional<User> ref = userRepository.findById(id);
+        return ref.get();
+    }
+
+    @Transactional
+    public User updateUser(User entity) {
+        log.info("updateUser method called..");
+        return userRepository.save(entity);
+    }
+
+    @Transactional
+    public User resetPassword(User newUser) throws DataValidationException, NoDataFoundException {
+        log.info("resetPassword method called..");
+        Optional<User> userOptional = userRepository.findById(newUser.getId());
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            if (!BCrypt.checkpw(user.getPassword(), newUser.getPassword())) {
+                user.setPassword(new BCryptPasswordEncoder().encode(newUser.getPassword()));
+                userRepository.save(user);
+            } else {
+                throw new DataValidationException(AppUtility.getResourceMessage("user.password.match"));
+            }
+        } else {
+            throw new NoDataFoundException(AppUtility.getResourceMessage("user.not.found"));
+        }
+        return userOptional.get();
     }
 }
