@@ -89,6 +89,7 @@ public class ResponseUtility {
     @NoArgsConstructor
     @Data
     @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+
     public static class APIResponse {
 
         public String messageId;

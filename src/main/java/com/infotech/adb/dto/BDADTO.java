@@ -48,7 +48,7 @@ public class BDADTO implements BaseDTO<BDADTO, BDA> {
             entity.setNetBdaAmountFcy(this.getBdaInformation().getNetBdaAmountFcy());
             entity.setNetBdaAmountCurrency(this.getBdaInformation().getNetBdaAmountCurrency());
             entity.setExchangeRateFiFcy(this.getBdaInformation().getExchangeRateFiFcy());
-            entity.setNetBdaAmountPkr(this.getBdaInformation().getNetBdaAmountEifPkr());
+            entity.setNetBdaAmountPkr(this.getBdaInformation().getNetBdaAmountPkr());
             entity.setAmountInWords(this.getBdaInformation().getAmountInWords());
             entity.setCurrencyFcy(this.getBdaInformation().getCurrencyFcy());
             entity.setBdaAmountFcy(this.getBdaInformation().getBdaAmountFcy());
@@ -113,7 +113,7 @@ public class BDADTO implements BaseDTO<BDADTO, BDA> {
         public BigDecimal netBdaAmountFcy;
         public String netBdaAmountCurrency;
         public BigDecimal exchangeRateFiFcy;
-        public BigDecimal netBdaAmountEifPkr;
+        public BigDecimal netBdaAmountPkr;
         public String amountInWords;
         public String currencyFcy;
         public BigDecimal bdaAmountFcy;
@@ -132,7 +132,7 @@ public class BDADTO implements BaseDTO<BDADTO, BDA> {
         public BdaInformation(BigDecimal totalBdaAmountFcy, String totalBdaAmountCurrency
                 , BigDecimal sampleAmountExclude, String sampleAmountCurrency
                 , BigDecimal netBdaAmountFcy, String netBdaAmountCurrency
-                , BigDecimal exchangeRateFiFcy, BigDecimal netBdaAmountEifPkr
+                , BigDecimal exchangeRateFiFcy, BigDecimal netBdaAmountPkr
                 , String amountInWords, String currencyFcy, BigDecimal bdaAmountFcy
                 , BigDecimal bdaAmountPkr, String bdaDocumentRefNumber, BigDecimal commisionAmountFcy
                 , BigDecimal commisionAmountPkr, BigDecimal fedFcy, BigDecimal fedAmountPkr
@@ -145,7 +145,7 @@ public class BDADTO implements BaseDTO<BDADTO, BDA> {
             this.netBdaAmountFcy = netBdaAmountFcy;
             this.netBdaAmountCurrency = netBdaAmountCurrency;
             this.exchangeRateFiFcy = exchangeRateFiFcy;
-            this.netBdaAmountEifPkr = netBdaAmountEifPkr;
+            this.netBdaAmountPkr = netBdaAmountPkr;
             this.amountInWords = amountInWords;
             this.currencyFcy = currencyFcy;
             this.bdaAmountFcy = bdaAmountFcy;

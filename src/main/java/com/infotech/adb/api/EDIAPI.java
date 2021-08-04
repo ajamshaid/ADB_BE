@@ -44,6 +44,14 @@ public class EDIAPI {
 
     private static final ResourceBundle messageBundle = ResourceBundle.getBundle("messages");
 
+
+    private ObjectMapper getObjectMapper(){
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        return mapper;
+    }
+
+
     @RequestMapping(value = "/edi", method = RequestMethod.POST, headers = {"content-type=application/json"})
     public CustomResponse getMessageAndResponse(@RequestBody String reqBodyStr)
             throws CustomException, DataValidationException, NoDataFoundException, JsonProcessingException {
@@ -51,8 +59,7 @@ public class EDIAPI {
         CustomResponse customResponse = null;
         RequestParameter requestParameter = new RequestParameter();
 
-        ObjectMapper mapper = new ObjectMapper();
-        requestParameter = mapper.readValue(reqBodyStr, RequestParameter.class);
+        requestParameter = getObjectMapper().readValue(reqBodyStr, RequestParameter.class);
 
 //        JsonParser springParser = JsonParserFactory.getJsonParser();
 //        String data = springParser.parseMap(reqBodyStr).get("data").toString();
@@ -135,8 +142,7 @@ public class EDIAPI {
         Date requestTime = AppUtility.getCurrentTimeStamp();
         boolean isVerified = false;
         try {
-            ObjectMapper mapper = new ObjectMapper();
-            IBANVerificationRequest ibanVerificationRequest = mapper.readValue(data, IBANVerificationRequest.class);
+            IBANVerificationRequest ibanVerificationRequest = getObjectMapper().readValue(data, IBANVerificationRequest.class);
 
             isVerified = mqService.isAccountVerified(ibanVerificationRequest);
         } catch (Exception e) {
@@ -167,8 +173,7 @@ public class EDIAPI {
         String logMessage = "";
         boolean noData = false;
         try {
-            ObjectMapper mapper = new ObjectMapper();
-            IBANVerificationRequest ibanVerificationRequest = mapper.readValue(data, IBANVerificationRequest.class);
+            IBANVerificationRequest ibanVerificationRequest = getObjectMapper().readValue(data, IBANVerificationRequest.class);
 
 //            IBANVerificationRequest ibanVerificationRequest = requestBody.getData();
             accountDetailDTO = mqService.getAccountDetailsByIban(ibanVerificationRequest.getIban());
@@ -198,8 +203,7 @@ public class EDIAPI {
     public CustomResponse shareImportGDFinInfoToBank(String data, RequestParameter requestParameter)
             throws NoDataFoundException, JsonProcessingException {
 
-        ObjectMapper mapper = new ObjectMapper();
-        GDImportDTO dto = mapper.readValue(data, GDImportDTO.class);
+        GDImportDTO dto = getObjectMapper().readValue(data, GDImportDTO.class);
         Date requestTime = AppUtility.getCurrentTimeStamp();
         System.out.println("IN coming GD Info:" + dto);
 
@@ -227,8 +231,7 @@ public class EDIAPI {
     public CustomResponse shareExportGDFinInfoToBank(String data, RequestParameter requestParameter)
             throws NoDataFoundException, JsonProcessingException {
 
-        ObjectMapper mapper = new ObjectMapper();
-        GDExportDTO dto = mapper.readValue(data, GDExportDTO.class);
+        GDExportDTO dto = getObjectMapper().readValue(data, GDExportDTO.class);
         Date requestTime = AppUtility.getCurrentTimeStamp();
         System.out.println("IN coming GD Info:" + dto);
 
@@ -254,8 +257,7 @@ public class EDIAPI {
     public CustomResponse chageOfBankRequest(String data, RequestParameter requestParameter)
             throws NoDataFoundException, JsonProcessingException {
 
-        ObjectMapper mapper = new ObjectMapper();
-        ChangeBankRequestDTO dto = mapper.readValue(data, ChangeBankRequestDTO.class);
+        ChangeBankRequestDTO dto = getObjectMapper().readValue(data, ChangeBankRequestDTO.class);
         Date requestTime = AppUtility.getCurrentTimeStamp();
         System.out.println("IN coming COB Object is:" + dto);
 
@@ -278,21 +280,20 @@ public class EDIAPI {
      **************************/
     public CustomResponse shareOfCOBGDnFIInfo(String data, RequestParameter requestParameter)
             throws NoDataFoundException, JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode node = mapper.readTree(data);
+
+        JsonNode node = getObjectMapper().readTree(data);
         String tradeType = node.get("tradeTranType").textValue();
 
         if("01".equals(tradeType)) {
 
-            COBGdFtImportDTO dto = mapper.readValue(data, COBGdFtImportDTO.class);
+            COBGdFtImportDTO dto = getObjectMapper().readValue(data, COBGdFtImportDTO.class);
             System.out.println("IN coming COB GD FT DTO Object is:" + dto);
             if (!AppUtility.isEmpty(dto)) {
                 referenceService.updateCOBGdFt(dto.convertToEntity());
             }
         }else if("02".equals(tradeType)) {
             System.out.println("------------I am export COB----------");
-            mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-            COBGdFtExportDTO dto = mapper.readValue(data, COBGdFtExportDTO.class);
+            COBGdFtExportDTO dto = getObjectMapper().readValue(data, COBGdFtExportDTO.class);
 
             System.out.println("IN coming COB GD FT DTO Object is:" + dto);
             if (!AppUtility.isEmpty(dto)) {
