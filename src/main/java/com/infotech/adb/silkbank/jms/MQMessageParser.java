@@ -96,6 +96,15 @@ public class MQMessageParser {
             pi.setLcContractNo(ftDetailsAry[11]);
 
 
+            pi.setBeneficiaryCountry(ftDetailsAry[15]);
+            pi.setExporterName(ftDetailsAry[16]);
+            pi.setExporterAddress(ftDetailsAry[17]);
+            pi.setExporterCountry(ftDetailsAry[18]);
+            pi.setDeliveryTerm(ftDetailsAry[19]);
+
+            ft.setFinalDateOfShipment(AppUtility.convertDateFromString(ftDetailsAry[20])) ;
+            ft.setFinInsExpiryDate(AppUtility.convertDateFromString(ftDetailsAry[21])) ;
+
             String[] hsCodeAry = ftDetailsAry[12].split(MQUtility.DELIMETER_MULTIPLE_DATA);
             String[] qtyAry = ftDetailsAry[13].split(MQUtility.DELIMETER_MULTIPLE_DATA);
             String[] descAry = ftDetailsAry[14].split(MQUtility.DELIMETER_MULTIPLE_DATA);
