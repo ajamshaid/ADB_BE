@@ -7,6 +7,7 @@ import com.infotech.adb.util.AppUtility;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,6 +21,8 @@ public class FinancialTransactionExportDTO implements BaseDTO<FinancialTransacti
     private String exporterIban;
     private String modeOfPayment;
     private String finInsUniqueNumber;
+    private String lastModifiedBy;
+    private Date lastModifiedDate;
 
     private CCDataDTO contractCollectionData;
     private LCDataDTO lcData;
@@ -43,6 +46,8 @@ public class FinancialTransactionExportDTO implements BaseDTO<FinancialTransacti
 
         entity.setModeOfPayment(this.getModeOfPayment());
         entity.setFinInsUniqueNumber(this.getFinInsUniqueNumber());
+        entity.setLastModifiedBy(this.getLastModifiedBy());
+        entity.setLastModifiedDate(this.getLastModifiedDate());
 
         //CC Data
         if(!AppUtility.isEmpty(this.getContractCollectionData())) {
@@ -84,6 +89,8 @@ public class FinancialTransactionExportDTO implements BaseDTO<FinancialTransacti
             this.setExporterIban(entity.getIban());
             this.setFinInsUniqueNumber(entity.getFinInsUniqueNumber());
             this.setModeOfPayment(entity.getModeOfPayment());
+            this.setLastModifiedBy(entity.getLastModifiedBy());
+            this.setLastModifiedDate(entity.getLastModifiedDate());
 
             if (!AppUtility.isEmpty(entity.getPaymentInformation())) {
                 this.setPaymentInformation(new PaymentInformationExportDTO(entity.getPaymentInformation()));

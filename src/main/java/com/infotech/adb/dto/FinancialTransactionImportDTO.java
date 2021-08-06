@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,6 +22,8 @@ public class FinancialTransactionImportDTO implements BaseDTO<FinancialTransacti
     private String modeOfPayment;
     private String finInsUniqueNumber;
     private String remarks;
+    private String lastModifiedBy;
+    private Date lastModifiedDate;
 
     private CCDataDTO contractCollectionData;
     private LCDataDTO lcData;
@@ -46,6 +49,8 @@ public class FinancialTransactionImportDTO implements BaseDTO<FinancialTransacti
         entity.setModeOfPayment(this.getModeOfPayment());
         entity.setFinInsUniqueNumber(this.getFinInsUniqueNumber());
         entity.setRemarks(this.getRemarks());
+        entity.setLastModifiedBy(this.getLastModifiedBy());
+        entity.setLastModifiedDate(this.getLastModifiedDate());
 
         if (!AppUtility.isEmpty(this.getFinancialTranInformation())) {
             entity.setIntendedPaymentDate(AppUtility.convertDateFromString(this.getFinancialTranInformation().getIntendedPayDate()));
@@ -99,6 +104,8 @@ public class FinancialTransactionImportDTO implements BaseDTO<FinancialTransacti
             this.setModeOfPayment(entity.getModeOfPayment());
             this.setFinInsUniqueNumber(entity.getFinInsUniqueNumber());
             this.setRemarks(entity.getRemarks());
+            this.setLastModifiedBy(entity.getLastModifiedBy());
+            this.setLastModifiedDate(entity.getLastModifiedDate());
 
             if (AppUtility.isEmpty(this.getFinancialTranInformation())) {
                 this.setFinancialTranInformation(new FinTranInformationDTO());

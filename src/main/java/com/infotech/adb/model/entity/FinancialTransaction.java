@@ -39,6 +39,13 @@ public class FinancialTransaction {
     @Column(name = "FIN_INS_UNIQ_NUM",length = 30, nullable = true)
     private String finInsUniqueNumber;
 
+    @Column(name = "LAST_MODIFIED_BY",length = 30, nullable = true)
+    private String lastModifiedBy;
+
+    @Column(name = "LAST_MODIFIED_DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastModifiedDate;
+
 
     // Financial Trans Information....
     @Column(name = "INTENDED_PAYMENT_DATE")
@@ -75,10 +82,10 @@ public class FinancialTransaction {
     private BigDecimal cashMarginValue;
 
     // LC and CC Data
-    @OneToOne(mappedBy = "financialTransaction", fetch = FetchType.LAZY , cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "financialTransaction", fetch = FetchType.LAZY , cascade = CascadeType.ALL, orphanRemoval=true)
     private CCData ccData;
 
-    @OneToOne(mappedBy = "financialTransaction", fetch = FetchType.LAZY , cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "financialTransaction", fetch = FetchType.LAZY , cascade = CascadeType.ALL , orphanRemoval=true)
     private LCData lcData;
 
     @OneToOne(mappedBy = "financialTransaction", fetch = FetchType.LAZY , cascade = CascadeType.ALL)
