@@ -26,6 +26,9 @@ public class COBGdFt {
     @Column(name = "TRADE_TYPE")
     private String tradeTranType;
 
+    @Column(name = "NEW_BANK_IBAN",length = 24, nullable = true)
+    private String newBankIBAN;
+
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY , cascade = CascadeType.ALL)
     @JoinColumn(name="FT_ID", nullable=false )

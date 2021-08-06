@@ -10,6 +10,7 @@ public class  COBGdFtDTO implements BaseDTO<COBGdFtDTO, COBGdFt>{
     public   Long id;
     public String cobUniqueIdNumber;
     public String tradeTranType;
+    public String iban;
 
     @Override
     public COBGdFt convertToEntity() {
@@ -22,6 +23,7 @@ public class  COBGdFtDTO implements BaseDTO<COBGdFtDTO, COBGdFt>{
         this.id = entity.getId();
         this.cobUniqueIdNumber = entity.getCobUniqueIdNumber();
         this.tradeTranType = entity.getTradeTranType();
+        this.iban = entity.getNewBankIBAN();
 
     }
     @Override

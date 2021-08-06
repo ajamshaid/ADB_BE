@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "GD_Financial_Instrument")
@@ -29,6 +30,8 @@ public class GDFinancialInstrument {
     @Column(name = "FIN_INS_UNIQ_NUM",length = 30, nullable = true)
     private String finInsUniqueNumber;
 
+    @Column(name = "FIN_INS_CONSUMED_VALUE", precision=24, scale=4 )
+    private BigDecimal finInsConsumedValue;
     /*
      * Entity Specific Fields
      */

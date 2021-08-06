@@ -91,6 +91,7 @@ public class GDExportDTO implements BaseDTO<GDExportDTO, GDExport> {
                     fi.setFinInsUniqueNumber(dto.getFinInsUniqueNumber());
                     fi.setIban(dto.getExporterIban());
                     fi.setModeOfPayment(dto.getModeOfPayment());
+                    fi.setFinInsConsumedValue(dto.getFinInsConsumedValue());
                     fi.setGdExport(entity);
                     set.add(fi);
                 }
@@ -250,6 +251,7 @@ public class GDExportDTO implements BaseDTO<GDExportDTO, GDExport> {
                         dto.setExporterIban(gdFinancialInstrument.getIban());
                         dto.setFinInsUniqueNumber(gdFinancialInstrument.getFinInsUniqueNumber());
                         dto.setModeOfPayment(gdFinancialInstrument.getModeOfPayment());
+                        dto.setFinInsConsumedValue(gdFinancialInstrument.getFinInsConsumedValue());
                         fiSet.add(dto);
                     }
                     this.setFinancialInstrument(fiSet);
@@ -264,14 +266,16 @@ public class GDExportDTO implements BaseDTO<GDExportDTO, GDExport> {
         private String exporterIban;
         private String modeOfPayment;
         private String finInsUniqueNumber;
+        private BigDecimal finInsConsumedValue;
 
         public GDFinancialInstrumentDTO() {
         }
 
-        public GDFinancialInstrumentDTO(String exporterIban, String modeOfPayment, String finInsUniqueNumber) {
+        public GDFinancialInstrumentDTO(String exporterIban, String modeOfPayment, String finInsUniqueNumber, BigDecimal finInsConsumedValue) {
             this.exporterIban = exporterIban;
             this.modeOfPayment = modeOfPayment;
             this.finInsUniqueNumber = finInsUniqueNumber;
+            this.finInsConsumedValue = finInsConsumedValue;
         }
     }
 
