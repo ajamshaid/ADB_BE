@@ -2,7 +2,6 @@ package com.infotech.adb.util;
 
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -128,18 +127,10 @@ public class ResponseUtility {
         }
 
         public String toJson() throws JsonProcessingException {
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
 
-
-            //    ObjectWriter objectWriter = new ObjectMapper().writer();
-            //       objectWriter.setFa
-
-            if (AppUtility.isEmpty(this.data)) {
-                this.data = "{}";
-            }
-
-            return mapper.writer().writeValueAsString(this);
+            return objectMapper.writer().writeValueAsString(this);
         }
 
         @Override
@@ -160,7 +151,8 @@ public class ResponseUtility {
     @NoArgsConstructor
     @Data
     public static class PSWAPIResponse extends APIResponse {
-        private final String methodId;
+
+        private String methodId;
 
         public PSWAPIResponse(Object data, String responseCode, Message message, RequestParameter requestParameter) {
             super(data, responseCode, message, requestParameter);
