@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.infotech.adb.dto.BaseDTO;
 import com.infotech.adb.dto.RequestParameter;
 import com.infotech.adb.exceptions.CustomException;
@@ -43,27 +44,27 @@ public class ResponseUtility {
      */
     @SuppressWarnings("rawtypes")
     public static CustomResponse successResponse(Object data, String responseCode, String responseMessage) {
-        return successResponse(data,responseCode,responseMessage, null,false);
+        return successResponse(data, responseCode, responseMessage, null, false);
     }
 
     @SuppressWarnings("rawtypes")
-    public static CustomResponse successResponse(Object data, String responseCode, String responseMessage,RequestParameter requestParameter, boolean isPSWResponse) {
+    public static CustomResponse successResponse(Object data, String responseCode, String responseMessage, RequestParameter requestParameter, boolean isPSWResponse) {
 
         HttpStatus status = HttpStatus.OK;
         String message = AppUtility.isEmpty(responseMessage)
                 ? messageBundle.getString("generic.success")
                 : responseMessage;
 
-        if(AppUtility.isEmpty(responseCode)){
+        if (AppUtility.isEmpty(responseCode)) {
             responseCode = AppConstants.PSWResponseCodes.OK;
         }
-        if(responseCode.equals(AppConstants.PSWResponseCodes.NO_DATA_FOUND)){
+        if (responseCode.equals(AppConstants.PSWResponseCodes.NO_DATA_FOUND)) {
             status = HttpStatus.NO_CONTENT;
             message = messageBundle.getString("generic.no.content");
         }
 
-        APIResponse response = buildAPIResponse(data, responseCode,new Message(responseCode, message)
-                ,requestParameter,isPSWResponse);
+        APIResponse response = buildAPIResponse(data, responseCode, new Message(responseCode, message)
+                , requestParameter, isPSWResponse);
 
         return CustomResponse
                 .status(status)
@@ -78,18 +79,18 @@ public class ResponseUtility {
         private String code;
         private String description;
 
-        public static Message getDBUpdateButPSWRequestFaildMsg(){
+        public static Message getDBUpdateButPSWRequestFaildMsg() {
             ResponseUtility.Message msg = new ResponseUtility.Message();
             //msg.setCode(""+HttpStatus.OK.value());
             msg.setCode("404");
             msg.setDescription("Data Updated in DB but <<Failed>> to Push to PSW API Request");
-            return  msg;
+            return msg;
         }
     }
+
     @NoArgsConstructor
     @Data
     @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-
     public static class APIResponse {
 
         public String messageId;
@@ -97,17 +98,18 @@ public class ResponseUtility {
         public String senderId;
         public String receiverId;
         public String responseCode;
-//        private String methodId;
+        //        private String methodId;
         public String signature;
         public Message message;
+
 
         public Object data;
 
         public APIResponse(Object data, String responseCode, Message message, RequestParameter requestParameter) {
-            this.data =  AppUtility.isEmpty(data)? new Object() : data;
+            this.data = AppUtility.isEmpty(data) ? new Object() : data;
             this.message = message;
             this.responseCode = responseCode;
-            if(!AppUtility.isEmpty(requestParameter)) {
+            if (!AppUtility.isEmpty(requestParameter)) {
                 this.messageId = requestParameter.getMessageId();
                 this.timestamp = AppUtility.getCurrentTimeStamp().toString();
                 this.senderId = AppConstants.AD_ID;//requestParameter.getReceiverId();
@@ -118,15 +120,17 @@ public class ResponseUtility {
             }
         }
 
-        public APIResponse(Object data, String responseCode , Message message) {
+        public APIResponse(Object data, String responseCode, Message message) {
             this.data = data;
             this.message = message;
             this.responseCode = responseCode;
         }
 
         public String toJson() throws JsonProcessingException {
-            ObjectWriter objectWriter = new ObjectMapper().writer();
-            return objectWriter.writeValueAsString(this);
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+
+            return objectMapper.writer().writeValueAsString(this);
         }
 
         @Override
@@ -139,7 +143,7 @@ public class ResponseUtility {
                     ", responseCode='" + responseCode + '\'' +
                     ", signature='" + signature + '\'' +
                     ", message=" + message +
-                    ", data=" +(AppUtility.isEmpty(data) ? "" :data.toString() )+
+                    ", data=" + (AppUtility.isEmpty(data) ? "" : data.toString()) +
                     '}';
         }
     }
@@ -147,6 +151,7 @@ public class ResponseUtility {
     @NoArgsConstructor
     @Data
     public static class PSWAPIResponse extends APIResponse {
+
         private String methodId;
 
         public PSWAPIResponse(Object data, String responseCode, Message message, RequestParameter requestParameter) {
@@ -157,7 +162,7 @@ public class ResponseUtility {
         @Override
         public String toString() {
             return "PSWAPIResponse{" +
-                    "messageId='" + messageId+ '\'' +
+                    "messageId='" + messageId + '\'' +
                     ", timestamp='" + timestamp + '\'' +
                     ", senderId='" + senderId + '\'' +
                     ", receiverId='" + receiverId + '\'' +
@@ -170,16 +175,16 @@ public class ResponseUtility {
         }
     }
 
-    public static APIResponse buildAPIResponse(Object data, String responseCode , Message message, RequestParameter requestParameter,boolean isPSWResponse) {
-        APIResponse response = new APIResponse(data, responseCode , message,requestParameter );
-        if(isPSWResponse) {
-            response = new PSWAPIResponse(data, responseCode , message,requestParameter);
+    public static APIResponse buildAPIResponse(Object data, String responseCode, Message message, RequestParameter requestParameter, boolean isPSWResponse) {
+        APIResponse response = new APIResponse(data, responseCode, message, requestParameter);
+        if (isPSWResponse) {
+            response = new PSWAPIResponse(data, responseCode, message, requestParameter);
         }
         return response;
     }
 
-    public static APIResponse buildAPIResponse(Object data, String responseCode , Message message) {
-        APIResponse response = new APIResponse(data, responseCode,message);
+    public static APIResponse buildAPIResponse(Object data, String responseCode, Message message) {
+        APIResponse response = new APIResponse(data, responseCode, message);
         return response;
     }
 
@@ -192,7 +197,7 @@ public class ResponseUtility {
     @SuppressWarnings("rawtypes")
     public static <B, E> CustomResponse buildResponseList(List<E> listOfEntities) throws NoDataFoundException {
         if (!AppUtility.isEmpty(listOfEntities))
-            return ResponseUtility.successResponse(listOfEntities,null, listOfEntities.size() + " Records Found!");
+            return ResponseUtility.successResponse(listOfEntities, null, listOfEntities.size() + " Records Found!");
         throw new NoDataFoundException();
     }
 
@@ -212,12 +217,12 @@ public class ResponseUtility {
                 bo = baseObject.convertToNewDTO(obj, false);
                 data.add(bo);
             }
-            return ResponseUtility.successResponse(data, null,listOfEntities.size() + " Records Found!");
+            return ResponseUtility.successResponse(data, null, listOfEntities.size() + " Records Found!");
         }
         throw new NoDataFoundException();
     }
 
-     public static <B, E> CustomResponse buildResponseObject(E entityObject) throws CustomException, NoDataFoundException {
+    public static <B, E> CustomResponse buildResponseObject(E entityObject) throws CustomException, NoDataFoundException {
         if (!AppUtility.isEmpty(entityObject))
             return ResponseUtility.successResponse(entityObject, null, "Valid Object");
         throw new NoDataFoundException();
@@ -229,7 +234,7 @@ public class ResponseUtility {
     @SuppressWarnings("rawtypes")
     public static <B, E> CustomResponse buildResponseObject(E entityObject, BaseDTO<B, E> baseObject, boolean partialFill) throws CustomException, NoDataFoundException {
         if (!AppUtility.isEmpty(entityObject))
-            return ResponseUtility.successResponse(baseObject.convertToNewDTO(entityObject, partialFill), null,"Valid Object");
+            return ResponseUtility.successResponse(baseObject.convertToNewDTO(entityObject, partialFill), null, "Valid Object");
         throw new NoDataFoundException();
     }
 
@@ -238,25 +243,26 @@ public class ResponseUtility {
      */
     @SuppressWarnings("rawtypes")
     public static <B, E> CustomResponse buildResponseObject(Optional<E> entityObject, BaseDTO<B, E> baseObject, boolean partialFill) throws CustomException, NoDataFoundException {
-        return buildResponseObject(entityObject.get(),baseObject,partialFill);
+        return buildResponseObject(entityObject.get(), baseObject, partialFill);
     }
 
 
     /**
      * Exception Response
+     *
      * @param e
      * @param DBConstraint
      * @throws CustomException
      */
     public static void exceptionResponse(Exception e, String DBConstraint) throws CustomException {
-     //   e.printStackTrace();
+        //   e.printStackTrace();
         log.error(e);
-        if(!AppUtility.isEmpty(DBConstraint)) {
+        if (!AppUtility.isEmpty(DBConstraint)) {
             ResponseUtility.validateDBConstraint(e, DBConstraint, "Data");
-        } else if (e instanceof EmptyResultDataAccessException ){
+        } else if (e instanceof EmptyResultDataAccessException) {
             throw new NoDataFoundException(e.getMessage(), e);
         }
-        throw new CustomException(e.getMessage(),e);
+        throw new CustomException(e.getMessage(), e);
     }
 
 
@@ -299,13 +305,13 @@ public class ResponseUtility {
                                                  RequestParameter requestParameter) {
         return CustomResponse
                 .status(HttpStatus.CREATED)
-                .body(buildAPIResponse(data, ""+HttpStatus.CREATED.value(),
-                        new Message(HttpStatus.CREATED.value()+"", responseMessage)
-                        , requestParameter,false));
+                .body(buildAPIResponse(data, "" + HttpStatus.CREATED.value(),
+                        new Message(HttpStatus.CREATED.value() + "", responseMessage)
+                        , requestParameter, false));
     }
 
 
-//    public static <B, E> CustomResponse buildResponseObject(Optional<E> entityObject, BaseDTO<B, E> baseObject, int responseCode, String responseMsg, RequestParameter requestBody) {
+    //    public static <B, E> CustomResponse buildResponseObject(Optional<E> entityObject, BaseDTO<B, E> baseObject, int responseCode, String responseMsg, RequestParameter requestBody) {
 //        if (!AppUtility.isEmpty(entityObject))
 //            return ResponseUtility.createdResponse(baseObject.convertToNewDTO(entityObject.get(), false),""+responseCode,responseMsg,requestBody);
 //        throw new NoDataFoundException();
@@ -313,7 +319,7 @@ public class ResponseUtility {
 //
     public static <B, E> CustomResponse buildResponseObject(E entityObject, BaseDTO<B, E> baseObject, int responseCode, String responseMsg, RequestParameter requestBody) {
         if (!AppUtility.isEmpty(entityObject))
-            return ResponseUtility.createdResponse(baseObject.convertToNewDTO(entityObject,false),responseMsg,requestBody);
+            return ResponseUtility.createdResponse(baseObject.convertToNewDTO(entityObject, false), responseMsg, requestBody);
         throw new NoDataFoundException();
     }
 
@@ -327,13 +333,12 @@ public class ResponseUtility {
         CustomResponse customResponse = null;
 
         String respCode = pswResponse.getMessage().getCode();
-        if(respCode.equals(""+HttpStatus.OK.value()) ){
+        if (respCode.equals("" + HttpStatus.OK.value())) {
             customResponse = ResponseUtility.successResponse("{}",
                     pswResponse.getMessage().getCode(),
-                    pswResponse.getMessage().getDescription(), null,false);
-        }
-        else{
-            throw new PSWAPIException(pswResponse) ;
+                    pswResponse.getMessage().getDescription(), null, false);
+        } else {
+            throw new PSWAPIException(pswResponse);
         }
         return customResponse;
 
