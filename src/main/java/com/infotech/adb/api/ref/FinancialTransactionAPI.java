@@ -22,7 +22,7 @@ import java.util.ResourceBundle;
 
 
 @RestController
-@RequestMapping("/fin_transaction")
+@RequestMapping("/ft")
 @Log4j2
 public class FinancialTransactionAPI {
 
