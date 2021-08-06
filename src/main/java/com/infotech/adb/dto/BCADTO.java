@@ -23,6 +23,8 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
 
     public String bcaDate;
     public String remarks;
+    private String lastModifiedBy;
+    private Date lastModifiedDate;
 
     public BCAInformation bcaInformation;
     public Deductions deductions;
@@ -47,6 +49,8 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
         entity.setModeOfPayment(this.getModeOfPayment());
         entity.setRemarks(this.getRemarks());
         entity.setFinInsUniqueNumber(this.getFinInsUniqueNumber());
+        entity.setLastModifiedBy(this.getLastModifiedBy());
+        entity.setLastModifiedDate(this.getLastModifiedDate());
 
         if(!AppUtility.isEmpty(this.getBcaInformation())) {
             entity.setBcaEventName(this.getBcaInformation().getBcaEventName());
@@ -99,6 +103,8 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
             this.setModeOfPayment(entity.getModeOfPayment());
             this.setRemarks(entity.getRemarks());
             this.setFinInsUniqueNumber(entity.getFinInsUniqueNumber());
+            this.setLastModifiedBy(entity.getLastModifiedBy());
+            this.setLastModifiedDate(entity.getLastModifiedDate());
 
             this.setBcaInformation(new BCAInformation(entity.getBcaEventName(), entity.getEventDate()
                     , entity.getRunningSerialNumber(), entity.getSwiftReference()

@@ -134,6 +134,13 @@ public class BCA {
     @Column(name = "REMARKS", length = 300)
     public String remarks;
 
+    @Column(name = "LAST_MODIFIED_BY",length = 30, nullable = true)
+    private String lastModifiedBy;
+
+    @Column(name = "LAST_MODIFIED_DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastModifiedDate;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name="COB_GD_FT_ID", nullable=true )

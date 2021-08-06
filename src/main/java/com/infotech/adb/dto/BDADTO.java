@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -20,6 +21,8 @@ public class BDADTO implements BaseDTO<BDADTO, BDA> {
     public String modeOfPayment;
     public String finInsUniqueNumber;
     public BdaInformation bdaInformation;
+    private String lastModifiedBy;
+    private Date lastModifiedDate;
 
     public BDADTO(BDA entity) {
         convertToDTO(entity, true);
@@ -39,6 +42,8 @@ public class BDADTO implements BaseDTO<BDADTO, BDA> {
         entity.setBdaDate(AppUtility.convertDateFromString(this.getBdaDate()));
         entity.setModeOfPayment(this.getModeOfPayment());
         entity.setFinInsUniqueNumber(this.getFinInsUniqueNumber());
+        entity.setLastModifiedBy(this.getLastModifiedBy());
+        entity.setLastModifiedDate(this.getLastModifiedDate());
 
         if(!AppUtility.isEmpty(this.getBdaInformation())) {
             entity.setTotalBdaAmountFcy(this.getBdaInformation().getTotalBdaAmountFcy());
@@ -83,6 +88,8 @@ public class BDADTO implements BaseDTO<BDADTO, BDA> {
             this.setBdaDate(AppUtility.formatedDate(entity.getBdaDate()));
             this.setModeOfPayment(entity.getModeOfPayment());
             this.setFinInsUniqueNumber(entity.getFinInsUniqueNumber());
+            this.setLastModifiedBy(entity.getLastModifiedBy());
+            this.setLastModifiedDate(entity.getLastModifiedDate());
             this.setBdaInformation(new BdaInformation(entity.getTotalBdaAmountFcy(),entity.getTotalBdaAmountCurrency()
                     ,entity.getSampleAmountExclude(),entity.getSampleAmountCurrency()
                     ,entity.getNetBdaAmountFcy(),entity.getNetBdaAmountCurrency()

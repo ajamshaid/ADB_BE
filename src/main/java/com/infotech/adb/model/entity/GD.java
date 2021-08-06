@@ -109,6 +109,13 @@ public class GD {
     @OneToMany(mappedBy = "gd", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<GDContainerVehicleInfo> containerVehicleInformationSet;
 
+    @Column(name = "LAST_MODIFIED_BY",length = 30, nullable = true)
+    private String lastModifiedBy;
+
+    @Column(name = "LAST_MODIFIED_DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastModifiedDate;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name="COB_GD_FT_ID", nullable=true)

@@ -23,6 +23,8 @@ public class GDExportDTO implements BaseDTO<GDExportDTO, GDExport> {
     private String blAwbNumber;
     private Date blAwbDate;
     private String virAirNumber;
+    private String lastModifiedBy;
+    private Date lastModifiedDate;
 
     private ConsignorConsigneeDTO consignorConsigneeInfo;
 
@@ -51,6 +53,8 @@ public class GDExportDTO implements BaseDTO<GDExportDTO, GDExport> {
         entity.setBlAwbNumber(this.getBlAwbNumber());
         entity.setBlAwbDate(this.getBlAwbDate());
         entity.setVirAirNumber(this.getVirAirNumber());
+        entity.setLastModifiedBy(this.getLastModifiedBy());
+        entity.setLastModifiedDate(this.getLastModifiedDate());
 
         //Consignor Info
         if(!AppUtility.isEmpty(this.getConsignorConsigneeInfo())) {
@@ -149,6 +153,9 @@ public class GDExportDTO implements BaseDTO<GDExportDTO, GDExport> {
             this.setBlAwbNumber(entity.getBlAwbNumber());
             this.setBlAwbDate(entity.getBlAwbDate());//AppUtility.formatedDate(entity.getBlAwbDate()));
             this.setVirAirNumber(entity.getVirAirNumber());
+
+            this.setLastModifiedBy(entity.getLastModifiedBy());
+            this.setLastModifiedDate(entity.getLastModifiedDate());
 
             this.setConsignorConsigneeInfo((new ConsignorConsigneeDTO()).convertToDTO(entity));
             this.setFinancialInformation(new GDFinancialInfoDTO().convertToDTO(entity));

@@ -113,6 +113,13 @@ public class BDA {
     @Column(name = "BALANCE_BDA_AMOUNT_FCY", precision = 24, scale = 4)
     public BigDecimal balanceBdaAmountFcy;
 
+    @Column(name = "LAST_MODIFIED_BY",length = 30, nullable = true)
+    private String lastModifiedBy;
+
+    @Column(name = "LAST_MODIFIED_DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastModifiedDate;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name="COB_GD_FT_ID", nullable=true)
