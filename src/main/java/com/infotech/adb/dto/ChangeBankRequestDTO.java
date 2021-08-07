@@ -4,6 +4,8 @@ import com.infotech.adb.model.entity.ChangeOfBank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 public class ChangeBankRequestDTO implements BaseDTO<ChangeBankRequestDTO , ChangeOfBank> {
@@ -17,6 +19,9 @@ public class ChangeBankRequestDTO implements BaseDTO<ChangeBankRequestDTO , Chan
     private String finInsUniqueNumber;
     private String gdNumber;
     private String cobStatus;
+
+    private String lastModifiedBy;
+    private Date lastModifiedDate;
 
     public ChangeBankRequestDTO(String id ,String cobUniqueIdNumber, String tradeType, String traderNTN, String traderName, String iban, String finInsUniqueNumber, String gdNumber) {
         this.cobUniqueIdNumber = cobUniqueIdNumber;
@@ -41,6 +46,9 @@ public class ChangeBankRequestDTO implements BaseDTO<ChangeBankRequestDTO , Chan
         entity.setIban(this.getIban());
         entity.setFinInsUniqueNumber(this.getFinInsUniqueNumber());
         entity.setCobStatus(this.getCobStatus());
+        entity.setLastModifiedBy(this.getLastModifiedBy());
+        entity.setLastModifiedDate(this.getLastModifiedDate());
+
 
         return entity;
     }
@@ -57,6 +65,10 @@ public class ChangeBankRequestDTO implements BaseDTO<ChangeBankRequestDTO , Chan
             this.setTraderName(entity.getTraderName());
             this.setTraderNTN(entity.getTraderNTN());
             this.setCobStatus(entity.getCobStatus());
+
+            this.setLastModifiedBy(entity.getLastModifiedBy());
+            this.setLastModifiedDate(entity.getLastModifiedDate());
+
 
         }
     }

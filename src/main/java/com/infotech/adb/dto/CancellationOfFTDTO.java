@@ -4,6 +4,8 @@ import com.infotech.adb.model.entity.CancellationOfFT;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 public class CancellationOfFTDTO implements BaseDTO<CancellationOfFTDTO, CancellationOfFT> {
@@ -14,15 +16,8 @@ public class CancellationOfFTDTO implements BaseDTO<CancellationOfFTDTO, Cancell
     private String traderName;
     private String Iban;
     private String finInsUniqueNumber;
-
-    public CancellationOfFTDTO(String id ,  String tradeType, String traderNTN, String traderName, String iban, String finInsUniqueNumber) {
-        this.tradeTranType = tradeType;
-        this.traderNTN = traderNTN;
-        this.traderName = traderName;
-        Iban = iban;
-        this.finInsUniqueNumber = finInsUniqueNumber;
-
-    }
+    private String lastModifiedBy;
+    private Date lastModifiedDate;
 
 
     @Override
@@ -35,6 +30,9 @@ public class CancellationOfFTDTO implements BaseDTO<CancellationOfFTDTO, Cancell
         entity.setTraderName(this.getTraderName());
         entity.setIban(this.getIban());
         entity.setFinInsUniqueNumber(this.getFinInsUniqueNumber());
+        entity.setLastModifiedBy(this.getLastModifiedBy());
+        entity.setLastModifiedDate(this.getLastModifiedDate());
+
 
 
         return entity;
@@ -50,6 +48,10 @@ public class CancellationOfFTDTO implements BaseDTO<CancellationOfFTDTO, Cancell
             this.setTradeTranType(entity.getTradeType());
             this.setTraderName(entity.getTraderName());
             this.setTraderNTN(entity.getTraderNTN());
+
+            this.setLastModifiedBy(entity.getLastModifiedBy());
+            this.setLastModifiedDate(entity.getLastModifiedDate());
+
 
         }
     }

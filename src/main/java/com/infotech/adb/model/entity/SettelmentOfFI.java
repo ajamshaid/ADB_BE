@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Entity
 @Table(name = "SETTLEMENT_OF_FI")
@@ -40,4 +41,11 @@ public class SettelmentOfFI {
 
     @Column(name = "BALANCE",precision=20, scale=5)
     private BigDecimal balance;
+
+    @Column(name = "LAST_MODIFIED_BY",length = 30, nullable = true)
+    private String lastModifiedBy;
+
+    @Column(name = "LAST_MODIFIED_DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastModifiedDate;
 }

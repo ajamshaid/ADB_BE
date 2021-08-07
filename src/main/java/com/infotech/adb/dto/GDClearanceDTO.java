@@ -4,6 +4,8 @@ import com.infotech.adb.model.entity.GDClearance;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 public class GDClearanceDTO implements BaseDTO<GDClearanceDTO, GDClearance> {
@@ -16,14 +18,9 @@ public class GDClearanceDTO implements BaseDTO<GDClearanceDTO, GDClearance> {
     private String gdNumber;
     private String clearanceStatus;
 
-    public GDClearanceDTO(String id , String tradeType, String traderNTN, String traderName, String iban, String gdNumber) {
+    private String lastModifiedBy;
+    private Date lastModifiedDate;
 
-        this.tradeTranType = tradeType;
-        this.traderNTN = traderNTN;
-        this.traderName = traderName;
-        Iban = iban;
-        this.gdNumber = gdNumber;
-    }
 
 
     @Override
@@ -37,6 +34,9 @@ public class GDClearanceDTO implements BaseDTO<GDClearanceDTO, GDClearance> {
         entity.setIban(this.getIban());
         entity.setGdNumber(this.getGdNumber());
         entity.setClearanceStatus(this.getClearanceStatus());
+        entity.setLastModifiedBy(this.getLastModifiedBy());
+        entity.setLastModifiedDate(this.getLastModifiedDate());
+
 
 
         return entity;
@@ -53,6 +53,11 @@ public class GDClearanceDTO implements BaseDTO<GDClearanceDTO, GDClearance> {
             this.setTraderNTN(entity.getTraderNTN());
             this.setGdNumber(entity.getGdNumber());
             this.setClearanceStatus(entity.getClearanceStatus());
+
+
+            this.setLastModifiedBy(entity.getLastModifiedBy());
+            this.setLastModifiedDate(entity.getLastModifiedDate());
+
 
         }
     }

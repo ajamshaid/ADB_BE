@@ -3,6 +3,7 @@ package com.infotech.adb.util;
 public class AppConstants {
 
     public final static String AD_ID = "SLB";
+    public final static String MQ_USER ="MQ_QOUT";
     public final static String TYPE_IMPORT = "IMPORT";
     public final static String TYPE_GD_IMPORT = "GD-IMPORT";
     public final static String TYPE_EXPORT = "EXPORT";

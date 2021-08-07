@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "CHANGE_OF_BANK")
@@ -38,4 +39,11 @@ public class ChangeOfBank {
 
     @Column(name = "COB_STATUS")
     private String cobStatus;
+
+    @Column(name = "LAST_MODIFIED_BY",length = 30, nullable = true)
+    private String lastModifiedBy;
+
+    @Column(name = "LAST_MODIFIED_DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastModifiedDate;
 }

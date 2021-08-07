@@ -3,6 +3,7 @@ package com.infotech.adb.model.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "GD_CLEARANCE")
@@ -33,4 +34,11 @@ public class GDClearance {
 
     @Column(name = "CLEARANCE_STATUS")
     private String clearanceStatus;
+
+    @Column(name = "LAST_MODIFIED_BY",length = 30, nullable = true)
+    private String lastModifiedBy;
+
+    @Column(name = "LAST_MODIFIED_DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastModifiedDate;
 }

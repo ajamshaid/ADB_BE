@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -28,6 +29,13 @@ public class COBGdFt {
 
     @Column(name = "NEW_BANK_IBAN",length = 24, nullable = true)
     private String newBankIBAN;
+
+    @Column(name = "LAST_MODIFIED_BY",length = 30, nullable = true)
+    private String lastModifiedBy;
+
+    @Column(name = "LAST_MODIFIED_DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastModifiedDate;
 
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY , cascade = CascadeType.ALL)

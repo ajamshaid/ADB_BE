@@ -2,6 +2,7 @@ package com.infotech.adb.silkbank.jms;
 
 import com.infotech.adb.model.entity.*;
 import com.infotech.adb.service.ReferenceService;
+import com.infotech.adb.util.AppConstants;
 import com.infotech.adb.util.AppUtility;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ public class QueueOutListner {
     @Autowired
     MQMessageParser mqMessageParser;
 
+
+
     @JmsListener(destination = "QOUT_PSW")
     public void receiveMessage(String msg) {
         System.out.println("========================================");
@@ -33,6 +36,8 @@ public class QueueOutListner {
 
                 try {
                     FinancialTransaction ft = mqMessageParser.parseAndBuildFTImport(replyMessage.getReqResStr());
+                    ft.setLastModifiedBy(AppConstants.MQ_USER);
+                    ft.setLastModifiedDate(AppUtility.getCurrentTimeStamp());
                     referenceService.updateFinancialTransaction(ft);
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -41,6 +46,8 @@ public class QueueOutListner {
                 // IF Message 5.1.3  BDA Import
                 try {
                     BDA bda = mqMessageParser.parseAndBuildBDAInfoImport(replyMessage.getReqResStr());
+                    bda.setLastModifiedBy(AppConstants.MQ_USER);
+                    bda.setLastModifiedDate(AppUtility.getCurrentTimeStamp());
                     referenceService.updateBDA(bda);
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -49,14 +56,18 @@ public class QueueOutListner {
                 // IF Message 5.2.1  Export Share Financial Transaction Data with PSW
                 try {
                     FinancialTransaction ft = mqMessageParser.parseAndBuildFTExport(replyMessage.getReqResStr());
+                    ft.setLastModifiedBy(AppConstants.MQ_USER);
+                    ft.setLastModifiedDate(AppUtility.getCurrentTimeStamp());
                     referenceService.updateFinancialTransaction(ft);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
             } else if (MQUtility.MSG_TYPE_BCA_EXPORT.equals(replyMessage.getType())) {
-                // IF Message 5.2.3  BDA Import
+                // IF Message 5.2.3  BCA Export
                 try {
                     BCA bca = mqMessageParser.parseAndBuildBCAExport(replyMessage.getReqResStr());
+                    bca.setLastModifiedBy(AppConstants.MQ_USER);
+                    bca.setLastModifiedDate(AppUtility.getCurrentTimeStamp());
                     referenceService.updateBCA(bca);
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -65,6 +76,8 @@ public class QueueOutListner {
                 // IF Message 8.1  Cancellation of FT
                 try {
                     CancellationOfFT cft = mqMessageParser.parseAndBuildCFT(replyMessage.getReqResStr());
+                    cft.setLastModifiedBy(AppConstants.MQ_USER);
+                    cft.setLastModifiedDate(AppUtility.getCurrentTimeStamp());
                     referenceService.updateCancellationOfFT(cft);
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -73,6 +86,8 @@ public class QueueOutListner {
                 // IF Message 9.1 Reversal of BDA/BCA
                 try {
                     ReversalOfBdaBca entity = mqMessageParser.parseAndBuildRevBDABCA(replyMessage.getReqResStr());
+                    entity.setLastModifiedBy(AppConstants.MQ_USER);
+                    entity.setLastModifiedDate(AppUtility.getCurrentTimeStamp());
                     referenceService.updateReversalBDABCA(entity);
                 } catch (Exception ex) {
                     ex.printStackTrace();

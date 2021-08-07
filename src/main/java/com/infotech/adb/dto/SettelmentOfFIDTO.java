@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -22,6 +23,10 @@ public class SettelmentOfFIDTO implements BaseDTO<SettelmentOfFIDTO, SettelmentO
     private BigDecimal totalValueOfSharedBCABDA;
     private BigDecimal balance;
 
+    private String lastModifiedBy;
+    private Date lastModifiedDate;
+
+
     @Override
     public SettelmentOfFI convertToEntity() {
         SettelmentOfFI entity = new SettelmentOfFI();
@@ -35,6 +40,9 @@ public class SettelmentOfFIDTO implements BaseDTO<SettelmentOfFIDTO, SettelmentO
         entity.setFinInsValue(this.getFinInsValue());
         entity.setBalance(this.getBalance());
         entity.setTotalValueOfSharedBCABDA(this.getTotalValueOfSharedBCABDA());
+
+        entity.setLastModifiedBy(this.getLastModifiedBy());
+        entity.setLastModifiedDate(this.getLastModifiedDate());
 
         return entity;
     }
@@ -56,6 +64,9 @@ public class SettelmentOfFIDTO implements BaseDTO<SettelmentOfFIDTO, SettelmentO
             this.setFinInsValue(entity.getFinInsValue());
             this.setBalance(entity.getBalance());
             this.setTotalValueOfSharedBCABDA(entity.getTotalValueOfSharedBCABDA());
+            this.setLastModifiedBy(entity.getLastModifiedBy());
+            this.setLastModifiedDate(entity.getLastModifiedDate());
+
 
         }
     }

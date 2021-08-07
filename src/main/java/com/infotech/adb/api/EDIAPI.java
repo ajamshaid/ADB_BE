@@ -204,6 +204,9 @@ public class EDIAPI {
             throws NoDataFoundException, JsonProcessingException {
 
         GDImportDTO dto = getObjectMapper().readValue(data, GDImportDTO.class);
+        dto.setLastModifiedBy(AppConstants.PSW.ID);
+        dto.setLastModifiedDate(AppUtility.getCurrentTimeStamp());
+
         Date requestTime = AppUtility.getCurrentTimeStamp();
         System.out.println("IN coming GD Info:" + dto);
 
@@ -232,6 +235,9 @@ public class EDIAPI {
             throws NoDataFoundException, JsonProcessingException {
 
         GDExportDTO dto = getObjectMapper().readValue(data, GDExportDTO.class);
+        dto.setLastModifiedBy(AppConstants.PSW.ID);
+        dto.setLastModifiedDate(AppUtility.getCurrentTimeStamp());
+
         Date requestTime = AppUtility.getCurrentTimeStamp();
         System.out.println("IN coming GD Info:" + dto);
 
@@ -258,6 +264,10 @@ public class EDIAPI {
             throws NoDataFoundException, JsonProcessingException {
 
         ChangeBankRequestDTO dto = getObjectMapper().readValue(data, ChangeBankRequestDTO.class);
+
+        dto.setLastModifiedBy(AppConstants.PSW.ID);
+        dto.setLastModifiedDate(AppUtility.getCurrentTimeStamp());
+
         Date requestTime = AppUtility.getCurrentTimeStamp();
         System.out.println("IN coming COB Object is:" + dto);
 
@@ -287,6 +297,8 @@ public class EDIAPI {
         if("01".equals(tradeType)) {
 
             COBGdFtImportDTO dto = getObjectMapper().readValue(data, COBGdFtImportDTO.class);
+            dto.setLastModifiedBy(AppConstants.PSW.ID);
+            dto.setLastModifiedDate(AppUtility.getCurrentTimeStamp());
             System.out.println("IN coming COB GD FT DTO Object is:" + dto);
             if (!AppUtility.isEmpty(dto)) {
                 referenceService.updateCOBGdFt(dto.convertToEntity());
@@ -294,6 +306,8 @@ public class EDIAPI {
         }else if("02".equals(tradeType)) {
             System.out.println("------------I am export COB----------");
             COBGdFtExportDTO dto = getObjectMapper().readValue(data, COBGdFtExportDTO.class);
+            dto.setLastModifiedBy(AppConstants.PSW.ID);
+            dto.setLastModifiedDate(AppUtility.getCurrentTimeStamp());
 
             System.out.println("IN coming COB GD FT DTO Object is:" + dto);
             if (!AppUtility.isEmpty(dto)) {
@@ -306,7 +320,7 @@ public class EDIAPI {
                 ,requestParameter, false);
 
         ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
-        String logMessage = "7.3 – Sharing of GD and Financial Information with the other selected Bank";
+        String logMessage = "7.3 - Sharing of GD and Financial Information with the other selected Bank";
 
         logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter,requestTime, responseBody);
         return customResponse;

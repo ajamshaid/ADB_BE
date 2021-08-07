@@ -6,6 +6,7 @@ import com.opencsv.bean.CsvBindByName;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "ACCOUNT_DETAIL"
@@ -40,4 +41,10 @@ public class AccountDetail {
     @Column(name = "AUTH_PM_EXPORT")
     private String AuthPMExport;
 
+    @Column(name = "LAST_MODIFIED_BY",length = 30, nullable = true)
+    private String lastModifiedBy;
+
+    @Column(name = "LAST_MODIFIED_DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastModifiedDate;
 }

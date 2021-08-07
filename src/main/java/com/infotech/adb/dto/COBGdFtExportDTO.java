@@ -7,6 +7,7 @@ import com.infotech.adb.util.AppUtility;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,6 +18,9 @@ public class COBGdFtExportDTO extends COBGdFtDTO {
     private Set<GDExportDTO> gdInfo;
     private Set<BCADTO> bankAdviceInfo;
 
+    private String lastModifiedBy;
+    private Date lastModifiedDate;
+
     @Override
     public COBGdFt convertToEntity() {
         COBGdFt entity = new COBGdFt();
@@ -24,6 +28,10 @@ public class COBGdFtExportDTO extends COBGdFtDTO {
         entity.setCobUniqueIdNumber((this.getCobUniqueIdNumber()));
         entity.setTradeTranType(this.getTradeTranType());
         entity.setFt(this.financialInstrumentInfo.convertToEntity());
+
+        entity.setLastModifiedBy(this.getLastModifiedBy());
+        entity.setLastModifiedDate(this.getLastModifiedDate());
+
         entity.getFt().setType("COB_EXPORT");
 
         // GD Sets
@@ -56,6 +64,9 @@ public class COBGdFtExportDTO extends COBGdFtDTO {
         this.id = entity.getId();
         this.cobUniqueIdNumber = entity.getCobUniqueIdNumber();
         this.tradeTranType = entity.getTradeTranType();
+
+        this.setLastModifiedBy(entity.getLastModifiedBy());
+        this.setLastModifiedDate(entity.getLastModifiedDate());
 
         if (!AppUtility.isEmpty(entity.getFt())) {
             this.financialInstrumentInfo = new FinancialTransactionExportDTO(entity.getFt());

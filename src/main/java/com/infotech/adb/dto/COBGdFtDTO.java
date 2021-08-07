@@ -4,6 +4,8 @@ import com.infotech.adb.model.entity.COBGdFt;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 public class  COBGdFtDTO implements BaseDTO<COBGdFtDTO, COBGdFt>{
@@ -11,6 +13,9 @@ public class  COBGdFtDTO implements BaseDTO<COBGdFtDTO, COBGdFt>{
     public String cobUniqueIdNumber;
     public String tradeTranType;
     public String iban;
+
+    private String lastModifiedBy;
+    private Date lastModifiedDate;
 
     @Override
     public COBGdFt convertToEntity() {
@@ -24,6 +29,11 @@ public class  COBGdFtDTO implements BaseDTO<COBGdFtDTO, COBGdFt>{
         this.cobUniqueIdNumber = entity.getCobUniqueIdNumber();
         this.tradeTranType = entity.getTradeTranType();
         this.iban = entity.getNewBankIBAN();
+
+
+        this.setLastModifiedBy(entity.getLastModifiedBy());
+        this.setLastModifiedDate(entity.getLastModifiedDate());
+
 
     }
     @Override
