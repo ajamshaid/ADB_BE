@@ -34,7 +34,9 @@ public class BDADTO implements BaseDTO<BDADTO, BDA> {
 
         entity.setId(this.getId());
         //entity.setGdNumber(this.getGdNumber());
-        entity.setGdNumber(this.getGdNumber()[0]);
+        if(this.getGdNumber()!=null && this.getGdNumber().length > 0) {
+            entity.setGdNumber(this.getGdNumber()[0]);
+        }
         entity.setBdaUniqueIdNumber(this.getBdaUniqueIdNumber());
         entity.setIban(this.getIban());
         entity.setImporterNtn(this.getImporterNtn());
@@ -78,7 +80,7 @@ public class BDADTO implements BaseDTO<BDADTO, BDA> {
     public void convertToDTO(BDA entity, boolean partialFill) {
         if (entity != null) {
             this.setId(entity.getId());
-            String[] gdNum = {entity.getGdNumber()};
+            String[] gdNum = AppUtility.isEmpty(entity.getGdNumber()) ? null: new String[]{entity.getGdNumber()};
             this.setGdNumber(gdNum);
             //this.setGdNumber(entity.getGdNumber());
             this.setBdaUniqueIdNumber(entity.getBdaUniqueIdNumber());
