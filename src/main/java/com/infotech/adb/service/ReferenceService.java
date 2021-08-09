@@ -229,7 +229,7 @@ public class ReferenceService {
     public List<BCA> getAllBCA() {
         log.info("getAllBCA method called..");
         List<BCA> refList = null;
-        refList= this.bcaRepository.findAll();
+        refList= this.bcaRepository.findAllByOrderByLastModifiedDateDesc();
         return refList;
     }
 
