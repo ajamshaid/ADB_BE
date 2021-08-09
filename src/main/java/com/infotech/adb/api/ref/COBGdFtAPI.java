@@ -34,12 +34,12 @@ public class COBGdFtAPI {
     private ReferenceService referenceService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public CustomResponse getAllCOBGdFt()
+    public CustomResponse getAllLastModifiedCOBGdFt()
             throws CustomException, NoDataFoundException {
 
         List<COBGdFt> refList = null;
         try {
-            refList = referenceService.getAllCOBGdFt();
+            refList = referenceService.getAllLastModifiedCOBGdFt();
         } catch (Exception e) {
             throw new CustomException(e);
         }

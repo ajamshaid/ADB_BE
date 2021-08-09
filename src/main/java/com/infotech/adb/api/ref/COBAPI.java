@@ -31,12 +31,12 @@ public class COBAPI {
     private ReferenceService referenceService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public CustomResponse getAllCOB()
+    public CustomResponse getAllLastModifiedCOB()
             throws CustomException, NoDataFoundException {
 
         List<ChangeOfBank> refList = null;
         try {
-            refList = referenceService.getAllCOB();
+            refList = referenceService.getAllLastModifiedCOB();
         } catch (Exception e) {
             throw new CustomException(e);
         }

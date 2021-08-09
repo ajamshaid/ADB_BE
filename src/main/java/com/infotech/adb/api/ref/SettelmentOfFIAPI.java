@@ -31,12 +31,12 @@ public class SettelmentOfFIAPI {
     private ReferenceService referenceService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public CustomResponse getAllSettlementOfFI()
+    public CustomResponse getLastModifiedSettlementOfFI()
             throws CustomException, NoDataFoundException {
 
         List<SettelmentOfFI> refList = null;
         try {
-            refList = referenceService.getAllSettlementOfFI();
+            refList = referenceService.getLastModifiedSettlementOfFI();
         } catch (Exception e) {
             throw new CustomException(e);
         }

@@ -30,12 +30,12 @@ public class BCAAPI {
     private ReferenceService referenceService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public CustomResponse getAllBCA()
+    public CustomResponse getAllBCALastModified()
             throws CustomException, NoDataFoundException {
 
         List<BCA> refList = null;
         try {
-            refList = referenceService.getAllBCA();
+            refList = referenceService.getAllBCALastModified();
         } catch (Exception e) {
             throw new CustomException(e);
         }
