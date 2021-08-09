@@ -27,6 +27,9 @@ public class AppUtility {
     private static final String DATE_FORMAT = "yyyyMMdd";
 
 
+    public static String buildUniqNumber(String type, String counterNumber){
+        return AppConstants.AD_ID+"-"+type+"-"+counterNumber+"-"+getCurrentTimeStampString();
+    }
 
     // Signature field will contain base64 of the SHA256 hashed value of data field
 
@@ -370,5 +373,11 @@ public class AppUtility {
             sb.append(Integer.toHexString(v));
         }
         return sb.toString().toUpperCase();
+    }
+
+
+    public static void main (String [] args){
+
+        System.out.println(AppUtility.buildUniqNumber("BCA","00000"));
     }
 }
