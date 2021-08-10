@@ -21,6 +21,7 @@ public class FinancialTransactionImportDTO implements BaseDTO<FinancialTransacti
     private String importerIban;
     private String modeOfPayment;
     private String finInsUniqueNumber;
+    private String finInsUniqueNumberCore;
     private String remarks;
     private String lastModifiedBy;
     private Date lastModifiedDate;
@@ -48,6 +49,7 @@ public class FinancialTransactionImportDTO implements BaseDTO<FinancialTransacti
 
         entity.setModeOfPayment(this.getModeOfPayment());
         entity.setFinInsUniqueNumber(this.getFinInsUniqueNumber());
+        entity.setFinInsUniqueNumberCore(this.getFinInsUniqueNumberCore());
         entity.setRemarks(this.getRemarks());
         entity.setLastModifiedBy(this.getLastModifiedBy());
         entity.setLastModifiedDate(this.getLastModifiedDate());
@@ -103,6 +105,7 @@ public class FinancialTransactionImportDTO implements BaseDTO<FinancialTransacti
             this.setImporterIban(entity.getIban());
             this.setModeOfPayment(entity.getModeOfPayment());
             this.setFinInsUniqueNumber(entity.getFinInsUniqueNumber());
+            this.setFinInsUniqueNumberCore(entity.getFinInsUniqueNumberCore());
             this.setRemarks(entity.getRemarks());
             this.setLastModifiedBy(entity.getLastModifiedBy());
             this.setLastModifiedDate(entity.getLastModifiedDate());

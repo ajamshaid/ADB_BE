@@ -39,6 +39,9 @@ public class FinancialTransaction {
     @Column(name = "FIN_INS_UNIQ_NUM",length = 30, nullable = true)
     private String finInsUniqueNumber;
 
+    @Column(name = "FIN_INS_UNIQ_NUM_CORE",length = 30, nullable = true)
+    private String finInsUniqueNumberCore;
+
     @Column(name = "LAST_MODIFIED_BY",length = 30, nullable = true)
     private String lastModifiedBy;
 
