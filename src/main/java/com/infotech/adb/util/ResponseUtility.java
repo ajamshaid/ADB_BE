@@ -18,9 +18,12 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
 import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.ZonedDateTime;
@@ -69,6 +72,17 @@ public class ResponseUtility {
         return CustomResponse
                 .status(status)
                 .body(response);
+    }
+
+    public static ResponseEntity<?> buildReportResponseObject(InputStreamResource isr) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/pdf");
+
+        return new ResponseEntity<>(isr, headers, HttpStatus.OK);
+    }
+
+    public static void exceptionResponse(Exception e) throws CustomException {
+        throw new CustomException(e.getMessage(), e);
     }
 
     @NoArgsConstructor
