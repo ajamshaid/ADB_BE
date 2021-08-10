@@ -40,7 +40,11 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
         BCA entity = new BCA();
 
         entity.setId(this.getId());
-        entity.setGdNumber(this.getGdNumber()[0]);
+
+        //entity.setGdNumber(this.getGdNumber());
+        if(this.getGdNumber()!=null && this.getGdNumber().length > 0) {
+            entity.setGdNumber(this.getGdNumber()[0]);
+        }
         entity.setBcaUniqueIdNumber(this.getBcaUniqueIdNumber());
         entity.setIban(this.getIban());
         entity.setExporterName(this.getExporterName());
@@ -93,7 +97,7 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
     public void convertToDTO(BCA entity, boolean partialFill) {
         if (entity != null) {
             this.setId(entity.getId());
-            String[] gdNum = {entity.getGdNumber()};
+            String[] gdNum = AppUtility.isEmpty(entity.getGdNumber()) ? null: new String[]{entity.getGdNumber()};
             this.setGdNumber(gdNum);
             this.setBcaUniqueIdNumber(entity.getBcaUniqueIdNumber());
             this.setIban(entity.getIban());

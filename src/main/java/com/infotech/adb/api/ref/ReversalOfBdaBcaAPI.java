@@ -32,12 +32,12 @@ public class ReversalOfBdaBcaAPI {
     private ReferenceService referenceService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public CustomResponse getAllReversal()
+    public CustomResponse getLastModifiedReversal()
             throws CustomException, NoDataFoundException {
 
         List<ReversalOfBdaBca> refList = null;
         try {
-            refList = referenceService.getAllReversal();
+            refList = referenceService.getLastModifiedReversal();
         } catch (Exception e) {
             throw new CustomException(e);
         }

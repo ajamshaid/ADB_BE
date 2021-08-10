@@ -30,12 +30,12 @@ public class GDClearanceAPI {
     private ReferenceService referenceService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public CustomResponse getAllGDClearance()
+    public CustomResponse getLastModifiedGDClearance()
             throws CustomException, NoDataFoundException {
 
         List<GDClearance> refList = null;
         try {
-            refList = referenceService.getAllGDClearance();
+            refList = referenceService.getLastModifiedGDClearance();
         } catch (Exception e) {
             throw new CustomException(e);
         }

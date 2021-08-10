@@ -199,10 +199,10 @@ public class ReferenceService {
     /*************************************
      * BDA METHODS
      **************************************/
-    public List<BDA> getAllBDA() {
+    public List<BDA> getAllBDALastModified() {
         log.info("getAllBDA method called..");
         List<BDA> refList = null;
-        refList= this.bdaRepository.findAll();
+        refList= this.bdaRepository.findAllByOrderByLastModifiedDateDesc();
         return refList;
     }
 
@@ -226,10 +226,10 @@ public class ReferenceService {
     /*************************************
      * BCA METHODS
      **************************************/
-    public List<BCA> getAllBCA() {
+    public List<BCA> getAllBCALastModified() {
         log.info("getAllBCA method called..");
         List<BCA> refList = null;
-        refList= this.bcaRepository.findAll();
+        refList= this.bcaRepository.findAllByOrderByLastModifiedDateDesc();
         return refList;
     }
 
@@ -300,10 +300,10 @@ public class ReferenceService {
     /*************************************
      * COB  METHODS
      **************************************/
-    public List<ChangeOfBank> getAllCOB() {
+    public List<ChangeOfBank> getAllLastModifiedCOB() {
         log.info("getAllCOB method called..");
         List<ChangeOfBank> refList = null;
-        refList= this.cobRepository.findAll();
+        refList= this.cobRepository.findAllByOrderByLastModifiedDateDesc();
         return refList;
     }
 
@@ -328,10 +328,10 @@ public class ReferenceService {
      * GD Clearance  METHODS
      **************************************/
 
-    public List<GDClearance> getAllGDClearance() {
+    public List<GDClearance> getLastModifiedGDClearance() {
         log.info("getAllCOB method called..");
         List<GDClearance> refList = null;
-        refList= this.gdClearanceRepository.findAll();
+        refList= this.gdClearanceRepository.findAllByOrderByLastModifiedDateDesc();
         return refList;
     }
 
@@ -356,10 +356,10 @@ public class ReferenceService {
     /*************************************
      * Cancellation of FT  METHODS
      **************************************/
-    public List<CancellationOfFT> getAllCancellationOfFT() {
+    public List<CancellationOfFT> getLastModifiedCancellationOfFT() {
         log.info("getAllCOB method called..");
         List<CancellationOfFT> refList = null;
-        refList= this.cancellationOfFTRepository.findAll();
+        refList= this.cancellationOfFTRepository.findAllByOrderByLastModifiedDateDesc();
         return refList;
     }
 
@@ -383,10 +383,10 @@ public class ReferenceService {
     /*************************************
      * Reversal of BDA/BCA  METHODS
      **************************************/
-    public List<ReversalOfBdaBca> getAllReversal() {
+    public List<ReversalOfBdaBca> getLastModifiedReversal() {
         log.info("getAllReversal method called..");
         List<ReversalOfBdaBca> refList = null;
-        refList= this.reversalOfBdaBcaRepository.findAll();
+        refList= this.reversalOfBdaBcaRepository.findAllByOrderByLastModifiedDateDesc();
         return refList;
     }
 
@@ -410,10 +410,10 @@ public class ReferenceService {
     /*************************************
      * Settlement Of FI  METHODS
      **************************************/
-    public List<SettelmentOfFI> getAllSettlementOfFI() {
+    public List<SettelmentOfFI> getLastModifiedSettlementOfFI() {
         log.info("getAllCOB method called..");
         List<SettelmentOfFI> refList = null;
-        refList= this.settlementOfFIRepository.findAll();
+        refList= this.settlementOfFIRepository.findAllByOrderByLastModifiedDateDesc();
         return refList;
     }
 
@@ -437,10 +437,10 @@ public class ReferenceService {
     /*************************************
      * COB GD and FT  METHODS
      **************************************/
-    public List<COBGdFt> getAllCOBGdFt() {
+    public List<COBGdFt> getAllLastModifiedCOBGdFt() {
         log.info("getAllCOB method called..");
         List<COBGdFt> refList = null;
-        refList= this.cobGdFtRepository.findAll();
+        refList= this.cobGdFtRepository.findAllByOrderByLastModifiedDateDesc();
         return refList;
     }
 

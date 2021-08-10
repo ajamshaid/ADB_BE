@@ -30,12 +30,12 @@ public class BDAAPI {
     private ReferenceService referenceService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public CustomResponse getAllBDA()
+    public CustomResponse getAllBDALastModified()
             throws CustomException, NoDataFoundException {
 
         List<BDA> refList = null;
         try {
-            refList = referenceService.getAllBDA();
+            refList = referenceService.getAllBDALastModified();
         } catch (Exception e) {
             throw new CustomException(e);
         }

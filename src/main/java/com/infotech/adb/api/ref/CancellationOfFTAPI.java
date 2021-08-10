@@ -31,12 +31,12 @@ public class CancellationOfFTAPI {
     private ReferenceService referenceService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public CustomResponse getAllCancellationOfFT()
+    public CustomResponse getLastModifiedCancellationOfFT()
             throws CustomException, NoDataFoundException {
 
         List<CancellationOfFT> refList = null;
         try {
-            refList = referenceService.getAllCancellationOfFT();
+            refList = referenceService.getLastModifiedCancellationOfFT();
         } catch (Exception e) {
             throw new CustomException(e);
         }
