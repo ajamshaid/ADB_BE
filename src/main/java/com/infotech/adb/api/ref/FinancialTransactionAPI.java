@@ -77,7 +77,7 @@ public class FinancialTransactionAPI {
                 customResponse = ResponseUtility.translatePSWAPIResponse(referenceService.updateFTImportAndShare(reqDTO));
             } else {
                 entity = referenceService.updateFinancialTransaction(reqDTO.convertToEntity());
-                customResponse = ResponseUtility.successResponse(entity,"200","Record Updated Successfully");
+                customResponse = ResponseUtility.successResponse(entity,"200",reqDTO.getFinInsUniqueNumber()+" Record Updated Successfully");
             }
         } catch (JsonProcessingException e) {
             e.printStackTrace();

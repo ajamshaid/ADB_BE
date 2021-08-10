@@ -27,8 +27,15 @@ public class AppUtility {
     private static final String DATE_FORMAT = "yyyyMMdd";
 
 
-    public static String buildUniqNumber(String type, String counterNumber){
-        return AppConstants.AD_ID+"-"+type+"-"+counterNumber+"-"+getCurrentTimeStampString();
+    public static String generateUniqPSWNumberFormat(String type, Integer counterNumber){
+
+        if(counterNumber == null){
+            counterNumber = 1;
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
+        String dt = sdf.format(Calendar.getInstance().getTime());
+
+        return AppConstants.AD_ID+"-"+type+"-"+String.format("%06d", counterNumber)+"-"+dt;
     }
 
     // Signature field will contain base64 of the SHA256 hashed value of data field
@@ -378,6 +385,6 @@ public class AppUtility {
 
     public static void main (String [] args){
 
-        System.out.println(AppUtility.buildUniqNumber("BCA","00000"));
+        System.out.println(AppUtility.generateUniqPSWNumberFormat("BCA",null));
     }
 }

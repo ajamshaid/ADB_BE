@@ -38,6 +38,9 @@ public class ReferenceService {
     private BankNegtiveListRepository bankNegtiveListRepository;
 
     @Autowired
+    private TransCounterRepository transCounterRepository;
+
+    @Autowired
     private FinancialTransactionRepository financialTransactionRepository;
 
     @Autowired
@@ -74,6 +77,31 @@ public class ReferenceService {
     private UserRepository userRepository;
 
 
+    private synchronized Integer getNextCounter(String tranType) {
+
+        Integer counter = 1;
+        TransCounter tc = transCounterRepository.findDistinctByBankCode(AppConstants.AD_ID);
+
+        if ("IMP".equalsIgnoreCase(tranType)) {
+            counter = tc.getImp();
+            tc.setImp(tc.getImp() + 1);
+        } else if ("EXP".equalsIgnoreCase(tranType)) {
+            counter = tc.getExp();
+            tc.setExp(tc.getExp() + 1);
+        } else if ("BDA".equalsIgnoreCase(tranType)) {
+            counter = tc.getBda();
+            tc.setBda(tc.getBda() + 1);
+        } else if ("BCA".equalsIgnoreCase(tranType)) {
+            counter = tc.getBca();
+            tc.setBca(tc.getBca() + 1);
+        } else if ("COB".equalsIgnoreCase(tranType)) {
+            counter = tc.getCob();
+            tc.setCob(tc.getCob() + 1);
+        }
+        transCounterRepository.save(tc);
+        return counter;
+    }
+
     @Transactional
     public void parseCSVAndSaveAccountDetails(InputStream file) throws CustomException {
         // Using ApacheCommons Csv Utils to parse CSV file
@@ -83,7 +111,7 @@ public class ReferenceService {
             throw new NoDataFoundException("No Data Found, No Valid Object/Empty in CVS File");
         } else {
             acctDetailList.forEach((acct -> {
-                acct.setIban(acct.getIban().replaceAll("\\s+",""));
+                acct.setIban(acct.getIban().replaceAll("\\s+", ""));
                 if (!AppUtility.isEmpty(acct.getAuthPMImport())) {
                     acct.setAuthPMImport(acct.getAuthPMImport().replace("|", ","));
                 }
@@ -137,7 +165,6 @@ public class ReferenceService {
     }
 
 
-
     public List<AccountDetail> getAllAccountDetails() {
         log.info("getAllAccountDetails method called..");
         return accountDetailRepository.findAll();
@@ -151,6 +178,7 @@ public class ReferenceService {
         }
         return accountDetail;
     }
+
     /*************************************
      * BANK NEGATIVE LIST METHODS
      **************************************/
@@ -169,7 +197,7 @@ public class ReferenceService {
     public List<FinancialTransaction> getAllFinancialTransactionByType(String type) {
         log.info("getAllFinancialTransactionByType method called..");
         List<FinancialTransaction> refList = null;
-        refList= this.financialTransactionRepository.findByType(type);
+        refList = this.financialTransactionRepository.findByType(type);
         return refList;
     }
 
@@ -181,11 +209,19 @@ public class ReferenceService {
 
 
     public ResponseUtility.APIResponse updateFTImportAndShare(FinancialTransactionImportDTO dto) throws JsonProcessingException {
+
+        String finUniqNo = AppUtility.generateUniqPSWNumberFormat("IMP", this.getNextCounter("IMP"));
+        dto.setFinInsUniqueNumber(finUniqNo);
+
         FinancialTransaction ft = this.updateFinancialTransaction(dto.convertToEntity());
         return pswAPIConsumerService.shareFinancialInformationImport(dto);
     }
 
     public ResponseUtility.APIResponse updateFTExportAndShare(FinancialTransactionExportDTO dto) throws JsonProcessingException {
+
+        String finUniqNo = AppUtility.generateUniqPSWNumberFormat("EXP", this.getNextCounter("EXP"));
+        dto.setFinInsUniqueNumber(finUniqNo);
+
         FinancialTransaction ft = this.updateFinancialTransaction(dto.convertToEntity());
         return pswAPIConsumerService.shareFinancialInformationExport(dto);
     }
@@ -202,7 +238,7 @@ public class ReferenceService {
     public List<BDA> getAllBDALastModified() {
         log.info("getAllBDA method called..");
         List<BDA> refList = null;
-        refList= this.bdaRepository.findAllByOrderByLastModifiedDateDesc();
+        refList = this.bdaRepository.findAllByOrderByLastModifiedDateDesc();
         return refList;
     }
 
@@ -213,6 +249,11 @@ public class ReferenceService {
     }
 
     public ResponseUtility.APIResponse updateBDAAndShare(BDADTO bdadto) throws JsonProcessingException {
+
+        String uniqNo = AppUtility.generateUniqPSWNumberFormat("BDA", this.getNextCounter("BDA"));
+        //     dto.setFinInsUniqueNumber(finUniqNo);
+        bdadto.setBdaUniqueIdNumber(uniqNo);
+
         BDA entity = this.updateBDA(bdadto.convertToEntity());
         return pswAPIConsumerService.shareBDAInformationImport(bdadto);
     }
@@ -229,7 +270,7 @@ public class ReferenceService {
     public List<BCA> getAllBCALastModified() {
         log.info("getAllBCA method called..");
         List<BCA> refList = null;
-        refList= this.bcaRepository.findAllByOrderByLastModifiedDateDesc();
+        refList = this.bcaRepository.findAllByOrderByLastModifiedDateDesc();
         return refList;
     }
 
@@ -241,6 +282,10 @@ public class ReferenceService {
 
 
     public ResponseUtility.APIResponse updateBCAAndShare(BCADTO bcadto) throws JsonProcessingException {
+
+        String uniqNo = AppUtility.generateUniqPSWNumberFormat("BCA", this.getNextCounter("BCA"));
+        bcadto.setBcaUniqueIdNumber(uniqNo);
+
         BCA bca = this.updateBCA(bcadto.convertToEntity());
         return pswAPIConsumerService.shareBCAInformationExport(bcadto);
     }
@@ -258,7 +303,7 @@ public class ReferenceService {
     public List<GD> getAllGD(String type) {
         log.info("getAllGD method called..");
         List<GD> refList = null;
-        refList= this.gdRepository.findAll();
+        refList = this.gdRepository.findAll();
         return refList;
     }
 
@@ -281,7 +326,7 @@ public class ReferenceService {
     public List<GDExport> getAllGDExport() {
         log.info("getAllGDExport method called..");
         List<GDExport> refList = null;
-        refList= this.gdExportRepository.findAll();
+        refList = this.gdExportRepository.findAll();
         return refList;
     }
 
@@ -303,7 +348,7 @@ public class ReferenceService {
     public List<ChangeOfBank> getAllLastModifiedCOB() {
         log.info("getAllCOB method called..");
         List<ChangeOfBank> refList = null;
-        refList= this.cobRepository.findAllByOrderByLastModifiedDateDesc();
+        refList = this.cobRepository.findAllByOrderByLastModifiedDateDesc();
         return refList;
     }
 
@@ -314,6 +359,10 @@ public class ReferenceService {
     }
 
     public ResponseUtility.APIResponse updateCOBAndShare(ChangeBankRequestDTO dto) throws JsonProcessingException {
+
+        String uniqNo = AppUtility.generateUniqPSWNumberFormat("COB", this.getNextCounter("COB"));
+        dto.setCobUniqueIdNumber(uniqNo);
+
         this.updateCOB(dto.convertToEntity());
         return pswAPIConsumerService.shareCOBApprovalRejectionMsg(dto);
     }
@@ -331,7 +380,7 @@ public class ReferenceService {
     public List<GDClearance> getLastModifiedGDClearance() {
         log.info("getAllCOB method called..");
         List<GDClearance> refList = null;
-        refList= this.gdClearanceRepository.findAllByOrderByLastModifiedDateDesc();
+        refList = this.gdClearanceRepository.findAllByOrderByLastModifiedDateDesc();
         return refList;
     }
 
@@ -359,7 +408,7 @@ public class ReferenceService {
     public List<CancellationOfFT> getLastModifiedCancellationOfFT() {
         log.info("getAllCOB method called..");
         List<CancellationOfFT> refList = null;
-        refList= this.cancellationOfFTRepository.findAllByOrderByLastModifiedDateDesc();
+        refList = this.cancellationOfFTRepository.findAllByOrderByLastModifiedDateDesc();
         return refList;
     }
 
@@ -386,7 +435,7 @@ public class ReferenceService {
     public List<ReversalOfBdaBca> getLastModifiedReversal() {
         log.info("getAllReversal method called..");
         List<ReversalOfBdaBca> refList = null;
-        refList= this.reversalOfBdaBcaRepository.findAllByOrderByLastModifiedDateDesc();
+        refList = this.reversalOfBdaBcaRepository.findAllByOrderByLastModifiedDateDesc();
         return refList;
     }
 
@@ -413,7 +462,7 @@ public class ReferenceService {
     public List<SettelmentOfFI> getLastModifiedSettlementOfFI() {
         log.info("getAllCOB method called..");
         List<SettelmentOfFI> refList = null;
-        refList= this.settlementOfFIRepository.findAllByOrderByLastModifiedDateDesc();
+        refList = this.settlementOfFIRepository.findAllByOrderByLastModifiedDateDesc();
         return refList;
     }
 
@@ -440,7 +489,7 @@ public class ReferenceService {
     public List<COBGdFt> getAllLastModifiedCOBGdFt() {
         log.info("getAllCOB method called..");
         List<COBGdFt> refList = null;
-        refList= this.cobGdFtRepository.findAllByOrderByLastModifiedDateDesc();
+        refList = this.cobGdFtRepository.findAllByOrderByLastModifiedDateDesc();
         return refList;
     }
 
@@ -463,7 +512,7 @@ public class ReferenceService {
     public List<User> getAllUser() {
         log.info("getAllUser method called..");
         List<User> refList = null;
-        refList= this.userRepository.findAll();
+        refList = this.userRepository.findAll();
         return refList;
     }
 
