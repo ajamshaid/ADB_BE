@@ -4,10 +4,13 @@
 	<property name="ireport.x" value="1310"/>
 	<property name="ireport.y" value="1276"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-   <defaultValueExpression><![CDATA["reports/"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["reports/"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="fin_trans_ID" class="java.lang.Long">
 		<defaultValueExpression><![CDATA[$F{fin_transaction_id}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="gdId" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
@@ -15,7 +18,7 @@
 FROM
      gd
 JOIN payment_information pi on gd.fin_transaction_id = pi.fin_transaction_id
-where gd.ID = 18]]>
+where gd.ID = $P{gdId}]]>
 	</queryString>
 	<field name="id" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>

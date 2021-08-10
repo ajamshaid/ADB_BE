@@ -27,10 +27,9 @@ public class ReportAPI {
     @Autowired
     ReportService reportService;
 
-    @RequestMapping(value = "/{gdId}/{userId}/print-sad", method = RequestMethod.GET)
-    public ResponseEntity<?> printSAD(HttpServletRequest request,
-                                      @PathVariable(value = "gdId") Long gdId,
-                                      @PathVariable(value = "userId") Long userId)
+    @RequestMapping(value = "/{gdId}/print-gd", method = RequestMethod.GET)
+    public ResponseEntity<?> printGD(HttpServletRequest request,
+                                      @PathVariable(value = "gdId") Long gdId)
             throws DataValidationException, NoDataFoundException, CustomException {
         log.info("printSAD API initiated...");
         //String stateId = request.getHeader(AppConstants.STATE_ID_HEADER);
@@ -40,7 +39,7 @@ public class ReportAPI {
         }
         ByteArrayInputStream bis = null;
         try {
-            bis = reportService.buildSADPrint(gdId, userId);
+            bis = reportService.buildGDPrint(gdId);
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e);
         }

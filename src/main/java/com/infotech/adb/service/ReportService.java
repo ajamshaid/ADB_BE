@@ -24,13 +24,12 @@ public class ReportService {
     @Autowired
    private DataSource dataSource;
 
-    public ByteArrayInputStream buildSADPrint(Long gdId, Long userId)
+    public ByteArrayInputStream buildGDPrint(Long gdId)
             throws IOException, JRException, SQLException {
         log.info("buildSADPrint method called..");
 ;
         Map<String, Object> map = new HashMap<>();
         map.put("gdId", gdId);
-        map.put("userId", userId);
         map.put("reportName", PrintReportEnums.GD_REPORT );
 
         return this.generateGenericReport("ADB-GD", map, dataSource.getConnection() );
