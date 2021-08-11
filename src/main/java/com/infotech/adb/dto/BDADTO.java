@@ -13,6 +13,7 @@ import java.util.Date;
 public class BDADTO implements BaseDTO<BDADTO, BDA> {
     private Long id;
     public String bdaUniqueIdNumber;
+    public String coreUniqueNumber;
     public String[] gdNumber ={};
     public String iban;
     public String importerNtn;
@@ -20,6 +21,7 @@ public class BDADTO implements BaseDTO<BDADTO, BDA> {
     public String bdaDate;
     public String modeOfPayment;
     public String finInsUniqueNumber;
+
     public BdaInformation bdaInformation;
     private String lastModifiedBy;
     private Date lastModifiedDate;
@@ -38,6 +40,7 @@ public class BDADTO implements BaseDTO<BDADTO, BDA> {
             entity.setGdNumber(this.getGdNumber()[0]);
         }
         entity.setBdaUniqueIdNumber(this.getBdaUniqueIdNumber());
+        entity.setCoreUniqueNumber(this.getCoreUniqueNumber());
         entity.setIban(this.getIban());
         entity.setImporterNtn(this.getImporterNtn());
         entity.setImporterName(this.getImporterName());
@@ -84,6 +87,7 @@ public class BDADTO implements BaseDTO<BDADTO, BDA> {
             this.setGdNumber(gdNum);
             //this.setGdNumber(entity.getGdNumber());
             this.setBdaUniqueIdNumber(entity.getBdaUniqueIdNumber());
+            this.setCoreUniqueNumber(entity.getCoreUniqueNumber());
             this.setIban(entity.getIban());
             this.setImporterNtn(entity.getImporterNtn());
             this.setImporterName(entity.getImporterName());

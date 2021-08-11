@@ -24,6 +24,9 @@ public class BDA {
     @Column(name = "BDA_UNIQUE_NUMBER", length = 30, nullable = true)
     public String bdaUniqueIdNumber;
 
+    @Column(name = "Core_UNIQUE_NUMBER", length = 30, nullable = true)
+    public String coreUniqueNumber;
+
     @Column(name = "GD_NUMBER", length = 24)
     public String gdNumber;
 
