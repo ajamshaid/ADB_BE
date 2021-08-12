@@ -9,7 +9,6 @@ import com.infotech.adb.service.LogRequestService;
 import com.infotech.adb.util.AppUtility;
 import com.infotech.adb.util.CustomResponse;
 import com.infotech.adb.util.ResponseUtility;
-import io.swagger.annotations.Api;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +21,6 @@ import java.util.ResourceBundle;
 @RestController
 @RequestMapping("/logrequest")
 @Log4j2
-@Api(tags = "Logs")
 public class LogRequestAPI {
 
     private static final ResourceBundle messageBundle = ResourceBundle.getBundle("messages");

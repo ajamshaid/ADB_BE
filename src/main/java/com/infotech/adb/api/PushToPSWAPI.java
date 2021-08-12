@@ -7,7 +7,6 @@ import com.infotech.adb.exceptions.PSWAPIException;
 import com.infotech.adb.service.PSWService;
 import com.infotech.adb.util.CustomResponse;
 import com.infotech.adb.util.ResponseUtility;
-import io.swagger.annotations.Api;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/psw")
 @Log4j2
-@Api(tags = "@psw")
 public class PushToPSWAPI {
 
     @Autowired

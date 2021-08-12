@@ -12,6 +12,8 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 @Configuration
 @EnableAuthorizationServer
@@ -20,9 +22,24 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Autowired
     private AuthenticationManager authManager;
 
+    private  String publicKey ="-----BEGIN PUBLIC KEY-----\nabd\n-----END PUBLIC KEY-----\n";
+
+//    @Bean
+//    public TokenStore tokenStore() {
+//        return new InMemoryTokenStore();
+//    }
+
+
     @Bean
-    public TokenStore tokenStore() {
-        return new InMemoryTokenStore();
+    public JwtAccessTokenConverter tokenEnhancer() {
+        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+       converter.setSigningKey("adb");
+        converter.setVerifierKey("adb");
+        return converter;
+    }
+    @Bean
+    public JwtTokenStore tokenStore() {
+        return new JwtTokenStore(tokenEnhancer());
     }
 
     @Override
@@ -39,8 +56,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         endpoints.pathMapping("/oauth/token", "/saud/connect/token");
-        endpoints.tokenStore(tokenStore())
-                .authenticationManager(authManager);
+        endpoints.authenticationManager(authManager).tokenStore(tokenStore())
+                .accessTokenConverter(tokenEnhancer());
+//        endpoints.tokenStore(tokenStore())
+//                .authenticationManager(authManager);
 
     }
 

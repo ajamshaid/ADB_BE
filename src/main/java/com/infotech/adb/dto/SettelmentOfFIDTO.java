@@ -18,7 +18,7 @@ public class SettelmentOfFIDTO implements BaseDTO<SettelmentOfFIDTO, SettelmentO
     private String traderNTN;
     private String traderName;
     private String finInsUniqueNumber;
-    private List<String> bdaBcaUniqueIdNumber;
+    private List<String> bcaBdaUniqueIdNumber;
     private BigDecimal finInsValue;
     private BigDecimal totalValueOfSharedBCABDA;
     private BigDecimal balance;
@@ -32,7 +32,7 @@ public class SettelmentOfFIDTO implements BaseDTO<SettelmentOfFIDTO, SettelmentO
         SettelmentOfFI entity = new SettelmentOfFI();
 
         entity.setId(this.getId());
-        entity.setBdaBcaUniqueIdNumber(this.getBdaBcaUniqueIdNumber().get(0));
+        entity.setBdaBcaUniqueIdNumber(this.getBcaBdaUniqueIdNumber().get(0));
         entity.setTradeType(this.getTradeTranType());
         entity.setTraderNTN(this.getTraderNTN());
         entity.setTraderName(this.getTraderName());
@@ -56,7 +56,7 @@ public class SettelmentOfFIDTO implements BaseDTO<SettelmentOfFIDTO, SettelmentO
 
             unqNumList.add(entity.getBdaBcaUniqueIdNumber());
 
-            this.setBdaBcaUniqueIdNumber(unqNumList);
+            this.setBcaBdaUniqueIdNumber(unqNumList);
             this.setFinInsUniqueNumber(entity.getFinInsUniqueNumber());
             this.setTradeTranType(entity.getTradeType());
             this.setTraderName(entity.getTraderName());

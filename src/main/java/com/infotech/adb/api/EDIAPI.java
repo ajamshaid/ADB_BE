@@ -15,7 +15,7 @@ import com.infotech.adb.util.AppConstants;
 import com.infotech.adb.util.AppUtility;
 import com.infotech.adb.util.CustomResponse;
 import com.infotech.adb.util.ResponseUtility;
-import io.swagger.annotations.Api;
+
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,7 +30,6 @@ import java.util.ResourceBundle;
 @RestController
 @RequestMapping("/api/dealers/saud")
 @Log4j2
-@Api(tags = "@EDI")
 public class EDIAPI {
 
     @Autowired
