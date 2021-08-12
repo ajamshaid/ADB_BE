@@ -21,7 +21,10 @@ public class LogRequestDTO implements BaseDTO<LogRequestDTO, LogRequest> {
     private String messageName;
     private RequestParameter requestPayload;
     private ResponseUtility.APIResponse responsePayload;
+    private String responseCode;
     private String requestMethod;
+    private String responseMessage;
+
     private Date requestTime;
     private Date responseTime;
 
@@ -48,6 +51,9 @@ public class LogRequestDTO implements BaseDTO<LogRequestDTO, LogRequest> {
         this.id = entity.getId();
         this.senderId = entity.getSenderId();
         this.receiverId = entity.getReceiverId();
+
+        this.responseCode = entity.getResponseCode();
+        this.responseMessage = entity.getResponseMessage();
 
         this.responseTime = entity.getResponseTime();
         this.requestTime = entity.getRequestTime();
