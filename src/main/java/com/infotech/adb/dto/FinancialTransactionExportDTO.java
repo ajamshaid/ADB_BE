@@ -27,6 +27,7 @@ public class FinancialTransactionExportDTO implements BaseDTO<FinancialTransacti
     private CCDataDTO contractCollectionData;
     private LCDataDTO lcData;
 
+    private OpenAccountDataDTO openAccountData;
     private PaymentInformationExportDTO paymentInformation;
     private Set<ItemInformationExportDTO> itemInformation;
 
@@ -48,6 +49,9 @@ public class FinancialTransactionExportDTO implements BaseDTO<FinancialTransacti
         entity.setFinInsUniqueNumber(this.getFinInsUniqueNumber());
         entity.setLastModifiedBy(this.getLastModifiedBy());
         entity.setLastModifiedDate(this.getLastModifiedDate());
+
+        if(!AppUtility.isEmpty(this.getOpenAccountData()))
+            entity.setOpenAcctGDNumber(this.getOpenAccountData().getGdNumber());
 
         //CC Data
         if(!AppUtility.isEmpty(this.getContractCollectionData())) {
@@ -92,6 +96,12 @@ public class FinancialTransactionExportDTO implements BaseDTO<FinancialTransacti
             this.setLastModifiedBy(entity.getLastModifiedBy());
             this.setLastModifiedDate(entity.getLastModifiedDate());
 
+            if(!AppUtility.isEmpty(entity.getOpenAcctGDNumber())){
+                FinancialTransactionExportDTO.OpenAccountDataDTO dataDTO = new FinancialTransactionExportDTO.OpenAccountDataDTO();
+                dataDTO.setGdNumber(entity.getOpenAcctGDNumber());
+                this.setOpenAccountData(dataDTO);
+            }
+
             if (!AppUtility.isEmpty(entity.getPaymentInformation())) {
                 this.setPaymentInformation(new PaymentInformationExportDTO(entity.getPaymentInformation()));
             }
@@ -120,5 +130,11 @@ public class FinancialTransactionExportDTO implements BaseDTO<FinancialTransacti
         FinancialTransactionExportDTO dto = new FinancialTransactionExportDTO();
         dto.convertToDTO(entity, partialFill);
         return dto;
+    }
+
+    @Data
+    @NoArgsConstructor
+    private class OpenAccountDataDTO {
+        private String gdNumber;
     }
 }
