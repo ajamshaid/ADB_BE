@@ -49,6 +49,8 @@ public class FinancialTransaction {
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastModifiedDate;
 
+    @Column(name = "OPEN_ACCT_GD_NUMBER", length = 50, nullable = true)
+    private String openAcctGDNumber;
 
     // Financial Trans Information....
     @Column(name = "INTENDED_PAYMENT_DATE")

@@ -26,6 +26,8 @@ public class FinancialTransactionImportDTO implements BaseDTO<FinancialTransacti
     private String lastModifiedBy;
     private Date lastModifiedDate;
 
+    private OpenAccountDataDTO openAccountData;
+
     private CCDataDTO contractCollectionData;
     private LCDataDTO lcData;
     private CashMarginDTO cashMargin;
@@ -53,6 +55,9 @@ public class FinancialTransactionImportDTO implements BaseDTO<FinancialTransacti
         entity.setRemarks(this.getRemarks());
         entity.setLastModifiedBy(this.getLastModifiedBy());
         entity.setLastModifiedDate(this.getLastModifiedDate());
+
+        if(!AppUtility.isEmpty(this.getOpenAccountData()))
+          entity.setOpenAcctGDNumber(this.getOpenAccountData().getGdNumber());
 
         if (!AppUtility.isEmpty(this.getFinancialTranInformation())) {
             entity.setIntendedPaymentDate(AppUtility.convertDateFromString(this.getFinancialTranInformation().getIntendedPayDate()));
@@ -110,6 +115,12 @@ public class FinancialTransactionImportDTO implements BaseDTO<FinancialTransacti
             this.setLastModifiedBy(entity.getLastModifiedBy());
             this.setLastModifiedDate(entity.getLastModifiedDate());
 
+            if(!AppUtility.isEmpty(entity.getOpenAcctGDNumber())){
+                OpenAccountDataDTO dataDTO = new OpenAccountDataDTO();
+                dataDTO.setGdNumber(entity.getOpenAcctGDNumber());
+                this.setOpenAccountData(dataDTO);
+            }
+
             if (AppUtility.isEmpty(this.getFinancialTranInformation())) {
                 this.setFinancialTranInformation(new FinTranInformationDTO());
             }
@@ -153,6 +164,12 @@ public class FinancialTransactionImportDTO implements BaseDTO<FinancialTransacti
         FinancialTransactionImportDTO dto = new FinancialTransactionImportDTO();
         dto.convertToDTO(entity, partialFill);
         return dto;
+    }
+
+    @Data
+    @NoArgsConstructor
+    private class OpenAccountDataDTO {
+        private String gdNumber;
     }
 
     @Data
