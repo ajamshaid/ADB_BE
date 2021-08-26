@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 public class ItemInformationImportDTO implements BaseDTO<ItemInformationImportDTO, ItemInformation> {
-    private Long id;
+    private Long iiId;
     private String hsCode;
     private String goodsDescription;
     private BigDecimal quantity;
@@ -32,7 +32,7 @@ public class ItemInformationImportDTO implements BaseDTO<ItemInformationImportDT
     public ItemInformation convertToEntity() {
         ItemInformation entity = new ItemInformation();
 
-        entity.setId(this.getId());
+        entity.setId(this.getIiId());
         entity.setHsCode(this.getHsCode());
         entity.setGoodsDescription(this.getGoodsDescription());
         entity.setQuantity(this.getQuantity());
@@ -52,7 +52,7 @@ public class ItemInformationImportDTO implements BaseDTO<ItemInformationImportDT
     public void convertToDTO(ItemInformation entity, boolean partialFill) {
 
         if (entity != null) {
-            this.setId(entity.getId());
+            this.setIiId(entity.getId());
             this.setHsCode(entity.getHsCode());
             this.setGoodsDescription(entity.getGoodsDescription());
             this.setQuantity(AppUtility.isEmpty(entity.getQuantity()) ? new BigDecimal("0" ) : entity.getQuantity());

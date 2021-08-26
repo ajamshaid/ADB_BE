@@ -1,6 +1,7 @@
 package com.infotech.adb.model.entity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -14,7 +15,12 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
 public class FinancialTransaction {
+
+    public FinancialTransaction(Long id) {
+        this.id = id;
+    }
 
     @Id
     @Column(name = "ID", unique = true, nullable = false, updatable = false)

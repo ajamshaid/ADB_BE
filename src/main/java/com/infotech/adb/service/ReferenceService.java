@@ -76,6 +76,9 @@ public class ReferenceService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private ItemInformationRepository itemInformationRepository;
+
 
     private synchronized Integer getNextCounter(String tranType) {
 
@@ -207,6 +210,16 @@ public class ReferenceService {
         return ref.get();
     }
 
+    public ItemInformation saveItemInfo(Long id, ItemInformationExportDTO dto) {
+        ItemInformation itemInformation= dto.convertToEntity();
+        itemInformation.setFinancialTransaction(new FinancialTransaction(id));
+        return itemInformationRepository.save(itemInformation);
+    }
+
+    public void deleteItemById(Long id) {
+        log.info("deleteItemById method called..");
+        itemInformationRepository.deleteById(id);
+    }
 
     public ResponseUtility.APIResponse updateFTImportAndShare(FinancialTransactionImportDTO dto) throws JsonProcessingException {
 

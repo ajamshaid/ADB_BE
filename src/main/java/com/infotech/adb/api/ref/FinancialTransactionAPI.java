@@ -1,13 +1,14 @@
 package com.infotech.adb.api.ref;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.infotech.adb.dto.FinancialTransactionExportDTO;
-import com.infotech.adb.dto.FinancialTransactionImportDTO;
+import com.infotech.adb.dto.*;
 import com.infotech.adb.exceptions.CustomException;
 import com.infotech.adb.exceptions.DataValidationException;
 import com.infotech.adb.exceptions.NoDataFoundException;
 import com.infotech.adb.exceptions.PSWAPIException;
 import com.infotech.adb.model.entity.FinancialTransaction;
+import com.infotech.adb.model.entity.GDClearance;
+import com.infotech.adb.model.entity.ItemInformation;
 import com.infotech.adb.service.ReferenceService;
 import com.infotech.adb.util.AppConstants;
 import com.infotech.adb.util.AppUtility;
@@ -17,6 +18,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -77,11 +79,26 @@ public class FinancialTransactionAPI {
                 customResponse = ResponseUtility.translatePSWAPIResponse(referenceService.updateFTImportAndShare(reqDTO));
             } else {
                 entity = referenceService.updateFinancialTransaction(reqDTO.convertToEntity());
-                customResponse = ResponseUtility.successResponse(entity,"200",reqDTO.getFinInsUniqueNumber()+" Record Updated Successfully");
+                customResponse = ResponseUtility.successResponse(entity, "200", reqDTO.getFinInsUniqueNumber() + " Record Updated Successfully");
             }
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+        return customResponse;
+    }
+
+    @RequestMapping(value = "/import/{id}/itemInfo", method = RequestMethod.POST)
+    public CustomResponse saveImportItemInfo(@RequestBody ItemInformationExportDTO reqDTO,
+                                       @PathVariable(value = "id") Long id)
+            throws DataValidationException, NoDataFoundException {
+
+        if (AppUtility.isEmpty(reqDTO) || AppUtility.isEmpty(id)) {
+            throw new DataValidationException(messageBundle.getString("validation.error"));
+        }
+        ItemInformation entity = null;
+        entity = this.referenceService.saveItemInfo(id, reqDTO);
+        CustomResponse customResponse = null;
+        customResponse = ResponseUtility.successResponse(entity, "200", "Item Added Successfully");
         return customResponse;
     }
 
@@ -133,11 +150,26 @@ public class FinancialTransactionAPI {
                 customResponse = ResponseUtility.translatePSWAPIResponse(referenceService.updateFTExportAndShare(reqDTO));
             } else {
                 entity = referenceService.updateFinancialTransaction(reqDTO.convertToEntity());
-                customResponse = ResponseUtility.successResponse(entity,"200","Record Updated Successfully");
+                customResponse = ResponseUtility.successResponse(entity, "200", "Record Updated Successfully");
             }
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+        return customResponse;
+    }
+
+    @RequestMapping(value = "/export/{id}/itemInfo", method = RequestMethod.POST)
+    public CustomResponse saveItemInfo(@RequestBody ItemInformationExportDTO reqDTO,
+                                       @PathVariable(value = "id") Long id)
+            throws DataValidationException, NoDataFoundException {
+
+        if (AppUtility.isEmpty(reqDTO) || AppUtility.isEmpty(id)) {
+            throw new DataValidationException(messageBundle.getString("validation.error"));
+        }
+        ItemInformation entity = null;
+        entity = this.referenceService.saveItemInfo(id, reqDTO);
+        CustomResponse customResponse = null;
+        customResponse = ResponseUtility.successResponse(entity, "200", "Item Added Successfully");
         return customResponse;
     }
 }
