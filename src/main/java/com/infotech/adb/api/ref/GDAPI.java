@@ -59,7 +59,7 @@ public class GDAPI {
         } catch (Exception e) {
             throw new CustomException(e);
         }
-        return ResponseUtility.buildResponseObject(entity, new GDImportDTO(),true);
+        return ResponseUtility.buildResponseObject(entity, new GDImportDTO(), true);
     }
 
     /**********************
@@ -92,7 +92,7 @@ public class GDAPI {
         } catch (Exception e) {
             throw new CustomException(e);
         }
-        return ResponseUtility.buildResponseObject(entity, new GDExportDTO(),true);
+        return ResponseUtility.buildResponseObject(entity, new GDExportDTO(), true);
     }
 
 }

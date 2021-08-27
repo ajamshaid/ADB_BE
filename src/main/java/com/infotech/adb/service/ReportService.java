@@ -35,6 +35,28 @@ public class ReportService {
         return this.generateGenericReport("ADB-GD", map, dataSource.getConnection() );
     }
 
+    public ByteArrayInputStream buildFTPrint(Long ftId)
+            throws IOException, JRException, SQLException {
+        log.info("buildSADPrint method called..");
+        ;
+        Map<String, Object> map = new HashMap<>();
+        map.put("ftId", ftId);
+        map.put("reportName", PrintReportEnums.FT_REPORT );
+
+        return this.generateGenericReport("ft-export-report", map, dataSource.getConnection() );
+    }
+
+    public ByteArrayInputStream buildBCAPrint(Long id)
+            throws IOException, JRException, SQLException {
+        log.info("buildSADPrint method called..");
+        ;
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", id);
+        map.put("reportName", PrintReportEnums.BCA_REPORT);
+
+        return this.generateGenericReport("BCA1-report", map, dataSource.getConnection() );
+    }
+
     private ByteArrayInputStream generateGenericReport(String reportName, Map<String, Object> parameters, Connection connection)
             throws JRException, IOException, SQLException {
         String reportPath = getClass().getClassLoader().getResource("reports/" + reportName + ".jrxml").getPath();

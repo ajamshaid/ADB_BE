@@ -45,4 +45,42 @@ public class ReportAPI {
         }
         return ResponseUtility.buildReportResponseObject(new InputStreamResource(bis));
     }
+
+    @RequestMapping(value = "/export/{ftId}/print-ft", method = RequestMethod.GET)
+    public ResponseEntity<?> printFT(HttpServletRequest request,
+                                     @PathVariable(value = "ftId") Long ftId)
+            throws DataValidationException, NoDataFoundException, CustomException {
+        log.info("printSAD API initiated...");
+        //String stateId = request.getHeader(AppConstants.STATE_ID_HEADER);
+
+        if (AppUtility.isEmpty(ftId)) {
+            throw new DataValidationException(messageBundle.getString("validation.error"));
+        }
+        ByteArrayInputStream bis = null;
+        try {
+            bis = reportService.buildFTPrint(ftId);
+        } catch (Exception e) {
+            ResponseUtility.exceptionResponse(e);
+        }
+        return ResponseUtility.buildReportResponseObject(new InputStreamResource(bis));
+    }
+
+    @RequestMapping(value = "/bca/{id}/print-bca", method = RequestMethod.GET)
+    public ResponseEntity<?> printBCA(HttpServletRequest request,
+                                     @PathVariable(value = "id") Long id)
+            throws DataValidationException, NoDataFoundException, CustomException {
+        log.info("printSAD API initiated...");
+        //String stateId = request.getHeader(AppConstants.STATE_ID_HEADER);
+
+        if (AppUtility.isEmpty(id)) {
+            throw new DataValidationException(messageBundle.getString("validation.error"));
+        }
+        ByteArrayInputStream bis = null;
+        try {
+            bis = reportService.buildBCAPrint(id);
+        } catch (Exception e) {
+            ResponseUtility.exceptionResponse(e);
+        }
+        return ResponseUtility.buildReportResponseObject(new InputStreamResource(bis));
+    }
 }
