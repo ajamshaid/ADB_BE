@@ -83,4 +83,23 @@ public class ReportAPI {
         }
         return ResponseUtility.buildReportResponseObject(new InputStreamResource(bis));
     }
+
+    @RequestMapping(value = "/import/{ftId}/print-ft", method = RequestMethod.GET)
+    public ResponseEntity<?> printFTImport(HttpServletRequest request,
+                                     @PathVariable(value = "ftId") Long ftId)
+            throws DataValidationException, NoDataFoundException, CustomException {
+        log.info("printSAD API initiated...");
+        //String stateId = request.getHeader(AppConstants.STATE_ID_HEADER);
+
+        if (AppUtility.isEmpty(ftId)) {
+            throw new DataValidationException(messageBundle.getString("validation.error"));
+        }
+        ByteArrayInputStream bis = null;
+        try {
+            bis = reportService.buildFTImportPrint(ftId);
+        } catch (Exception e) {
+            ResponseUtility.exceptionResponse(e);
+        }
+        return ResponseUtility.buildReportResponseObject(new InputStreamResource(bis));
+    }
 }
