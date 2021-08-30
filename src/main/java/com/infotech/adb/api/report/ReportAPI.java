@@ -102,4 +102,23 @@ public class ReportAPI {
         }
         return ResponseUtility.buildReportResponseObject(new InputStreamResource(bis));
     }
+
+    @RequestMapping(value = "/bda/{id}/print-bda", method = RequestMethod.GET)
+    public ResponseEntity<?> printBDA(HttpServletRequest request,
+                                      @PathVariable(value = "id") Long id)
+            throws DataValidationException, NoDataFoundException, CustomException {
+        log.info("printSAD API initiated...");
+        //String stateId = request.getHeader(AppConstants.STATE_ID_HEADER);
+
+        if (AppUtility.isEmpty(id)) {
+            throw new DataValidationException(messageBundle.getString("validation.error"));
+        }
+        ByteArrayInputStream bis = null;
+        try {
+            bis = reportService.buildBDAPrint(id);
+        } catch (Exception e) {
+            ResponseUtility.exceptionResponse(e);
+        }
+        return ResponseUtility.buildReportResponseObject(new InputStreamResource(bis));
+    }
 }
