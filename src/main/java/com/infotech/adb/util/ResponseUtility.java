@@ -130,7 +130,10 @@ public class ResponseUtility {
                 this.receiverId = requestParameter.getSenderId();
 
                 //     this.methodId = requestParameter.getMethodId();
-                this.signature = requestParameter.getSignature();
+               // this.signature = requestParameter.getSignature();
+                if(!AppUtility.isEmpty(this.data)) {
+                    this.signature = AppUtility.buildSignature(this.data.toString());
+                }
             }
         }
 
