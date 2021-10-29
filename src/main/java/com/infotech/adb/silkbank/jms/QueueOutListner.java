@@ -24,9 +24,9 @@ public class QueueOutListner {
 
     @JmsListener(destination = "QOUT_PSW")
     public void receiveMessage(String msg) {
-        System.out.println("========================================");
-        System.out.println("Received message string is: " + msg);
-        System.out.println("========================================");
+
+        log.info("\n+++++ Received message from MQ is: " + msg);
+
 
         String name = Thread.currentThread().getName();
         MQUtility.MqMessage replyMessage = MQUtility.parseReplyMessage(msg);

@@ -18,5 +18,5 @@ public class AccountDetailDTO {
     private String cnic;
 
     private Set<String> authorizedPaymentModesForImport;
-    private Set<String> authorizedPaymentModesForExports;
+    private Set<String> authorizedPaymentModesForExport;
 }
