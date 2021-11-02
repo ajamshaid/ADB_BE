@@ -2,12 +2,12 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ft-import-report" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fcb87db0-ecf8-411c-ac5c-a5b4b6cd83b2">
 	<property name="ireport.zoom" value="1.4641000000000008"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="441"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="ftId" class="java.lang.Long">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String">
-		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["reports/"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[Select *, cd.* , ft.*
@@ -799,7 +799,7 @@ where ft.ID = $P{ftId}]]>
 				<textFieldExpression><![CDATA[$F{port_of_shipment}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement mode="Transparent" x="390" y="144" width="165" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="6fff3243-7749-422a-8415-ee51e49f410e"/>
+				<reportElement mode="Transparent" x="389" y="144" width="165" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="6fff3243-7749-422a-8415-ee51e49f410e"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
