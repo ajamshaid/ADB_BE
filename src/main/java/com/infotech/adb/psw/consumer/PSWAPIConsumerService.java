@@ -177,16 +177,17 @@ public class PSWAPIConsumerService {
 
 
         if (AppConstants.PAYMENT_MODE.IMP_OPEN_ACCOUNT_VALUE.equals(dto.getModeOfPayment())) {
-
             dto.setContractCollectionData(null);
             dto.setLcData(null);
+            dto.setCashMargin(null);
         } else if (AppConstants.PAYMENT_MODE.IMP_LC_VALUE.equals(dto.getModeOfPayment())) {
             dto.setContractCollectionData(null);
+            dto.setOpenAccountData(null);
             dto.setCashMargin(null);
-
         } else if (AppConstants.PAYMENT_MODE.IMP_CC_VALUE.equals(dto.getModeOfPayment())) {
             dto.setLcData(null);
             dto.setCashMargin(null);
+            dto.setOpenAccountData(null);
         }
 
         RequestParameter<FinancialTransactionImportDTO> requestParameter = new RequestParameter<>(

@@ -95,7 +95,7 @@ public class QueueOutListner {
             } else {
                 MQUtility.MqMessage reqMessage = MQUtility.objectLockingMap.get(replyMessage.getId());
                 if (AppUtility.isEmpty(reqMessage)) {
-                    System.out.println("NO Object Found in ObjectLockingMap for Incoming message:" + replyMessage);
+                    log.info("\n+++++ NO Object Found in ObjectLockingMap for Incoming message:" + replyMessage);
                 } else {
                     try {
                         Thread.sleep(1000);
@@ -103,7 +103,7 @@ public class QueueOutListner {
                         synchronized (reqMessage) {
                             // Replace Request Message with Reply Message on Map to be get from Waiter Thread...
                             MQUtility.objectLockingMap.put(reqMessage.getId(), replyMessage);
-                            System.out.println(name + "-> Notifying back to Waiting Thread at MessageId:" + reqMessage.getId());
+                            log.info("\n+++++ "+ name + "-> Notifying back to Waiting Thread at MessageId:" + reqMessage.getId());
                             reqMessage.notify();
                         }
                     } catch (InterruptedException e) {
