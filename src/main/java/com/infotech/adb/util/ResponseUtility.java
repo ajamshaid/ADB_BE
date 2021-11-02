@@ -130,7 +130,14 @@ public class ResponseUtility {
                 this.receiverId = requestParameter.getSenderId();
 
                 //     this.methodId = requestParameter.getMethodId();
-                this.signature = requestParameter.getSignature();
+               // this.signature = requestParameter.getSignature();
+                if(!AppUtility.isEmpty(this.data)) {
+                    try {
+                        this.signature = AppUtility.buildSignature(JsonUtils.objectToJson(this.data));
+                    } catch (JsonProcessingException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }
 

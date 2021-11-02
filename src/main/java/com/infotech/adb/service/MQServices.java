@@ -77,7 +77,7 @@ public class MQServices {
                     }
                     autPM = accountDetail.getAuthPMExport();
                     if (!AppUtility.isEmpty(autPM)) {
-                        dto.setAuthorizedPaymentModesForExports(new HashSet<>(Arrays.asList(autPM.split(","))));
+                        dto.setAuthorizedPaymentModesForExport(new HashSet<>(Arrays.asList(autPM.split(","))));
                     }
                 }
 

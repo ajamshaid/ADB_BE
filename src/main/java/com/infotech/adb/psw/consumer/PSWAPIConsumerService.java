@@ -177,16 +177,17 @@ public class PSWAPIConsumerService {
 
 
         if (AppConstants.PAYMENT_MODE.IMP_OPEN_ACCOUNT_VALUE.equals(dto.getModeOfPayment())) {
-
             dto.setContractCollectionData(null);
             dto.setLcData(null);
+            dto.setCashMargin(null);
         } else if (AppConstants.PAYMENT_MODE.IMP_LC_VALUE.equals(dto.getModeOfPayment())) {
             dto.setContractCollectionData(null);
+            dto.setOpenAccountData(null);
             dto.setCashMargin(null);
-
         } else if (AppConstants.PAYMENT_MODE.IMP_CC_VALUE.equals(dto.getModeOfPayment())) {
             dto.setLcData(null);
             dto.setCashMargin(null);
+            dto.setOpenAccountData(null);
         }
 
         RequestParameter<FinancialTransactionImportDTO> requestParameter = new RequestParameter<>(
@@ -225,8 +226,13 @@ public class PSWAPIConsumerService {
 
         if (AppConstants.PAYMENT_MODE.EXP_WITH_LC_VALUE.equals(dto.getModeOfPayment())) {
             dto.setContractCollectionData(null);
+            dto.setOpenAccountData(null);
         } else if (AppConstants.PAYMENT_MODE.EXP_WITH_OUT_LC_VALUE.equals(dto.getModeOfPayment())) {
             dto.setLcData(null);
+            dto.setOpenAccountData(null);
+      //  } else if (AppConstants.PAYMENT_MODE.EXP_OPEN_ACCOUNT_VALUE.equals(dto.getModeOfPayment())) {
+       //     dto.setLcData(null);
+            dto.setContractCollectionData(null);
         }else {
             dto.setLcData(null);
             dto.setContractCollectionData(null);

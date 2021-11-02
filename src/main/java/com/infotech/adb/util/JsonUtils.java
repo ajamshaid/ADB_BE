@@ -33,7 +33,7 @@ public class JsonUtils {
     }
 
     public static String objectToJson(Object object) throws JsonProcessingException {
-        ObjectWriter objectWriter = objectMapper.writer().withDefaultPrettyPrinter();
+        ObjectWriter objectWriter = objectMapper.writer();
         return objectWriter.writeValueAsString(object);
     }
 }
