@@ -62,7 +62,7 @@ public class ReportService {
         log.info("buildSADPrint method called..");
         ;
         Map<String, Object> map = new HashMap<>();
-        map.put("id", id);
+        map.put("ftId", id);
         map.put("reportName", PrintReportEnums.FT_IMPORT_REPORT);
 
         return this.generateGenericReport("ft-import-report", map, dataSource.getConnection() );
