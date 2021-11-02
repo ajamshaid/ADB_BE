@@ -14,7 +14,7 @@ public class BDADTO implements BaseDTO<BDADTO, BDA> {
     private Long id;
     public String bdaUniqueIdNumber;
     public String coreUniqueNumber;
-    public String[] gdNumber ={};
+    public String gdNumber ;
     public String iban;
     public String importerNtn;
     public String importerName;
@@ -35,10 +35,10 @@ public class BDADTO implements BaseDTO<BDADTO, BDA> {
         BDA entity = new BDA();
 
         entity.setId(this.getId());
-        //entity.setGdNumber(this.getGdNumber());
-        if(this.getGdNumber()!=null && this.getGdNumber().length > 0) {
-            entity.setGdNumber(this.getGdNumber()[0]);
-        }
+        entity.setGdNumber(this.getGdNumber());
+//        if(this.getGdNumber()!=null && this.getGdNumber().length > 0) {
+//            entity.setGdNumber(this.getGdNumber()[0]);
+//        }
         entity.setBdaUniqueIdNumber(this.getBdaUniqueIdNumber());
         entity.setCoreUniqueNumber(this.getCoreUniqueNumber());
         entity.setIban(this.getIban());
@@ -83,9 +83,9 @@ public class BDADTO implements BaseDTO<BDADTO, BDA> {
     public void convertToDTO(BDA entity, boolean partialFill) {
         if (entity != null) {
             this.setId(entity.getId());
-            String[] gdNum = AppUtility.isEmpty(entity.getGdNumber()) ? null: new String[]{entity.getGdNumber()};
-            this.setGdNumber(gdNum);
-            //this.setGdNumber(entity.getGdNumber());
+          //  String[] gdNum = AppUtility.isEmpty(entity.getGdNumber()) ? null: new String[]{entity.getGdNumber()};
+         //   this.setGdNumber(gdNum);
+           this.setGdNumber(entity.getGdNumber());
             this.setBdaUniqueIdNumber(entity.getBdaUniqueIdNumber());
             this.setCoreUniqueNumber(entity.getCoreUniqueNumber());
             this.setIban(entity.getIban());
