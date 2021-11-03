@@ -75,10 +75,10 @@ public class GD {
     @Column(name = "PORT_OF_SHIPMENT", length = 10, nullable = false)
     private String portOfShipment;
 
-    @Column(name = "PORT_OF_DELIVERY", length = 10, nullable = false)
+    @Column(name = "PORT_OF_DELIVERY", length = 10, nullable = true)
     private String portOfDelivery;
 
-    @Column(name = "PORT_OF_DISCHARGE", length = 10, nullable = false)
+    @Column(name = "PORT_OF_DISCHARGE", length = 10, nullable = true)
     private String portOfDischarge;
 
     @Column(name = "TERMINAL_LOCATION", length = 70, nullable = false)

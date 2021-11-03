@@ -385,6 +385,80 @@ public class AppUtility {
 
     public static void main (String [] args){
 
-        System.out.println(AppUtility.generateUniqPSWNumberFormat("BCA",null));
+
+        String abc = "{\"gdNumber\":\"KPAF-HC-267-03-11-2021\",\"gdStatus\":\"05\",\"consignmentCategory\":\"Commercial\",\"gdType\":\"Home Consumption\",\"collectorate\":\"Karachi Air Freight Unit\",\"blAwbNumber\":\"BL-H-6\",\"blAwbDate\":\"20211103\",\"virAirNumber\":\"KPAF-0164-01112021\",\"consignorConsigneeInfo\":{\"ntnFtn\":\"0453600\",\"strn\":\"0306640100119\",\"consigneeName\":\"TRUST SHOES INTERNATIONAL (PRIVATE) LIMITED\",\"consigneeAddress\":\"47-B, HBFC Housing Society, Lahore, Lahore Cantonement\",\"consignorName\":\"TRUST SHOES INTERNATIONAL\",\"consignorAddress\":\"TRUST SHOES INTERNATIONAL (PRIVATE) LIMITED\"},\"financialInfo\":{\"importerIban\":\"PK79SAUD0000032000489835\",\"modeOfPayment\":\"301\",\"finInsUniqueNumber\":\"SLB-IMP-000042-02112021\",\"currency\":\"USD\",\"invoiceNumber\":\"ABC-123123\",\"invoiceDate\":\"20211103\",\"totalDeclaredValue\":2000.0000,\"deliveryTerm\":\"CFR\",\"fobValueUsd\":2000.0000,\"freightUsd\":0.0000,\"cfrValueUsd\":0.0000,\"insuranceUsd\":0.0000,\"landingChargesUsd\":0.0000,\"assessedValueUsd\":2000.0000,\"otherCharges\":0.0000,\"exchangeRate\":173.250000},\"generalInformation\":{\"packagesInformation\":[{\"numberOfPackages\":100.000,\"packageType\":\"KGS\"}],\"containerVehicleInformation\":[],\"netWeight\":\"100.00000 KG\",\"grossWeight\":\"100.00000 KG\",\"portOfShipment\":\"A23\",\"portOfDelivery\":null,\"portOfDischarge\":null,\"terminalLocation\":\"Pakistan International Airline\"},\"itemInformation\":[{\"hsCode\":\"0101.1000\",\"quantity\":2000.0000,\"unitPrice\":1.0000,\"totalValue\":2000.0000,\"importValue\":346500.0000,\"uom\":\"NO\"}],\"negativeList\":null}";
+
+
+        String abc2 ="{\n" +
+                "        \"gdNumber\": \"KPAF-HC-267-03-11-2021\",\n" +
+                "        \"gdStatus\": \"05\",\n" +
+                "        \"consignmentCategory\": \"Commercial\",\n" +
+                "        \"gdType\": \"Home Consumption\",\n" +
+                "        \"collectorate\": \"Karachi Air Freight Unit\",\n" +
+                "        \"blAwbNumber\": \"BL-H-6\",\n" +
+                "        \"blAwbDate\": \"20211103\",\n" +
+                "        \"virAirNumber\": \"KPAF-0164-01112021\",\n" +
+                "        \"consignorConsigneeInfo\": {\n" +
+                "            \"ntnFtn\": \"0453600\",\n" +
+                "            \"strn\": \"0306640100119\",\n" +
+                "            \"consigneeName\": \"TRUST SHOES INTERNATIONAL (PRIVATE) LIMITED\",\n" +
+                "            \"consigneeAddress\": \"47-B, HBFC Housing Society, Lahore, Lahore Cantonement\",\n" +
+                "            \"consignorName\": \"TRUST SHOES INTERNATIONAL\",\n" +
+                "            \"consignorAddress\": \"TRUST SHOES INTERNATIONAL (PRIVATE) LIMITED\"\n" +
+                "        },\n" +
+                "        \"financialInfo\": {\n" +
+                "            \"importerIban\": \"PK79SAUD0000032000489835\",\n" +
+                "            \"modeOfPayment\": \"301\",\n" +
+                "            \"finInsUniqueNumber\": \"SLB-IMP-000042-02112021\",\n" +
+                "            \"currency\": \"USD\",\n" +
+                "            \"invoiceNumber\": \"ABC-123123\",\n" +
+                "            \"invoiceDate\": \"20211103\",\n" +
+                "            \"totalDeclaredValue\": 2000.0000,\n" +
+                "            \"deliveryTerm\": \"CFR\",\n" +
+                "            \"fobValueUsd\": 2000.0000,\n" +
+                "            \"freightUsd\": 0.0000,\n" +
+                "            \"cfrValueUsd\": 0.0000,\n" +
+                "            \"insuranceUsd\": 0.0000,\n" +
+                "            \"landingChargesUsd\": 0.0000,\n" +
+                "            \"assessedValueUsd\": 2000.0000,\n" +
+                "            \"otherCharges\": 0.0000,\n" +
+                "            \"exchangeRate\": 173.250000\n" +
+                "        },\n" +
+                "        \"generalInformation\": {\n" +
+                "            \"packagesInformation\": [\n" +
+                "                {\n" +
+                "                    \"numberOfPackages\": 100.000,\n" +
+                "                    \"packageType\": \"KGS\"\n" +
+                "                }\n" +
+                "            ],\n" +
+                "            \"containerVehicleInformation\": [],\n" +
+                "            \"netWeight\": \"100.00000 KG\",\n" +
+                "            \"grossWeight\": \"100.00000 KG\",\n" +
+                "            \"portOfShipment\": \"A23\",\n" +
+                "            \"portOfDelivery\": null,\n" +
+                "            \"portOfDischarge\": null,\n" +
+                "            \"terminalLocation\": \"Pakistan International Airline\"\n" +
+                "        },\n" +
+                "        \"itemInformation\": [\n" +
+                "            {\n" +
+                "                \"hsCode\": \"0101.1000\",\n" +
+                "                \"quantity\": 2000.0000,\n" +
+                "                \"unitPrice\": 1.0000,\n" +
+                "                \"totalValue\": 2000.0000,\n" +
+                "                \"importValue\": 346500.0000,\n" +
+                "                \"uom\": \"NO\"\n" +
+                "            }\n" +
+                "        ],\n" +
+                "        \"negativeList\": null\n" +
+                "    }";
+
+        System.out.println(AppUtility.buildSignature(abc));
+
+        String abc3 = JsonUtils.removeExtraWhitespacesFromJson(abc2).replaceAll("\\n","");
+        System.out.println(abc);
+        System.out.println(abc3);
+        System.out.println(">>>>>>>>>>"+AppUtility.buildSignature(abc3));
     }
+
+
 }

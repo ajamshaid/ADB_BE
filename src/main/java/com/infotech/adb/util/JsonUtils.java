@@ -36,4 +36,28 @@ public class JsonUtils {
         ObjectWriter objectWriter = objectMapper.writer();
         return objectWriter.writeValueAsString(object);
     }
+
+    public static String removeExtraWhitespacesFromJson(String json) {
+
+        boolean quoted = false;
+        boolean escaped = false;
+        String out = "";
+        for (Character c : json.toCharArray()) {
+            if (escaped) {
+                out += c;
+                escaped = false;
+                continue;
+            }
+            if (c == '"') {
+                quoted = !quoted;
+            } else if (c == '\\') {
+                escaped = true;
+            }
+            if (c == ' ' & !quoted) {
+                continue;
+            }
+            out += c;
+        }
+        return out.replaceAll("\\n","");
+    }
 }
