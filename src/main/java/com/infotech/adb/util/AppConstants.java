@@ -82,7 +82,12 @@ public class AppConstants {
         1539 Sharing of Change of Bank request approval/rejection message by other selected AD with PSW
         */
     }
+    public static class RecordStatuses {
+        public static final String CREATED_BY_MQ = "Created By MQ";
+        public static final String CREATED_BY_PSW = "Created By PSW";
+        public static final String PUSHED_TO_PSW = "Pushed To PSW";
 
+    }
     public static class DBConstraints {
 
         public static final String UNIQ_IBAN = "UNIQ_IBAN";

@@ -15,6 +15,8 @@ public class MQMessageParser {
     public FinancialTransaction parseAndBuildFTExport(String data) {
         FinancialTransaction ft = new FinancialTransaction();
         ft.setType(AppConstants.TYPE_EXPORT);
+        ft.setStatus(AppConstants.RecordStatuses.CREATED_BY_MQ);
+
         if (!AppUtility.isEmpty(data)) {
             String[] ftDetailsAry = data.split(MQUtility.DELIMETER_DATA);
             ft.setNtn(ftDetailsAry[0]);
@@ -72,6 +74,7 @@ public class MQMessageParser {
     public FinancialTransaction parseAndBuildFTImport(String data) {
         FinancialTransaction ft = new FinancialTransaction();
         ft.setType(AppConstants.TYPE_IMPORT);
+        ft.setStatus(AppConstants.RecordStatuses.CREATED_BY_MQ);
 
         if (!AppUtility.isEmpty(data)) {
             String[] ftDetailsAry = data.split(MQUtility.DELIMETER_DATA);
@@ -141,6 +144,7 @@ public class MQMessageParser {
     public BDA parseAndBuildBDAInfoImport(String data) {
         //Sharing of BDA Information
         BDA bda = new BDA();
+        bda.setStatus(AppConstants.RecordStatuses.CREATED_BY_MQ);
      //   ft.setType(AppConstants.TYPE_IMPORT);
 
         if (!AppUtility.isEmpty(data)) {
@@ -170,6 +174,8 @@ public class MQMessageParser {
     public BCA parseAndBuildBCAExport(String data) {
         //Sharing of Export BCA Information
         BCA bca = new BCA();
+        bca.setStatus(AppConstants.RecordStatuses.CREATED_BY_MQ);
+
         //   ft.setType(AppConstants.TYPE_IMPORT);
 
         if (!AppUtility.isEmpty(data)) {

@@ -175,7 +175,6 @@ public class PSWAPIConsumerService {
     public ResponseUtility.APIResponse shareFinancialInformationImport(FinancialTransactionImportDTO dto)
             throws HttpClientErrorException, JsonProcessingException {
 
-
         if (AppConstants.PAYMENT_MODE.IMP_OPEN_ACCOUNT_VALUE.equals(dto.getModeOfPayment())) {
             dto.setContractCollectionData(null);
             dto.setLcData(null);
@@ -375,21 +374,21 @@ public class PSWAPIConsumerService {
             UriComponents uriBuilder = UriComponentsBuilder.fromHttpUrl(
                     AppConstants.PSW.BASE_URL + AppConstants.PSW.API_UPDATE_URL).build();
 
-            System.out.println("----------- Request Sent----------------");
-            System.out.println("RequestParameter Json:" + requestParameter.toJson());
-            System.out.println("---------------------------");
+            log.debug("\n----------- Request Sent----------------");
+            log.debug("\nRequestParameter Json:" + requestParameter.toJson());
+            log.debug("\n---------------------------");
 
             apiResponse = postRequest(uriBuilder.toUriString(), token, requestParameter);
 
-            System.out.println("======API Response TO_STRING===========" + apiResponse.toString());
+            log.debug("\n======API Response TO_STRING===========" + apiResponse.toString());
 
             logRequestService.saveLogRequest(messageName,RequestMethod.POST.name(), requestParameter,requestTime, apiResponse);
 
             if (HttpStatus.OK.toString() == apiResponse.getMessage().getCode()) {
-                System.out.println("===================PSW  OK response =================");
+                log.debug("\n===================PSW  OK response =================");
             }
         } else {
-            System.out.println("===================PSW AUthentication Failed======== Request Not Forwarded to PSW =================");
+            log.debug("\n===================PSW AUthentication Failed======== Request Not Forwarded to PSW =================");
             ///   logRequest = LogRequest.buildNewObject("Sharing of Update Information and Payment Mode By AD", RequestMethod.POST.name(),requestParameter, requestTime, authTokenResponse);
 
         }

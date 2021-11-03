@@ -16,6 +16,7 @@ import java.util.Set;
 public class FinancialTransactionExportDTO implements BaseDTO<FinancialTransactionExportDTO, FinancialTransaction> {
     private  Long ftId ;
     private String type;
+    private String status;
     private String exporterNtn;
     private String exporterName;
     private String exporterIban;
@@ -41,6 +42,7 @@ public class FinancialTransactionExportDTO implements BaseDTO<FinancialTransacti
         FinancialTransaction entity = new FinancialTransaction();
 
         entity.setType(this.getType());
+        entity.setStatus(this.getStatus());
         entity.setId(this.getFtId());
         entity.setNtn(this.getExporterNtn());
         entity.setName(this.getExporterName());
@@ -90,6 +92,7 @@ public class FinancialTransactionExportDTO implements BaseDTO<FinancialTransacti
         if (entity != null) {
             this.setFtId(entity.getId());
             this.setType(entity.getType());
+            this.setStatus(entity.getStatus());
             this.setExporterNtn(entity.getNtn());
             this.setExporterName(entity.getName());
             this.setExporterIban(entity.getIban());

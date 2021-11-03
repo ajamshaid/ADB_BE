@@ -16,6 +16,7 @@ import java.util.Set;
 public class FinancialTransactionImportDTO implements BaseDTO<FinancialTransactionImportDTO, FinancialTransaction> {
     private  Long ftId;
     private String type;
+    private String status;
     private String importerNtn;
     private String importerName;
     private String importerIban;
@@ -43,6 +44,7 @@ public class FinancialTransactionImportDTO implements BaseDTO<FinancialTransacti
     public FinancialTransaction convertToEntity() {
         FinancialTransaction entity = new FinancialTransaction();
 
+        entity.setStatus(this.getStatus());
         entity.setType(this.getType());
         entity.setId(this.getFtId());
         entity.setNtn(this.getImporterNtn());
@@ -105,6 +107,7 @@ public class FinancialTransactionImportDTO implements BaseDTO<FinancialTransacti
         if (entity != null) {
             this.setFtId(entity.getId());
             this.setType(entity.getType());
+            this.setStatus(entity.getStatus());
             this.setImporterNtn(entity.getNtn());
             this.setImporterName(entity.getName());
             this.setImporterIban(entity.getIban());

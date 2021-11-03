@@ -14,6 +14,7 @@ import com.infotech.adb.util.OpenCsvUtil;
 import com.infotech.adb.util.ResponseUtility;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -221,22 +222,39 @@ public class ReferenceService {
         itemInformationRepository.deleteById(id);
     }
 
+    @Transactional
     public ResponseUtility.APIResponse updateFTImportAndShare(FinancialTransactionImportDTO dto) throws JsonProcessingException {
 
         String finUniqNo = AppUtility.generateUniqPSWNumberFormat("IMP", this.getNextCounter("IMP"));
         dto.setFinInsUniqueNumber(finUniqNo);
 
         FinancialTransaction ft = this.updateFinancialTransaction(dto.convertToEntity());
-        return pswAPIConsumerService.shareFinancialInformationImport(dto);
+
+      //  ResponseUtility.APIResponse pswResponse =   ResponseUtility.TestAPISuccessResponse();
+        ResponseUtility.APIResponse pswResponse =   pswAPIConsumerService.shareFinancialInformationImport(dto);
+        String respCode = pswResponse.getMessage().getCode();
+        if (respCode.equals("" + HttpStatus.OK.value())) {
+            financialTransactionRepository.updateFTStatus(ft.getId(), AppConstants.RecordStatuses.PUSHED_TO_PSW);
+        }
+
+        return pswResponse;
     }
 
+    @Transactional
     public ResponseUtility.APIResponse updateFTExportAndShare(FinancialTransactionExportDTO dto) throws JsonProcessingException {
 
         String finUniqNo = AppUtility.generateUniqPSWNumberFormat("EXP", this.getNextCounter("EXP"));
         dto.setFinInsUniqueNumber(finUniqNo);
 
         FinancialTransaction ft = this.updateFinancialTransaction(dto.convertToEntity());
-        return pswAPIConsumerService.shareFinancialInformationExport(dto);
+
+     //   ResponseUtility.APIResponse pswResponse =  ResponseUtility.TestAPISuccessResponse();
+        ResponseUtility.APIResponse pswResponse =  pswAPIConsumerService.shareFinancialInformationExport(dto);
+        String respCode = pswResponse.getMessage().getCode();
+        if (respCode.equals("" + HttpStatus.OK.value())) {
+            financialTransactionRepository.updateFTStatus(ft.getId(), AppConstants.RecordStatuses.PUSHED_TO_PSW);
+        }
+        return pswResponse;
     }
 
     @Transactional

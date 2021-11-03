@@ -39,6 +39,9 @@ public class FinancialTransaction {
     @Column(name = "IBAN",length = 24, nullable = true)
     private String iban;
 
+    @Column(name = "STATUS",length = 20, nullable = false)
+    private String status;
+
     @Column(name = "MODE_OF_PAYMENT",length = 30, nullable = true)
     private String modeOfPayment;
 

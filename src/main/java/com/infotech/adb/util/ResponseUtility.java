@@ -85,6 +85,14 @@ public class ResponseUtility {
         throw new CustomException(e.getMessage(), e);
     }
 
+    public static APIResponse  TestAPISuccessResponse() {
+        ResponseUtility.Message msg = new ResponseUtility.Message();
+        msg.setCode("200");
+        msg.setDescription("Temp Success for testing...");
+        APIResponse ap = new ResponseUtility.APIResponse(null, "200", msg);
+        return ap;
+    }
+
     @NoArgsConstructor
     @AllArgsConstructor
     @Data

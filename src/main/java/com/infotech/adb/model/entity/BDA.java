@@ -21,6 +21,10 @@ public class BDA {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
+    @Column(name = "STATUS",length = 20, nullable = false)
+    private String status;
+
     @Column(name = "BDA_UNIQUE_NUMBER", length = 30, nullable = true)
     public String bdaUniqueIdNumber;
 
