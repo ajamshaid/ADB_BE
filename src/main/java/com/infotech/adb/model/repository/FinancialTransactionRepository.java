@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public interface FinancialTransactionRepository extends JpaRepository<FinancialTransaction, Long> {
 
-    List<FinancialTransaction> findByType(String type);
+    List<FinancialTransaction> findByTypeOrderByLastModifiedDateDesc(String type);
 
     @Modifying
     @Query("update FinancialTransaction en set en.status = :status where en.id = :id")

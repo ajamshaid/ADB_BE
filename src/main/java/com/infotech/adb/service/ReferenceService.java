@@ -201,7 +201,7 @@ public class ReferenceService {
     public List<FinancialTransaction> getAllFinancialTransactionByType(String type) {
         log.info("getAllFinancialTransactionByType method called..");
         List<FinancialTransaction> refList = null;
-        refList = this.financialTransactionRepository.findByType(type);
+        refList = this.financialTransactionRepository.findByTypeOrderByLastModifiedDateDesc(type);
         return refList;
     }
 
