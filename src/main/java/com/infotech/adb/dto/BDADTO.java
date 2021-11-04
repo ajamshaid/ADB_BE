@@ -12,6 +12,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class BDADTO implements BaseDTO<BDADTO, BDA> {
     private Long id;
+    public String status;
     public String bdaUniqueIdNumber;
     public String coreUniqueNumber;
     public String gdNumber ;
@@ -35,6 +36,7 @@ public class BDADTO implements BaseDTO<BDADTO, BDA> {
         BDA entity = new BDA();
 
         entity.setId(this.getId());
+        entity.setStatus(this.status);
         entity.setGdNumber(this.getGdNumber());
 //        if(this.getGdNumber()!=null && this.getGdNumber().length > 0) {
 //            entity.setGdNumber(this.getGdNumber()[0]);
@@ -83,6 +85,7 @@ public class BDADTO implements BaseDTO<BDADTO, BDA> {
     public void convertToDTO(BDA entity, boolean partialFill) {
         if (entity != null) {
             this.setId(entity.getId());
+            this.setStatus(entity.getStatus());
           //  String[] gdNum = AppUtility.isEmpty(entity.getGdNumber()) ? null: new String[]{entity.getGdNumber()};
          //   this.setGdNumber(gdNum);
            this.setGdNumber(entity.getGdNumber());

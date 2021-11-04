@@ -17,7 +17,7 @@ public interface FinancialTransactionRepository extends JpaRepository<FinancialT
     List<FinancialTransaction> findByType(String type);
 
     @Modifying
-    @Query("update FinancialTransaction ft set ft.status = :status where ft.id = :id")
-    int updateFTStatus(@Param("id") Long id, @Param("status") String status);
+    @Query("update FinancialTransaction en set en.status = :status where en.id = :id")
+    int updateStatus(@Param("id") Long id, @Param("status") String status);
 
 }

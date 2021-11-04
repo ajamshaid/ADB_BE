@@ -13,6 +13,7 @@ import java.util.Date;
 public class BCADTO implements BaseDTO<BCADTO, BCA> {
 
     private Long id;
+    public String status;
     public String bcaUniqueIdNumber;
     public String coreUniqueNumber;
     public String[] gdNumber ={};
@@ -41,6 +42,7 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
         BCA entity = new BCA();
 
         entity.setId(this.getId());
+        entity.setStatus(this.getStatus());
 
         //entity.setGdNumber(this.getGdNumber());
         if(this.getGdNumber()!=null && this.getGdNumber().length > 0) {
@@ -100,6 +102,7 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
     public void convertToDTO(BCA entity, boolean partialFill) {
         if (entity != null) {
             this.setId(entity.getId());
+            this.setStatus(entity.getStatus());
             String[] gdNum = AppUtility.isEmpty(entity.getGdNumber()) ? null: new String[]{entity.getGdNumber()};
             this.setGdNumber(gdNum);
             this.setBcaUniqueIdNumber(entity.getBcaUniqueIdNumber());
