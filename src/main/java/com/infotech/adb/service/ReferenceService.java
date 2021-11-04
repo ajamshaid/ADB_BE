@@ -286,8 +286,8 @@ public class ReferenceService {
         bdadto.setBdaUniqueIdNumber(uniqNo);
         BDA entity = this.updateBDA(bdadto.convertToEntity());
 
-           ResponseUtility.APIResponse pswResponse =  ResponseUtility.TestAPISuccessResponse();
-        //ResponseUtility.APIResponse pswResponse =  pswAPIConsumerService.shareBDAInformationImport(bdadto);
+      //     ResponseUtility.APIResponse pswResponse =  ResponseUtility.TestAPISuccessResponse();
+        ResponseUtility.APIResponse pswResponse =  pswAPIConsumerService.shareBDAInformationImport(bdadto);
         String respCode = pswResponse.getMessage().getCode();
         if (respCode.equals("" + HttpStatus.OK.value())) {
             bdaRepository.updateStatus(entity.getId(), AppConstants.RecordStatuses.PUSHED_TO_PSW);
@@ -326,8 +326,8 @@ public class ReferenceService {
 
         BCA entity = this.updateBCA(bcadto.convertToEntity());
 
-          ResponseUtility.APIResponse pswResponse =  ResponseUtility.TestAPISuccessResponse();
-     //   ResponseUtility.APIResponse pswResponse =  pswAPIConsumerService.shareBCAInformationExport(bcadto);
+     //     ResponseUtility.APIResponse pswResponse =  ResponseUtility.TestAPISuccessResponse();
+        ResponseUtility.APIResponse pswResponse =  pswAPIConsumerService.shareBCAInformationExport(bcadto);
         String respCode = pswResponse.getMessage().getCode();
         if (respCode.equals("" + HttpStatus.OK.value())) {
             bcaRepository.updateStatus(entity.getId(), AppConstants.RecordStatuses.PUSHED_TO_PSW);
