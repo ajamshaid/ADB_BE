@@ -85,7 +85,7 @@ public class ResponseUtility {
         throw new CustomException(e.getMessage(), e);
     }
 
-    public static APIResponse  TestAPISuccessResponse() {
+    public static APIResponse TestAPISuccessResponse() {
         ResponseUtility.Message msg = new ResponseUtility.Message();
         msg.setCode("200");
         msg.setDescription("Temp Success for testing...");
@@ -138,8 +138,8 @@ public class ResponseUtility {
                 this.receiverId = requestParameter.getSenderId();
 
                 //     this.methodId = requestParameter.getMethodId();
-               // this.signature = requestParameter.getSignature();
-                if(!AppUtility.isEmpty(this.data)) {
+                // this.signature = requestParameter.getSignature();
+                if (!AppUtility.isEmpty(this.data)) {
                     try {
                         this.signature = AppUtility.buildSignature(JsonUtils.objectToJson(this.data));
                     } catch (JsonProcessingException e) {
@@ -362,7 +362,11 @@ public class ResponseUtility {
         CustomResponse customResponse = null;
 
         String respCode = pswResponse.getMessage().getCode();
-        if (respCode.equals("" + HttpStatus.OK.value())) {
+        if (respCode.equals("" + HttpStatus.OK.value())
+                || AppConstants.PSWResponseCodes.REVERSED.equals(respCode)
+                || AppConstants.PSWResponseCodes.CANCELLED.equals(respCode)
+                || AppConstants.PSWResponseCodes.SETTLED.equals(respCode)
+        ) {
             customResponse = ResponseUtility.successResponse("{}",
                     pswResponse.getMessage().getCode(),
                     pswResponse.getMessage().getDescription(), null, false);

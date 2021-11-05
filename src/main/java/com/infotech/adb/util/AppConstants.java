@@ -102,6 +102,11 @@ public class AppConstants {
         public static final String VERIFIED = "207";
         public static final String UN_VERIFIED = "208";
 
+        public static final String CANCELLED = "211";
+        public static final String REVERSED = "212";
+        public static final String SETTLED = "213";
+        public static final String NOT_ALLOWED = "214";
+
 
         public static final String NO_DATA_FOUND = "700"; //HttpStatus.NO_CONTENT
         public static final String SIGNATURE_INVALID = "701";
