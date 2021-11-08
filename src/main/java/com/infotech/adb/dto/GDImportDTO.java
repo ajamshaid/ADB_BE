@@ -66,6 +66,7 @@ public class GDImportDTO implements BaseDTO<GDImportDTO, GD> {
             PaymentInformation pi = new PaymentInformation();
             FinancialTransaction ft = new FinancialTransaction();
 
+            ft.setStatus(AppConstants.RecordStatuses.CREATED_BY_PSW);
             ft.setType(AppConstants.TYPE_GD_IMPORT);
 
             ft.setIban(this.getFinancialInfo().getImporterIban());
