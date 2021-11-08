@@ -113,11 +113,16 @@ public class GDExportDTO implements BaseDTO<GDExportDTO, GDExport> {
             entity.setPackagesInformationSet(this.getGeneralInformation().getPackagesInformation());
             entity.setContainerVehicleInformationSet(this.getGeneralInformation().getContainerVehicleInformation());
 
-            for (GDContainerVehicleInfo vi : entity.getContainerVehicleInformationSet()) {
-                vi.setGdExport(entity);
+            if(!AppUtility.isEmpty(entity.getContainerVehicleInformationSet())) {
+                for (GDContainerVehicleInfo vi : entity.getContainerVehicleInformationSet()) {
+                    vi.setGdExport(entity);
+                }
             }
-            for (GDPackageInfo pkg: entity.getPackagesInformationSet()) {
-                pkg.setGdExport(entity);
+
+            if(!AppUtility.isEmpty(entity.getPackagesInformationSet())) {
+                for (GDPackageInfo pkg : entity.getPackagesInformationSet()) {
+                    pkg.setGdExport(entity);
+                }
             }
         }
         //item Information

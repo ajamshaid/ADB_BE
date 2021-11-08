@@ -37,21 +37,21 @@ public class GDExport {
     @Column(name = "COLLECTORATE", length = 100, nullable = false)
     private String collectorate;
 
-    @Column(name = "BL_AWB_NUM", length = 50, nullable = false)
+    @Column(name = "BL_AWB_NUM", length = 50, nullable = true)
     private String blAwbNumber;
 
-    @Column(name = "BL_AWB_DATE", nullable = false)
+    @Column(name = "BL_AWB_DATE", nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
     private Date blAwbDate;
 
-    @Column(name = "VIR_AIR_NUM", length = 50, nullable = false)
+    @Column(name = "VIR_AIR_NUM", length = 50, nullable = true)
     private String virAirNumber;
 
    /// Consigner and Consignee Information
     @Column(name = "NTN_FTN", length = 9, nullable = false)
     private String ntnFtn;
 
-    @Column(name = "STRN", length = 13, nullable = false)
+    @Column(name = "STRN", length = 13, nullable = true)
     private String strn;
 
     @Column(name = "CONSIGNEE_NAME", length = 100, nullable = false)
