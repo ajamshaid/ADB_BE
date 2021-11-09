@@ -119,6 +119,10 @@ public class EDIAPI {
                     case "307": // 7.3 Message 3 – Sharing of GD and FI with the Other Selected Bank
                         customResponse = this.shareOfCOBGDnFIInfo(data, requestParameter);
                         break;
+                    case "308": // 7.5  Message 5 – Sharing of Change of Bank request approval/rejection message
+                     //   with Old AD by PSW
+                            customResponse = this.chageOfBankRequestWithOldAd(data, requestParameter);
+                        break;
                     default: // Default Custom response
                         log.info("No Case Matched for processing code:" + processingCode);
                         throw new DataValidationException("Invalid Request! No Processing Code Matched");
@@ -320,6 +324,33 @@ public class EDIAPI {
 
         ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
         String logMessage = "7.3 - Sharing of GD and Financial Information with the other selected Bank";
+
+        logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter,requestTime, responseBody);
+        return customResponse;
+    }
+    /**************************
+     // 7.5.	Message 5 – Sharing of Change of Bank request approval/rejection message with Old AD by PSW
+     **************************/
+    public CustomResponse chageOfBankRequestWithOldAd(String data, RequestParameter requestParameter)
+            throws NoDataFoundException, JsonProcessingException {
+
+        ChangeBankRequestDTO dto = getObjectMapper().readValue(data, ChangeBankRequestDTO.class);
+
+        dto.setLastModifiedBy("Other Bank App/Rej");
+        dto.setLastModifiedDate(AppUtility.getCurrentTimeStamp());
+
+        Date requestTime = AppUtility.getCurrentTimeStamp();
+        System.out.println("IN coming COB Object is:" + dto);
+
+        if (!AppUtility.isEmpty(dto)) {
+            referenceService.updateCOB(dto.convertToEntity());
+        }
+        CustomResponse customResponse  = ResponseUtility.successResponse(null,AppConstants.PSWResponseCodes.OK,
+                "Change of bank request status acknowledged"
+                ,requestParameter, false);
+
+        ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
+        String logMessage = "7.5 – Sharing of Change of Bank request approval/rejection message with Old AD by PSW";
 
         logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter,requestTime, responseBody);
         return customResponse;
