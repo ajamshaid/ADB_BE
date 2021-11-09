@@ -308,6 +308,25 @@ public class PSWAPIConsumerService {
     }
 
     /***********************************************************
+     7.4.1.	Message 4 – Message 4 – Sharing of Change of Bank request approval/rejection message
+     by other selected AD with PSW
+
+     ***********************************************************/
+    public ResponseUtility.APIResponse shareCOBApprovalRejectionMsgByOldAD(ChangeBankRequestDTO dto)
+            throws HttpClientErrorException, JsonProcessingException {
+
+        RequestParameter<ChangeBankRequestDTO> requestParameter = new RequestParameter<>(
+                UUID.randomUUID()
+                , AppConstants.AD_ID
+                , AppConstants.PSW.ID, "03"
+                , AppConstants.PSW.METHOD_ID_SHARE_COB_APPROVAL_REJECTION_BY_OLD_ADB_MESSAGE
+                , AppConstants.AD_SIGNATURE);
+        requestParameter.setData(dto);
+
+        return executeRequest(requestParameter, "7.2.1 – Sharing of Change of Bank request approval/rejection message by AD with PSW");
+    }
+
+    /***********************************************************
      8.1.	Message 1 – Cancellation of Financial Transaction by AD (Import/Export):
      ***********************************************************/
     public ResponseUtility.APIResponse cancellationOfFinancialTransaction(CancellationOfFTDTO dto)
