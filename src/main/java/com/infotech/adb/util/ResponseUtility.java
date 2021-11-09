@@ -128,7 +128,12 @@ public class ResponseUtility {
         public Object data;
 
         public APIResponse(Object data, String responseCode, Message message, RequestParameter requestParameter) {
-            this.data = AppUtility.isEmpty(data) ? new Object() : data;
+
+            boolean isDataEmpty = false;
+            if(AppUtility.isEmpty(data)){
+                isDataEmpty = true;
+            }
+            this.data =  isDataEmpty? new Object() : data;
             this.message = message;
             this.responseCode = responseCode;
             if (!AppUtility.isEmpty(requestParameter)) {
@@ -139,13 +144,11 @@ public class ResponseUtility {
 
                 //     this.methodId = requestParameter.getMethodId();
                 // this.signature = requestParameter.getSignature();
-                if (!AppUtility.isEmpty(this.data)) {
                     try {
-                        this.signature = AppUtility.buildSignature(JsonUtils.objectToJson(this.data));
+                        this.signature = AppUtility.buildSignature(isDataEmpty ? "" : JsonUtils.objectToJson(this.data));
                     } catch (JsonProcessingException e) {
                         e.printStackTrace();
                     }
-                }
             }
         }
 

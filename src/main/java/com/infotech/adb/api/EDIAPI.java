@@ -303,6 +303,7 @@ public class EDIAPI {
             dto.setLastModifiedBy(AppConstants.PSW.ID);
             dto.setLastModifiedDate(AppUtility.getCurrentTimeStamp());
             System.out.println("IN coming COB GD FT DTO Object is:" + dto);
+            dto.getFinancialInstrumentInfo().setStatus(AppConstants.RecordStatuses.CREATED_BY_PSW);
             if (!AppUtility.isEmpty(dto)) {
                 referenceService.updateCOBGdFt(dto.convertToEntity());
             }
@@ -313,6 +314,8 @@ public class EDIAPI {
             dto.setLastModifiedDate(AppUtility.getCurrentTimeStamp());
 
             System.out.println("IN coming COB GD FT DTO Object is:" + dto);
+
+            dto.getFinancialInstrumentInfo().setStatus(AppConstants.RecordStatuses.CREATED_BY_PSW);
             if (!AppUtility.isEmpty(dto)) {
                 referenceService.updateCOBGdFt(dto.convertToEntity());
             }
@@ -320,7 +323,7 @@ public class EDIAPI {
         Date requestTime = AppUtility.getCurrentTimeStamp();
         CustomResponse customResponse  = ResponseUtility.successResponse(null,AppConstants.PSWResponseCodes.OK,
                 "Change of bank request with GD and financial information received."
-                ,requestParameter, false);
+                ,requestParameter, true);
 
         ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
         String logMessage = "7.3 - Sharing of GD and Financial Information with the other selected Bank";
