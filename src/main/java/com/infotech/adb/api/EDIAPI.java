@@ -273,7 +273,7 @@ public class EDIAPI {
         if (!AppUtility.isEmpty(dto)) {
             referenceService.updateCOB(dto.convertToEntity());
         }
-        CustomResponse customResponse  = ResponseUtility.successResponse("{}",AppConstants.PSWResponseCodes.OK,
+        CustomResponse customResponse  = ResponseUtility.successResponse(null,AppConstants.PSWResponseCodes.OK,
                 "Change of bank request received."
                 ,requestParameter, false);
 
@@ -314,7 +314,7 @@ public class EDIAPI {
             }
         }
         Date requestTime = AppUtility.getCurrentTimeStamp();
-        CustomResponse customResponse  = ResponseUtility.successResponse("{}",AppConstants.PSWResponseCodes.OK,
+        CustomResponse customResponse  = ResponseUtility.successResponse(null,AppConstants.PSWResponseCodes.OK,
                 "Change of bank request with GD and financial information received."
                 ,requestParameter, false);
 
