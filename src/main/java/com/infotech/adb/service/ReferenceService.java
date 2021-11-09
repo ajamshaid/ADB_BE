@@ -405,7 +405,7 @@ public class ReferenceService {
 
     public ResponseUtility.APIResponse updateCOBAndShare(ChangeBankRequestDTO dto) throws JsonProcessingException {
 
-        String uniqNo = AppUtility.generateUniqPSWNumberFormat("COB", this.getNextCounter("COB"));
+     //   String uniqNo = AppUtility.generateUniqPSWNumberFormat("COB", this.getNextCounter("COB"));
    //     dto.setCobUniqueIdNumber(uniqNo);
 
         this.updateCOB(dto.convertToEntity());
