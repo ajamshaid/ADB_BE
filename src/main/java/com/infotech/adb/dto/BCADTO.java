@@ -16,7 +16,7 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
     public String status;
     public String bcaUniqueIdNumber;
     public String coreUniqueNumber;
-    public String[] gdNumber ={};
+    public String gdNumber ;
     public String exporterNtn;
     public String exporterName;
     public String iban;
@@ -44,10 +44,8 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
         entity.setId(this.getId());
         entity.setStatus(this.getStatus());
 
-        //entity.setGdNumber(this.getGdNumber());
-        if(this.getGdNumber()!=null && this.getGdNumber().length > 0) {
-            entity.setGdNumber(this.getGdNumber()[0]);
-        }
+        entity.setGdNumber(this.getGdNumber());
+
         entity.setBcaUniqueIdNumber(this.getBcaUniqueIdNumber());
         entity.setCoreUniqueNumber(this.getCoreUniqueNumber());
 
@@ -103,8 +101,9 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
         if (entity != null) {
             this.setId(entity.getId());
             this.setStatus(entity.getStatus());
-            String[] gdNum = AppUtility.isEmpty(entity.getGdNumber()) ? null: new String[]{entity.getGdNumber()};
-            this.setGdNumber(gdNum);
+//            String[] gdNum = AppUtility.isEmpty(entity.getGdNumber()) ? null: new String[]{entity.getGdNumber()};
+//            this.setGdNumber(gdNum);
+            this.setGdNumber(entity.getGdNumber());
             this.setBcaUniqueIdNumber(entity.getBcaUniqueIdNumber());
             this.setCoreUniqueNumber(entity.getCoreUniqueNumber());
             this.setIban(entity.getIban());
