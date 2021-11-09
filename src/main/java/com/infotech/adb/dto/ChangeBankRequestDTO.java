@@ -17,7 +17,7 @@ public class ChangeBankRequestDTO implements BaseDTO<ChangeBankRequestDTO , Chan
     private String traderName;
     private String Iban;
     private String finInsUniqueNumber;
-    private String gdNumber;
+  //  private String gdNumber;
     private String cobStatus;
 
     private String lastModifiedBy;
@@ -30,7 +30,7 @@ public class ChangeBankRequestDTO implements BaseDTO<ChangeBankRequestDTO , Chan
         this.traderName = traderName;
         Iban = iban;
         this.finInsUniqueNumber = finInsUniqueNumber;
-        this.gdNumber = gdNumber;
+   //     this.gdNumber = gdNumber;
     }
 
 
