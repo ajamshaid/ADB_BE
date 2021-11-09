@@ -60,7 +60,7 @@ public class BCA {
     public Date eventDate;
 
     @Column(name = "RUNNING_SERIAL_NUMBER", length = 20, nullable = true)
-    public String runningSerialNumber;
+    public Long runningSerialNumber;
 
     @Column(name = "SWIFT_REFERENCE", length = 20, nullable = true)
     public String swiftReference;

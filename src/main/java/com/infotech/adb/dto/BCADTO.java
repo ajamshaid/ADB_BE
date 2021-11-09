@@ -207,7 +207,7 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
 
         public String bcaEventName;
         public String eventDate;
-        public String runningSerialNumber;
+        public Long runningSerialNumber;
         public String swiftReference;
         public String billNumber;
         public String billDated;
@@ -216,7 +216,7 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
         public String invoiceDate;
         public BigDecimal invoiceAmount;
 
-        public BCAInformation(String bcaEventName, Date eventDate, String runningSerialNumber
+        public BCAInformation(String bcaEventName, Date eventDate, Long runningSerialNumber
                 , String swiftReference, String billNumber, Date billDated, BigDecimal billAmount
                 , String invoiceNumber, Date invoiceDate, BigDecimal invoiceAmount) {
             this.bcaEventName = bcaEventName;
