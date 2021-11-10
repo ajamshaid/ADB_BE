@@ -12,9 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpStatusCodeException;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.*;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -32,7 +30,7 @@ public class PSWAPIConsumerService {
     //**************************
     // Get Authorization Token
     // **************************/
-    public PSWAuthTokenResponse getAuthorizationToken() throws JsonProcessingException {
+    public PSWAuthTokenResponse getAuthorizationToken() throws JsonProcessingException,ResourceAccessException {
         RestTemplate restTemplate = new RestTemplate(
                 HTTPClientUtils.getClientHttpRequestFactory(
                         AppConstants.PSW.CLIENT_ID, AppConstants.PSW.CLIENT_SECRET));
@@ -194,11 +192,17 @@ public class PSWAPIConsumerService {
             dto.setContractCollectionData(null);
         }
 
+        boolean isUpdate = false;
+        if(!AppUtility.isEmpty(dto.getFinInsUniqueNumber())
+                && AppConstants.RecordStatuses.PUSHED_TO_PSW.equals(dto.getStatus())) {
+            isUpdate = true;
+        }
         RequestParameter<FinancialTransactionImportDTO> requestParameter = new RequestParameter<>(
                 UUID.randomUUID()
                 , AppConstants.AD_ID
                 , AppConstants.PSW.ID, "03"
-                , AppConstants.PSW.METHOD_ID_SHARE_FIN_TRANS_DATA_IMPORT
+                , isUpdate  ? AppConstants.PSW.METHOD_ID_SHARE_FIN_TRANS_DATA_IMPORT_UPDATE
+                            : AppConstants.PSW.METHOD_ID_SHARE_FIN_TRANS_DATA_IMPORT_NEW
                 , AppConstants.AD_SIGNATURE);
         requestParameter.setData(dto);
 
@@ -244,11 +248,18 @@ public class PSWAPIConsumerService {
             dto.setOpenAccountData(null);
         }
 
+        boolean isUpdate = false;
+        if(!AppUtility.isEmpty(dto.getFinInsUniqueNumber())
+                && AppConstants.RecordStatuses.PUSHED_TO_PSW.equals(dto.getStatus())) {
+            isUpdate = true;
+        }
+
         RequestParameter<FinancialTransactionExportDTO> requestParameter = new RequestParameter<>(
                 UUID.randomUUID()
                 , AppConstants.AD_ID
                 , AppConstants.PSW.ID, "03"
-                , AppConstants.PSW.METHOD_ID_SHARE_FIN_TRANS_DATA_EXPORT
+                , isUpdate ? AppConstants.PSW.METHOD_ID_SHARE_FIN_TRANS_DATA_EXPORT_UPDATE
+                            :AppConstants.PSW.METHOD_ID_SHARE_FIN_TRANS_DATA_EXPORT_NEW
                 , AppConstants.AD_SIGNATURE);
         requestParameter.setData(dto);
 
@@ -386,15 +397,14 @@ public class PSWAPIConsumerService {
      *********************************************************/
     private ResponseUtility.APIResponse executeRequest(RequestParameter requestParameter, String messageName) throws JsonProcessingException {
 
+        ResponseUtility.APIResponse apiResponse = null;
+        try{
         // fetch toke.
         PSWAuthTokenResponse authTokenResponse = getAuthorizationToken();
 
         String token = authTokenResponse.getApiToken();
-        ResponseUtility.APIResponse apiResponse = null;
-
         Date requestTime = AppUtility.getCurrentTimeStamp();
         //Auth completed.
-
 
         if (!AppUtility.isEmpty(authTokenResponse.getResponseCode()) && HttpStatus.OK.value() == authTokenResponse.getResponseCode()) {
             UriComponents uriBuilder = UriComponentsBuilder.fromHttpUrl(
@@ -417,6 +427,15 @@ public class PSWAPIConsumerService {
             log.debug("\n===================PSW AUthentication Failed======== Request Not Forwarded to PSW =================");
             ///   logRequest = LogRequest.buildNewObject("Sharing of Update Information and Payment Mode By AD", RequestMethod.POST.name(),requestParameter, requestTime, authTokenResponse);
 
+        }
+        } catch (ResourceAccessException rex ){
+            apiResponse = ResponseUtility.APIFailureResponse(rex.getRootCause().getLocalizedMessage());
+            log.error(rex.getLocalizedMessage());
+            rex.printStackTrace();
+        } catch(Exception ex){
+            apiResponse = ResponseUtility.APIFailureResponse(ex.getLocalizedMessage());
+            log.error(ex.getLocalizedMessage());
+            ex.printStackTrace();
         }
         return apiResponse;
     }

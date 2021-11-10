@@ -35,12 +35,14 @@ public class FinancialTransactionAPI {
 
 
     @RequestMapping(value = "/import/", method = RequestMethod.GET)
-    public CustomResponse getAllImportFT()
+    public CustomResponse getAllImportFT(@RequestParam(value = "isNew",  required = false) boolean isNew)
             throws CustomException, NoDataFoundException {
 
         List<FinancialTransaction> refList = null;
         try {
-            refList = referenceService.getAllFinancialTransactionByType(AppConstants.TYPE_IMPORT);
+            refList = referenceService.getAllFinancialTransactionByType(AppConstants.TYPE_IMPORT
+                    , isNew ? AppConstants.RecordStatuses.CREATED_BY_MQ
+                            : AppConstants.RecordStatuses.PUSHED_TO_PSW);
         } catch (Exception e) {
             throw new CustomException(e);
         }
@@ -107,12 +109,14 @@ public class FinancialTransactionAPI {
      *************************/
 
     @RequestMapping(value = "/export/", method = RequestMethod.GET)
-    public CustomResponse getAllExportFT(@RequestParam(value = "status", required = false) String status)
+    public CustomResponse getAllExportFT(@RequestParam(value = "isNew",  required = false) boolean isNew)
             throws CustomException, NoDataFoundException {
 
         List<FinancialTransaction> refList = null;
         try {
-            refList = referenceService.getAllFinancialTransactionByType(AppConstants.TYPE_EXPORT);
+            refList = referenceService.getAllFinancialTransactionByType(AppConstants.TYPE_EXPORT
+                    , isNew ? AppConstants.RecordStatuses.CREATED_BY_MQ
+                            : AppConstants.RecordStatuses.PUSHED_TO_PSW);
         } catch (Exception e) {
             throw new CustomException(e);
         }

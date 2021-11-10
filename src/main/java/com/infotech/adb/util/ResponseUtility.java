@@ -93,6 +93,15 @@ public class ResponseUtility {
         return ap;
     }
 
+
+    public static APIResponse APIFailureResponse(String message) {
+        ResponseUtility.Message msg = new ResponseUtility.Message();
+        msg.setCode("400");
+        msg.setDescription(message);
+        APIResponse ap = new ResponseUtility.APIResponse(null, "400", msg);
+        return ap;
+    }
+
     @NoArgsConstructor
     @AllArgsConstructor
     @Data

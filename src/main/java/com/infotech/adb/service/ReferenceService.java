@@ -198,10 +198,10 @@ public class ReferenceService {
     /*************************************
      * Financial Transaction METHODS
      **************************************/
-    public List<FinancialTransaction> getAllFinancialTransactionByType(String type) {
+    public List<FinancialTransaction> getAllFinancialTransactionByType(String type, String status) {
         log.info("getAllFinancialTransactionByType method called..");
         List<FinancialTransaction> refList = null;
-        refList = this.financialTransactionRepository.findByTypeOrderByLastModifiedDateDesc(type);
+        refList = this.financialTransactionRepository.findByTypeAndStatusOrderByLastModifiedDateDesc (type,status );
         return refList;
     }
 
@@ -225,12 +225,15 @@ public class ReferenceService {
     @Transactional
     public ResponseUtility.APIResponse updateFTImportAndShare(FinancialTransactionImportDTO dto) throws JsonProcessingException {
 
-        String finUniqNo = AppUtility.generateUniqPSWNumberFormat("IMP", this.getNextCounter("IMP"));
-        dto.setFinInsUniqueNumber(finUniqNo);
+        String finUniqNo = "";
+        if(AppUtility.isEmpty(dto.getFinInsUniqueNumber())) {
+            finUniqNo = AppUtility.generateUniqPSWNumberFormat("IMP", this.getNextCounter("IMP"));
+            dto.setFinInsUniqueNumber(finUniqNo);
+        }
 
         FinancialTransaction ft = this.updateFinancialTransaction(dto.convertToEntity());
 
-      //  ResponseUtility.APIResponse pswResponse =   ResponseUtility.TestAPISuccessResponse();
+       // ResponseUtility.APIResponse pswResponse =   ResponseUtility.TestAPISuccessResponse();
         ResponseUtility.APIResponse pswResponse =   pswAPIConsumerService.shareFinancialInformationImport(dto);
         String respCode = pswResponse.getMessage().getCode();
         if (respCode.equals("" + HttpStatus.OK.value())) {
@@ -243,9 +246,11 @@ public class ReferenceService {
     @Transactional
     public ResponseUtility.APIResponse updateFTExportAndShare(FinancialTransactionExportDTO dto) throws JsonProcessingException {
 
-        String finUniqNo = AppUtility.generateUniqPSWNumberFormat("EXP", this.getNextCounter("EXP"));
-        dto.setFinInsUniqueNumber(finUniqNo);
-
+        String finUniqNo = "";
+        if(AppUtility.isEmpty(dto.getFinInsUniqueNumber())) {
+            finUniqNo = AppUtility.generateUniqPSWNumberFormat("EXP", this.getNextCounter("EXP"));
+            dto.setFinInsUniqueNumber(finUniqNo);
+        }
         FinancialTransaction ft = this.updateFinancialTransaction(dto.convertToEntity());
 
      //   ResponseUtility.APIResponse pswResponse =  ResponseUtility.TestAPISuccessResponse();
