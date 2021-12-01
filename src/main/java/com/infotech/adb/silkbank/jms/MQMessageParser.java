@@ -24,7 +24,8 @@ public class MQMessageParser {
             ft.setName(ftDetailsAry[1]);
             ft.setIban(ftDetailsAry[2]);
             ft.setModeOfPayment(ftDetailsAry[3]);
-            ft.setFinInsUniqueNumber(ftDetailsAry[4]);
+        //    ft.setFinInsUniqueNumber(ftDetailsAry[4]);
+            ft.setFinInsUniqueNumberCore(ftDetailsAry[4]);
 
             PaymentInformation pi = new PaymentInformation();
             pi.setDeliveryTerm(ftDetailsAry[5]);
