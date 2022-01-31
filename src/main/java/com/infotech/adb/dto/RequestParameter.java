@@ -48,10 +48,12 @@ public class RequestParameter<T> {
         }
 
         this.signature = AppUtility.buildSignature(dataJson);
+      /*
         System.out.println("-----------------------------------");
         System.out.println("Data json is:"+dataJson);
         System.out.println("The Signature is "+this.signature);
         System.out.println("-----------------------------------");
+       */
     }
 
     public RequestParameter(UUID messageId, String senderId, String receiverId, String processingCode, String methodId, String signature) {
