@@ -573,6 +573,11 @@ public class ReferenceService {
         return ref.get();
     }
 
+    public User getUserByUserName(String userName) {
+        log.info("getUserById method called..");
+        User u = userRepository.findByUsername(userName);
+        return u;
+    }
     @Transactional
     public User updateUser(User entity) {
         log.info("updateUser method called..");

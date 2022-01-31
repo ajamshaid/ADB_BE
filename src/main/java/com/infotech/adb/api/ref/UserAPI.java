@@ -60,7 +60,22 @@ public class UserAPI {
         }
         return ResponseUtility.buildResponseObject(entity);
     }
+    @RequestMapping(value = "/userName/{userName}", method = RequestMethod.GET)
+    public CustomResponse getUserById(@PathVariable String userName)
+            throws CustomException, DataValidationException, NoDataFoundException {
 
+        if (AppUtility.isEmpty(userName)) {
+            throw new DataValidationException(messageBundle.getString("id.not.found"));
+        }
+        User entity = null;
+        try {
+            entity = referenceService.getUserByUserName(userName);
+            entity.setPassword(null);
+        } catch (Exception e) {
+            throw new CustomException(e);
+        }
+        return ResponseUtility.buildResponseObject(entity);
+    }
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public CustomResponse saveUser(@RequestBody User user)
