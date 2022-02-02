@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.infotech.adb.dto.*;
 import com.infotech.adb.model.repository.AccountDetailRepository;
 import com.infotech.adb.psw.consumer.PSWAPIConsumerService;
+import com.infotech.adb.util.AppUtility;
 import com.infotech.adb.util.ResponseUtility;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,8 @@ public class PSWService {
     public ResponseUtility.APIResponse shareUpdatedAuthPMs(AccountPMDTO dto) {
         ResponseUtility.APIResponse pswResponse = null;
 
-        String authPMImport = String.join(",", dto.getAuthorizedPaymentModesForImport());
-        String authPMExp = String.join(",", dto.getAuthorizedPaymentModesForExport());
+        String authPMImport = AppUtility.isEmpty( dto.getAuthorizedPaymentModesForImport()) ? "" : String.join(",", dto.getAuthorizedPaymentModesForImport());
+        String authPMExp = AppUtility.isEmpty( dto.getAuthorizedPaymentModesForExport()) ? "" : String.join(",", dto.getAuthorizedPaymentModesForExport());
         accountDetailRepository.updateAuthPMByIBAN(dto.getIban(), authPMImport, authPMExp);
         try {
             pswResponse = pswapiConsumerService.updateAccountAndPMInPWS(dto);

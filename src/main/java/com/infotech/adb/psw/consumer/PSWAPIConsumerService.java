@@ -90,7 +90,7 @@ public class PSWAPIConsumerService {
 
 //        AccountDetailDTO dto = null; ///new AccountDetailDTO(accountDetail);
         requestParameter.setData(dto);
-
+        log.debug("\nRequestParameter Json:" + requestParameter.toJson());
         return executeRequest(requestParameter, "4.3 - Sharing of Update Information and Payment Mode By AD");
     }
 
