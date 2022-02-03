@@ -26,9 +26,10 @@ public class QueueIN {
 
         MQUtility.objectLockingMap.put(message.getId(),message);
 
-        log.info("Placing Message["+message.getType()+"] on Queue["+qName+"] with MessageID="+message.getId());
+        log.debug("\n-------------Placing ["+message.getType()+"] on ["+qName+"] with MessageID="+message.getId()
+                    +"\n-------------Message is: "+message.getReqResStr());
         jmsTemplate.convertAndSend(qName, message.getReqResStr());
-        log.debug("Message Placed Successfully");
+        log.info("Message Placed Successfully");
 
         String threadName = Thread.currentThread().getName();
         try {
@@ -48,8 +49,8 @@ public class QueueIN {
 
         message = MQUtility.objectLockingMap.remove(message.getId());
 
-        log.debug(threadName+"-> Notified at time:"+AppUtility.getCurrentTimeStampString());
-        log.debug(threadName+"-> Returned Message is: "+message);
+        log.info(threadName+"-> Notified at time:"+AppUtility.getCurrentTimeStampString());
+        log.info(threadName+"-> Returned Message is: "+message);
         return message;
     }
 }

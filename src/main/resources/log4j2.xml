@@ -15,6 +15,15 @@
             </Policies>
             <DefaultRolloverStrategy max="1000"/>
         </RollingFile>
+
+        <RollingFile name="MQFile" fileName="D:/ADBroker/mq.log"
+                     filePattern="D:/ADBroker/mq-%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout pattern="%d{yyyy-MMM-dd HH:mm:ss a} [%t] %-5level %logger{36} - %msg%n"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="40MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="1000"/>
+        </RollingFile>
         <!--enable while creating build-->
        <!-- <RollingFile name="File" fileName="C:/ApplicationLogs/SomaliaCustoms/sc.log"
                      filePattern="D:/ApplicationLogs/SomaliaCustoms/sc-%d{yyyy-MM-dd}-%i.log">
@@ -37,6 +46,12 @@
 
     <Loggers>
         <!-- Log everything in custom package -->
+
+        <Logger name="com.infotech.adb.silkbank.jms" level="debug" additivity="false">
+            <AppenderRef ref="MQFile"/>
+        </Logger>
+
+
         <Logger name="com.infotech.adb" level="debug" additivity="false">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="File"/>
@@ -62,7 +77,8 @@
             <AppenderRef ref="File"/>
         </Logger>
 
-        <Root level="error">
+
+        <Root level="info">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="File"/>
         </Root>
