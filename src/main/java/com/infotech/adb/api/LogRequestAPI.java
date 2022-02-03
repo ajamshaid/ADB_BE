@@ -31,13 +31,14 @@ public class LogRequestAPI {
 
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
-    public CustomResponse searchLogs(@RequestParam(value = "iban", required = false) String iban  )
+    public CustomResponse searchLogs(@RequestParam(value = "iban", required = false) String iban ,
+                                     @RequestParam(value = "msgId", required = false) String msgId)
             throws CustomException, DataValidationException, NoDataFoundException {
         log.info("searchLogs API initiated...");
 
         List<LogRequest> logRequests = null;
         try {
-            logRequests = logRequestService.searchLogs(iban);
+            logRequests = logRequestService.searchLogs(iban,msgId);
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e, null);
         }

@@ -19,7 +19,7 @@ public interface LogRequestRepository extends JpaRepository<LogRequest, Long> {
 
     List<LogRequest> findAllByOrderByIdDesc();
 
-    @Query(" from LogRequest r where r.requestPayload like %:iban% order by r.responseTime desc")
-    List<LogRequest> searchLogs(@Param("iban") String iban);
+    @Query(" from LogRequest r where r.requestPayload like %:iban% and r.msgIdentifier like :msgId% order by r.responseTime desc")
+    List<LogRequest> searchLogs(@Param("iban") String iban, @Param("msgId") String msgId);
 
 }
