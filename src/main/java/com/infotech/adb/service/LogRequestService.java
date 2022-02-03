@@ -31,6 +31,12 @@ public class LogRequestService {
         this.createLogRequest(logRequest);
     }
 
+
+    public List<LogRequest> searchLogs(String Iban) {
+        log.info("searchLogs method called..");
+            return logRequestRepository.searchLogs(Iban);
+    }
+
     public List<LogRequest> getAllLogRequests(Boolean isSuspended) {
         log.info("getAllLogRequests method called..");
         if (AppUtility.isEmpty(isSuspended)) {

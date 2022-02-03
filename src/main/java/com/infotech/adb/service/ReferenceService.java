@@ -579,8 +579,13 @@ public class ReferenceService {
         return u;
     }
     @Transactional
-    public User updateUser(User entity) {
+    public User createUpdateUser(User entity) {
         log.info("updateUser method called..");
+
+        if(AppUtility.isEmpty(entity.getId())){ // if new User then Encrypt Password.
+            entity.setPassword(new BCryptPasswordEncoder().encode(entity.getPassword()));
+        }
+
         return userRepository.save(entity);
     }
 
@@ -590,12 +595,12 @@ public class ReferenceService {
         Optional<User> userOptional = userRepository.findById(newUser.getId());
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            if (!BCrypt.checkpw(user.getPassword(), newUser.getPassword())) {
+           // if (!BCrypt.checkpw(user.getPassword(), newUser.getPassword())) {
                 user.setPassword(new BCryptPasswordEncoder().encode(newUser.getPassword()));
                 userRepository.save(user);
-            } else {
-                throw new DataValidationException(AppUtility.getResourceMessage("user.password.match"));
-            }
+//            } else {
+//                throw new DataValidationException(AppUtility.getResourceMessage("user.password.match"));
+//            }
         } else {
             throw new NoDataFoundException(AppUtility.getResourceMessage("user.not.found"));
         }

@@ -1,12 +1,8 @@
 package com.infotech.adb.api.ref;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.infotech.adb.dto.GDClearanceDTO;
 import com.infotech.adb.exceptions.CustomException;
 import com.infotech.adb.exceptions.DataValidationException;
 import com.infotech.adb.exceptions.NoDataFoundException;
-import com.infotech.adb.exceptions.PSWAPIException;
-import com.infotech.adb.model.entity.GDClearance;
 import com.infotech.adb.model.entity.User;
 import com.infotech.adb.service.ReferenceService;
 import com.infotech.adb.util.AppConstants;
@@ -87,7 +83,7 @@ public class UserAPI {
         User entity = null;
         CustomResponse customResponse = null;
         try {
-            entity = referenceService.updateUser(user);
+            entity = referenceService.createUpdateUser(user);
         }catch (Exception e){
             ResponseUtility.exceptionResponse(e, AppConstants.DBConstraints.UNIQ_USERNAME);
         }
@@ -105,7 +101,7 @@ public class UserAPI {
         }
         User entity = null;
         CustomResponse customResponse = null;
-        entity = referenceService.updateUser(user);
+        entity = referenceService.createUpdateUser(user);
         customResponse = ResponseUtility.successResponse(entity, "200", "Record Updated Successfully");
         return customResponse;
     }

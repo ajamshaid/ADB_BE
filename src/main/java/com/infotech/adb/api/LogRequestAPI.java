@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -27,6 +28,21 @@ public class LogRequestAPI {
 
     @Autowired
     private LogRequestService logRequestService;
+
+
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public CustomResponse searchLogs(@RequestParam(value = "iban", required = false) String iban  )
+            throws CustomException, DataValidationException, NoDataFoundException {
+        log.info("searchLogs API initiated...");
+
+        List<LogRequest> logRequests = null;
+        try {
+            logRequests = logRequestService.searchLogs(iban);
+        } catch (Exception e) {
+            ResponseUtility.exceptionResponse(e, null);
+        }
+        return ResponseUtility.buildResponseList(logRequests, new LogRequestDTO());
+    }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public CustomResponse getAllLogRequests(HttpServletRequest request,
@@ -92,21 +108,4 @@ public class LogRequestAPI {
         }
         return ResponseUtility.buildResponseObject(logRequest, new LogRequestDTO(), false);
     }
-/*
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public CustomResponse deleteLogRequest(HttpServletRequest request,
-                                     @PathVariable("id") Long id)
-            throws CustomException, DataValidationException, NoDataFoundException {
-
-        if (AppUtility.isEmpty(id)) {
-            throw new DataValidationException(messageBundle.getString("id.not.found"));
-        }
-        try {
-            logRequestService.deleteLogRequestById(id);
-        } catch (Exception e) {
-            ResponseUtility.exceptionResponse(e, null);
-        }
-        return ResponseUtility.deleteSuccessResponse(null, messageBundle.getString("logRequest.deleted.success"));
-    }
-    */
  }
