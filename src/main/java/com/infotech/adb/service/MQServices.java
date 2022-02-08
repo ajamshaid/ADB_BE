@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.jms.JMSException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 
 @Service
@@ -50,7 +51,9 @@ public class MQServices {
         AccountDetailDTO dto = null;
         MQUtility.MqMessage replyMessage = null;
         try {
-            replyMessage = queueIN.putMessage(MQUtility.buildGetAccountDetailsMessage(iban));
+//            replyMessage = new MQUtility.MqMessage();
+//            replyMessage.setReqResStr("PK88SAUD0000032000486666|BBJ PIPE INDUSTRIES LIMITED|2000486666|600|1535184|3520149834481");
+            replyMessage =  queueIN.putMessage(MQUtility.buildGetAccountDetailsMessage(iban));
         } catch (JMSException e) {
             log.error(e.getMessage());
             e.printStackTrace();
@@ -72,15 +75,21 @@ public class MQServices {
                 AccountDetail accountDetail = accountDetailRepository.findByIban(iban);
                 if (!AppUtility.isEmpty(accountDetail)) {
                     String autPM = accountDetail.getAuthPMImport();
+                    HashSet autPMImportMap = new HashSet();
                     if (!AppUtility.isEmpty(autPM)) {
-                        dto.setAuthorizedPaymentModesForImport(new HashSet<>(Arrays.asList(autPM.split(","))));
-                    }
-                    autPM = accountDetail.getAuthPMExport();
-                    if (!AppUtility.isEmpty(autPM)) {
-                        dto.setAuthorizedPaymentModesForExport(new HashSet<>(Arrays.asList(autPM.split(","))));
-                    }
-                }
+                        autPMImportMap = new HashSet<>(Arrays.asList(autPM.split(",")));
 
+                    }
+                    dto.setAuthorizedPaymentModesForImport(autPMImportMap);
+
+                    // Export
+                    autPM = accountDetail.getAuthPMExport();
+                    HashSet autPMExportMap = new HashSet();
+                    if (!AppUtility.isEmpty(autPM)) {
+                        autPMExportMap = new HashSet<>(Arrays.asList(autPM.split(",")));
+                    }
+                    dto.setAuthorizedPaymentModesForExport(autPMExportMap);
+                }
             }
         }
         return dto;
