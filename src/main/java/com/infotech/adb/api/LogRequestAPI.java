@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -32,13 +31,15 @@ public class LogRequestAPI {
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public CustomResponse searchLogs(@RequestParam(value = "iban", required = false) String iban ,
-                                     @RequestParam(value = "msgId", required = false) String msgId)
+                                     @RequestParam(value = "msgId", required = false) String msgId,
+                                     @RequestParam(value = "fromDate", required = false) String fromDate,
+                                     @RequestParam(value = "toDate", required = false) String toDate)
             throws CustomException, DataValidationException, NoDataFoundException {
         log.info("searchLogs API initiated...");
 
         List<LogRequest> logRequests = null;
         try {
-            logRequests = logRequestService.searchLogs(iban,msgId);
+            logRequests = logRequestService.searchLogs(iban,msgId, fromDate, toDate);
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e, null);
         }
