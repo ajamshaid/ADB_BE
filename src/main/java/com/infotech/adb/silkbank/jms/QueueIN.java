@@ -25,19 +25,19 @@ public class QueueIN {
         // jmsTemplate.setReceiveTimeout(15 * 1000); // How long to wait for a reply - milliseconds
 
         MQUtility.objectLockingMap.put(message.getId(),message);
-
-        log.debug("\n-------------Placing ["+message.getType()+"] on ["+qName+"] with MessageID="+message.getId()
-                    +"\n-------------Message is: "+message.getReqResStr());
+        log.info("\n=================================================");
+        log.info("\n*************** Placing ["+message.getType()+"] on ["+qName+"] with MessageID="+message.getId()
+                   +"\n*************** Message is: "+message.getReqResStr());
         jmsTemplate.convertAndSend(qName, message.getReqResStr());
-        log.info("Message Placed Successfully");
+        log.debug("Message Placed Successfully");
 
         String threadName = Thread.currentThread().getName();
         try {
 
             synchronized (message) {
-                log.info("Locked on :"+message);
-                log.info(threadName+"-> waiting to get notified at time:"+AppUtility.getCurrentTimeStampString());
-                log.info("Timeout is set to "+timeOut+" milliSeconds");
+                log.debug("Locked on :"+message);
+                log.debug(threadName+"-> waiting to get notified at time:"+AppUtility.getCurrentTimeStampString());
+                log.debug("Timeout is set to "+timeOut+" milliSeconds");
                 message.wait(timeOut);
 
             }
@@ -49,8 +49,8 @@ public class QueueIN {
 
         message = MQUtility.objectLockingMap.remove(message.getId());
 
-        log.info(threadName+"-> Notified at time:"+AppUtility.getCurrentTimeStampString());
-        log.info(threadName+"-> Returned Message is: "+message);
+        log.debug(threadName+"-> Notified at time:"+AppUtility.getCurrentTimeStampString());
+        log.debug(threadName+"-> Returned Message is: "+message);
         return message;
     }
 }
