@@ -50,14 +50,14 @@ public class MQServices {
 
         AccountDetailDTO dto = null;
         MQUtility.MqMessage replyMessage = null;
-        //try {
-            replyMessage = new MQUtility.MqMessage();
-            replyMessage.setReqResStr("PK88SAUD0000032000486666|BBJ PIPE INDUSTRIES LIMITED|2000486666|600|1535184|3520149834481");
-            //replyMessage =  //queueIN.putMessage(MQUtility.buildGetAccountDetailsMessage(iban));
-//        } catch (JMSException e) {
-//            log.error(e.getMessage());
-//            e.printStackTrace();
-//        }
+        try {
+//            replyMessage = new MQUtility.MqMessage();
+//            replyMessage.setReqResStr("PK88SAUD0000032000486666|BBJ PIPE INDUSTRIES LIMITED|2000486666|600|1535184|3520149834481");
+            replyMessage =  queueIN.putMessage(MQUtility.buildGetAccountDetailsMessage(iban));
+        } catch (JMSException e) {
+            log.error(e.getMessage());
+            e.printStackTrace();
+        }
         if (!AppUtility.isEmpty(replyMessage) && !AppUtility.isEmpty(replyMessage.getReqResStr())) {
             //  Parse format as  IBAN|ACC_TITLE|ACCT_NUM|ACCT_STATUS|NTN|CNIC
             String[] acctDtlAry = replyMessage.getReqResStr().split(MQUtility.DELIMETER_DATA);
