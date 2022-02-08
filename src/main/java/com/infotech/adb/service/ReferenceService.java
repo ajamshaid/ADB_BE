@@ -22,7 +22,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.InputStream;
 import java.time.ZonedDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -110,22 +112,29 @@ public class ReferenceService {
     public void parseCSVAndSaveAccountDetails(InputStream file) throws CustomException {
         // Using ApacheCommons Csv Utils to parse CSV file
         List<AccountDetail> acctDetailList = OpenCsvUtil.parseAccountDetailsFile(file);
+        Map<String, AccountDetail> acctMap = new HashMap<>();
 
         if (AppUtility.isEmpty(acctDetailList)) {
             throw new NoDataFoundException("No Data Found, No Valid Object/Empty in CVS File");
         } else {
             acctDetailList.forEach((acct -> {
-                acct.setIban(acct.getIban().replaceAll("\\s+", ""));
-                if (!AppUtility.isEmpty(acct.getAuthPMImport())) {
-                    acct.setAuthPMImport(acct.getAuthPMImport().replace("|", ","));
-                }
-                if (!AppUtility.isEmpty(acct.getAuthPMExport())) {
-                    acct.setAuthPMExport(acct.getAuthPMExport().replace("|", ","));
+                if(AppUtility.isEmpty(accountDetailRepository.findByIban(acct.getIban()))){
+                    //if record doesn't exist in DB then Add
+                    acct.setIban(acct.getIban().replaceAll("\\s+", ""));
+                    if (!AppUtility.isEmpty(acct.getAuthPMImport())) {
+                        acct.setAuthPMImport(acct.getAuthPMImport().replace("|", ","));
+                    }
+                    if (!AppUtility.isEmpty(acct.getAuthPMExport())) {
+                        acct.setAuthPMExport(acct.getAuthPMExport().replace("|", ","));
+                    }
+                    acctMap.put(acct.getIban(),acct);
                 }
             }
             ));
             // Save to database
-            accountDetailRepository.saveAll(acctDetailList);
+            if(!acctMap.isEmpty()) {
+                accountDetailRepository.saveAll(acctMap.values());
+            }
         }
     }
 
