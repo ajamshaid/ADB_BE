@@ -3,7 +3,10 @@ package com.infotech.adb.service;
 import com.infotech.adb.dto.AccountDetailDTO;
 import com.infotech.adb.dto.IBANVerificationRequest;
 import com.infotech.adb.model.entity.AccountDetail;
+import com.infotech.adb.model.entity.LogRequest;
+import com.infotech.adb.model.entity.MqLog;
 import com.infotech.adb.model.repository.AccountDetailRepository;
+import com.infotech.adb.model.repository.MqLogRepository;
 import com.infotech.adb.silkbank.jms.MQUtility;
 import com.infotech.adb.silkbank.jms.QueueIN;
 import com.infotech.adb.util.AppConstants;
@@ -13,9 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.jms.JMSException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 @Log4j2
@@ -26,6 +29,9 @@ public class MQServices {
 
     @Autowired
     private QueueIN queueIN;
+
+    @Autowired
+    private MqLogRepository mqLogRepository;
 
     // Store Csv File's data to database
 
@@ -93,5 +99,58 @@ public class MQServices {
             }
         }
         return dto;
+    }
+
+    public List<MqLog> searchLogs(String message, String msgType, String fromDate, String toDate) throws ParseException {
+        log.info("searchLogs method called..");
+        if (AppUtility.isEmpty(msgType)) {
+            msgType = "%";
+        }
+        Date date1 = null, date2 = null;
+
+        if (!AppUtility.isEmpty(fromDate)) {
+            date1 = new SimpleDateFormat("dd-MM-yyyy").parse(fromDate);
+        } else {
+            date1 = new SimpleDateFormat("dd-MM-yyyy").parse("01-01-1970");
+        }
+        if (!AppUtility.isEmpty(toDate)) {
+            date2 = new SimpleDateFormat("dd-MM-yyyy").parse(toDate);
+        } else {
+            date2 = new Date();
+        }
+        return mqLogRepository.searchLogs(message, msgType, date1, date2);
+    }
+
+    public List<MqLog> getAllMqLog(Boolean isSuspended) {
+        log.info("getAllMqLog method called..");
+        if (AppUtility.isEmpty(isSuspended)) {
+            return mqLogRepository.findAllByOrderByIdDesc();
+        } else {
+            return mqLogRepository.findAll();
+        }
+    }
+
+    public Optional<MqLog> getMqLogById(Long id) {
+        log.info("getMqLogById method called..");
+        if (!AppUtility.isEmpty(id)) {
+            return mqLogRepository.findById(id);
+        }
+        return Optional.empty();
+    }
+
+    public MqLog createMqLog(MqLog mqLog) {
+        log.info("createMqLog method called..");
+        return mqLogRepository.save(mqLog);
+    }
+
+    public MqLog updateMqLog(MqLog mqLog) {
+        log.info("updateMqLog method called..");
+        return mqLogRepository.save(mqLog);
+    }
+
+    public void deleteMqLogById(Long id) {
+        log.info("deleteMqLogById method called..");
+
+        mqLogRepository.deleteById(id);
     }
 }
