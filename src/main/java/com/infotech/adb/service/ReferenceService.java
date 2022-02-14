@@ -21,11 +21,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Log4j2
@@ -207,6 +206,26 @@ public class ReferenceService {
     /*************************************
      * Financial Transaction METHODS
      **************************************/
+    public List<FinancialTransaction> searchFT(String iban, String name, String fromDate, String toDate) throws ParseException {
+        log.info("searchLogs method called..");
+        if (AppUtility.isEmpty(name)) {
+            name = "%";
+        }
+        Date date1 = null, date2 = null;
+
+        if (!AppUtility.isEmpty(fromDate)) {
+            date1 = new SimpleDateFormat("dd-MM-yyyy").parse(fromDate);
+        } else {
+            date1 = new SimpleDateFormat("dd-MM-yyyy").parse("01-01-1970");
+        }
+        if (!AppUtility.isEmpty(toDate)) {
+            date2 = new SimpleDateFormat("dd-MM-yyyy").parse(toDate);
+        } else {
+            date2 = new Date();
+        }
+        return financialTransactionRepository.searchFT(iban, name, date1, date2);
+    }
+
     public List<FinancialTransaction> getAllFinancialTransactionByType(String type, String status) {
         log.info("getAllFinancialTransactionByType method called..");
         List<FinancialTransaction> refList = null;

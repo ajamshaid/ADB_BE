@@ -9,6 +9,7 @@ import com.infotech.adb.exceptions.PSWAPIException;
 import com.infotech.adb.model.entity.FinancialTransaction;
 import com.infotech.adb.model.entity.GDClearance;
 import com.infotech.adb.model.entity.ItemInformation;
+import com.infotech.adb.model.entity.MqLog;
 import com.infotech.adb.service.ReferenceService;
 import com.infotech.adb.util.AppConstants;
 import com.infotech.adb.util.AppUtility;
@@ -35,7 +36,7 @@ public class FinancialTransactionAPI {
 
 
     @RequestMapping(value = "/import/", method = RequestMethod.GET)
-    public CustomResponse getAllImportFT(@RequestParam(value = "isNew",  required = false) boolean isNew)
+    public CustomResponse getAllImportFT(@RequestParam(value = "isNew", required = false) boolean isNew)
             throws CustomException, NoDataFoundException {
 
         List<FinancialTransaction> refList = null;
@@ -91,7 +92,7 @@ public class FinancialTransactionAPI {
 
     @RequestMapping(value = "/import/{id}/itemInfo", method = RequestMethod.POST)
     public CustomResponse saveImportItemInfo(@RequestBody ItemInformationExportDTO reqDTO,
-                                       @PathVariable(value = "id") Long id)
+                                             @PathVariable(value = "id") Long id)
             throws DataValidationException, NoDataFoundException {
 
         if (AppUtility.isEmpty(reqDTO) || AppUtility.isEmpty(id)) {
@@ -104,12 +105,29 @@ public class FinancialTransactionAPI {
         return customResponse;
     }
 
+    @RequestMapping(value = "/search-import", method = RequestMethod.GET)
+    public CustomResponse searchImportFt(@RequestParam(value = "iban", required = false) String iban,
+                                         @RequestParam(value = "name", required = false) String name,
+                                         @RequestParam(value = "fromDate", required = false) String fromDate,
+                                         @RequestParam(value = "toDate", required = false) String toDate)
+            throws CustomException, DataValidationException, NoDataFoundException {
+        log.info("searchLogs API initiated...");
+
+        List<FinancialTransaction> financialTransactions = null;
+        try {
+            financialTransactions = referenceService.searchFT(iban, name, fromDate, toDate);
+        } catch (Exception e) {
+            ResponseUtility.exceptionResponse(e, null);
+        }
+        return ResponseUtility.buildResponseList(financialTransactions, new FinancialTransactionImportDTO());
+    }
+
     /**********************
      *  Export
      *************************/
 
     @RequestMapping(value = "/export/", method = RequestMethod.GET)
-    public CustomResponse getAllExportFT(@RequestParam(value = "isNew",  required = false) boolean isNew)
+    public CustomResponse getAllExportFT(@RequestParam(value = "isNew", required = false) boolean isNew)
             throws CustomException, NoDataFoundException {
 
         List<FinancialTransaction> refList = null;
@@ -175,5 +193,22 @@ public class FinancialTransactionAPI {
         CustomResponse customResponse = null;
         customResponse = ResponseUtility.successResponse(entity, "200", "Item Added Successfully");
         return customResponse;
+    }
+
+    @RequestMapping(value = "/search-export", method = RequestMethod.GET)
+    public CustomResponse searchExportFt(@RequestParam(value = "iban", required = false) String iban,
+                                         @RequestParam(value = "name", required = false) String name,
+                                         @RequestParam(value = "fromDate", required = false) String fromDate,
+                                         @RequestParam(value = "toDate", required = false) String toDate)
+            throws CustomException, DataValidationException, NoDataFoundException {
+        log.info("searchExportFt API initiated...");
+
+        List<FinancialTransaction> financialTransactions = null;
+        try {
+            financialTransactions = referenceService.searchFT(iban, name, fromDate, toDate);
+        } catch (Exception e) {
+            ResponseUtility.exceptionResponse(e, null);
+        }
+        return ResponseUtility.buildResponseList(financialTransactions, new FinancialTransactionExportDTO());
     }
 }
