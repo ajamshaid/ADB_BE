@@ -206,7 +206,7 @@ public class ReferenceService {
     /*************************************
      * Financial Transaction METHODS
      **************************************/
-    public List<FinancialTransaction> searchFT(String iban, String name, String fromDate, String toDate) throws ParseException {
+    public List<FinancialTransaction> searchFT(String ftType, String iban, String name, String fromDate, String toDate) throws ParseException {
         log.info("searchLogs method called..");
         if (AppUtility.isEmpty(name)) {
             name = "%";
@@ -223,7 +223,7 @@ public class ReferenceService {
         } else {
             date2 = new Date();
         }
-        return financialTransactionRepository.searchFT(iban, name, date1, date2);
+        return financialTransactionRepository.searchFT(ftType,iban, name, date1, date2);
     }
 
     public List<FinancialTransaction> getAllFinancialTransactionByType(String type, String status) {

@@ -115,7 +115,7 @@ public class FinancialTransactionAPI {
 
         List<FinancialTransaction> financialTransactions = null;
         try {
-            financialTransactions = referenceService.searchFT(iban, name, fromDate, toDate);
+            financialTransactions = referenceService.searchFT(AppConstants.TYPE_IMPORT,iban, name, fromDate, toDate);
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e, null);
         }
@@ -205,7 +205,7 @@ public class FinancialTransactionAPI {
 
         List<FinancialTransaction> financialTransactions = null;
         try {
-            financialTransactions = referenceService.searchFT(iban, name, fromDate, toDate);
+            financialTransactions = referenceService.searchFT(AppConstants.TYPE_EXPORT,iban, name, fromDate, toDate);
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e, null);
         }

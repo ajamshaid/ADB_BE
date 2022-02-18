@@ -3,13 +3,14 @@ package com.infotech.adb.silkbank.jms;
 import com.infotech.adb.model.entity.*;
 import com.infotech.adb.util.AppConstants;
 import com.infotech.adb.util.AppUtility;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
+@Log4j2
 @Component
 public class MQMessageParser {
     public FinancialTransaction parseAndBuildFTExport(String data) {
@@ -67,7 +68,7 @@ public class MQMessageParser {
             ft.setPaymentInformation(pi);
             ft.setItemInformationSet(itemInformationSet);
 
-            System.out.println("FT-<>" + ft);
+            log.info("\n-----FT-<>" + ft);
         }
         return ft;
     }
@@ -137,7 +138,7 @@ public class MQMessageParser {
             ft.setPaymentInformation(pi);
             ft.setItemInformationSet(itemInformationSet);
 
-            System.out.println("FT-<>" + ft);
+             log.info("\n-----FT-<>" + ft);
         }
         return ft;
     }
@@ -167,7 +168,7 @@ public class MQMessageParser {
             bda.setOtherChargesPkr(AppUtility.isBigDecimal(ftDetailsAry[14]) ? new BigDecimal(ftDetailsAry[14]): null);
 
 
-            System.out.println("BDA-<>" + bda);
+             log.info("\n-----BDA-<>" + bda);
         }
         return bda;
     }
@@ -203,7 +204,7 @@ public class MQMessageParser {
             bca.setBcaAmountFcy(AppUtility.isBigDecimal(ftDetailsAry[12]) ? new BigDecimal(ftDetailsAry[12]): null);
             bca.setBcaPkr(AppUtility.isBigDecimal(ftDetailsAry[13]) ? new BigDecimal(ftDetailsAry[13]): null);
 
-            System.out.println("BCA-<>" + bca);
+             log.info("\n-----BCA-<>" + bca);
         }
         return bca;
     }
@@ -219,7 +220,7 @@ public class MQMessageParser {
             cft.setIban(ftDetailsAry[3]);
             cft.setFinInsUniqueNumber(ftDetailsAry[4]);
 
-            System.out.println("CFT-<>" + cft);
+             log.info("\n-----CFT-<>" + cft);
         }
         return cft;
     }
@@ -237,7 +238,7 @@ public class MQMessageParser {
             entity.setFinInsUniqueNumber(ftDetailsAry[4]);
             entity.setBcaBdaUniqueIdNumber(ftDetailsAry[5]);
 
-            System.out.println("Entity-<>" + entity);
+             log.info("\n-----Entity-<>" + entity);
         }
         return entity;
     }

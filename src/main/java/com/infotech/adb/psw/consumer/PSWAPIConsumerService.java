@@ -192,6 +192,10 @@ public class PSWAPIConsumerService {
             dto.setContractCollectionData(null);
         }
 
+        if(AppUtility.isEmpty(dto.getPaymentInformation().getBeneficiaryIban())){
+            dto.getPaymentInformation().setBeneficiaryIban(null);
+        }
+
         boolean isUpdate = false;
         if(!AppUtility.isEmpty(dto.getFinInsUniqueNumber())
                 && AppConstants.RecordStatuses.PUSHED_TO_PSW.equals(dto.getStatus())) {
@@ -246,6 +250,10 @@ public class PSWAPIConsumerService {
             dto.setLcData(null);
             dto.setContractCollectionData(null);
             dto.setOpenAccountData(null);
+        }
+
+        if(AppUtility.isEmpty(dto.getPaymentInformation().getConsigneeIban())){
+            dto.getPaymentInformation().setConsigneeIban(null);
         }
 
         boolean isUpdate = false;
