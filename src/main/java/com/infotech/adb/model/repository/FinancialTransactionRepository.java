@@ -22,8 +22,8 @@ public interface FinancialTransactionRepository extends JpaRepository<FinancialT
     @Query("update FinancialTransaction en set en.status = :status where en.id = :id")
     int updateStatus(@Param("id") Long id, @Param("status") String status);
 
-    @Query("from FinancialTransaction r where r.iban like %:iban% and r.name like %:name% and (r.lastModifiedDate between :fromDate and :toDate) order by r.lastModifiedBy desc")
-    List<FinancialTransaction> searchFT(@Param("iban") String iban, @Param("name") String name
+    @Query("from FinancialTransaction r where r.type = :type and r.iban like %:iban% and r.name like %:name% and (r.lastModifiedDate between :fromDate and :toDate) order by r.lastModifiedBy desc")
+    List<FinancialTransaction> searchFT(@Param("type") String type, @Param("iban") String iban, @Param("name") String name
             , @Param("fromDate") Date fromDate, @Param("toDate") Date toDate);
 
 }

@@ -1,5 +1,7 @@
 package com.infotech.adb.silkbank.jms;
 
+import com.infotech.adb.model.entity.MqLog;
+import com.infotech.adb.service.MQServices;
 import com.infotech.adb.util.AppUtility;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,9 @@ public class QueueIN {
     JmsTemplate jmsTemplate;
     //@TODO JMSTemplate is not closing Que Connection. Please check.
 
+    @Autowired
+    MQServices mqServices;
+
     public MQUtility.MqMessage putMessage(MQUtility.MqMessage message) throws JMSException {
 
         // Create the JMS Template object to control connections and sessions.
@@ -28,6 +33,15 @@ public class QueueIN {
         log.info("\n=================================================");
         log.info("\n*************** Placing ["+message.getType()+"] on ["+qName+"] with MessageID="+message.getId()
                    +"\n*************** Message is: "+message.getReqResStr());
+
+
+        MqLog mqLog = MQUtility.buildMQLog(message);
+        mqLog.setDateTime(AppUtility.getCurrentTimeStamp());
+        mqLog.setSenderId("ADBroker");
+        mqLog.setReceiverId("QIN_PSW");
+
+        mqServices.createMqLog(mqLog);
+
         jmsTemplate.convertAndSend(qName, message.getReqResStr());
         log.debug("Message Placed Successfully");
 

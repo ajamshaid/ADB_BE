@@ -1,6 +1,7 @@
 package com.infotech.adb.silkbank.jms;
 
 import com.infotech.adb.dto.IBANVerificationRequest;
+import com.infotech.adb.model.entity.MqLog;
 import com.infotech.adb.util.AppUtility;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -73,6 +74,15 @@ public class MQUtility {
         }
 
         return msg;
+    }
+
+
+    public static MqLog buildMQLog(MqMessage message) {
+        MqLog mqLog = new MqLog();
+        mqLog.setMsgId(message.getId());
+        mqLog.setMsgType(message.getType());
+        mqLog.setMessage(message.getReqResStr());
+        return mqLog;
     }
 
     @Data
