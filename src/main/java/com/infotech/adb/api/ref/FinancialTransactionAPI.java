@@ -122,6 +122,40 @@ public class FinancialTransactionAPI {
         return ResponseUtility.buildResponseList(financialTransactions, new FinancialTransactionImportDTO());
     }
 
+    @RequestMapping(value = "/add-imp", method = RequestMethod.POST)
+    public CustomResponse createImportFt(HttpServletRequest request,
+                                           @RequestBody FinancialTransactionImportDTO financialTransactionImportDTO)
+            throws CustomException, DataValidationException, NoDataFoundException {
+
+        if (AppUtility.isEmpty(financialTransactionImportDTO) || !AppUtility.isEmpty(financialTransactionImportDTO.getFtId())) {
+            throw new DataValidationException(messageBundle.getString("validation.error"));
+        }
+        FinancialTransaction financialTransaction = null;
+        try {
+            financialTransaction = referenceService.createFt(financialTransactionImportDTO.convertToEntity());
+        } catch (Exception e) {
+            ResponseUtility.exceptionResponse(e,null);
+        }
+        return ResponseUtility.buildResponseObject(financialTransaction);
+    }
+
+    @RequestMapping(value = "/add-item", method = RequestMethod.POST)
+    public CustomResponse createImportItem(HttpServletRequest request,
+                                         @RequestBody ItemInformationImportDTO itemInformationImportDTO)
+            throws CustomException, DataValidationException, NoDataFoundException {
+
+        if (AppUtility.isEmpty(itemInformationImportDTO) || !AppUtility.isEmpty(itemInformationImportDTO.getIiId())) {
+            throw new DataValidationException(messageBundle.getString("validation.error"));
+        }
+        ItemInformation itemInformation = null;
+        try {
+            itemInformation = referenceService.createItemInfo(itemInformationImportDTO.convertToEntity());
+        } catch (Exception e) {
+            ResponseUtility.exceptionResponse(e,null);
+        }
+        return ResponseUtility.buildResponseObject(itemInformation);
+    }
+
     /**********************
      *  Export
      *************************/

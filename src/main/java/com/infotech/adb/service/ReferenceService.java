@@ -226,6 +226,16 @@ public class ReferenceService {
         return financialTransactionRepository.searchFT(iban, name, date1, date2);
     }
 
+    public FinancialTransaction createFt(FinancialTransaction financialTransaction) {
+        log.info("createMqLog method called..");
+        return financialTransactionRepository.save(financialTransaction);
+    }
+
+    public ItemInformation createItemInfo(ItemInformation itemInformation) {
+        log.info("createItemInfo method called..");
+        return itemInformationRepository.save(itemInformation);
+    }
+
     public List<FinancialTransaction> getAllFinancialTransactionByType(String type, String status) {
         log.info("getAllFinancialTransactionByType method called..");
         List<FinancialTransaction> refList = null;
