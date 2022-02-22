@@ -202,14 +202,15 @@ public class FinancialTransactionAPI {
     public CustomResponse searchExportFt(@RequestParam(value = "iban", required = false) String iban,
                                          @RequestParam(value = "name", required = false) String name,
                                          @RequestParam(value = "fromDate", required = false) String fromDate,
-                                         @RequestParam(value = "toDate", required = false) String toDate)
+                                         @RequestParam(value = "toDate", required = false) String toDate,
+                                         @RequestParam(value = "isNew", required = false) boolean isNew)
             throws CustomException, DataValidationException, NoDataFoundException {
         log.info("searchExportFt API initiated...");
 
         List<FinancialTransaction> financialTransactions = null;
         try {
             financialTransactions = referenceService.searchFT(AppConstants.TYPE_EXPORT,iban, name, fromDate, toDate
-                    , true ? AppConstants.RecordStatuses.CREATED_BY_MQ
+                    , isNew ? AppConstants.RecordStatuses.CREATED_BY_MQ
                             : AppConstants.RecordStatuses.PUSHED_TO_PSW);
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e, null);
