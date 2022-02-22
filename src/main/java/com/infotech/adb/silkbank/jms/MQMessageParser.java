@@ -73,6 +73,18 @@ public class MQMessageParser {
         return ft;
     }
 
+
+    /**
+     * Header:
+     *  MSG.TYPE!UNIQUE.ID!
+     *  Importer NTN|Importer Name|Importer IBAN|Payment Mode|Financial Instrument Unique No|Beneficiary Name
+     *  |Beneficiary Address|Port of Shipment|Instrument Value|Instrument Currency|Exchange Rate|Financial Instrument Unique No
+     *  |HS Code|Quantity|Goods Description
+     *  |Beneficiary Country|Exporter Name|Exporter Address|Exporter Country|Delivery Terms|Last Shipment Date
+     *  |Expiry Date
+     * @param data
+     * @return
+     */
     public FinancialTransaction parseAndBuildFTImport(String data) {
         FinancialTransaction ft = new FinancialTransaction();
         ft.setType(AppConstants.TYPE_IMPORT);
@@ -100,7 +112,6 @@ public class MQMessageParser {
                 pi.setExchangeRate(new BigDecimal(ftDetailsAry[10]));
             }
             pi.setLcContractNo(ftDetailsAry[11]);
-
 
             pi.setBeneficiaryCountry(ftDetailsAry[15]);
             pi.setExporterName(ftDetailsAry[16]);

@@ -109,13 +109,16 @@ public class FinancialTransactionAPI {
     public CustomResponse searchImportFt(@RequestParam(value = "iban", required = false) String iban,
                                          @RequestParam(value = "name", required = false) String name,
                                          @RequestParam(value = "fromDate", required = false) String fromDate,
-                                         @RequestParam(value = "toDate", required = false) String toDate)
+                                         @RequestParam(value = "toDate", required = false) String toDate,
+                                         @RequestParam(value = "isNew", required = false) boolean isNew)
             throws CustomException, DataValidationException, NoDataFoundException {
         log.info("searchLogs API initiated...");
 
         List<FinancialTransaction> financialTransactions = null;
         try {
-            financialTransactions = referenceService.searchFT(AppConstants.TYPE_IMPORT,iban, name, fromDate, toDate);
+            financialTransactions = referenceService.searchFT(AppConstants.TYPE_IMPORT,iban, name, fromDate, toDate
+                    , isNew ? AppConstants.RecordStatuses.CREATED_BY_MQ
+                            : AppConstants.RecordStatuses.PUSHED_TO_PSW);
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e, null);
         }
@@ -239,7 +242,9 @@ public class FinancialTransactionAPI {
 
         List<FinancialTransaction> financialTransactions = null;
         try {
-            financialTransactions = referenceService.searchFT(AppConstants.TYPE_EXPORT,iban, name, fromDate, toDate);
+            financialTransactions = referenceService.searchFT(AppConstants.TYPE_EXPORT,iban, name, fromDate, toDate
+                    , true ? AppConstants.RecordStatuses.CREATED_BY_MQ
+                            : AppConstants.RecordStatuses.PUSHED_TO_PSW);
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e, null);
         }
