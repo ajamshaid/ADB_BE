@@ -19,7 +19,7 @@ public class MQMessageParser {
         ft.setStatus(AppConstants.RecordStatuses.CREATED_BY_MQ);
 
         if (!AppUtility.isEmpty(data)) {
-            String[] ftDetailsAry = data.split(MQUtility.DELIMETER_DATA);
+            String[] ftDetailsAry = data.split(MQUtility.DELIMETER_DATA,-1);
             ft.setNtn(ftDetailsAry[0]);
 
             ft.setName(ftDetailsAry[1]);
@@ -91,7 +91,7 @@ public class MQMessageParser {
         ft.setStatus(AppConstants.RecordStatuses.CREATED_BY_MQ);
 
         if (!AppUtility.isEmpty(data)) {
-            String[] ftDetailsAry = data.split(MQUtility.DELIMETER_DATA);
+            String[] ftDetailsAry = data.split(MQUtility.DELIMETER_DATA,-1);
             ft.setNtn(ftDetailsAry[0]);
 
             ft.setName(ftDetailsAry[1]);
@@ -107,43 +107,66 @@ public class MQMessageParser {
             if (AppUtility.isBigDecimal(ftDetailsAry[8])) {
                 pi.setFinancialInstrumentValue(new BigDecimal(ftDetailsAry[8]));
             }
-            pi.setFinancialInstrumentCurrency(ftDetailsAry[9]);
+            if (!AppUtility.isEmpty(ftDetailsAry[9])) {
+                pi.setFinancialInstrumentCurrency(ftDetailsAry[9]);
+            }
+
             if (AppUtility.isBigDecimal(ftDetailsAry[10])) {
                 pi.setExchangeRate(new BigDecimal(ftDetailsAry[10]));
             }
-            pi.setLcContractNo(ftDetailsAry[11]);
+            if (!AppUtility.isEmpty(ftDetailsAry[11])) {
+                pi.setLcContractNo(ftDetailsAry[11]);
+            }
 
-            pi.setBeneficiaryCountry(ftDetailsAry[15]);
-            pi.setExporterName(ftDetailsAry[16]);
-            pi.setExporterAddress(ftDetailsAry[17]);
-            pi.setExporterCountry(ftDetailsAry[18]);
-            pi.setDeliveryTerm(ftDetailsAry[19]);
+            if (!AppUtility.isEmpty(ftDetailsAry[15])) {
+                pi.setBeneficiaryCountry(ftDetailsAry[15]);
+            }
+            if (!AppUtility.isEmpty(ftDetailsAry[16])) {
+                pi.setExporterName(ftDetailsAry[16]);
+            }
+            if (!AppUtility.isEmpty(ftDetailsAry[17])) {
+                pi.setExporterAddress(ftDetailsAry[17]);
+            }
+            if (!AppUtility.isEmpty(ftDetailsAry[18])) {
+                pi.setExporterCountry(ftDetailsAry[18]);
+            }
+            if (!AppUtility.isEmpty(ftDetailsAry[19])) {
+                pi.setDeliveryTerm(ftDetailsAry[19]);
+            }
+            if (!AppUtility.isEmpty(ftDetailsAry[20])) {
+                ft.setFinalDateOfShipment(AppUtility.convertDateFromString(ftDetailsAry[20]));
+            }
+            if (!AppUtility.isEmpty(ftDetailsAry[21])) {
+                ft.setFinInsExpiryDate(AppUtility.convertDateFromString(ftDetailsAry[21]));
+            }
+            Set<ItemInformation> itemInformationSet = null ;
 
-            ft.setFinalDateOfShipment(AppUtility.convertDateFromString(ftDetailsAry[20])) ;
-            ft.setFinInsExpiryDate(AppUtility.convertDateFromString(ftDetailsAry[21])) ;
+            if (!AppUtility.isEmpty(ftDetailsAry[12])) {
+                String[] hsCodeAry = ftDetailsAry[12].split(MQUtility.DELIMETER_MULTIPLE_DATA);
 
-            String[] hsCodeAry = ftDetailsAry[12].split(MQUtility.DELIMETER_MULTIPLE_DATA);
-            String[] qtyAry = ftDetailsAry[13].split(MQUtility.DELIMETER_MULTIPLE_DATA);
-            String[] descAry = ftDetailsAry[14].split(MQUtility.DELIMETER_MULTIPLE_DATA);
+                String[] qtyAry = ftDetailsAry[13].split(MQUtility.DELIMETER_MULTIPLE_DATA);
+                String[] descAry = ftDetailsAry[14].split(MQUtility.DELIMETER_MULTIPLE_DATA);
 
-            Set<ItemInformation> itemInformationSet = new HashSet<>(hsCodeAry.length);
-            for (int index = 0; index < hsCodeAry.length; index++) {
+                itemInformationSet = new HashSet<>(hsCodeAry.length);
 
-                ItemInformation itemInfo = new ItemInformation();
-                itemInfo.setHsCode(hsCodeAry[index]);
+                for (int index = 0; index < hsCodeAry.length; index++) {
 
-                if (qtyAry.length > index && AppUtility.isBigDecimal(qtyAry[index])) {
-                    itemInfo.setQuantity(new BigDecimal(qtyAry[index]));
+                    ItemInformation itemInfo = new ItemInformation();
+                    itemInfo.setHsCode(hsCodeAry[index]);
+
+                    if (qtyAry.length > index && AppUtility.isBigDecimal(qtyAry[index])) {
+                        itemInfo.setQuantity(new BigDecimal(qtyAry[index]));
+                    }
+
+                    if (descAry.length > index) {
+                        itemInfo.setGoodsDescription(descAry[index].length() > 999 ? descAry[index].substring(0, 996) + "..." : descAry[index]);
+                    }
+
+                    itemInfo.setFinancialTransaction(ft);
+
+                    itemInformationSet.add(itemInfo);
+
                 }
-
-                if (descAry.length > index) {
-                    itemInfo.setGoodsDescription(descAry[index].length() > 999 ? descAry[index].substring(0, 996) + "..." : descAry[index]);
-                }
-
-                itemInfo.setFinancialTransaction(ft);
-
-                itemInformationSet.add(itemInfo);
-
             }
             pi.setFinancialTransaction(ft);
             ft.setPaymentInformation(pi);
@@ -161,7 +184,7 @@ public class MQMessageParser {
      //   ft.setType(AppConstants.TYPE_IMPORT);
 
         if (!AppUtility.isEmpty(data)) {
-            String[] ftDetailsAry = data.split(MQUtility.DELIMETER_DATA);
+            String[] ftDetailsAry = data.split(MQUtility.DELIMETER_DATA,-1);
             bda.setImporterNtn(ftDetailsAry[0]);
             bda.setImporterName(ftDetailsAry[1]);
             bda.setIban(ftDetailsAry[2]);
@@ -192,7 +215,7 @@ public class MQMessageParser {
         //   ft.setType(AppConstants.TYPE_IMPORT);
 
         if (!AppUtility.isEmpty(data)) {
-            String[] ftDetailsAry = data.split(MQUtility.DELIMETER_DATA);
+            String[] ftDetailsAry = data.split(MQUtility.DELIMETER_DATA,-1);
             bca.setExporterNtn(ftDetailsAry[0]);
             bca.setExporterName(ftDetailsAry[1]);
             bca.setIban(ftDetailsAry[2]);
@@ -224,7 +247,7 @@ public class MQMessageParser {
         //Sharing of Cancellation of FT
         CancellationOfFT cft = new CancellationOfFT();
         if (!AppUtility.isEmpty(data)) {
-            String[] ftDetailsAry = data.split(MQUtility.DELIMETER_DATA);
+            String[] ftDetailsAry = data.split(MQUtility.DELIMETER_DATA,-1);
             cft.setTradeType(ftDetailsAry[0]);
             cft.setTraderNTN(ftDetailsAry[1]);
             cft.setTraderName(ftDetailsAry[2]);
@@ -240,7 +263,7 @@ public class MQMessageParser {
         // Reversal of BDA/BCA
         ReversalOfBdaBca entity = new ReversalOfBdaBca();
         if (!AppUtility.isEmpty(data)) {
-            String[] ftDetailsAry = data.split(MQUtility.DELIMETER_DATA);
+            String[] ftDetailsAry = data.split(MQUtility.DELIMETER_DATA,-1);
 
             entity.setTradeType(ftDetailsAry[0]);
             entity.setTraderNTN(ftDetailsAry[1]);

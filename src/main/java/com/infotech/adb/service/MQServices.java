@@ -140,7 +140,13 @@ public class MQServices {
 
     public MqLog createMqLog(MqLog mqLog) {
         log.info("createMqLog method called..");
-        return mqLogRepository.save(mqLog);
+        try {
+            mqLogRepository.save(mqLog);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            e.printStackTrace();
+        }
+        return mqLog;
     }
 
     public MqLog updateMqLog(MqLog mqLog) {

@@ -21,7 +21,7 @@ public class GD {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "GD_NUMBER", length = 24, nullable = false)
+    @Column(name = "GD_NUMBER", length = 100, nullable = false)
     private String gdNumber;
 
     @Column(name = "GD_STATUS", length = 3, nullable = false)
