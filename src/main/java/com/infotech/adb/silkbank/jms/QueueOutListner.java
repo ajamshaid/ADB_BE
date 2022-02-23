@@ -24,15 +24,11 @@ public class QueueOutListner {
     @Autowired
     MQMessageParser mqMessageParser;
 
-
-
     @JmsListener(destination = "QOUT_PSW")
     public void receiveMessage(String msg) {
         log.info("\n-------------Message Received from MQ [QOUT_PSW]: "
                     +"\n-------------"+msg
                     +"\n=================================================");
-
-
 
         String name = Thread.currentThread().getName();
         MQUtility.MqMessage replyMessage = MQUtility.parseReplyMessage(msg);
@@ -54,6 +50,7 @@ public class QueueOutListner {
                     ft.setLastModifiedDate(AppUtility.getCurrentTimeStamp());
                     referenceService.updateFinancialTransaction(ft);
                 } catch (Exception ex) {
+                    log.error(ex.getMessage());
                     ex.printStackTrace();
                 }
             } else if (MQUtility.MSG_TYPE_BDA_IMPORT.equals(replyMessage.getType())) {
@@ -64,6 +61,7 @@ public class QueueOutListner {
                     bda.setLastModifiedDate(AppUtility.getCurrentTimeStamp());
                     referenceService.updateBDA(bda);
                 } catch (Exception ex) {
+                    log.error(ex.getMessage());
                     ex.printStackTrace();
                 }
             }  else if (MQUtility.MSG_TYPE_FIN_TRANS_EXPORT.equals(replyMessage.getType())) {
@@ -74,6 +72,7 @@ public class QueueOutListner {
                     ft.setLastModifiedDate(AppUtility.getCurrentTimeStamp());
                     referenceService.updateFinancialTransaction(ft);
                 } catch (Exception ex) {
+                    log.error(ex.getMessage());
                     ex.printStackTrace();
                 }
             } else if (MQUtility.MSG_TYPE_BCA_EXPORT.equals(replyMessage.getType())) {
@@ -84,6 +83,7 @@ public class QueueOutListner {
                     bca.setLastModifiedDate(AppUtility.getCurrentTimeStamp());
                     referenceService.updateBCA(bca);
                 } catch (Exception ex) {
+                    log.error(ex.getMessage());
                     ex.printStackTrace();
                 }
             }else if (MQUtility.MSG_TYPE_CANCELLATION_OF_FT.equals(replyMessage.getType())) {
@@ -94,6 +94,7 @@ public class QueueOutListner {
                     cft.setLastModifiedDate(AppUtility.getCurrentTimeStamp());
                     referenceService.updateCancellationOfFT(cft);
                 } catch (Exception ex) {
+                    log.error(ex.getMessage());
                     ex.printStackTrace();
                 }
             }else if (MQUtility.MSG_TYPE_REVERSAL_OF_BDA_BCA.equals(replyMessage.getType())) {
@@ -104,6 +105,7 @@ public class QueueOutListner {
                     entity.setLastModifiedDate(AppUtility.getCurrentTimeStamp());
                     referenceService.updateReversalBDABCA(entity);
                 } catch (Exception ex) {
+                    log.error(ex.getMessage());
                     ex.printStackTrace();
                 }
             } else {
@@ -121,6 +123,7 @@ public class QueueOutListner {
                             reqMessage.notify();
                         }
                     } catch (InterruptedException e) {
+                        log.error(e.getMessage());
                         e.printStackTrace();
                     }
                 }
@@ -130,16 +133,16 @@ public class QueueOutListner {
 
     public static void main(String[] args) {
         String str = "|HABIB AMERICAN BANK, NEW YORK|PK81SAUD0099982000003827|301|FT2204635H2R||20220215||20220215|3035.10|PKR 1330|PKR240.00||532204.79|Export Advance Payment";
-        String str1 = "PSW521!PSW521TF210056793120210202!1336346-8|MOHID INDUSTRIES|PK87SAUD0000032000633154|301|TF2100567931||USD|28215.00|20210508|3901.1000|24.75 M.TONS LLDPE 118WJ AT THE RATE OF USD 1,140/M.TON.^CFR ANY PORT IN PAKISTAN OTHER DETAILS AS PER BENEFICIARYS^PROFORMA INVOICE NO. NA/192025/JAN-20 DATED 30 DECEMBER, 2020.|";
+        String str1 = "PSW511!PSW511TF220537366820220222!0657802-7|OLYMPIA BLENDED FIBRE MILLS LTD.|PK04SAUD0000132000795081|301|TF2205373668|THAI RAYON PUBLIC COMPANY LIMITED, 888 / 160-1 MAHATUN PLAZA, BUILDING 16TH FLOOR, PLOENCHIT ROAD, BANGKOK|THAI RAYON PUBLIC COMPANY LIMITED, 888 / 160-1 MAHATUN PLAZA, BUILDING 16TH FLOOR, PLOENCHIT ROAD, BANGKOK||1.00|USD|175.75|TF2205373668|5504.1000||50,000 KGS VISCOSE STAPLE FIBRE 1.2 X 51-BL BRIGHT AT THE RATE OF USD 1.980/KG CFR KARACHI SEAPORT PAKISTAN AS PER BENEFICIARYS  SALES NOTE  NO. 4221110732 DATED 06 JANUARY, 2022.^^||THAI RAYON PUBLIC COMPANY LIMITED, 888 / 160-1 MAHATUN PLAZA, BUILDING 16TH FLOOR, PLOENCHIT ROAD, BANGKOK|THAI RAYON PUBLIC COMPANY LIMITED, 888 / 160-1 MAHATUN PLAZA, BUILDING 16TH FLOOR, PLOENCHIT ROAD, BANGKOK|||20220223|20220328";
 
 
-        str = "1336346-8|MOHID INDUSTRIES|PK87SAUD0000032000633154|301|TF2100567931||USD|28215.00|20210508|3901.1000|24.75 M.TONS LLDPE 118WJ AT THE RATE OF USD 1,140/M.TON.^CFR ANY PORT IN PAKISTAN OTHER DETAILS AS PER BENEFICIARYS^PROFORMA INVOICE NO. NA/192025/JAN-20 DATED 30 DECEMBER, 2020.|";
+        str = "0657802-7|OLYMPIA BLENDED FIBRE MILLS LTD.|PK04SAUD0000132000795081|301|TF2205373668|THAI RAYON PUBLIC COMPANY LIMITED, 888 / 160-1 MAHATUN PLAZA, BUILDING 16TH FLOOR, PLOENCHIT ROAD, BANGKOK|THAI RAYON PUBLIC COMPANY LIMITED, 888 / 160-1 MAHATUN PLAZA, BUILDING 16TH FLOOR, PLOENCHIT ROAD, BANGKOK||1.00|USD|175.75|TF2205373668|5504.1000||50,000 KGS VISCOSE STAPLE FIBRE 1.2 X 51-BL BRIGHT AT THE RATE OF USD 1.980/KG CFR KARACHI SEAPORT PAKISTAN AS PER BENEFICIARYS  SALES NOTE  NO. 4221110732 DATED 06 JANUARY, 2022.^^||THAI RAYON PUBLIC COMPANY LIMITED, 888 / 160-1 MAHATUN PLAZA, BUILDING 16TH FLOOR, PLOENCHIT ROAD, BANGKOK|THAI RAYON PUBLIC COMPANY LIMITED, 888 / 160-1 MAHATUN PLAZA, BUILDING 16TH FLOOR, PLOENCHIT ROAD, BANGKOK|||20220223|20220328";
 
 //        QueueOutListner ql = new QueueOutListner();
 //        ql.receiveMessage(str1);
 
         MQMessageParser mqMessageParser = new MQMessageParser();
-        mqMessageParser.parseAndBuildFTExport(str);
+        mqMessageParser.parseAndBuildFTImport(str);
 
     }
 

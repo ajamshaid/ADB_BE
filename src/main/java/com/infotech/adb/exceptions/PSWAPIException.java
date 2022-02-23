@@ -17,7 +17,7 @@ public class PSWAPIException extends Exception {
     public PSWAPIException(ResponseUtility.APIResponse apiResponse) {
         super(apiResponse.getMessage().getDescription());
         this.apiResponse= apiResponse;
-   //     this.logger.error(apiResponse.getMessage().getDescription());
+        log.error(apiResponse.getMessage().getDescription());
     }
     public PSWAPIException(Throwable cause) {
         super(cause);

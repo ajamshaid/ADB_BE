@@ -93,6 +93,13 @@ public class ResponseUtility {
         return ap;
     }
 
+    public static APIResponse TestAPIErrorResponse() {
+        ResponseUtility.Message msg = new ResponseUtility.Message();
+        msg.setCode("704");
+        msg.setDescription("Data too long.... eroror");
+        APIResponse ap = new ResponseUtility.APIResponse(null, "200", msg);
+        return ap;
+    }
 
     public static APIResponse APIFailureResponse(String message) {
         ResponseUtility.Message msg = new ResponseUtility.Message();
@@ -383,6 +390,7 @@ public class ResponseUtility {
                     pswResponse.getMessage().getCode(),
                     pswResponse.getMessage().getDescription(), null, false);
         } else {
+            log.info("Going to Throw PSWAPIException due to :"+pswResponse);
             throw new PSWAPIException(pswResponse);
         }
         return customResponse;

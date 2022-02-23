@@ -211,7 +211,7 @@ public class EDIAPI {
         dto.setLastModifiedDate(AppUtility.getCurrentTimeStamp());
 
         Date requestTime = AppUtility.getCurrentTimeStamp();
-        System.out.println("IN coming GD Info:" + dto);
+        log.info("IN coming GD Info:" + dto);
 
         if (!AppUtility.isEmpty(dto)) {
             referenceService.updateGD(dto.convertToEntity());
