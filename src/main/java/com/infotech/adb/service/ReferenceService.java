@@ -345,6 +345,26 @@ public class ReferenceService {
         return bdaRepository.save(entity);
     }
 
+    public List<BDA> searchBDA(String iban, String name, String fromDate, String toDate, String status) throws ParseException {
+        log.info("searchBDA method called..");
+        if (AppUtility.isEmpty(name)) {
+            name = "%";
+        }
+        Date date1 = null, date2 = null;
+
+        if (!AppUtility.isEmpty(fromDate)) {
+            date1 = new SimpleDateFormat("dd-MM-yyyy").parse(fromDate);
+        } else {
+            date1 = new SimpleDateFormat("dd-MM-yyyy").parse("01-01-1970");
+        }
+        if (!AppUtility.isEmpty(toDate)) {
+            date2 = new SimpleDateFormat("dd-MM-yyyy").parse(toDate);
+        } else {
+            date2 = new Date();
+        }
+        return bdaRepository.searchBDA(iban, name, date1, date2,status);
+    }
+
     /*************************************
      * BCA METHODS
      **************************************/
@@ -382,6 +402,26 @@ public class ReferenceService {
     public BCA updateBCA(BCA entity) {
         log.info("updateBCA method called..");
         return bcaRepository.save(entity);
+    }
+
+    public List<BCA> searchBCA(String iban, String name, String fromDate, String toDate, String status) throws ParseException {
+        log.info("searchBCA method called..");
+        if (AppUtility.isEmpty(name)) {
+            name = "%";
+        }
+        Date date1 = null, date2 = null;
+
+        if (!AppUtility.isEmpty(fromDate)) {
+            date1 = new SimpleDateFormat("dd-MM-yyyy").parse(fromDate);
+        } else {
+            date1 = new SimpleDateFormat("dd-MM-yyyy").parse("01-01-1970");
+        }
+        if (!AppUtility.isEmpty(toDate)) {
+            date2 = new SimpleDateFormat("dd-MM-yyyy").parse(toDate);
+        } else {
+            date2 = new Date();
+        }
+        return bcaRepository.searchBCA(iban, name, date1, date2,status);
     }
 
 

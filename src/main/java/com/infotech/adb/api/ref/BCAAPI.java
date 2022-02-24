@@ -15,6 +15,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -79,5 +80,23 @@ public class BCAAPI {
             e.printStackTrace();
         }
         return customResponse;
+    }
+
+    @RequestMapping(value = "/search-bca", method = RequestMethod.GET)
+    public CustomResponse searchBCA(HttpServletRequest request,
+                                           @RequestParam(value = "iban", required = false) String iban,
+                                           @RequestParam(value = "name", required = false) String name,
+                                           @RequestParam(value = "status", required = false) String status,
+                                           @RequestParam(value = "fromDate", required = false) String fromDate,
+                                           @RequestParam(value = "toDate", required = false) String toDate)
+            throws CustomException, NoDataFoundException {
+
+        List<BCA> bcaList = null;
+        try {
+            bcaList = referenceService.searchBCA(iban, name, status, fromDate, toDate);
+        } catch (Exception e) {
+            ResponseUtility.exceptionResponse(e);
+        }
+        return ResponseUtility.buildResponseList(bcaList, new BCADTO());
     }
 }

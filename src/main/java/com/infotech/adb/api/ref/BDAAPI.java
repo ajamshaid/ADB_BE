@@ -1,11 +1,13 @@
 package com.infotech.adb.api.ref;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.infotech.adb.dto.BCADTO;
 import com.infotech.adb.dto.BDADTO;
 import com.infotech.adb.exceptions.CustomException;
 import com.infotech.adb.exceptions.DataValidationException;
 import com.infotech.adb.exceptions.NoDataFoundException;
 import com.infotech.adb.exceptions.PSWAPIException;
+import com.infotech.adb.model.entity.BCA;
 import com.infotech.adb.model.entity.BDA;
 import com.infotech.adb.service.ReferenceService;
 import com.infotech.adb.util.AppUtility;
@@ -15,6 +17,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -78,5 +81,23 @@ public class BDAAPI {
             e.printStackTrace();
         }
         return customResponse;
+    }
+
+    @RequestMapping(value = "/search-bda", method = RequestMethod.GET)
+    public CustomResponse searchBCA(HttpServletRequest request,
+                                    @RequestParam(value = "iban", required = false) String iban,
+                                    @RequestParam(value = "name", required = false) String name,
+                                    @RequestParam(value = "status", required = false) String status,
+                                    @RequestParam(value = "fromDate", required = false) String fromDate,
+                                    @RequestParam(value = "toDate", required = false) String toDate)
+            throws CustomException, NoDataFoundException {
+
+        List<BDA> bdaList = null;
+        try {
+            bdaList = referenceService.searchBDA(iban, name, status, fromDate, toDate);
+        } catch (Exception e) {
+            ResponseUtility.exceptionResponse(e);
+        }
+        return ResponseUtility.buildResponseList(bdaList, new BDADTO());
     }
 }
