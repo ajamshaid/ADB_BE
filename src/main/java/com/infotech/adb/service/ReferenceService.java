@@ -249,6 +249,11 @@ public class ReferenceService {
         return ref.get();
     }
 
+    public void deleteFinancialTransactionById(Long id) {
+        log.info("deleteFinancialTransactionById method called..");
+        financialTransactionRepository.deleteById(id);
+    }
+
     public ItemInformation saveItemInfo(Long id, ItemInformationExportDTO dto) {
         ItemInformation itemInformation= dto.convertToEntity();
         itemInformation.setFinancialTransaction(new FinancialTransaction(id));
@@ -365,6 +370,11 @@ public class ReferenceService {
         return bdaRepository.searchBDA(iban, name, date1, date2,status);
     }
 
+    public void deleteBDAById(Long id) {
+        log.info("deleteBDAById method called..");
+        bdaRepository.deleteById(id);
+    }
+
     /*************************************
      * BCA METHODS
      **************************************/
@@ -424,6 +434,10 @@ public class ReferenceService {
         return bcaRepository.searchBCA(iban, name, date1, date2,status);
     }
 
+    public void deleteBCAById(Long id) {
+        log.info("deleteBCAById method called..");
+        bcaRepository.deleteById(id);
+    }
 
     /*************************************
      * GD  METHODS

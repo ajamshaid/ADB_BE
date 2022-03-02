@@ -159,6 +159,24 @@ public class FinancialTransactionAPI {
         return ResponseUtility.buildResponseObject(itemInformation);
     }
 
+    @RequestMapping(value = "/del/{id}", method = RequestMethod.DELETE)
+    public CustomResponse deleteImportFinancialTransactionId(HttpServletRequest request,
+                                            @PathVariable(value = "id") Long id)
+            throws CustomException, DataValidationException, NoDataFoundException {
+
+        if (AppUtility.isEmpty(id)) {
+            throw new DataValidationException(messageBundle.getString("id.not.found"));
+        }
+        try {
+            referenceService.deleteFinancialTransactionById(id);
+        } catch (Exception e) {
+            ResponseUtility.exceptionResponse(e);
+        }
+        CustomResponse customResponse = null;
+        customResponse = ResponseUtility.successResponse(null, "200", "FT deleted Successfully");
+        return customResponse;
+    }
+
     /**********************
      *  Export
      *************************/
@@ -250,5 +268,23 @@ public class FinancialTransactionAPI {
             ResponseUtility.exceptionResponse(e, null);
         }
         return ResponseUtility.buildResponseList(financialTransactions, new FinancialTransactionExportDTO());
+    }
+
+    @RequestMapping(value = "/del-exp/{id}", method = RequestMethod.DELETE)
+    public CustomResponse deleteExportFinancialTransactionId(HttpServletRequest request,
+                                                       @PathVariable("id") Long id)
+            throws CustomException, DataValidationException, NoDataFoundException {
+
+        if (AppUtility.isEmpty(id)) {
+            throw new DataValidationException(messageBundle.getString("id.not.found"));
+        }
+        try {
+            referenceService.deleteFinancialTransactionById(id);
+        } catch (Exception e) {
+            ResponseUtility.exceptionResponse(e);
+        }
+        CustomResponse customResponse = null;
+        customResponse = ResponseUtility.successResponse(null, "200", "FT deleted Successfully");
+        return customResponse;
     }
 }

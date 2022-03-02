@@ -87,7 +87,7 @@ public class AppConstants {
         */
     }
     public static class RecordStatuses {
-        public static final String CREATED_BY_MQ = "Created By MQ";
+        public static final String CREATED_BY_MQ = "MQ Created";
         public static final String CREATED_BY_PSW = "Created By PSW";
         public static final String PUSHED_TO_PSW = "Pushed To PSW";
 

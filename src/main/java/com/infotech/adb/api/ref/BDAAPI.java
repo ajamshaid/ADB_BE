@@ -100,4 +100,22 @@ public class BDAAPI {
         }
         return ResponseUtility.buildResponseList(bdaList, new BDADTO());
     }
+
+    @RequestMapping(value = "/del/{id}", method = RequestMethod.DELETE)
+    public CustomResponse deleteBDAById(HttpServletRequest request,
+                                                             @PathVariable(value = "id") Long id)
+            throws CustomException, DataValidationException, NoDataFoundException {
+
+        if (AppUtility.isEmpty(id)) {
+            throw new DataValidationException(messageBundle.getString("id.not.found"));
+        }
+        try {
+            referenceService.deleteBDAById(id);
+        } catch (Exception e) {
+            ResponseUtility.exceptionResponse(e);
+        }
+        CustomResponse customResponse = null;
+        customResponse = ResponseUtility.successResponse(null, "200", "FT deleted Successfully");
+        return customResponse;
+    }
 }
