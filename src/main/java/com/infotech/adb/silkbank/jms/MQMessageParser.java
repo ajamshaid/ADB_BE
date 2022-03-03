@@ -101,7 +101,9 @@ public class MQMessageParser {
             ft.setFinInsUniqueNumberCore(ftDetailsAry[4]);
 
             PaymentInformation pi = new PaymentInformation();
-            pi.setBeneficiaryName(ftDetailsAry[5]);
+            if (!AppUtility.isEmpty(ftDetailsAry[5])) {
+                pi.setBeneficiaryName(ftDetailsAry[5].length() < 100 ? ftDetailsAry[5] : ftDetailsAry[5].substring(0,98) );
+            }
             pi.setBeneficiaryAddress(ftDetailsAry[6]);
             pi.setPortOfShipment(ftDetailsAry[7]);
             if (AppUtility.isBigDecimal(ftDetailsAry[8])) {

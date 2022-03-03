@@ -10,6 +10,7 @@ import com.infotech.adb.exceptions.PSWAPIException;
 import com.infotech.adb.model.entity.BCA;
 import com.infotech.adb.model.entity.BDA;
 import com.infotech.adb.service.ReferenceService;
+import com.infotech.adb.util.AppConstants;
 import com.infotech.adb.util.AppUtility;
 import com.infotech.adb.util.CustomResponse;
 import com.infotech.adb.util.ResponseUtility;
@@ -87,14 +88,16 @@ public class BDAAPI {
     public CustomResponse searchBCA(HttpServletRequest request,
                                     @RequestParam(value = "iban", required = false) String iban,
                                     @RequestParam(value = "name", required = false) String name,
-                                    @RequestParam(value = "status", required = false) String status,
                                     @RequestParam(value = "fromDate", required = false) String fromDate,
-                                    @RequestParam(value = "toDate", required = false) String toDate)
+                                    @RequestParam(value = "toDate", required = false) String toDate,
+                                      @RequestParam(value = "isNew", defaultValue = "true", required = false) boolean isNew)
             throws CustomException, NoDataFoundException {
 
         List<BDA> bdaList = null;
         try {
-            bdaList = referenceService.searchBDA(iban, name, status, fromDate, toDate);
+            bdaList = referenceService.searchBDA(iban, name, fromDate, toDate
+                    , isNew ? AppConstants.RecordStatuses.CREATED_BY_MQ
+                            : AppConstants.RecordStatuses.PUSHED_TO_PSW);
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e);
         }
