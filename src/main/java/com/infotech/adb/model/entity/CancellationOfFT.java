@@ -39,4 +39,7 @@ public class CancellationOfFT {
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastModifiedDate;
 
+    @Column(name = "STATUS",length = 20, nullable = false)
+    private String status;
+
 }

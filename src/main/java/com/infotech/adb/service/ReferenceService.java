@@ -329,9 +329,11 @@ public class ReferenceService {
 @Transactional
     public ResponseUtility.APIResponse updateBDAAndShare(BDADTO bdadto) throws JsonProcessingException {
 
+    if(AppUtility.isEmpty(bdadto.getBdaUniqueIdNumber())) {
         String uniqNo = AppUtility.generateUniqPSWNumberFormat("BDA", this.getNextCounter("BDA"));
-        //     dto.setFinInsUniqueNumber(finUniqNo);
         bdadto.setBdaUniqueIdNumber(uniqNo);
+    }
+
         BDA entity = this.updateBDA(bdadto.convertToEntity());
 
       //     ResponseUtility.APIResponse pswResponse =  ResponseUtility.TestAPISuccessResponse();
@@ -394,11 +396,11 @@ public class ReferenceService {
     @Transactional
     public ResponseUtility.APIResponse updateBCAAndShare(BCADTO bcadto) throws JsonProcessingException {
 
-        String uniqNo = AppUtility.generateUniqPSWNumberFormat("BCA", this.getNextCounter("BCA"));
-        bcadto.setBcaUniqueIdNumber(uniqNo);
-
+        if(AppUtility.isEmpty(bcadto.getBcaUniqueIdNumber())) {
+            String uniqNo = AppUtility.generateUniqPSWNumberFormat("BCA", this.getNextCounter("BCA"));
+            bcadto.setBcaUniqueIdNumber(uniqNo);
+        }
         BCA entity = this.updateBCA(bcadto.convertToEntity());
-
      //     ResponseUtility.APIResponse pswResponse =  ResponseUtility.TestAPISuccessResponse();
         ResponseUtility.APIResponse pswResponse =  pswAPIConsumerService.shareBCAInformationExport(bcadto);
         String respCode = pswResponse.getMessage().getCode();
@@ -535,8 +537,14 @@ public class ReferenceService {
 
 
     public ResponseUtility.APIResponse updateGDClearanceAndShare(GDClearanceDTO dto) throws JsonProcessingException {
-        this.updateGDClearance(dto.convertToEntity());
-        return pswAPIConsumerService.shareGDClearanceMsg(dto);
+        GDClearance entity =  this.updateGDClearance(dto.convertToEntity());
+        ResponseUtility.APIResponse pswResponse =  pswAPIConsumerService.shareGDClearanceMsg(dto);
+
+        String respCode = pswResponse.getMessage().getCode();
+        if (respCode.equals("" + HttpStatus.OK.value())) {
+            gdClearanceRepository.updateStatus(entity.getId(), AppConstants.RecordStatuses.PUSHED_TO_PSW);
+        }
+        return pswResponse;
     }
 
     @Transactional
@@ -562,8 +570,15 @@ public class ReferenceService {
     }
 
     public ResponseUtility.APIResponse updateCancellationOfFTAndShare(CancellationOfFTDTO dto) throws JsonProcessingException {
-        this.updateCancellationOfFT(dto.convertToEntity());
-        return pswAPIConsumerService.cancellationOfFinancialTransaction(dto);
+
+        CancellationOfFT entity =  this.updateCancellationOfFT(dto.convertToEntity());
+        ResponseUtility.APIResponse pswResponse =  pswAPIConsumerService.cancellationOfFinancialTransaction(dto);
+
+        String respCode = pswResponse.getMessage().getCode();
+        if (respCode.equals("" + HttpStatus.OK.value())) {
+            cancellationOfFTRepository.updateStatus(entity.getId(), AppConstants.RecordStatuses.PUSHED_TO_PSW);
+        }
+        return pswResponse;
     }
 
     @Transactional

@@ -29,6 +29,7 @@ public class AppConstants {
         public final static String IMP_ADV_PAYMENT_VALUE = "303";
         public final static String IMP_CC_VALUE = "304";
         public final static String IMP_REMITTANCE_NOT_INVOLVED_VALUE = "309";
+        public final static String IMP_OPEN_ACCOUNT_CASH_MARGIN_VALUE = "310";
 
         public final static String EXP_OPEN_ACCOUNT_VALUE = "305";
         public final static String EXP_ADV_PAYMENT_VALUE = "306";
