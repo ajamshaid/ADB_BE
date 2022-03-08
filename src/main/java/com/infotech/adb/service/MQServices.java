@@ -70,7 +70,11 @@ public class MQServices {
             if (!AppUtility.isEmpty(acctDtlAry) && acctDtlAry.length >= 4) {
                 dto = new AccountDetailDTO();
                 dto.setIban(acctDtlAry[0]);
-                dto.setAccountTitle(acctDtlAry[1]);
+                String title = acctDtlAry[1];
+                if(!AppUtility.isEmpty(title)) {
+                    title = title.replaceAll("&", "And");
+                }
+                dto.setAccountTitle(title);
                 dto.setAccountNumber(acctDtlAry[2]);
                 dto.setAccountStatus(acctDtlAry[3]);
                 dto.setNtn(acctDtlAry.length > 4 ? acctDtlAry[4]:"");
