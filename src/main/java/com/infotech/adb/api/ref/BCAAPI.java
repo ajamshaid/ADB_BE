@@ -2,11 +2,13 @@ package com.infotech.adb.api.ref;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.infotech.adb.dto.BCADTO;
+import com.infotech.adb.dto.BDADTO;
 import com.infotech.adb.exceptions.CustomException;
 import com.infotech.adb.exceptions.DataValidationException;
 import com.infotech.adb.exceptions.NoDataFoundException;
 import com.infotech.adb.exceptions.PSWAPIException;
 import com.infotech.adb.model.entity.BCA;
+import com.infotech.adb.model.entity.BDA;
 import com.infotech.adb.service.ReferenceService;
 import com.infotech.adb.util.AppConstants;
 import com.infotech.adb.util.AppUtility;
@@ -118,6 +120,30 @@ public class BCAAPI {
         }
         CustomResponse customResponse = null;
         customResponse = ResponseUtility.successResponse(null, "200", "FT deleted Successfully");
+        return customResponse;
+    }
+
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public CustomResponse createBCA(HttpServletRequest request,
+                                    @RequestBody BCADTO reqDTO,
+                                    @RequestParam(value = "pushToPSW",defaultValue = "false", required = false) Boolean pushToPSW)
+            throws PSWAPIException, DataValidationException, NoDataFoundException {
+
+        if (AppUtility.isEmpty(reqDTO) || !AppUtility.isEmpty(reqDTO.getId())) {
+            throw new DataValidationException(messageBundle.getString("validation.error"));
+        }
+        CustomResponse customResponse = null;
+        BCA entity = null;
+        try {
+            if (pushToPSW) {
+                customResponse = ResponseUtility.translatePSWAPIResponse(referenceService.updateBCAAndShare(reqDTO));
+            } else {
+                entity = referenceService.createBCA(reqDTO.convertToEntity());
+                customResponse = ResponseUtility.successResponse(entity,"200","Record Updated Successfully");
+            }
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
         return customResponse;
     }
 }

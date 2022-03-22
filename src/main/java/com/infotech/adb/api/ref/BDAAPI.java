@@ -121,4 +121,28 @@ public class BDAAPI {
         customResponse = ResponseUtility.successResponse(null, "200", "FT deleted Successfully");
         return customResponse;
     }
+
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public CustomResponse createBDA(HttpServletRequest request,
+                                     @RequestBody BDADTO reqDTO,
+                                     @RequestParam(value = "pushToPSW",defaultValue = "false", required = false) Boolean pushToPSW)
+            throws PSWAPIException, DataValidationException, NoDataFoundException {
+
+        if (AppUtility.isEmpty(reqDTO) || !AppUtility.isEmpty(reqDTO.getId())) {
+            throw new DataValidationException(messageBundle.getString("validation.error"));
+        }
+        CustomResponse customResponse = null;
+        BDA entity = null;
+        try {
+            if (pushToPSW) {
+                customResponse = ResponseUtility.translatePSWAPIResponse(referenceService.updateBDAAndShare(reqDTO));
+            } else {
+                entity = referenceService.createBDA(reqDTO.convertToEntity());
+                customResponse = ResponseUtility.successResponse(entity,"200","Record Updated Successfully");
+            }
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return customResponse;
+    }
 }

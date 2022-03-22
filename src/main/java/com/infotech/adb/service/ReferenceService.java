@@ -352,6 +352,14 @@ public class ReferenceService {
         return bdaRepository.save(entity);
     }
 
+    public BDA createBDA(BDA entity) {
+        log.info("createBDA method called..");
+        if(AppUtility.isEmpty(entity.getStatus())){
+            entity.setStatus("NEW");
+        }
+        return bdaRepository.save(entity);
+    }
+
     public List<BDA> searchBDA(String iban, String name, String fromDate, String toDate, String status) throws ParseException {
         log.info("searchBDA method called..");
         if (AppUtility.isEmpty(name)) {
@@ -413,6 +421,14 @@ public class ReferenceService {
     @Transactional
     public BCA updateBCA(BCA entity) {
         log.info("updateBCA method called..");
+        return bcaRepository.save(entity);
+    }
+
+    public BCA createBCA(BCA entity) {
+        log.info("createBCA method called..");
+        if(AppUtility.isEmpty(entity.getStatus())){
+            entity.setStatus("NEW");
+        }
         return bcaRepository.save(entity);
     }
 
