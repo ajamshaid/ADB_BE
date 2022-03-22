@@ -1,5 +1,8 @@
 package com.infotech.adb.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AppConstants {
 
     public final static String AD_ID = "SLB";
@@ -93,6 +96,17 @@ public class AppConstants {
         public static final String PUSHED_TO_PSW = "Pushed To PSW";
         public static final String NEW = "NEW";
 
+
+        public  static List<String> getSearchStatesList(boolean isNew){
+            List<String> status = new ArrayList<String>();
+            if (isNew){
+                status.add(CREATED_BY_MQ);
+                status.add(NEW);
+            }else {
+                status.add(PUSHED_TO_PSW);
+            }
+            return  status;
+        }
     }
     public static class DBConstraints {
 

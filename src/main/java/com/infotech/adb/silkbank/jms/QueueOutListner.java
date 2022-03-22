@@ -59,7 +59,7 @@ public class QueueOutListner {
                     BDA bda = mqMessageParser.parseAndBuildBDAInfoImport(replyMessage.getReqResStr());
                     bda.setLastModifiedBy(AppConstants.MQ_USER);
                     bda.setLastModifiedDate(AppUtility.getCurrentTimeStamp());
-                    referenceService.updateBDA(bda);
+                    referenceService.saveBDA(bda);
                 } catch (Exception ex) {
                     log.error(ex.getMessage());
                     ex.printStackTrace();
@@ -81,7 +81,7 @@ public class QueueOutListner {
                     BCA bca = mqMessageParser.parseAndBuildBCAExport(replyMessage.getReqResStr());
                     bca.setLastModifiedBy(AppConstants.MQ_USER);
                     bca.setLastModifiedDate(AppUtility.getCurrentTimeStamp());
-                    referenceService.updateBCA(bca);
+                    referenceService.saveBCA(bca);
                 } catch (Exception ex) {
                     log.error(ex.getMessage());
                     ex.printStackTrace();

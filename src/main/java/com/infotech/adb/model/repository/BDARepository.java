@@ -20,8 +20,8 @@ public interface BDARepository extends JpaRepository<BDA, Long> {
     @Query("update BDA en set en.status = :status where en.id = :id")
     int updateStatus(@Param("id") Long id, @Param("status") String status);
 
-    @Query("from BDA r where r.status = :status and r.iban like %:iban% and r.importerName like %:name% and (r.lastModifiedDate between :fromDate and :toDate) order by r.lastModifiedDate desc , r.lastModifiedBy desc")
+    @Query("from BDA r where r.status in (:statuses) and r.iban like %:iban% and r.importerName like %:name% and (r.lastModifiedDate between :fromDate and :toDate) order by r.lastModifiedDate desc , r.lastModifiedBy desc")
     List<BDA> searchBDA(@Param("iban") String iban, @Param("name") String name
-            , @Param("fromDate") Date fromDate, @Param("toDate") Date toDate , @Param("status") String status);
+            , @Param("fromDate") Date fromDate, @Param("toDate") Date toDate , @Param("statuses") List<String> statuses);
 
 }

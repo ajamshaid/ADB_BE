@@ -327,14 +327,14 @@ public class ReferenceService {
         return ref.get();
     }
 @Transactional
-    public ResponseUtility.APIResponse updateBDAAndShare(BDADTO bdadto) throws JsonProcessingException {
+    public ResponseUtility.APIResponse saveBDAAndShare(BDADTO bdadto) throws JsonProcessingException {
 
     if(AppUtility.isEmpty(bdadto.getBdaUniqueIdNumber())) {
         String uniqNo = AppUtility.generateUniqPSWNumberFormat("BDA", this.getNextCounter("BDA"));
         bdadto.setBdaUniqueIdNumber(uniqNo);
     }
 
-        BDA entity = this.updateBDA(bdadto.convertToEntity());
+        BDA entity = this.saveBDA(bdadto.convertToEntity());
 
       //     ResponseUtility.APIResponse pswResponse =  ResponseUtility.TestAPISuccessResponse();
         ResponseUtility.APIResponse pswResponse =  pswAPIConsumerService.shareBDAInformationImport(bdadto);
@@ -347,20 +347,12 @@ public class ReferenceService {
     }
 
     @Transactional
-    public BDA updateBDA(BDA entity) {
+    public BDA saveBDA(BDA entity) {
         log.info("updateBDA method called..");
         return bdaRepository.save(entity);
     }
 
-    public BDA createBDA(BDA entity) {
-        log.info("createBDA method called..");
-        if(AppUtility.isEmpty(entity.getStatus())){
-            entity.setStatus("NEW");
-        }
-        return bdaRepository.save(entity);
-    }
-
-    public List<BDA> searchBDA(String iban, String name, String fromDate, String toDate, String status) throws ParseException {
+    public List<BDA> searchBDA(String iban, String name, String fromDate, String toDate, List<String> status) throws ParseException {
         log.info("searchBDA method called..");
         if (AppUtility.isEmpty(name)) {
             name = "%";
@@ -402,13 +394,13 @@ public class ReferenceService {
     }
 
     @Transactional
-    public ResponseUtility.APIResponse updateBCAAndShare(BCADTO bcadto) throws JsonProcessingException {
+    public ResponseUtility.APIResponse saveBCAAndShare(BCADTO bcadto) throws JsonProcessingException {
 
         if(AppUtility.isEmpty(bcadto.getBcaUniqueIdNumber())) {
             String uniqNo = AppUtility.generateUniqPSWNumberFormat("BCA", this.getNextCounter("BCA"));
             bcadto.setBcaUniqueIdNumber(uniqNo);
         }
-        BCA entity = this.updateBCA(bcadto.convertToEntity());
+        BCA entity = this.saveBCA(bcadto.convertToEntity());
      //     ResponseUtility.APIResponse pswResponse =  ResponseUtility.TestAPISuccessResponse();
         ResponseUtility.APIResponse pswResponse =  pswAPIConsumerService.shareBCAInformationExport(bcadto);
         String respCode = pswResponse.getMessage().getCode();
@@ -419,20 +411,12 @@ public class ReferenceService {
     }
 
     @Transactional
-    public BCA updateBCA(BCA entity) {
+    public BCA saveBCA(BCA entity) {
         log.info("updateBCA method called..");
         return bcaRepository.save(entity);
     }
 
-    public BCA createBCA(BCA entity) {
-        log.info("createBCA method called..");
-        if(AppUtility.isEmpty(entity.getStatus())){
-            entity.setStatus("NEW");
-        }
-        return bcaRepository.save(entity);
-    }
-
-    public List<BCA> searchBCA(String iban, String name, String fromDate, String toDate, String status) throws ParseException {
+    public List<BCA> searchBCA(String iban, String name, String fromDate, String toDate, List<String> status) throws ParseException {
         log.info("searchBCA method called..");
         if (AppUtility.isEmpty(name)) {
             name = "%";

@@ -73,9 +73,9 @@ public class BDAAPI {
         BDA entity = null;
         try {
             if (pushToPSW) {
-                customResponse = ResponseUtility.translatePSWAPIResponse(referenceService.updateBDAAndShare(reqDTO));
+                customResponse = ResponseUtility.translatePSWAPIResponse(referenceService.saveBDAAndShare(reqDTO));
             } else {
-                entity = referenceService.updateBDA(reqDTO.convertToEntity());
+                entity = referenceService.saveBDA(reqDTO.convertToEntity());
                 customResponse = ResponseUtility.successResponse(entity,"200","Record Updated Successfully");
             }
         } catch (JsonProcessingException e) {
@@ -96,8 +96,7 @@ public class BDAAPI {
         List<BDA> bdaList = null;
         try {
             bdaList = referenceService.searchBDA(iban, name, fromDate, toDate
-                    , isNew ? AppConstants.RecordStatuses.CREATED_BY_MQ
-                            : AppConstants.RecordStatuses.PUSHED_TO_PSW);
+                    , AppConstants.RecordStatuses.getSearchStatesList(isNew));
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e);
         }
@@ -133,11 +132,12 @@ public class BDAAPI {
         }
         CustomResponse customResponse = null;
         BDA entity = null;
+        reqDTO.setStatus(AppConstants.RecordStatuses.NEW);
         try {
             if (pushToPSW) {
-                customResponse = ResponseUtility.translatePSWAPIResponse(referenceService.updateBDAAndShare(reqDTO));
+                customResponse = ResponseUtility.translatePSWAPIResponse(referenceService.saveBDAAndShare(reqDTO));
             } else {
-                entity = referenceService.createBDA(reqDTO.convertToEntity());
+                entity = referenceService.saveBDA(reqDTO.convertToEntity());
                 customResponse = ResponseUtility.successResponse(entity,"200","Record Updated Successfully");
             }
         } catch (JsonProcessingException e) {
