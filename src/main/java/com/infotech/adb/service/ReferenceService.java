@@ -260,6 +260,12 @@ public class ReferenceService {
         return itemInformationRepository.save(itemInformation);
     }
 
+    public ItemInformation saveItemInfoImport(Long id, ItemInformationImportDTO dto) {
+        ItemInformation itemInformation= dto.convertToEntity();
+        itemInformation.setFinancialTransaction(new FinancialTransaction(id));
+        return itemInformationRepository.save(itemInformation);
+    }
+
     public void deleteItemById(Long id) {
         log.info("deleteItemById method called..");
         itemInformationRepository.deleteById(id);

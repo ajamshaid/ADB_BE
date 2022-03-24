@@ -6,10 +6,7 @@ import com.infotech.adb.exceptions.CustomException;
 import com.infotech.adb.exceptions.DataValidationException;
 import com.infotech.adb.exceptions.NoDataFoundException;
 import com.infotech.adb.exceptions.PSWAPIException;
-import com.infotech.adb.model.entity.FinancialTransaction;
-import com.infotech.adb.model.entity.GDClearance;
-import com.infotech.adb.model.entity.ItemInformation;
-import com.infotech.adb.model.entity.MqLog;
+import com.infotech.adb.model.entity.*;
 import com.infotech.adb.service.ReferenceService;
 import com.infotech.adb.util.AppConstants;
 import com.infotech.adb.util.AppUtility;
@@ -91,7 +88,7 @@ public class FinancialTransactionAPI {
     }
 
     @RequestMapping(value = "/import/{id}/itemInfo", method = RequestMethod.POST)
-    public CustomResponse saveImportItemInfo(@RequestBody ItemInformationExportDTO reqDTO,
+    public CustomResponse saveImportItemInfo(@RequestBody ItemInformationImportDTO reqDTO,
                                              @PathVariable(value = "id") Long id)
             throws DataValidationException, NoDataFoundException {
 
@@ -99,7 +96,7 @@ public class FinancialTransactionAPI {
             throw new DataValidationException(messageBundle.getString("validation.error"));
         }
         ItemInformation entity = null;
-        entity = this.referenceService.saveItemInfo(id, reqDTO);
+        entity = this.referenceService.saveItemInfoImport(id, reqDTO);
         CustomResponse customResponse = null;
         customResponse = ResponseUtility.successResponse(entity, "200", "Item Added Successfully");
         return customResponse;
@@ -125,21 +122,29 @@ public class FinancialTransactionAPI {
         return ResponseUtility.buildResponseList(financialTransactions, new FinancialTransactionImportDTO());
     }
 
-    @RequestMapping(value = "/add-imp", method = RequestMethod.POST)
-    public CustomResponse createImportFt(HttpServletRequest request,
-                                           @RequestBody FinancialTransactionImportDTO financialTransactionImportDTO)
-            throws CustomException, DataValidationException, NoDataFoundException {
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public CustomResponse createImportFT(HttpServletRequest request,
+                                    @RequestBody FinancialTransactionImportDTO reqDTO,
+                                    @RequestParam(value = "pushToPSW",defaultValue = "false", required = false) Boolean pushToPSW)
+            throws PSWAPIException, DataValidationException, NoDataFoundException {
 
-        if (AppUtility.isEmpty(financialTransactionImportDTO) || !AppUtility.isEmpty(financialTransactionImportDTO.getFtId())) {
+        if (AppUtility.isEmpty(reqDTO) || !AppUtility.isEmpty(reqDTO.getFtId())) {
             throw new DataValidationException(messageBundle.getString("validation.error"));
         }
-        FinancialTransaction financialTransaction = null;
+        CustomResponse customResponse = null;
+        FinancialTransaction entity = null;
+        reqDTO.setStatus(AppConstants.RecordStatuses.NEW);
         try {
-            financialTransaction = referenceService.createFt(financialTransactionImportDTO.convertToEntity());
-        } catch (Exception e) {
-            ResponseUtility.exceptionResponse(e,null);
+            if (pushToPSW) {
+                customResponse = ResponseUtility.translatePSWAPIResponse(referenceService.updateFTImportAndShare(reqDTO));
+            } else {
+                entity = referenceService.updateFinancialTransaction(reqDTO.convertToEntity());
+                customResponse = ResponseUtility.successResponse(entity,"200","Record Created Successfully");
+            }
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
         }
-        return ResponseUtility.buildResponseObject(financialTransaction);
+        return customResponse;
     }
 
     @RequestMapping(value = "/add-item", method = RequestMethod.POST)
