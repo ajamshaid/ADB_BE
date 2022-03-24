@@ -18,6 +18,7 @@ public class CancellationOfFTDTO implements BaseDTO<CancellationOfFTDTO, Cancell
     private String finInsUniqueNumber;
     private String lastModifiedBy;
     private Date lastModifiedDate;
+    public String status;
 
 
     @Override
@@ -32,6 +33,7 @@ public class CancellationOfFTDTO implements BaseDTO<CancellationOfFTDTO, Cancell
         entity.setFinInsUniqueNumber(this.getFinInsUniqueNumber());
         entity.setLastModifiedBy(this.getLastModifiedBy());
         entity.setLastModifiedDate(this.getLastModifiedDate());
+        entity.setStatus(this.status);
 
 
 
@@ -48,7 +50,7 @@ public class CancellationOfFTDTO implements BaseDTO<CancellationOfFTDTO, Cancell
             this.setTradeTranType(entity.getTradeType());
             this.setTraderName(entity.getTraderName());
             this.setTraderNTN(entity.getTraderNTN());
-
+            this.setStatus(entity.getStatus());
             this.setLastModifiedBy(entity.getLastModifiedBy());
             this.setLastModifiedDate(entity.getLastModifiedDate());
 
