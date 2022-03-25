@@ -2,13 +2,16 @@ package com.infotech.adb.api.ref;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.infotech.adb.dto.BCADTO;
 import com.infotech.adb.dto.CancellationOfFTDTO;
 import com.infotech.adb.exceptions.CustomException;
 import com.infotech.adb.exceptions.DataValidationException;
 import com.infotech.adb.exceptions.NoDataFoundException;
 import com.infotech.adb.exceptions.PSWAPIException;
+import com.infotech.adb.model.entity.BCA;
 import com.infotech.adb.model.entity.CancellationOfFT;
 import com.infotech.adb.service.ReferenceService;
+import com.infotech.adb.util.AppConstants;
 import com.infotech.adb.util.AppUtility;
 import com.infotech.adb.util.CustomResponse;
 import com.infotech.adb.util.ResponseUtility;
@@ -16,6 +19,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -79,5 +83,24 @@ public class CancellationOfFTAPI {
         }
         return customResponse;
 
+    }
+
+    @RequestMapping(value = "/search-cof", method = RequestMethod.GET)
+    public CustomResponse searchCancellationOfFt(HttpServletRequest request,
+                                    @RequestParam(value = "tradeType", required = false) String tradeType,
+                                    @RequestParam(value = "traderNTN", required = false) String traderNTN,
+                                    @RequestParam(value = "fromDate", required = false) String fromDate,
+                                    @RequestParam(value = "toDate", required = false) String toDate,
+                                    @RequestParam(value = "isNew", defaultValue = "true", required = false) boolean isNew)
+            throws CustomException, NoDataFoundException {
+
+        List<CancellationOfFT> cancellationOfFTList = null;
+        try {
+            cancellationOfFTList = referenceService.searchCancellationOfFt(tradeType, traderNTN, fromDate, toDate
+                    , AppConstants.RecordStatuses.getSearchStatesList(isNew));
+        } catch (Exception e) {
+            ResponseUtility.exceptionResponse(e);
+        }
+        return ResponseUtility.buildResponseList(cancellationOfFTList, new CancellationOfFTDTO());
     }
 }

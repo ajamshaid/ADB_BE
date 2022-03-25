@@ -593,6 +593,26 @@ public class ReferenceService {
         return cancellationOfFTRepository.save(entity);
     }
 
+    public List<CancellationOfFT> searchCancellationOfFt(String tradeType, String traderNTN, String fromDate, String toDate, List<String> status) throws ParseException {
+        log.info("searchCancellationOfFt method called..");
+        if (AppUtility.isEmpty(traderNTN)) {
+            traderNTN = "%";
+        }
+        Date date1 = null, date2 = null;
+
+        if (!AppUtility.isEmpty(fromDate)) {
+            date1 = new SimpleDateFormat("dd-MM-yyyy").parse(fromDate);
+        } else {
+            date1 = new SimpleDateFormat("dd-MM-yyyy").parse("01-01-1970");
+        }
+        if (!AppUtility.isEmpty(toDate)) {
+            date2 = new SimpleDateFormat("dd-MM-yyyy").parse(toDate);
+        } else {
+            date2 = new Date();
+        }
+        return cancellationOfFTRepository.searchCancellationOfFt(tradeType, traderNTN, date1, date2,status );
+    }
+
     /*************************************
      * Reversal of BDA/BCA  METHODS
      **************************************/
