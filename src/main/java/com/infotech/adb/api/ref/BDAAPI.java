@@ -90,13 +90,14 @@ public class BDAAPI {
                                     @RequestParam(value = "name", required = false) String name,
                                     @RequestParam(value = "fromDate", required = false) String fromDate,
                                     @RequestParam(value = "toDate", required = false) String toDate,
-                                      @RequestParam(value = "isNew", defaultValue = "true", required = false) boolean isNew)
+                                    @RequestParam(value = "isNew", defaultValue = "true", required = false) boolean isNew,
+                                    @RequestParam(value = "finInsUniqueNumber", required = false) String finInsUniqueNumber)
             throws CustomException, NoDataFoundException {
 
         List<BDA> bdaList = null;
         try {
             bdaList = referenceService.searchBDA(iban, name, fromDate, toDate
-                    , AppConstants.RecordStatuses.getSearchStatesList(isNew));
+                    , AppConstants.RecordStatuses.getSearchStatesList(isNew),finInsUniqueNumber);
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e);
         }

@@ -59,11 +59,11 @@ public class BCAAPI {
         } catch (Exception e) {
             throw new CustomException(e);
         }
-        return ResponseUtility.buildResponseObject(entity, new BCADTO(),true);
+        return ResponseUtility.buildResponseObject(entity, new BCADTO(), true);
     }
 
     @RequestMapping(value = "/", method = RequestMethod.PUT)
-    public CustomResponse updateBCA(@RequestBody BCADTO reqDTO, @RequestParam(value = "pushToPSW",defaultValue = "false", required = false) Boolean pushToPSW)
+    public CustomResponse updateBCA(@RequestBody BCADTO reqDTO, @RequestParam(value = "pushToPSW", defaultValue = "false", required = false) Boolean pushToPSW)
             throws PSWAPIException, DataValidationException, NoDataFoundException {
 
         if (AppUtility.isEmpty(reqDTO) || AppUtility.isEmpty(reqDTO.getId())) {
@@ -77,7 +77,7 @@ public class BCAAPI {
                 customResponse = ResponseUtility.translatePSWAPIResponse(referenceService.saveBCAAndShare(reqDTO));
             } else {
                 entity = referenceService.saveBCA(reqDTO.convertToEntity());
-                customResponse = ResponseUtility.successResponse(entity,"200","Record Updated Successfully");
+                customResponse = ResponseUtility.successResponse(entity, "200", "Record Updated Successfully");
             }
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -87,17 +87,18 @@ public class BCAAPI {
 
     @RequestMapping(value = "/search-bca", method = RequestMethod.GET)
     public CustomResponse searchBCA(HttpServletRequest request,
-                                           @RequestParam(value = "iban", required = false) String iban,
-                                           @RequestParam(value = "name", required = false) String name,
-                                           @RequestParam(value = "fromDate", required = false) String fromDate,
-                                           @RequestParam(value = "toDate", required = false) String toDate,
-                                    @RequestParam(value = "isNew", defaultValue = "true", required = false) boolean isNew)
+                                    @RequestParam(value = "iban", required = false) String iban,
+                                    @RequestParam(value = "name", required = false) String name,
+                                    @RequestParam(value = "fromDate", required = false) String fromDate,
+                                    @RequestParam(value = "toDate", required = false) String toDate,
+                                    @RequestParam(value = "isNew", defaultValue = "true", required = false) boolean isNew,
+                                    @RequestParam(value = "finInsUniqueNumber", required = false) String finInsUniqueNumber)
             throws CustomException, NoDataFoundException {
 
         List<BCA> bcaList = null;
         try {
             bcaList = referenceService.searchBCA(iban, name, fromDate, toDate
-                    , AppConstants.RecordStatuses.getSearchStatesList(isNew));
+                    , AppConstants.RecordStatuses.getSearchStatesList(isNew),finInsUniqueNumber);
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e);
         }
@@ -125,7 +126,7 @@ public class BCAAPI {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public CustomResponse createBCA(HttpServletRequest request,
                                     @RequestBody BCADTO reqDTO,
-                                    @RequestParam(value = "pushToPSW",defaultValue = "false", required = false) Boolean pushToPSW)
+                                    @RequestParam(value = "pushToPSW", defaultValue = "false", required = false) Boolean pushToPSW)
             throws PSWAPIException, DataValidationException, NoDataFoundException {
 
         if (AppUtility.isEmpty(reqDTO) || !AppUtility.isEmpty(reqDTO.getId())) {
@@ -139,7 +140,7 @@ public class BCAAPI {
                 customResponse = ResponseUtility.translatePSWAPIResponse(referenceService.saveBCAAndShare(reqDTO));
             } else {
                 entity = referenceService.saveBCA(reqDTO.convertToEntity());
-                customResponse = ResponseUtility.successResponse(entity,"200","Record Updated Successfully");
+                customResponse = ResponseUtility.successResponse(entity, "200", "Record Updated Successfully");
             }
         } catch (JsonProcessingException e) {
             e.printStackTrace();

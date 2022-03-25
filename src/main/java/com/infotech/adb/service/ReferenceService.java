@@ -358,7 +358,7 @@ public class ReferenceService {
         return bdaRepository.save(entity);
     }
 
-    public List<BDA> searchBDA(String iban, String name, String fromDate, String toDate, List<String> status) throws ParseException {
+    public List<BDA> searchBDA(String iban, String name, String fromDate, String toDate, List<String> status , String finInsUniqueNumber) throws ParseException {
         log.info("searchBDA method called..");
         if (AppUtility.isEmpty(name)) {
             name = "%";
@@ -375,7 +375,7 @@ public class ReferenceService {
         } else {
             date2 = new Date();
         }
-        return bdaRepository.searchBDA(iban, name, date1, date2,status);
+        return bdaRepository.searchBDA(iban, name, date1, date2,status,finInsUniqueNumber);
     }
 
     public void deleteBDAById(Long id) {
@@ -422,7 +422,7 @@ public class ReferenceService {
         return bcaRepository.save(entity);
     }
 
-    public List<BCA> searchBCA(String iban, String name, String fromDate, String toDate, List<String> status) throws ParseException {
+    public List<BCA> searchBCA(String iban, String name, String fromDate, String toDate, List<String> status, String finInsUniqueNumber) throws ParseException {
         log.info("searchBCA method called..");
         if (AppUtility.isEmpty(name)) {
             name = "%";
@@ -439,7 +439,7 @@ public class ReferenceService {
         } else {
             date2 = new Date();
         }
-        return bcaRepository.searchBCA(iban, name, date1, date2,status);
+        return bcaRepository.searchBCA(iban, name, date1, date2,status , finInsUniqueNumber);
     }
 
     public void deleteBCAById(Long id) {
