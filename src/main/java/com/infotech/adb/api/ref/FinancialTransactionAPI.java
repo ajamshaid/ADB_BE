@@ -107,7 +107,8 @@ public class FinancialTransactionAPI {
                                          @RequestParam(value = "name", required = false) String name,
                                          @RequestParam(value = "fromDate", required = false) String fromDate,
                                          @RequestParam(value = "toDate", required = false) String toDate,
-                                         @RequestParam(value = "isNew", required = false) boolean isNew)
+                                         @RequestParam(value = "isNew", required = false) boolean isNew,
+                                         @RequestParam(value = "ntn", required = false) String ntn)
             throws CustomException, DataValidationException, NoDataFoundException {
         log.info("searchLogs API initiated...");
 
@@ -115,7 +116,7 @@ public class FinancialTransactionAPI {
         try {
             financialTransactions = referenceService.searchFT(AppConstants.TYPE_IMPORT,iban, name, fromDate, toDate
                     , isNew ? AppConstants.RecordStatuses.CREATED_BY_MQ
-                            : AppConstants.RecordStatuses.PUSHED_TO_PSW);
+                            : AppConstants.RecordStatuses.PUSHED_TO_PSW , ntn);
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e, null);
         }
@@ -260,7 +261,8 @@ public class FinancialTransactionAPI {
                                          @RequestParam(value = "name", required = false) String name,
                                          @RequestParam(value = "fromDate", required = false) String fromDate,
                                          @RequestParam(value = "toDate", required = false) String toDate,
-                                         @RequestParam(value = "isNew", required = false) boolean isNew)
+                                         @RequestParam(value = "isNew", required = false) boolean isNew,
+                                         @RequestParam(value = "ntn", required = false) String ntn)
             throws CustomException, DataValidationException, NoDataFoundException {
         log.info("searchExportFt API initiated...");
 
@@ -268,7 +270,7 @@ public class FinancialTransactionAPI {
         try {
             financialTransactions = referenceService.searchFT(AppConstants.TYPE_EXPORT,iban, name, fromDate, toDate
                     , isNew ? AppConstants.RecordStatuses.CREATED_BY_MQ
-                            : AppConstants.RecordStatuses.PUSHED_TO_PSW);
+                            : AppConstants.RecordStatuses.PUSHED_TO_PSW , ntn);
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e, null);
         }
