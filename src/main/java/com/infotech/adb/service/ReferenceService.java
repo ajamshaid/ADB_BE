@@ -559,6 +559,26 @@ public class ReferenceService {
         return gdClearanceRepository.save(entity);
     }
 
+    public List<GDClearance> searchGDClearance(String tradeType, String traderNTN, String fromDate, String toDate, List<String> status) throws ParseException {
+        log.info("searchGDClearence method called..");
+        if (AppUtility.isEmpty(traderNTN)) {
+            traderNTN = "%";
+        }
+        Date date1 = null, date2 = null;
+
+        if (!AppUtility.isEmpty(fromDate)) {
+            date1 = new SimpleDateFormat("dd-MM-yyyy").parse(fromDate);
+        } else {
+            date1 = new SimpleDateFormat("dd-MM-yyyy").parse("01-01-1970");
+        }
+        if (!AppUtility.isEmpty(toDate)) {
+            date2 = new SimpleDateFormat("dd-MM-yyyy").parse(toDate);
+        } else {
+            date2 = new Date();
+        }
+        return gdClearanceRepository.searchGDClearance(tradeType, traderNTN, date1, date2,status );
+    }
+
     /*************************************
      * Cancellation of FT  METHODS
      **************************************/
@@ -685,6 +705,26 @@ public class ReferenceService {
     public SettelmentOfFI updateSettlementOfFI(SettelmentOfFI entity) {
         log.info("updateCOB method called..");
         return settlementOfFIRepository.save(entity);
+    }
+
+    public List<SettelmentOfFI> searchSettlementOfFI(String tradeType, String traderNTN, String fromDate, String toDate, List<String> status) throws ParseException {
+        log.info("searchSettlementOfFI method called..");
+        if (AppUtility.isEmpty(traderNTN)) {
+            traderNTN = "%";
+        }
+        Date date1 = null, date2 = null;
+
+        if (!AppUtility.isEmpty(fromDate)) {
+            date1 = new SimpleDateFormat("dd-MM-yyyy").parse(fromDate);
+        } else {
+            date1 = new SimpleDateFormat("dd-MM-yyyy").parse("01-01-1970");
+        }
+        if (!AppUtility.isEmpty(toDate)) {
+            date2 = new SimpleDateFormat("dd-MM-yyyy").parse(toDate);
+        } else {
+            date2 = new Date();
+        }
+        return settlementOfFIRepository.searchSettlementOfFI(tradeType, traderNTN, date1, date2,status );
     }
 
     /*************************************

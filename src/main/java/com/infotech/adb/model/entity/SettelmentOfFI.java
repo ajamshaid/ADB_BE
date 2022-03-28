@@ -48,4 +48,7 @@ public class SettelmentOfFI {
     @Column(name = "LAST_MODIFIED_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastModifiedDate;
+
+    @Column(name = "STATUS",length = 20, nullable = false)
+    private String status;
 }
