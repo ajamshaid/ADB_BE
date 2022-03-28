@@ -640,6 +640,26 @@ public class ReferenceService {
         return reversalOfBdaBcaRepository.save(entity);
     }
 
+    public List<ReversalOfBdaBca> searchReversalOfBDABCA(String tradeType, String traderNTN, String fromDate, String toDate, List<String> status) throws ParseException {
+        log.info("searchReversalOfBDABCA method called..");
+        if (AppUtility.isEmpty(traderNTN)) {
+            traderNTN = "%";
+        }
+        Date date1 = null, date2 = null;
+
+        if (!AppUtility.isEmpty(fromDate)) {
+            date1 = new SimpleDateFormat("dd-MM-yyyy").parse(fromDate);
+        } else {
+            date1 = new SimpleDateFormat("dd-MM-yyyy").parse("01-01-1970");
+        }
+        if (!AppUtility.isEmpty(toDate)) {
+            date2 = new SimpleDateFormat("dd-MM-yyyy").parse(toDate);
+        } else {
+            date2 = new Date();
+        }
+        return reversalOfBdaBcaRepository.searchReversalOfBDABCA(tradeType, traderNTN, date1, date2,status );
+    }
+
     /*************************************
      * Settlement Of FI  METHODS
      **************************************/
