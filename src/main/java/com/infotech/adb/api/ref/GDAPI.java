@@ -1,10 +1,12 @@
 package com.infotech.adb.api.ref;
 
+import com.infotech.adb.dto.CancellationOfFTDTO;
 import com.infotech.adb.dto.GDExportDTO;
 import com.infotech.adb.dto.GDImportDTO;
 import com.infotech.adb.exceptions.CustomException;
 import com.infotech.adb.exceptions.DataValidationException;
 import com.infotech.adb.exceptions.NoDataFoundException;
+import com.infotech.adb.model.entity.CancellationOfFT;
 import com.infotech.adb.model.entity.GD;
 import com.infotech.adb.model.entity.GDExport;
 import com.infotech.adb.service.ReferenceService;
@@ -14,11 +16,9 @@ import com.infotech.adb.util.CustomResponse;
 import com.infotech.adb.util.ResponseUtility;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -62,6 +62,24 @@ public class GDAPI {
         return ResponseUtility.buildResponseObject(entity, new GDImportDTO(), true);
     }
 
+    @RequestMapping(value = "/search-gd", method = RequestMethod.GET)
+    public CustomResponse searchGD(HttpServletRequest request,
+                                   @RequestParam(value = "name", required = false) String name,
+                                   @RequestParam(value = "gdNumber", required = false) String gdNumber,
+                                   @RequestParam(value = "ntnFtn", required = false) String ntnftn,
+                                   @RequestParam(value = "fromDate", required = false) String fromDate,
+                                   @RequestParam(value = "toDate", required = false) String toDate)
+            throws CustomException, NoDataFoundException {
+
+        List<GD> gdList = null;
+        try {
+            gdList = referenceService.searchGD(name,gdNumber,ntnftn,fromDate, toDate);
+        } catch (Exception e) {
+            ResponseUtility.exceptionResponse(e);
+        }
+        return ResponseUtility.buildResponseList(gdList, new GDImportDTO());
+    }
+
     /**********************
      *  Export
      *************************/
@@ -95,4 +113,21 @@ public class GDAPI {
         return ResponseUtility.buildResponseObject(entity, new GDExportDTO(), true);
     }
 
+    @RequestMapping(value = "/search-gd-export", method = RequestMethod.GET)
+    public CustomResponse searchGDExport(HttpServletRequest request,
+                                         @RequestParam(value = "name", required = false) String name,
+                                         @RequestParam(value = "gdNumber", required = false) String gdNumber,
+                                         @RequestParam(value = "ntnFtn", required = false) String ntnftn,
+                                         @RequestParam(value = "fromDate", required = false) String fromDate,
+                                         @RequestParam(value = "toDate", required = false) String toDate)
+            throws CustomException, NoDataFoundException {
+
+        List<GDExport> gdExportList = null;
+        try {
+            gdExportList = referenceService.searchGDExport(name,gdNumber,ntnftn,fromDate, toDate);
+        } catch (Exception e) {
+            ResponseUtility.exceptionResponse(e);
+        }
+        return ResponseUtility.buildResponseList(gdExportList, new GDExportDTO());
+    }
 }

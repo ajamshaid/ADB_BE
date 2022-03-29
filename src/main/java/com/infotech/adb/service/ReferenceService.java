@@ -117,7 +117,7 @@ public class ReferenceService {
             throw new NoDataFoundException("No Data Found, No Valid Object/Empty in CVS File");
         } else {
             acctDetailList.forEach((acct -> {
-                if(AppUtility.isEmpty(accountDetailRepository.findByIban(acct.getIban()))){
+                if (AppUtility.isEmpty(accountDetailRepository.findByIban(acct.getIban()))) {
                     //if record doesn't exist in DB then Add
                     acct.setIban(acct.getIban().replaceAll("\\s+", ""));
                     if (!AppUtility.isEmpty(acct.getAuthPMImport())) {
@@ -126,12 +126,12 @@ public class ReferenceService {
                     if (!AppUtility.isEmpty(acct.getAuthPMExport())) {
                         acct.setAuthPMExport(acct.getAuthPMExport().replace("|", ","));
                     }
-                    acctMap.put(acct.getIban(),acct);
+                    acctMap.put(acct.getIban(), acct);
                 }
             }
             ));
             // Save to database
-            if(!acctMap.isEmpty()) {
+            if (!acctMap.isEmpty()) {
                 accountDetailRepository.saveAll(acctMap.values());
             }
         }
@@ -223,7 +223,7 @@ public class ReferenceService {
         } else {
             date2 = new Date();
         }
-        return financialTransactionRepository.searchFT(ftType,iban, name, date1, date2,status,ntn);
+        return financialTransactionRepository.searchFT(ftType, iban, name, date1, date2, status, ntn);
     }
 
     public FinancialTransaction createFt(FinancialTransaction financialTransaction) {
@@ -239,7 +239,7 @@ public class ReferenceService {
     public List<FinancialTransaction> getAllFinancialTransactionByType(String type, String status) {
         log.info("getAllFinancialTransactionByType method called..");
         List<FinancialTransaction> refList = null;
-        refList = this.financialTransactionRepository.findByTypeAndStatusOrderByLastModifiedDateDesc (type,status );
+        refList = this.financialTransactionRepository.findByTypeAndStatusOrderByLastModifiedDateDesc(type, status);
         return refList;
     }
 
@@ -255,13 +255,13 @@ public class ReferenceService {
     }
 
     public ItemInformation saveItemInfo(Long id, ItemInformationExportDTO dto) {
-        ItemInformation itemInformation= dto.convertToEntity();
+        ItemInformation itemInformation = dto.convertToEntity();
         itemInformation.setFinancialTransaction(new FinancialTransaction(id));
         return itemInformationRepository.save(itemInformation);
     }
 
     public ItemInformation saveItemInfoImport(Long id, ItemInformationImportDTO dto) {
-        ItemInformation itemInformation= dto.convertToEntity();
+        ItemInformation itemInformation = dto.convertToEntity();
         itemInformation.setFinancialTransaction(new FinancialTransaction(id));
         return itemInformationRepository.save(itemInformation);
     }
@@ -275,15 +275,15 @@ public class ReferenceService {
     public ResponseUtility.APIResponse updateFTImportAndShare(FinancialTransactionImportDTO dto) throws JsonProcessingException {
 
         String finUniqNo = "";
-        if(AppUtility.isEmpty(dto.getFinInsUniqueNumber())) {
+        if (AppUtility.isEmpty(dto.getFinInsUniqueNumber())) {
             finUniqNo = AppUtility.generateUniqPSWNumberFormat("IMP", this.getNextCounter("IMP"));
             dto.setFinInsUniqueNumber(finUniqNo);
         }
 
         FinancialTransaction ft = this.updateFinancialTransaction(dto.convertToEntity());
 
-       // ResponseUtility.APIResponse pswResponse =   ResponseUtility.TestAPISuccessResponse();
-        ResponseUtility.APIResponse pswResponse =   pswAPIConsumerService.shareFinancialInformationImport(dto);
+        // ResponseUtility.APIResponse pswResponse =   ResponseUtility.TestAPISuccessResponse();
+        ResponseUtility.APIResponse pswResponse = pswAPIConsumerService.shareFinancialInformationImport(dto);
         String respCode = pswResponse.getMessage().getCode();
         if (respCode.equals("" + HttpStatus.OK.value())) {
             financialTransactionRepository.updateStatus(ft.getId(), AppConstants.RecordStatuses.PUSHED_TO_PSW);
@@ -296,14 +296,14 @@ public class ReferenceService {
     public ResponseUtility.APIResponse updateFTExportAndShare(FinancialTransactionExportDTO dto) throws JsonProcessingException {
 
         String finUniqNo = "";
-        if(AppUtility.isEmpty(dto.getFinInsUniqueNumber())) {
+        if (AppUtility.isEmpty(dto.getFinInsUniqueNumber())) {
             finUniqNo = AppUtility.generateUniqPSWNumberFormat("EXP", this.getNextCounter("EXP"));
             dto.setFinInsUniqueNumber(finUniqNo);
         }
         FinancialTransaction ft = this.updateFinancialTransaction(dto.convertToEntity());
 
-     //   ResponseUtility.APIResponse pswResponse =  ResponseUtility.TestAPISuccessResponse();
-        ResponseUtility.APIResponse pswResponse =  pswAPIConsumerService.shareFinancialInformationExport(dto);
+        //   ResponseUtility.APIResponse pswResponse =  ResponseUtility.TestAPISuccessResponse();
+        ResponseUtility.APIResponse pswResponse = pswAPIConsumerService.shareFinancialInformationExport(dto);
         String respCode = pswResponse.getMessage().getCode();
         if (respCode.equals("" + HttpStatus.OK.value())) {
             financialTransactionRepository.updateStatus(ft.getId(), AppConstants.RecordStatuses.PUSHED_TO_PSW);
@@ -332,18 +332,19 @@ public class ReferenceService {
         Optional<BDA> ref = bdaRepository.findById(id);
         return ref.get();
     }
-@Transactional
+
+    @Transactional
     public ResponseUtility.APIResponse saveBDAAndShare(BDADTO bdadto) throws JsonProcessingException {
 
-    if(AppUtility.isEmpty(bdadto.getBdaUniqueIdNumber())) {
-        String uniqNo = AppUtility.generateUniqPSWNumberFormat("BDA", this.getNextCounter("BDA"));
-        bdadto.setBdaUniqueIdNumber(uniqNo);
-    }
+        if (AppUtility.isEmpty(bdadto.getBdaUniqueIdNumber())) {
+            String uniqNo = AppUtility.generateUniqPSWNumberFormat("BDA", this.getNextCounter("BDA"));
+            bdadto.setBdaUniqueIdNumber(uniqNo);
+        }
 
         BDA entity = this.saveBDA(bdadto.convertToEntity());
 
-      //     ResponseUtility.APIResponse pswResponse =  ResponseUtility.TestAPISuccessResponse();
-        ResponseUtility.APIResponse pswResponse =  pswAPIConsumerService.shareBDAInformationImport(bdadto);
+        //     ResponseUtility.APIResponse pswResponse =  ResponseUtility.TestAPISuccessResponse();
+        ResponseUtility.APIResponse pswResponse = pswAPIConsumerService.shareBDAInformationImport(bdadto);
         String respCode = pswResponse.getMessage().getCode();
         if (respCode.equals("" + HttpStatus.OK.value())) {
             bdaRepository.updateStatus(entity.getId(), AppConstants.RecordStatuses.PUSHED_TO_PSW);
@@ -358,7 +359,7 @@ public class ReferenceService {
         return bdaRepository.save(entity);
     }
 
-    public List<BDA> searchBDA(String iban, String name, String fromDate, String toDate, List<String> status , String finInsUniqueNumber) throws ParseException {
+    public List<BDA> searchBDA(String iban, String name, String fromDate, String toDate, List<String> status, String finInsUniqueNumber) throws ParseException {
         log.info("searchBDA method called..");
         if (AppUtility.isEmpty(name)) {
             name = "%";
@@ -375,7 +376,7 @@ public class ReferenceService {
         } else {
             date2 = new Date();
         }
-        return bdaRepository.searchBDA(iban, name, date1, date2,status,finInsUniqueNumber);
+        return bdaRepository.searchBDA(iban, name, date1, date2, status, finInsUniqueNumber);
     }
 
     public void deleteBDAById(Long id) {
@@ -402,13 +403,13 @@ public class ReferenceService {
     @Transactional
     public ResponseUtility.APIResponse saveBCAAndShare(BCADTO bcadto) throws JsonProcessingException {
 
-        if(AppUtility.isEmpty(bcadto.getBcaUniqueIdNumber())) {
+        if (AppUtility.isEmpty(bcadto.getBcaUniqueIdNumber())) {
             String uniqNo = AppUtility.generateUniqPSWNumberFormat("BCA", this.getNextCounter("BCA"));
             bcadto.setBcaUniqueIdNumber(uniqNo);
         }
         BCA entity = this.saveBCA(bcadto.convertToEntity());
-     //     ResponseUtility.APIResponse pswResponse =  ResponseUtility.TestAPISuccessResponse();
-        ResponseUtility.APIResponse pswResponse =  pswAPIConsumerService.shareBCAInformationExport(bcadto);
+        //     ResponseUtility.APIResponse pswResponse =  ResponseUtility.TestAPISuccessResponse();
+        ResponseUtility.APIResponse pswResponse = pswAPIConsumerService.shareBCAInformationExport(bcadto);
         String respCode = pswResponse.getMessage().getCode();
         if (respCode.equals("" + HttpStatus.OK.value())) {
             bcaRepository.updateStatus(entity.getId(), AppConstants.RecordStatuses.PUSHED_TO_PSW);
@@ -439,7 +440,7 @@ public class ReferenceService {
         } else {
             date2 = new Date();
         }
-        return bcaRepository.searchBCA(iban, name, date1, date2,status , finInsUniqueNumber);
+        return bcaRepository.searchBCA(iban, name, date1, date2, status, finInsUniqueNumber);
     }
 
     public void deleteBCAById(Long id) {
@@ -469,6 +470,23 @@ public class ReferenceService {
         return gdRepository.save(entity);
     }
 
+    public List<GD> searchGD(String name, String gdNumber, String ntnFtn, String fromDate, String toDate) throws ParseException {
+        log.info("searchCancellationOfFt method called..");
+        Date date1 = null, date2 = null;
+
+        if (!AppUtility.isEmpty(fromDate)) {
+            date1 = new SimpleDateFormat("dd-MM-yyyy").parse(fromDate);
+        } else {
+            date1 = new SimpleDateFormat("dd-MM-yyyy").parse("01-01-1970");
+        }
+        if (!AppUtility.isEmpty(toDate)) {
+            date2 = new SimpleDateFormat("dd-MM-yyyy").parse(toDate);
+        } else {
+            date2 = new Date();
+        }
+        return gdRepository.searchGD(name, gdNumber, ntnFtn, date1, date2);
+    }
+
 
     /*************************************
      * GD Export METHODS
@@ -492,6 +510,23 @@ public class ReferenceService {
         return gdExportRepository.save(entity);
     }
 
+    public List<GDExport> searchGDExport(String name, String gdNumber, String ntnFtn, String fromDate, String toDate) throws ParseException {
+        log.info("searchCancellationOfFt method called..");
+        Date date1 = null, date2 = null;
+
+        if (!AppUtility.isEmpty(fromDate)) {
+            date1 = new SimpleDateFormat("dd-MM-yyyy").parse(fromDate);
+        } else {
+            date1 = new SimpleDateFormat("dd-MM-yyyy").parse("01-01-1970");
+        }
+        if (!AppUtility.isEmpty(toDate)) {
+            date2 = new SimpleDateFormat("dd-MM-yyyy").parse(toDate);
+        } else {
+            date2 = new Date();
+        }
+        return gdExportRepository.searchGDExport(name, gdNumber, ntnFtn, date1, date2);
+    }
+
     /*************************************
      * COB  METHODS
      **************************************/
@@ -510,11 +545,11 @@ public class ReferenceService {
 
     public ResponseUtility.APIResponse updateCOBAndShare(ChangeBankRequestDTO dto) throws JsonProcessingException {
 
-     //   String uniqNo = AppUtility.generateUniqPSWNumberFormat("COB", this.getNextCounter("COB"));
-   //     dto.setCobUniqueIdNumber(uniqNo);
+        //   String uniqNo = AppUtility.generateUniqPSWNumberFormat("COB", this.getNextCounter("COB"));
+        //     dto.setCobUniqueIdNumber(uniqNo);
 
         this.updateCOB(dto.convertToEntity());
-       // return pswAPIConsumerService.shareCOBApprovalRejectionMsg(dto);
+        // return pswAPIConsumerService.shareCOBApprovalRejectionMsg(dto);
         return pswAPIConsumerService.shareCOBApprovalRejectionMsgByOldAD(dto);
     }
 
@@ -543,8 +578,8 @@ public class ReferenceService {
 
 
     public ResponseUtility.APIResponse updateGDClearanceAndShare(GDClearanceDTO dto) throws JsonProcessingException {
-        GDClearance entity =  this.updateGDClearance(dto.convertToEntity());
-        ResponseUtility.APIResponse pswResponse =  pswAPIConsumerService.shareGDClearanceMsg(dto);
+        GDClearance entity = this.updateGDClearance(dto.convertToEntity());
+        ResponseUtility.APIResponse pswResponse = pswAPIConsumerService.shareGDClearanceMsg(dto);
 
         String respCode = pswResponse.getMessage().getCode();
         if (respCode.equals("" + HttpStatus.OK.value())) {
@@ -576,7 +611,7 @@ public class ReferenceService {
         } else {
             date2 = new Date();
         }
-        return gdClearanceRepository.searchGDClearance(tradeType, traderNTN, date1, date2,status );
+        return gdClearanceRepository.searchGDClearance(tradeType, traderNTN, date1, date2, status);
     }
 
     /*************************************
@@ -597,8 +632,8 @@ public class ReferenceService {
 
     public ResponseUtility.APIResponse updateCancellationOfFTAndShare(CancellationOfFTDTO dto) throws JsonProcessingException {
 
-        CancellationOfFT entity =  this.updateCancellationOfFT(dto.convertToEntity());
-        ResponseUtility.APIResponse pswResponse =  pswAPIConsumerService.cancellationOfFinancialTransaction(dto);
+        CancellationOfFT entity = this.updateCancellationOfFT(dto.convertToEntity());
+        ResponseUtility.APIResponse pswResponse = pswAPIConsumerService.cancellationOfFinancialTransaction(dto);
 
         String respCode = pswResponse.getMessage().getCode();
         if (respCode.equals("" + HttpStatus.OK.value())) {
@@ -630,7 +665,7 @@ public class ReferenceService {
         } else {
             date2 = new Date();
         }
-        return cancellationOfFTRepository.searchCancellationOfFt(tradeType, traderNTN, date1, date2,status );
+        return cancellationOfFTRepository.searchCancellationOfFt(tradeType, traderNTN, date1, date2, status);
     }
 
     /*************************************
@@ -677,7 +712,7 @@ public class ReferenceService {
         } else {
             date2 = new Date();
         }
-        return reversalOfBdaBcaRepository.searchReversalOfBDABCA(tradeType, traderNTN, date1, date2,status );
+        return reversalOfBdaBcaRepository.searchReversalOfBDABCA(tradeType, traderNTN, date1, date2, status);
     }
 
     /*************************************
@@ -724,7 +759,7 @@ public class ReferenceService {
         } else {
             date2 = new Date();
         }
-        return settlementOfFIRepository.searchSettlementOfFI(tradeType, traderNTN, date1, date2,status );
+        return settlementOfFIRepository.searchSettlementOfFI(tradeType, traderNTN, date1, date2, status);
     }
 
     /*************************************
@@ -771,11 +806,12 @@ public class ReferenceService {
         User u = userRepository.findByUsername(userName);
         return u;
     }
+
     @Transactional
     public User createUpdateUser(User entity) {
         log.info("updateUser method called..");
 
-        if(AppUtility.isEmpty(entity.getId())){ // if new User then Encrypt Password.
+        if (AppUtility.isEmpty(entity.getId())) { // if new User then Encrypt Password.
             entity.setPassword(new BCryptPasswordEncoder().encode(entity.getPassword()));
         }
 
@@ -788,9 +824,9 @@ public class ReferenceService {
         Optional<User> userOptional = userRepository.findById(newUser.getId());
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-           // if (!BCrypt.checkpw(user.getPassword(), newUser.getPassword())) {
-                user.setPassword(new BCryptPasswordEncoder().encode(newUser.getPassword()));
-                userRepository.save(user);
+            // if (!BCrypt.checkpw(user.getPassword(), newUser.getPassword())) {
+            user.setPassword(new BCryptPasswordEncoder().encode(newUser.getPassword()));
+            userRepository.save(user);
 //            } else {
 //                throw new DataValidationException(AppUtility.getResourceMessage("user.password.match"));
 //            }
