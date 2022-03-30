@@ -45,4 +45,7 @@ public class GDClearance {
     @Column(name = "STATUS",length = 20, nullable = false)
     private String status;
 
+    @Column(name = "ARCHIVED_STATUS",length = 20, nullable = false)
+    private String archivedStatus;
+
 }
