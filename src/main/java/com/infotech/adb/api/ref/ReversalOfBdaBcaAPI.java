@@ -3,12 +3,14 @@ package com.infotech.adb.api.ref;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.infotech.adb.dto.BCADTO;
 import com.infotech.adb.dto.CancellationOfFTDTO;
 import com.infotech.adb.dto.ReversalOfBdaBcaDTO;
 import com.infotech.adb.exceptions.CustomException;
 import com.infotech.adb.exceptions.DataValidationException;
 import com.infotech.adb.exceptions.NoDataFoundException;
 import com.infotech.adb.exceptions.PSWAPIException;
+import com.infotech.adb.model.entity.BCA;
 import com.infotech.adb.model.entity.CancellationOfFT;
 import com.infotech.adb.model.entity.ReversalOfBdaBca;
 import com.infotech.adb.service.ReferenceService;
@@ -71,8 +73,9 @@ public class ReversalOfBdaBcaAPI {
         if (AppUtility.isEmpty(reqDTO) || AppUtility.isEmpty(reqDTO.getId())) {
             throw new DataValidationException(messageBundle.getString("validation.error"));
         }
-        ReversalOfBdaBca entity = null;
+
         CustomResponse customResponse = null;
+        ReversalOfBdaBca entity = null;
         try {
             if (pushToPSW) {
                 customResponse = ResponseUtility.translatePSWAPIResponse(referenceService.updateReveralBCABDAAndShare(reqDTO));
@@ -103,5 +106,30 @@ public class ReversalOfBdaBcaAPI {
             ResponseUtility.exceptionResponse(e);
         }
         return ResponseUtility.buildResponseList(reversalOfBdaBcaList, new ReversalOfBdaBcaDTO());
+    }
+
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public CustomResponse createReversalOfBDAAndBCA(HttpServletRequest request,
+                                    @RequestBody ReversalOfBdaBcaDTO reqDTO,
+                                    @RequestParam(value = "pushToPSW", defaultValue = "false", required = false) Boolean pushToPSW)
+            throws PSWAPIException, DataValidationException, NoDataFoundException {
+
+        if (AppUtility.isEmpty(reqDTO) || !AppUtility.isEmpty(reqDTO.getId())) {
+            throw new DataValidationException(messageBundle.getString("validation.error"));
+        }
+        CustomResponse customResponse = null;
+        ReversalOfBdaBca entity = null;
+        reqDTO.setStatus(AppConstants.RecordStatuses.NEW);
+        try {
+            if (pushToPSW) {
+                customResponse = ResponseUtility.translatePSWAPIResponse(referenceService.updateReveralBCABDAAndShare(reqDTO));
+            } else {
+                entity = referenceService.createReversalBDABCA(reqDTO.convertToEntity());
+                customResponse = ResponseUtility.successResponse(entity, "200", "Record Created Successfully");
+            }
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return customResponse;
     }
 }

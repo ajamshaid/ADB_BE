@@ -19,6 +19,7 @@ public class ReversalOfBdaBcaDTO implements BaseDTO<ReversalOfBdaBcaDTO, Reversa
     private String finInsUniqueNumber;
     private String lastModifiedBy;
     private Date lastModifiedDate;
+    private String status;
 
 
     @Override
@@ -34,6 +35,7 @@ public class ReversalOfBdaBcaDTO implements BaseDTO<ReversalOfBdaBcaDTO, Reversa
         entity.setFinInsUniqueNumber(this.getFinInsUniqueNumber());
         entity.setLastModifiedBy(this.getLastModifiedBy());
         entity.setLastModifiedDate(this.getLastModifiedDate());
+        entity.setStatus(this.getStatus());
 
 
         return entity;
@@ -50,6 +52,7 @@ public class ReversalOfBdaBcaDTO implements BaseDTO<ReversalOfBdaBcaDTO, Reversa
             this.setTradeTranType(entity.getTradeType());
             this.setTraderName(entity.getTraderName());
             this.setTraderNTN(entity.getTraderNTN());
+            this.setStatus(entity.getStatus());
 
             this.setLastModifiedBy(entity.getLastModifiedBy());
             this.setLastModifiedDate(entity.getLastModifiedDate());

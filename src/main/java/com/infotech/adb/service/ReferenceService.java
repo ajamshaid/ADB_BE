@@ -695,6 +695,11 @@ public class ReferenceService {
         return reversalOfBdaBcaRepository.save(entity);
     }
 
+    public ReversalOfBdaBca createReversalBDABCA(ReversalOfBdaBca entity) {
+        log.info("createReversalBDABCA method called..");
+        return reversalOfBdaBcaRepository.save(entity);
+    }
+
     public List<ReversalOfBdaBca> searchReversalOfBDABCA(String tradeType, String traderNTN, String fromDate, String toDate, List<String> status) throws ParseException {
         log.info("searchReversalOfBDABCA method called..");
         if (AppUtility.isEmpty(traderNTN)) {
