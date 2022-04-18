@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BCA1-report" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="c10386d7-f810-4e1f-8e16-fd37f44b3146">
-	<property name="ireport.zoom" value="1.6105100000000039"/>
+	<property name="ireport.zoom" value="3.1384283767210093"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="747"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="id" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[select * from bca
-where bca.id = 1]]>
+where bca.id = $P{id}]]>
 	</queryString>
 	<field name="id" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -28,13 +31,13 @@ where bca.id = 1]]>
 	<field name="balance" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="bca_amount_fcy" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="bca_date" class="java.sql.Timestamp">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="bca_event_name" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="bca_fc" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="bca_pkr" class="java.math.BigDecimal">
@@ -50,6 +53,9 @@ where bca.id = 1]]>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="bill_number" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="core_unique_number" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="currency" class="java.lang.String">
@@ -100,37 +106,34 @@ where bca.id = 1]]>
 	<field name="is_rem_amt_settled_with_discount" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="mode_of_payment" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="remarks" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="running_serial_number" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="swift_reference" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="withholding_tax_pkr" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="ttl_bca_amount" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="bca_amount_fcy" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="cob_gd_ft_id" class="java.lang.Long">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
 	<field name="last_modified_by" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="last_modified_date" class="java.sql.Timestamp">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="core_unique_number" class="java.lang.String">
+	<field name="mode_of_payment" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="remarks" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="running_serial_number" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="status" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="swift_reference" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ttl_bca_amount" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="withholding_tax_pkr" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cob_gd_ft_id" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<background>
@@ -165,7 +168,7 @@ where bca.id = 1]]>
 				</textElement>
 				<text><![CDATA[Exporter NTN]]></text>
 			</staticText>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="7" y="136" width="156" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="e65b7fd2-c4cf-425c-b873-fc3e58c78bda"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -180,7 +183,7 @@ where bca.id = 1]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mode_of_payment}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="375" y="48" width="172" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="8704769c-d7d3-43ba-91d0-631e24af4e4a"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -219,7 +222,7 @@ where bca.id = 1]]>
 				</textElement>
 				<text><![CDATA[Mode Of Payment]]></text>
 			</staticText>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="375" y="136" width="172" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="b0ca7b45-0ed1-42e9-ac37-0822d831ec00"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -234,7 +237,7 @@ where bca.id = 1]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{bca_date}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="7" y="92" width="156" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="eb09cd2b-044d-4430-9e3d-baee7be7a561"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -249,7 +252,7 @@ where bca.id = 1]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{exporter_ntn}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="187" y="136" width="177" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="2e04d847-fde4-4845-b7a1-73c0d995dc29"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -279,7 +282,7 @@ where bca.id = 1]]>
 				</textElement>
 				<text><![CDATA[BCA Unique Idenfication]]></text>
 			</staticText>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="8" y="181" width="155" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="3028a8c3-3075-4c0f-90b1-e18023d2eff5"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -294,7 +297,7 @@ where bca.id = 1]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{remarks}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="186" y="48" width="178" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="6b3fe3b3-a3ae-4e18-be86-3ce117fb10c0"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -309,7 +312,7 @@ where bca.id = 1]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{core_unique_number}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="6" y="48" width="157" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="46f3bdb0-6b70-447f-8b48-f8ea6cddad84"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -324,7 +327,7 @@ where bca.id = 1]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{bca_unique_number}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="375" y="92" width="172" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="7166e8a5-9a7a-4c09-a1cf-03139be4c171"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -363,7 +366,7 @@ where bca.id = 1]]>
 				</textElement>
 				<text><![CDATA[Financial  Instrument Unique No.]]></text>
 			</staticText>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="187" y="92" width="177" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="0724b235-6e11-4174-83ac-6b0acdb5078f"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -395,7 +398,7 @@ where bca.id = 1]]>
 				<text><![CDATA[Core Unique No.]]></text>
 			</staticText>
 			<rectangle radius="10">
-				<reportElement mode="Transparent" x="2" y="19" width="552" height="190" uuid="41761c5f-ab93-46ea-89f5-0a355666ff39"/>
+				<reportElement mode="Transparent" x="0" y="19" width="554" height="190" uuid="41761c5f-ab93-46ea-89f5-0a355666ff39"/>
 			</rectangle>
 		</band>
 	</pageHeader>
@@ -418,7 +421,7 @@ where bca.id = 1]]>
 				</textElement>
 				<text><![CDATA[Currency]]></text>
 			</staticText>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="386" y="254" width="144" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="b866ffd7-bfb2-43b0-80e6-681128eb2b4f"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -433,7 +436,7 @@ where bca.id = 1]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{currency}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="387" y="133" width="142" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="4c5579a2-8df6-4b3c-a7eb-c9f84140fa39"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -464,7 +467,7 @@ where bca.id = 1]]>
 				</textElement>
 				<text><![CDATA[Bill Amount]]></text>
 			</staticText>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="5" y="297" width="174" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="991dd94e-689d-4dc0-972e-e3b5bfc8ff9a"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -503,7 +506,7 @@ where bca.id = 1]]>
 				</textElement>
 				<text><![CDATA[Amount Realized]]></text>
 			</staticText>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="5" y="89" width="174" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="ed53489e-5715-44b8-9787-bc6c7f4e520c"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -518,7 +521,7 @@ where bca.id = 1]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{bill_dated}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="199" y="337" width="145" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="bf439484-f530-4584-8074-66f48f6bbe7b"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -533,7 +536,7 @@ where bca.id = 1]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{allowed_discount}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="207" y="133" width="139" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="1ec26d5c-7cf7-4ec1-a766-dac7d81467e6"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -556,7 +559,7 @@ where bca.id = 1]]>
 				</textElement>
 				<text><![CDATA[Running Serial Number]]></text>
 			</staticText>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="200" y="295" width="145" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="b3825441-d012-4027-a7ad-cb965481851f"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -579,7 +582,7 @@ where bca.id = 1]]>
 				</textElement>
 				<text><![CDATA[is Currency of Realizaton differ]]></text>
 			</staticText>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="385" y="45" width="146" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="7581a75f-9f4e-48ca-84c8-9cac95cc36c0"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -602,7 +605,7 @@ where bca.id = 1]]>
 				</textElement>
 				<text><![CDATA[Bill Number]]></text>
 			</staticText>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="6" y="133" width="173" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="12fa649e-b41c-41f6-8142-82f4f0a7aa60"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -617,7 +620,7 @@ where bca.id = 1]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{invoice_date}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="386" y="89" width="143" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="4b32b737-b667-4bbf-ab21-ecf88d92d508"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -632,7 +635,7 @@ where bca.id = 1]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{invoice_number}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="204" y="89" width="141" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="bd8e848f-54e6-40fb-a24c-f062ecdbf74c"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -655,7 +658,7 @@ where bca.id = 1]]>
 				</textElement>
 				<text><![CDATA[Bank Credit Advice Info]]></text>
 			</staticText>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="5" y="46" width="174" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="4b4c37e0-4ebf-4425-872a-79d04246441f"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -694,7 +697,7 @@ where bca.id = 1]]>
 				</textElement>
 				<text><![CDATA[Date of Realization]]></text>
 			</staticText>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="386" y="382" width="143" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="4f753474-65db-4249-bb98-5cc0b1cf4e22"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -725,7 +728,7 @@ where bca.id = 1]]>
 				</textElement>
 				<text><![CDATA[Allowed Discount]]></text>
 			</staticText>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="199" y="379" width="145" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="e18a27e5-50a3-4f5f-ac2e-00092dce41f6"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -740,7 +743,7 @@ where bca.id = 1]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{ttl_bca_amount}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="5" y="256" width="174" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="77c7d3db-923e-4c3b-a435-f60a6bb81c9d"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -771,7 +774,7 @@ where bca.id = 1]]>
 				</textElement>
 				<text><![CDATA[Allowed Discount Percentage]]></text>
 			</staticText>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="386" y="295" width="144" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="ad2cb9e6-8cd1-49c1-af5b-c793f54aa087"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -786,7 +789,7 @@ where bca.id = 1]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{bca_pkr}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="204" y="254" width="142" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="a117d44a-fdfe-4e9e-adae-fdc6a9c6a5be"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -809,7 +812,7 @@ where bca.id = 1]]>
 				</textElement>
 				<text><![CDATA[Invoice Amount]]></text>
 			</staticText>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="7" y="339" width="172" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="1e141c6a-b532-472f-809d-f342d7a15b80"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -832,7 +835,7 @@ where bca.id = 1]]>
 				</textElement>
 				<text><![CDATA[Balance]]></text>
 			</staticText>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="5" y="381" width="174" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="e25c1989-584b-49f7-9df9-ff8fa35dbcbf"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -847,7 +850,7 @@ where bca.id = 1]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{adjust_from_special_fcy_acc}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="385" y="337" width="144" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="46571d0f-3960-45fe-859d-e811367ab296"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -862,7 +865,7 @@ where bca.id = 1]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{allowed_discount_percentage}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="204" y="45" width="141" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="e7c3e59d-acb6-491c-8894-7437216e09f7"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -901,7 +904,7 @@ where bca.id = 1]]>
 				</textElement>
 				<text><![CDATA[Invoice Number]]></text>
 			</staticText>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="4" y="425" width="175" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="528912c5-4a76-4e12-9e1b-d5d5f36c1580"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -924,7 +927,7 @@ where bca.id = 1]]>
 				</textElement>
 				<text><![CDATA[BCA Amount (FCY)]]></text>
 			</staticText>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="6" y="179" width="173" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="9cbd380e-5248-4ae1-ab0b-719949b2bb3e"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -948,7 +951,7 @@ where bca.id = 1]]>
 				<text><![CDATA[Settled with Discount]]></text>
 			</staticText>
 			<rectangle radius="10">
-				<reportElement mode="Transparent" x="1" y="22" width="552" height="186" uuid="5b40bb35-e5f6-42a9-a5d3-1a33448f1bef"/>
+				<reportElement mode="Transparent" x="0" y="22" width="553" height="186" uuid="5b40bb35-e5f6-42a9-a5d3-1a33448f1bef"/>
 			</rectangle>
 			<rectangle radius="10">
 				<reportElement mode="Transparent" x="0" y="231" width="553" height="220" uuid="f3570f03-effd-4882-bc8b-3f15dff75b49"/>
@@ -957,7 +960,7 @@ where bca.id = 1]]>
 	</detail>
 	<pageFooter>
 		<band height="126" splitType="Stretch">
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="203" y="44" width="142" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="872650c6-5a19-4471-85eb-32c6b3594dbf"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -980,7 +983,7 @@ where bca.id = 1]]>
 				</textElement>
 				<text><![CDATA[EDS(PKR)]]></text>
 			</staticText>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="6" y="44" width="143" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="49fd7749-0811-4355-a03a-5cce3c0715e9"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -995,7 +998,7 @@ where bca.id = 1]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{foreign_bank_charges_fcy}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="7" y="87" width="143" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="2bc1f194-d629-4d08-958c-b6166afe2375"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -1042,7 +1045,7 @@ where bca.id = 1]]>
 				</textElement>
 				<text><![CDATA[Agent Commission Agent(FCY)]]></text>
 			</staticText>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="423" y="44" width="100" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="8858a07b-a44f-40bb-a284-19422b6c53f3"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>

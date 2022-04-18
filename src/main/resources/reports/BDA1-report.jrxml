@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BDA1-report" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2877c715-e393-404d-be32-e073515df273">
-	<property name="ireport.zoom" value="1.9487171000000016"/>
+	<property name="ireport.zoom" value="2.48368529223662"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="48"/>
+	<property name="ireport.y" value="9"/>
+	<parameter name="id" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
-		<![CDATA[select * from bda]]>
+		<![CDATA[select * from bda WHERE
+bda.id = $P{id}]]>
 	</queryString>
 	<field name="id" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -36,10 +40,16 @@
 	<field name="commission_amount_pkr" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="core_unique_number" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="currency_fcy" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="exchange_rate_fcy" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="exchange_rate_fi_fcy" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="fed_amount_pkr" class="java.math.BigDecimal">
@@ -61,6 +71,12 @@
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="importer_ntn" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="last_modified_by" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="last_modified_date" class="java.sql.Timestamp">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="mode_of_payment" class="java.lang.String">
@@ -87,6 +103,9 @@
 	<field name="sample_amount_exclude" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="status" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="swift_charges_pkr" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -96,22 +115,7 @@
 	<field name="total_bda_amount_fcy" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="exchange_rate_bda" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="exchange_rate_fi_fcy" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
 	<field name="cob_gd_ft_id" class="java.lang.Long">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="last_modified_by" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="last_modified_date" class="java.sql.Timestamp">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="core_unique_number" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<title>
@@ -214,7 +218,7 @@
 				</textElement>
 				<text><![CDATA[BDA Unique Idenfication]]></text>
 			</staticText>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="188" y="43" width="177" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="5823e491-a9a5-42a5-a203-ac885665de25"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -229,7 +233,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{core_unique_number}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="376" y="43" width="172" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="9530b142-90b0-4031-bd74-bd7fd95107f3"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -244,7 +248,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{gd_number}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="7" y="43" width="157" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="8caff62e-b1bb-44c7-8a72-009847497d38"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -259,7 +263,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{bda_unique_number}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="8" y="87" width="156" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="07f563a6-2a86-4e0d-bd85-0a4bf968af3c"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -274,7 +278,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{importer_ntn}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="187" y="87" width="178" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="e6013907-b154-4a79-94ab-42fd23a20214"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -289,7 +293,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{iban}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="376" y="87" width="172" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="e58c5e23-499f-4cc0-90c5-da7a748a584c"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -304,7 +308,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{importer_name}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="6" y="131" width="158" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="9f544e7c-409c-43dd-bc22-bbd1d376f858"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -319,7 +323,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mode_of_payment}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="187" y="131" width="178" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="af3cfaf1-4a47-4063-ab7b-509ac675d86a"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -334,7 +338,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fin_ins_unique_number}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="376" y="131" width="172" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="88257c3e-df4f-4c5f-a37d-6898dedc4633"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -537,7 +541,7 @@
 				</textElement>
 				<text><![CDATA[Remarks]]></text>
 			</staticText>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="181" y="43" width="167" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="f2ad51f6-dd9d-4d7c-822b-2948fd7ed523"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -552,7 +556,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{total_bda_amount_currency}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="8" y="43" width="149" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="9dd780bc-98fd-42b9-b715-d887db7da0dc"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -567,7 +571,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{total_bda_amount_fcy}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="369" y="43" width="164" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="0381531e-1ccd-45a7-8088-5a33ed62e013"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -582,7 +586,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{sample_amount_exclude}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="6" y="87" width="151" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="2272ba13-c547-41ed-9e67-12879f7964b8"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -597,7 +601,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{sample_amount_currency}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="181" y="87" width="166" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="0cc8e049-287f-46ac-ad0a-30fc12d2e331"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -612,7 +616,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{net_bda_amount_fcy}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="369" y="87" width="162" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="c5b3114d-e445-480c-89af-6872d4f1e211"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -627,7 +631,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{net_bda_amount_currency}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="9" y="131" width="148" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="0577285c-7ad3-4c45-a2b1-edf5436a40a2"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -642,7 +646,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{net_bda_amount_pkr}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="181" y="131" width="166" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="8ca2b8b4-5de7-48ec-8546-281abd761e62"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -657,7 +661,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{exchange_rate_fi_fcy}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="369" y="131" width="162" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="c39902bd-06a8-440f-9ceb-5a93e6c3bf00"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -672,7 +676,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{amount_in_words}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="7" y="177" width="148" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="fecd13a4-68e9-45db-bf91-b8076b453eea"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -687,7 +691,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{currency_fcy}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="181" y="177" width="167" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="a915b1ac-23f5-45a2-9af1-07713da069da"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -702,7 +706,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{bda_amount_fcy}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="369" y="177" width="159" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="9f4c5726-edd0-441f-bc4e-823d6cbd5943"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -717,7 +721,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{bda_amount_pkr}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="181" y="223" width="166" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="40cd2230-ea91-4bdd-b127-de0d7adb55cd"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -732,7 +736,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{bda_doc_ref_number}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="368" y="223" width="160" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="efb66bc8-9633-40e5-a5ac-c292a80edb2d"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -747,7 +751,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{commission_amount_fcy}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="9" y="269" width="156" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="e29c69b0-40e9-4e7c-a2e1-a8b8a2f8fbdd"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -762,7 +766,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{commission_amount_pkr}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="180" y="269" width="168" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="ca69a3ca-1bb2-48e0-a786-732b532e60d0"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -777,7 +781,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fed_fcy}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="369" y="269" width="159" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="c0a36e1c-baf2-4bdc-a249-05461fe1a545"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -792,7 +796,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fed_amount_pkr}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="7" y="315" width="158" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="8e95f7d3-9dfa-49a1-91f6-335c9f201199"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -807,7 +811,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{swift_charges_pkr}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="180" y="315" width="167" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="a6e24806-8ce0-4473-8bf4-6bd22718d91b"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -822,7 +826,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{other_charges_pkr}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="368" y="315" width="160" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="9aa0df38-f27e-482e-97d4-8fe26c660199"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -837,7 +841,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{balance_bda_amount_fcy}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="6" y="361" width="157" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="e5fce93c-3d59-4b88-8d86-c470007ca843"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
@@ -852,7 +856,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{remarks}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="7" y="223" width="150" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="109f3c17-097c-44b9-adf7-f984466baa04"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>

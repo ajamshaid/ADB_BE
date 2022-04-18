@@ -3,12 +3,15 @@ package com.infotech.adb.service;
 import com.infotech.adb.enums.PrintReportEnums;
 import lombok.extern.log4j.Log4j2;
 import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
+import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.sql.Connection;
@@ -27,7 +30,7 @@ public class ReportService {
     public ByteArrayInputStream buildGDPrint(Long gdId)
             throws IOException, JRException, SQLException {
         log.info("buildSADPrint method called..");
-;
+
         Map<String, Object> map = new HashMap<>();
         map.put("gdId", gdId);
         map.put("reportName", PrintReportEnums.GD_REPORT );
@@ -94,5 +97,32 @@ public class ReportService {
         JasperExportManager.exportReportToPdfFile(jasperPrint, pdfPath);
         connection.close();
         return new ByteArrayInputStream(JasperExportManager.exportReportToPdf(jasperPrint));
+    }
+
+    private ByteArrayInputStream generateGenericReportXLS(String reportName, Map<String, Object> parameters, Connection connection)
+            throws JRException, IOException, SQLException {
+        String reportPath = getClass().getClassLoader().getResource("reports/" + reportName + ".jrxml").getPath();
+        reportPath = URLDecoder.decode(reportPath, "UTF-8");
+
+        String reportId = UUID.randomUUID().toString();
+        String pdfPath = tmpFilePath + reportName + "_" + reportId + ".xlsx";
+        JasperReport jasperReport = JasperCompileManager.compileReport(reportPath);
+
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters,
+                connection);
+
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+
+        JRXlsxExporter exporter = new JRXlsxExporter();
+        exporter.setParameter(JRXlsExporterParameter.JASPER_PRINT, jasperPrint);
+        exporter.setParameter(JRXlsExporterParameter.OUTPUT_FILE_NAME, pdfPath);
+
+        exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, os);
+
+        exporter.exportReport();
+
+        //JasperExportManager.exportReportToPdfFile(jasperPrint, pdfPath);
+        connection.close();
+        return new ByteArrayInputStream(os.toByteArray());
     }
 }
