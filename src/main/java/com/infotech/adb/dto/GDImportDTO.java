@@ -235,21 +235,24 @@ public class GDImportDTO implements BaseDTO<GDImportDTO, GD> {
                 this.setImporterIban(ft.getIban());
                 this.setModeOfPayment(ft.getModeOfPayment());
                 this.setFinInsUniqueNumber(ft.getFinInsUniqueNumber());
-                this.setCurrency(pi.getFinancialInstrumentCurrency());
+                if(!AppUtility.isEmpty(pi)){
+                    this.setCurrency(pi.getFinancialInstrumentCurrency());
 
-                this.setInvoiceNumber(pi.getInvoiceNumber());
-                this.setInvoiceDate(AppUtility.formatedDate(pi.getInvoiceDate()));
-                this.setTotalDeclaredValue(pi.getTotalDeclaredValue());
+                    this.setInvoiceNumber(pi.getInvoiceNumber());
+                    this.setInvoiceDate(AppUtility.formatedDate(pi.getInvoiceDate()));
+                    this.setTotalDeclaredValue(pi.getTotalDeclaredValue());
 
-                this.setDeliveryTerm(pi.getDeliveryTerm());
-                this.setFobValueUsd(pi.getFobValueUsd());
-                this.setFreightUsd(pi.getFreightUsd());
-                this.setCfrValueUsd(pi.getCfrValueUsd());
-                this.setInsuranceUsd(pi.getInsuranceUsd());
-                this.setLandingChargesUsd(pi.getLandingChargesUsd());
-                this.setAssessedValueUsd(pi.getAssessedValueUsd());
-                this.setOtherCharges(pi.getOtherCharges());
-                this.setExchangeRate(pi.getExchangeRate());
+                    this.setDeliveryTerm(pi.getDeliveryTerm());
+                    this.setFobValueUsd(pi.getFobValueUsd());
+                    this.setFreightUsd(pi.getFreightUsd());
+                    this.setCfrValueUsd(pi.getCfrValueUsd());
+                    this.setInsuranceUsd(pi.getInsuranceUsd());
+                    this.setLandingChargesUsd(pi.getLandingChargesUsd());
+                    this.setAssessedValueUsd(pi.getAssessedValueUsd());
+                    this.setOtherCharges(pi.getOtherCharges());
+                    this.setExchangeRate(pi.getExchangeRate());
+                }
+
             }
             return this;
         }
