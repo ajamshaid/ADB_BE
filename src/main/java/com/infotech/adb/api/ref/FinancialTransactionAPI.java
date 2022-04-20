@@ -115,8 +115,7 @@ public class FinancialTransactionAPI {
         List<FinancialTransaction> financialTransactions = null;
         try {
             financialTransactions = referenceService.searchFT(AppConstants.TYPE_IMPORT,iban, name, fromDate, toDate
-                    , isNew ? AppConstants.RecordStatuses.CREATED_BY_MQ
-                            : AppConstants.RecordStatuses.PUSHED_TO_PSW , ntn);
+                    ,AppConstants.RecordStatuses.getSearchStatesList(isNew) , ntn);
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e, null);
         }
@@ -135,6 +134,7 @@ public class FinancialTransactionAPI {
         CustomResponse customResponse = null;
         FinancialTransaction entity = null;
         reqDTO.setStatus(AppConstants.RecordStatuses.NEW);
+        reqDTO.setType(AppConstants.TYPE_IMPORT);
         try {
             if (pushToPSW) {
                 customResponse = ResponseUtility.translatePSWAPIResponse(referenceService.updateFTImportAndShare(reqDTO));
@@ -269,12 +269,54 @@ public class FinancialTransactionAPI {
         List<FinancialTransaction> financialTransactions = null;
         try {
             financialTransactions = referenceService.searchFT(AppConstants.TYPE_EXPORT,iban, name, fromDate, toDate
-                    , isNew ? AppConstants.RecordStatuses.CREATED_BY_MQ
-                            : AppConstants.RecordStatuses.PUSHED_TO_PSW , ntn);
+                    , AppConstants.RecordStatuses.getSearchStatesList(isNew) , ntn);
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e, null);
         }
         return ResponseUtility.buildResponseList(financialTransactions, new FinancialTransactionExportDTO());
+    }
+
+    @RequestMapping(value = "/create-exp", method = RequestMethod.POST)
+    public CustomResponse createExportFT(HttpServletRequest request,
+                                         @RequestBody FinancialTransactionExportDTO reqDTO,
+                                         @RequestParam(value = "pushToPSW",defaultValue = "false", required = false) Boolean pushToPSW)
+            throws PSWAPIException, DataValidationException, NoDataFoundException {
+
+        if (AppUtility.isEmpty(reqDTO) || !AppUtility.isEmpty(reqDTO.getFtId())) {
+            throw new DataValidationException(messageBundle.getString("validation.error"));
+        }
+        CustomResponse customResponse = null;
+        FinancialTransaction entity = null;
+        reqDTO.setStatus(AppConstants.RecordStatuses.NEW);
+        reqDTO.setType(AppConstants.TYPE_EXPORT);
+        try {
+            if (pushToPSW) {
+                customResponse = ResponseUtility.translatePSWAPIResponse(referenceService.updateFTExportAndShare(reqDTO));
+            } else {
+                entity = referenceService.updateFinancialTransaction(reqDTO.convertToEntity());
+                customResponse = ResponseUtility.successResponse(entity,"200","Record Created Successfully");
+            }
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return customResponse;
+    }
+
+    @RequestMapping(value = "/add-item-exp", method = RequestMethod.POST)
+    public CustomResponse createExportItem(HttpServletRequest request,
+                                           @RequestBody ItemInformationExportDTO itemInformationExportDTO)
+            throws CustomException, DataValidationException, NoDataFoundException {
+
+        if (AppUtility.isEmpty(itemInformationExportDTO) || !AppUtility.isEmpty(itemInformationExportDTO.getIiId())) {
+            throw new DataValidationException(messageBundle.getString("validation.error"));
+        }
+        ItemInformation itemInformation = null;
+        try {
+            itemInformation = referenceService.createItemInfo(itemInformationExportDTO.convertToEntity());
+        } catch (Exception e) {
+            ResponseUtility.exceptionResponse(e,null);
+        }
+        return ResponseUtility.buildResponseObject(itemInformation);
     }
 
     @RequestMapping(value = "/del-exp/{id}", method = RequestMethod.DELETE)
