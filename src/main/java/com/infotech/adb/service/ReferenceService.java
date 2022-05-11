@@ -322,6 +322,11 @@ public class ReferenceService {
         return refList;
     }
 
+    public List<BDA> getAllBDAListByStatus(List<String> status) {
+        log.info("getAllBDAListByStatus method called..");
+        return this.bdaRepository.listByStatus(status);
+    }
+
     public BDA getBDAById(Long id) {
         log.info("getBDAById method called..");
         Optional<BDA> ref = bdaRepository.findById(id);
@@ -387,6 +392,11 @@ public class ReferenceService {
         List<BCA> refList = null;
         refList = this.bcaRepository.findAllByOrderByLastModifiedDateDesc();
         return refList;
+    }
+
+    public List<BCA> getAllBCAListByStatus(List<String> status) {
+        log.info("getAllBCAListByStatus method called..");
+        return this.bcaRepository.listByStatus(status);
     }
 
     public BCA getBCAById(Long id) {

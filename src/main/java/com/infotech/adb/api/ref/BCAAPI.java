@@ -34,12 +34,12 @@ public class BCAAPI {
     private ReferenceService referenceService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public CustomResponse getAllBCALastModified()
+    public CustomResponse getAllBCALastModified(@RequestParam(value = "isNew", defaultValue = "true", required = false) boolean isNew)
             throws CustomException, NoDataFoundException {
 
         List<BCA> refList = null;
         try {
-            refList = referenceService.getAllBCALastModified();
+            refList = referenceService.getAllBCAListByStatus( AppConstants.RecordStatuses.getSearchStatesList(isNew));
         } catch (Exception e) {
             throw new CustomException(e);
         }

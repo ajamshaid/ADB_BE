@@ -34,12 +34,12 @@ public class BDAAPI {
     private ReferenceService referenceService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public CustomResponse getAllBDALastModified()
+    public CustomResponse getAllBDALastModified(@RequestParam(value = "isNew", defaultValue = "true", required = false) boolean isNew)
             throws CustomException, NoDataFoundException {
 
         List<BDA> refList = null;
         try {
-            refList = referenceService.getAllBDALastModified();
+            refList = referenceService.getAllBDAListByStatus( AppConstants.RecordStatuses.getSearchStatesList(isNew));
         } catch (Exception e) {
             throw new CustomException(e);
         }

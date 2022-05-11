@@ -24,4 +24,7 @@ public interface BDARepository extends JpaRepository<BDA, Long> {
     List<BDA> searchBDA(@Param("iban") String iban, @Param("name") String name
             , @Param("fromDate") Date fromDate, @Param("toDate") Date toDate , @Param("statuses") List<String> statuses , @Param("finInsUniqueNumber") String finInsUniqueNumber);
 
+    @Query("from BDA r where r.status in (:statuses) order by lastModifiedDate desc , r.lastModifiedDate desc")
+    List<BDA> listByStatus(@Param("statuses") List<String> statuses);
+
 }
