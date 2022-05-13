@@ -87,7 +87,7 @@ public class GD {
     @Column(name = "CONSIGNMENT_TYPE", length = 20)
     private String consignmentType;
 
-    @Column(name = "SHIPPING_LINE", length = 20)
+    @Column(name = "SHIPPING_LINE", length = 100)
     private String shippingLine;
 
     @Column(name = "NEG_COUNTRY", length = 3)

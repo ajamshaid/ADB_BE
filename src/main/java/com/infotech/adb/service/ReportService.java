@@ -104,7 +104,7 @@ public class ReportService {
         map.put("zonedToDate", AppUtility.isEmpty(zonedToDate) ? null : Timestamp.valueOf((AppUtility.getEndOfDay(zonedToDate)).toLocalDateTime()));
         map.put("reportName", PrintReportEnums.ITRS_RPEORT);
 
-        return this.generateGenericReportXLS("ITRS-import-report", map, dataSource.getConnection() );
+        return this.generateGenericReport("ITRS-import-report", map, dataSource.getConnection() );
     }
 
     public ByteArrayInputStream buildBCARealizedPrint(String fromDate, String toDate)
@@ -125,7 +125,7 @@ public class ReportService {
         map.put("zonedToDate", AppUtility.isEmpty(zonedToDate) ? null : Timestamp.valueOf((AppUtility.getEndOfDay(zonedToDate)).toLocalDateTime()));
         map.put("reportName", PrintReportEnums.BCA_REALIZED_REPORT);
 
-        return this.generateGenericReportXLS("bca-realized-report", map, dataSource.getConnection() );
+        return this.generateGenericReport("bca-realized-report", map, dataSource.getConnection() );
     }
 
     public ByteArrayInputStream buildExportOverduePrint(String fromDate, String toDate)
@@ -146,7 +146,7 @@ public class ReportService {
         map.put("zonedToDate", AppUtility.isEmpty(zonedToDate) ? null : Timestamp.valueOf((AppUtility.getEndOfDay(zonedToDate)).toLocalDateTime()));
         map.put("reportName", PrintReportEnums.EXPORT_OVERDUE_REPORT);
 
-        return this.generateGenericReportXLS("export-overdue-report", map, dataSource.getConnection() );
+        return this.generateGenericReport("export-overdue-report", map, dataSource.getConnection() );
     }
 
     private ByteArrayInputStream generateGenericReport(String reportName, Map<String, Object> parameters, Connection connection)
