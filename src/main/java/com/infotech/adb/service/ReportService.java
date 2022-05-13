@@ -1,6 +1,8 @@
 package com.infotech.adb.service;
 
 import com.infotech.adb.enums.PrintReportEnums;
+import com.infotech.adb.util.AppConstants;
+import com.infotech.adb.util.AppUtility;
 import lombok.extern.log4j.Log4j2;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
@@ -16,6 +18,8 @@ import java.io.IOException;
 import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.ZonedDateTime;
 import java.util.*;
 
 @Service
@@ -82,6 +86,69 @@ public class ReportService {
         return this.generateGenericReport("BDA1-report", map, dataSource.getConnection() );
     }
 
+    public ByteArrayInputStream buildITRSPrint(String fromDate, String toDate)
+            throws IOException, JRException, SQLException {
+        log.info("buildITRSPrint method called..");
+        ;
+        Map<String, Object> map = new HashMap<>();
+        ZonedDateTime zonedFromDate = null, zonedToDate = null;
+        if (!AppUtility.isEmpty(fromDate)) {
+            zonedFromDate = AppUtility.getZonedDateTimeFromFormattedString(fromDate, AppConstants.DateFormats.DATE_FORMAT_ONE);
+        }
+        if (!AppUtility.isEmpty(toDate)) {
+            zonedToDate = AppUtility.getZonedDateTimeFromFormattedString(toDate, AppConstants.DateFormats.DATE_FORMAT_ONE);
+        }
+        map.put("fromDate", AppUtility.formatDateWithShortMonth(zonedFromDate));
+        map.put("toDate", AppUtility.formatDateWithShortMonth(zonedToDate));
+        map.put("zonedFromDate", AppUtility.isEmpty(zonedFromDate) ? null : Timestamp.valueOf(zonedFromDate.toLocalDateTime()));
+        map.put("zonedToDate", AppUtility.isEmpty(zonedToDate) ? null : Timestamp.valueOf((AppUtility.getEndOfDay(zonedToDate)).toLocalDateTime()));
+        map.put("reportName", PrintReportEnums.ITRS_RPEORT);
+
+        return this.generateGenericReportXLS("ITRS-import-report", map, dataSource.getConnection() );
+    }
+
+    public ByteArrayInputStream buildBCARealizedPrint(String fromDate, String toDate)
+            throws IOException, JRException, SQLException {
+        log.info("buildBCARealizedPrint method called..");
+        ;
+        Map<String, Object> map = new HashMap<>();
+        ZonedDateTime zonedFromDate = null, zonedToDate = null;
+        if (!AppUtility.isEmpty(fromDate)) {
+            zonedFromDate = AppUtility.getZonedDateTimeFromFormattedString(fromDate, AppConstants.DateFormats.DATE_FORMAT_ONE);
+        }
+        if (!AppUtility.isEmpty(toDate)) {
+            zonedToDate = AppUtility.getZonedDateTimeFromFormattedString(toDate, AppConstants.DateFormats.DATE_FORMAT_ONE);
+        }
+        map.put("fromDate", AppUtility.formatDateWithShortMonth(zonedFromDate));
+        map.put("toDate", AppUtility.formatDateWithShortMonth(zonedToDate));
+        map.put("zonedFromDate", AppUtility.isEmpty(zonedFromDate) ? null : Timestamp.valueOf(zonedFromDate.toLocalDateTime()));
+        map.put("zonedToDate", AppUtility.isEmpty(zonedToDate) ? null : Timestamp.valueOf((AppUtility.getEndOfDay(zonedToDate)).toLocalDateTime()));
+        map.put("reportName", PrintReportEnums.BCA_REALIZED_REPORT);
+
+        return this.generateGenericReportXLS("bca-realized-report", map, dataSource.getConnection() );
+    }
+
+    public ByteArrayInputStream buildExportOverduePrint(String fromDate, String toDate)
+            throws IOException, JRException, SQLException {
+        log.info("buildExportOverduePrint method called..");
+        ;
+        Map<String, Object> map = new HashMap<>();
+        ZonedDateTime zonedFromDate = null, zonedToDate = null;
+        if (!AppUtility.isEmpty(fromDate)) {
+            zonedFromDate = AppUtility.getZonedDateTimeFromFormattedString(fromDate, AppConstants.DateFormats.DATE_FORMAT_ONE);
+        }
+        if (!AppUtility.isEmpty(toDate)) {
+            zonedToDate = AppUtility.getZonedDateTimeFromFormattedString(toDate, AppConstants.DateFormats.DATE_FORMAT_ONE);
+        }
+        map.put("fromDate", AppUtility.formatDateWithShortMonth(zonedFromDate));
+        map.put("toDate", AppUtility.formatDateWithShortMonth(zonedToDate));
+        map.put("zonedFromDate", AppUtility.isEmpty(zonedFromDate) ? null : Timestamp.valueOf(zonedFromDate.toLocalDateTime()));
+        map.put("zonedToDate", AppUtility.isEmpty(zonedToDate) ? null : Timestamp.valueOf((AppUtility.getEndOfDay(zonedToDate)).toLocalDateTime()));
+        map.put("reportName", PrintReportEnums.EXPORT_OVERDUE_REPORT);
+
+        return this.generateGenericReportXLS("export-overdue-report", map, dataSource.getConnection() );
+    }
+
     private ByteArrayInputStream generateGenericReport(String reportName, Map<String, Object> parameters, Connection connection)
             throws JRException, IOException, SQLException {
         String reportPath = getClass().getClassLoader().getResource("reports/" + reportName + ".jrxml").getPath();
@@ -105,7 +172,7 @@ public class ReportService {
         reportPath = URLDecoder.decode(reportPath, "UTF-8");
 
         String reportId = UUID.randomUUID().toString();
-        String pdfPath = tmpFilePath + reportName + "_" + reportId + ".xlsx";
+        String pdfPath = tmpFilePath + reportName + "_" + reportId + ".xls";
         JasperReport jasperReport = JasperCompileManager.compileReport(reportPath);
 
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters,

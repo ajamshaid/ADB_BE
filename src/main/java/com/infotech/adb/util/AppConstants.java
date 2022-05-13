@@ -40,6 +40,16 @@ public class AppConstants {
         public final static String EXP_WITH_OUT_LC_VALUE = "308";
 
     }
+
+    public static class DateFormats {
+        public final static String DATE_FORMAT_ONE = "dd-MM-yyyy";
+        public final static String MONTH_DATE_YEAR = "M/d/yyyy";
+        public final static String DATE_MONTH_YEAR = "d/m/yyyy";
+        public final static String DATE_FORMAT_TWO = "dd-M-yyyy";
+        public final static String DATE_FORMAT_THREE = "d-M-yyyy";
+        public final static String DATE_FORMAT_FOUR = "d/M/yyyy";
+    }
+
     public static class PSW {
 
         public final static String TIME_STAMP_FORMAT="YyyyMmddhhmmss";

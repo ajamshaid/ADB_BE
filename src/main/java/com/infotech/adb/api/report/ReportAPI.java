@@ -121,4 +121,64 @@ public class ReportAPI {
         }
         return ResponseUtility.buildReportResponseObject(new InputStreamResource(bis));
     }
+
+    @RequestMapping(value = "/print-itrs", method = RequestMethod.GET)
+    public ResponseEntity<?> printITRS(HttpServletRequest request,
+                                       @RequestParam(value = "fromDate") String fromDate,
+                                       @RequestParam(value = "toDate") String toDate)
+            throws DataValidationException, NoDataFoundException, CustomException {
+        log.info("printSAD API initiated...");
+        //String stateId = request.getHeader(AppConstants.STATE_ID_HEADER);
+
+        if (AppUtility.isEmpty(fromDate)) {
+            throw new DataValidationException(messageBundle.getString("validation.error"));
+        }
+        ByteArrayInputStream bis = null;
+        try {
+            bis = reportService.buildITRSPrint(fromDate,toDate);
+        } catch (Exception e) {
+            ResponseUtility.exceptionResponse(e);
+        }
+        return ResponseUtility.buildReportResponseObject(new InputStreamResource(bis));
+    }
+
+    @RequestMapping(value = "/print-bca-realized", method = RequestMethod.GET)
+    public ResponseEntity<?> printBCARealized(HttpServletRequest request,
+                                       @RequestParam(value = "fromDate") String fromDate,
+                                       @RequestParam(value = "toDate") String toDate)
+            throws DataValidationException, NoDataFoundException, CustomException {
+        log.info("printSAD API initiated...");
+        //String stateId = request.getHeader(AppConstants.STATE_ID_HEADER);
+
+        if (AppUtility.isEmpty(fromDate)) {
+            throw new DataValidationException(messageBundle.getString("validation.error"));
+        }
+        ByteArrayInputStream bis = null;
+        try {
+            bis = reportService.buildBCARealizedPrint(fromDate,toDate);
+        } catch (Exception e) {
+            ResponseUtility.exceptionResponse(e);
+        }
+        return ResponseUtility.buildReportResponseObject(new InputStreamResource(bis));
+    }
+
+    @RequestMapping(value = "/print-exp-overdue", method = RequestMethod.GET)
+    public ResponseEntity<?> printExportOverdue(HttpServletRequest request,
+                                       @RequestParam(value = "fromDate") String fromDate,
+                                       @RequestParam(value = "toDate") String toDate)
+            throws DataValidationException, NoDataFoundException, CustomException {
+        log.info("printSAD API initiated...");
+        //String stateId = request.getHeader(AppConstants.STATE_ID_HEADER);
+
+        if (AppUtility.isEmpty(fromDate)) {
+            throw new DataValidationException(messageBundle.getString("validation.error"));
+        }
+        ByteArrayInputStream bis = null;
+        try {
+            bis = reportService.buildExportOverduePrint(fromDate,toDate);
+        } catch (Exception e) {
+            ResponseUtility.exceptionResponse(e);
+        }
+        return ResponseUtility.buildReportResponseObject(new InputStreamResource(bis));
+    }
 }

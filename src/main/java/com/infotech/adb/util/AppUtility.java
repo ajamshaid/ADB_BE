@@ -14,8 +14,9 @@ import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.*;
 
 @SuppressWarnings(value = {"rawtypes"})
@@ -152,6 +153,24 @@ public class AppUtility {
         DecimalFormat df = new DecimalFormat(str);
         df.setRoundingMode(RoundingMode.FLOOR);
         return df.format(d);
+    }
+
+    public static ZonedDateTime getZonedDateTimeFromFormattedString(String dateTime, String format) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+        LocalDateTime localDateTime = LocalDate.parse(dateTime, formatter).atStartOfDay();
+        return localDateTime.atZone(ZoneId.systemDefault());
+    }
+
+    public static ZonedDateTime getEndOfDay(ZonedDateTime regTo) {
+        return regTo.with(LocalTime.of(23, 59, 59));
+    }
+
+    public static String formatDateWithShortMonth(ZonedDateTime zonedDateTime) {
+        if (!isEmpty(zonedDateTime)) {
+            return zonedDateTime.getDayOfMonth() + "-" + zonedDateTime.getMonth().getDisplayName(TextStyle.SHORT, Locale.ENGLISH) + "-" + zonedDateTime.getYear();
+        } else {
+            return "";
+        }
     }
 
     public static String formatDoubleToStringWithoutCommasWithPrecision(Double d) {
