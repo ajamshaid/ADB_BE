@@ -592,7 +592,4 @@ WHERE
 			</line>
 		</band>
 	</detail>
-	<summary>
-		<band height="42" splitType="Stretch"/>
-	</summary>
 </jasperReport>

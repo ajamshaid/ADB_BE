@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ITRS-import-report" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8d190b82-adec-4b18-a238-5a07f30de304">
 	<property name="ireport.zoom" value="2.5937424601000036"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="938"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="fromDate" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -262,13 +262,10 @@ WHERE
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<variable name="serial_num" class="java.lang.String" incrementType="Column" calculation="DistinctCount"/>
-	<background>
-		<band splitType="Stretch"/>
-	</background>
 	<title>
 		<band height="25" splitType="Stretch">
 			<staticText>
-				<reportElement x="284" y="2" width="233" height="20" forecolor="#666666" uuid="225e2b33-5830-46e9-b575-73c5b119d7c4"/>
+				<reportElement x="284" y="1" width="233" height="20" forecolor="#666666" uuid="225e2b33-5830-46e9-b575-73c5b119d7c4"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
@@ -510,7 +507,7 @@ WHERE
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="20" splitType="Stretch">
+		<band height="21" splitType="Stretch">
 			<staticText>
 				<reportElement x="217" y="0" width="36" height="20" uuid="2d47f5d0-b4b2-4ad7-9b8a-9ae42e860f7e"/>
 				<box>
@@ -725,7 +722,7 @@ WHERE
 				<textFieldExpression><![CDATA[$F{beneficiary_country}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="171" y="0" width="46" height="20" uuid="7018eb5f-e75f-45ab-92ef-c2ae97168f17"/>
+				<reportElement x="964" y="-10" width="45" height="19" uuid="7018eb5f-e75f-45ab-92ef-c2ae97168f17"/>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="0.0"/>
@@ -736,6 +733,15 @@ WHERE
 				</textElement>
 				<text><![CDATA[]]></text>
 			</staticText>
+			<line>
+				<reportElement x="-1" y="0" width="1" height="20" uuid="b979acb4-860b-4e5a-a098-58e2e5d59151"/>
+			</line>
+			<line>
+				<reportElement x="802" y="0" width="1" height="20" uuid="49d08076-08c8-4eb6-93f1-58ed590f91a9"/>
+			</line>
+			<line>
+				<reportElement x="-1" y="20" width="803" height="1" uuid="8bc79123-5c67-46cc-be43-c5f041dc0cb1"/>
+			</line>
 		</band>
 	</detail>
 </jasperReport>

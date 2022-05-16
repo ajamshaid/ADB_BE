@@ -102,7 +102,7 @@ public class ReportService {
         map.put("toDate", AppUtility.formatZonedDateTime(AppConstants.DateFormats.YEAR_MONTH_DATE, zonedToDate));
         map.put("reportName", PrintReportEnums.ITRS_RPEORT);
 
-        return this.generateGenericReport("ITRS-import-report", map, dataSource.getConnection() );
+        return this.generateGenericReportXLS("ITRS-import-report", map, dataSource.getConnection() );
     }
 
     public ByteArrayInputStream buildBCARealizedPrint(String fromDate, String toDate)
@@ -121,7 +121,7 @@ public class ReportService {
         map.put("toDate", AppUtility.formatZonedDateTime(AppConstants.DateFormats.YEAR_MONTH_DATE, zonedToDate));
         map.put("reportName", PrintReportEnums.BCA_REALIZED_REPORT);
 
-        return this.generateGenericReport("bca-realized-report", map, dataSource.getConnection() );
+        return this.generateGenericReportXLS("bca-realized-report", map, dataSource.getConnection() );
     }
 
     public ByteArrayInputStream buildExportOverduePrint(String fromDate, String toDate)
@@ -140,7 +140,7 @@ public class ReportService {
         map.put("toDate", AppUtility.formatZonedDateTime(AppConstants.DateFormats.YEAR_MONTH_DATE, zonedToDate));
         map.put("reportName", PrintReportEnums.EXPORT_OVERDUE_REPORT);
 
-        return this.generateGenericReport("export-overdue-report", map, dataSource.getConnection() );
+        return this.generateGenericReportXLS("export-overdue-report", map, dataSource.getConnection() );
     }
 
     private ByteArrayInputStream generateGenericReport(String reportName, Map<String, Object> parameters, Connection connection)
