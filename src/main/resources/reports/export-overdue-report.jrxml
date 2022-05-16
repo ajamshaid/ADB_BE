@@ -18,8 +18,8 @@
 WHERE
 	ft.type = "EXPORT"
 	AND ft.STATUS = 'Pushed To PSW'
-	AND CAST( ft.last_modified_date AS date ) BETWEEN $P!{fromDate}
-	AND $P!{toDate}]]>
+	AND CAST( ft.last_modified_date AS date ) BETWEEN $P{fromDate}
+	AND $P{toDate}]]>
 	</queryString>
 	<field name="id" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>

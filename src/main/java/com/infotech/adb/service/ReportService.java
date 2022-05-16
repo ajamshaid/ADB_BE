@@ -98,10 +98,8 @@ public class ReportService {
         if (!AppUtility.isEmpty(toDate)) {
             zonedToDate = AppUtility.getZonedDateTimeFromFormattedString(toDate, AppConstants.DateFormats.DATE_FORMAT_ONE);
         }
-        map.put("fromDate", AppUtility.formatDateWithShortMonth(zonedFromDate));
-        map.put("toDate", AppUtility.formatDateWithShortMonth(zonedToDate));
-        map.put("zonedFromDate", AppUtility.isEmpty(zonedFromDate) ? null : Timestamp.valueOf(zonedFromDate.toLocalDateTime()));
-        map.put("zonedToDate", AppUtility.isEmpty(zonedToDate) ? null : Timestamp.valueOf((AppUtility.getEndOfDay(zonedToDate)).toLocalDateTime()));
+        map.put("fromDate", AppUtility.formatZonedDateTime(AppConstants.DateFormats.YEAR_MONTH_DATE, zonedFromDate));
+        map.put("toDate", AppUtility.formatZonedDateTime(AppConstants.DateFormats.YEAR_MONTH_DATE, zonedToDate));
         map.put("reportName", PrintReportEnums.ITRS_RPEORT);
 
         return this.generateGenericReport("ITRS-import-report", map, dataSource.getConnection() );
@@ -119,10 +117,8 @@ public class ReportService {
         if (!AppUtility.isEmpty(toDate)) {
             zonedToDate = AppUtility.getZonedDateTimeFromFormattedString(toDate, AppConstants.DateFormats.DATE_FORMAT_ONE);
         }
-        map.put("fromDate", AppUtility.formatDateWithShortMonth(zonedFromDate));
-        map.put("toDate", AppUtility.formatDateWithShortMonth(zonedToDate));
-        map.put("zonedFromDate", AppUtility.isEmpty(zonedFromDate) ? null : Timestamp.valueOf(zonedFromDate.toLocalDateTime()));
-        map.put("zonedToDate", AppUtility.isEmpty(zonedToDate) ? null : Timestamp.valueOf((AppUtility.getEndOfDay(zonedToDate)).toLocalDateTime()));
+        map.put("fromDate", AppUtility.formatZonedDateTime(AppConstants.DateFormats.YEAR_MONTH_DATE, zonedFromDate));
+        map.put("toDate", AppUtility.formatZonedDateTime(AppConstants.DateFormats.YEAR_MONTH_DATE, zonedToDate));
         map.put("reportName", PrintReportEnums.BCA_REALIZED_REPORT);
 
         return this.generateGenericReport("bca-realized-report", map, dataSource.getConnection() );
@@ -140,10 +136,8 @@ public class ReportService {
         if (!AppUtility.isEmpty(toDate)) {
             zonedToDate = AppUtility.getZonedDateTimeFromFormattedString(toDate, AppConstants.DateFormats.DATE_FORMAT_ONE);
         }
-        map.put("fromDate", AppUtility.formatDateWithShortMonth(zonedFromDate));
-        map.put("toDate", AppUtility.formatDateWithShortMonth(zonedToDate));
-        map.put("zonedFromDate", AppUtility.isEmpty(zonedFromDate) ? null : Timestamp.valueOf(zonedFromDate.toLocalDateTime()));
-        map.put("zonedToDate", AppUtility.isEmpty(zonedToDate) ? null : Timestamp.valueOf((AppUtility.getEndOfDay(zonedToDate)).toLocalDateTime()));
+        map.put("fromDate", AppUtility.formatZonedDateTime(AppConstants.DateFormats.YEAR_MONTH_DATE, zonedFromDate));
+        map.put("toDate", AppUtility.formatZonedDateTime(AppConstants.DateFormats.YEAR_MONTH_DATE, zonedToDate));
         map.put("reportName", PrintReportEnums.EXPORT_OVERDUE_REPORT);
 
         return this.generateGenericReport("export-overdue-report", map, dataSource.getConnection() );

@@ -43,6 +43,7 @@ public class AppConstants {
 
     public static class DateFormats {
         public final static String DATE_FORMAT_ONE = "dd-MM-yyyy";
+        public final static String YEAR_MONTH_DATE = "yyyy-MM-dd";
         public final static String MONTH_DATE_YEAR = "M/d/yyyy";
         public final static String DATE_MONTH_YEAR = "d/m/yyyy";
         public final static String DATE_FORMAT_TWO = "dd-M-yyyy";
