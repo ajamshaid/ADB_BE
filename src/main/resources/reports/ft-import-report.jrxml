@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ft-import-report" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fcb87db0-ecf8-411c-ac5c-a5b4b6cd83b2">
 	<property name="ireport.zoom" value="3.305785123966942"/>
-	<property name="ireport.x" value="54"/>
-	<property name="ireport.y" value="624"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="ftId" class="java.lang.Long">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -28,7 +28,7 @@ FROM
 	LEFT JOIN lc_data lc ON lc.fin_transaction_id = ft.id
 	LEFT JOIN payment_information pi ON pi.fin_transaction_id = ft.id
 WHERE
-	ft.id = 17]]>
+	ft.id = $P{ftId}]]>
 	</queryString>
 	<field name="id" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -473,7 +473,7 @@ WHERE
 				<textFieldExpression><![CDATA[$F{fin_ins_expiry_date}]]></textFieldExpression>
 			</textField>
 			<subreport>
-				<reportElement x="1" y="192" width="554" height="100" uuid="a8a56c39-6d03-4c28-bbd7-1d3276c4751a">
+				<reportElement x="0" y="192" width="555" height="100" uuid="a8a56c39-6d03-4c28-bbd7-1d3276c4751a">
 					<printWhenExpression><![CDATA[$F{mode_of_payment}.equalsIgnoreCase( "304" )]]></printWhenExpression>
 				</reportElement>
 				<subreportParameter name="ftId">
