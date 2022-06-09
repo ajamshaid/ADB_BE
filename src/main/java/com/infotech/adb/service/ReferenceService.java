@@ -705,7 +705,7 @@ public class ReferenceService {
         return reversalOfBdaBcaRepository.save(entity);
     }
 
-    public List<ReversalOfBdaBca> searchReversalOfBDABCA(String tradeType, String traderNTN, String fromDate, String toDate, List<String> status) throws ParseException {
+    public List<ReversalOfBdaBca> searchReversalOfBDABCA(String tradeType, String traderNTN, String fromDate, String toDate, List<String> status , String finInsUniqueNumber) throws ParseException {
         log.info("searchReversalOfBDABCA method called..");
         if (AppUtility.isEmpty(traderNTN)) {
             traderNTN = "%";
@@ -722,7 +722,7 @@ public class ReferenceService {
         } else {
             date2 = new Date();
         }
-        return reversalOfBdaBcaRepository.searchReversalOfBDABCA(tradeType, traderNTN, date1, date2, status);
+        return reversalOfBdaBcaRepository.searchReversalOfBDABCA(tradeType, traderNTN,  finInsUniqueNumber , date1, date2, status);
     }
 
     /*************************************

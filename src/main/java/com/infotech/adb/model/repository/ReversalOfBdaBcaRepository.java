@@ -18,8 +18,8 @@ public interface ReversalOfBdaBcaRepository extends JpaRepository<ReversalOfBdaB
 
     List<ReversalOfBdaBca> findAllByOrderByLastModifiedDateDesc();
 
-    @Query("from ReversalOfBdaBca r where r.status in (:statuses) and r.tradeType like %:tradeType% and r.traderNTN like %:traderNTN% and (r.lastModifiedDate between :fromDate and :toDate) order by r.lastModifiedDate desc , r.lastModifiedBy desc")
-    List<ReversalOfBdaBca> searchReversalOfBDABCA(@Param("tradeType") String tradeType, @Param("traderNTN") String traderNTN
-            , @Param("fromDate") Date fromDate, @Param("toDate") Date toDate , @Param("statuses") List<String> statuses);
+    @Query("from ReversalOfBdaBca r where r.status in (:statuses) and r.tradeType like %:tradeType% and r.finInsUniqueNumber like %:finInsUniqueNumber% and r.traderNTN like %:traderNTN% and (r.lastModifiedDate between :fromDate and :toDate) order by r.lastModifiedDate desc , r.lastModifiedBy desc")
+    List<ReversalOfBdaBca> searchReversalOfBDABCA(@Param("tradeType") String tradeType, @Param("traderNTN") String traderNTN, @Param("finInsUniqueNumber") String finInsUniqueNumber
+            , @Param("fromDate") Date fromDate, @Param("toDate") Date toDate, @Param("statuses") List<String> statuses);
 
 }

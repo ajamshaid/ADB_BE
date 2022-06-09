@@ -92,6 +92,7 @@ public class ReversalOfBdaBcaAPI {
     @RequestMapping(value = "/search-reversal-bda-bca", method = RequestMethod.GET)
     public CustomResponse searchReversalOfBdaBca(HttpServletRequest request,
                                                  @RequestParam(value = "tradeType", required = false) String tradeType,
+                                                 @RequestParam(value = "finInsUniqueNumber", required = false) String finInsUniqueNumber,
                                                  @RequestParam(value = "traderNTN", required = false) String traderNTN,
                                                  @RequestParam(value = "fromDate", required = false) String fromDate,
                                                  @RequestParam(value = "toDate", required = false) String toDate,
@@ -101,7 +102,7 @@ public class ReversalOfBdaBcaAPI {
         List<ReversalOfBdaBca> reversalOfBdaBcaList = null;
         try {
             reversalOfBdaBcaList = referenceService.searchReversalOfBDABCA(tradeType, traderNTN, fromDate, toDate
-                    , AppConstants.RecordStatuses.getSearchStatesList(isNew));
+                    , AppConstants.RecordStatuses.getSearchStatesList(isNew), finInsUniqueNumber);
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e);
         }

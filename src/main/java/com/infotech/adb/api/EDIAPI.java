@@ -204,17 +204,25 @@ public class EDIAPI {
      2. AD receive the information and shares the acknowledgement with PSW.
      **************************/
     public CustomResponse shareImportGDFinInfoToBank(String data, RequestParameter requestParameter)
-            throws NoDataFoundException, JsonProcessingException {
+            throws NoDataFoundException, JsonProcessingException, DataValidationException {
+
+        String logMessage = "5.1.2 - Sharing of [Import] GD and Financial Information with AD by PSW";
 
         GDImportDTO dto = getObjectMapper().readValue(data, GDImportDTO.class);
         dto.setLastModifiedBy(AppConstants.PSW.ID);
         dto.setLastModifiedDate(AppUtility.getCurrentTimeStamp());
 
         Date requestTime = AppUtility.getCurrentTimeStamp();
-        log.info("IN coming GD Info:" + dto);
+        log.debug("IN coming GD Info:" + dto);
 
         if (!AppUtility.isEmpty(dto)) {
-            referenceService.updateGD(dto.convertToEntity());
+            try {
+                referenceService.updateGD(dto.convertToEntity());
+            }catch (Exception ex){
+                log.error(ex.getMessage());
+                logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter,requestTime, ResponseUtility.APIFailureResponse(ex.getMessage()));
+                throw new DataValidationException(ex);
+            }
         }
         CustomResponse customResponse = null;
 
@@ -223,7 +231,7 @@ public class EDIAPI {
                 , requestParameter, false);
 
         ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
-        String logMessage = "5.1.2 - Sharing of [Import] GD and Financial Information with AD by PSW";
+
 
         logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter,requestTime, responseBody);
         return customResponse;
@@ -235,7 +243,9 @@ public class EDIAPI {
      2. AD receive the information and shares the acknowledgement with PSW.
      **************************/
     public CustomResponse shareExportGDFinInfoToBank(String data, RequestParameter requestParameter)
-            throws NoDataFoundException, JsonProcessingException {
+            throws NoDataFoundException, JsonProcessingException , DataValidationException{
+
+        String logMessage = "5.2.2 - Sharing of [Export] GD and Financial Information with AD by PSW";
 
         GDExportDTO dto = getObjectMapper().readValue(data, GDExportDTO.class);
         dto.setLastModifiedBy(AppConstants.PSW.ID);
@@ -245,7 +255,13 @@ public class EDIAPI {
         System.out.println("IN coming GD Info:" + dto);
 
         if (!AppUtility.isEmpty(dto)) {
-            referenceService.updateGDExport(dto.convertToEntity());
+            try {
+                referenceService.updateGDExport(dto.convertToEntity());
+            }catch (Exception ex){
+                log.error(ex.getMessage());
+                logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter,requestTime, ResponseUtility.APIFailureResponse(ex.getMessage()));
+                throw new DataValidationException(ex);
+            }
         }
 
         CustomResponse customResponse  = ResponseUtility.successResponse("{}", AppConstants.PSWResponseCodes.OK,
@@ -253,7 +269,7 @@ public class EDIAPI {
                 , requestParameter, false);
 
         ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
-        String logMessage = "5.2.2 - Sharing of [Export] GD and Financial Information with AD by PSW";
+
 
         logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter,requestTime, responseBody);
         return customResponse;

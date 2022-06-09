@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ft-export-report" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d3fa9323-8cb6-4efa-a5e6-6779afaa567a">
 	<property name="ireport.zoom" value="2.5937424601000036"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="87"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["reports/"]]></defaultValueExpression>
 	</parameter>
@@ -328,7 +328,7 @@ where ft.ID = $P{ftId}]]>
 				<textFieldExpression><![CDATA[$F{mode_of_payment}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Transparent" x="0" y="240" width="100" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="0e0f8c0f-929f-4c90-b27b-26853df8237c"/>
+				<reportElement mode="Transparent" x="0" y="240" width="130" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="0e0f8c0f-929f-4c90-b27b-26853df8237c"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
 					<font fontName="SansSerif" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -352,7 +352,7 @@ where ft.ID = $P{ftId}]]>
 				<text><![CDATA[Consignee Country]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Transparent" x="431" y="242" width="100" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="f2fecbb1-ebb5-4f01-a2d1-ef92534fa330"/>
+				<reportElement mode="Transparent" x="431" y="242" width="124" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="f2fecbb1-ebb5-4f01-a2d1-ef92534fa330"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
 					<font fontName="SansSerif" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -360,7 +360,7 @@ where ft.ID = $P{ftId}]]>
 				<text><![CDATA[Consignee IBAN]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Transparent" x="431" y="282" width="100" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="bf437f64-9803-4aed-98f7-6fd2942f28ea"/>
+				<reportElement mode="Transparent" x="0" y="280" width="130" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="bf437f64-9803-4aed-98f7-6fd2942f28ea"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
 					<font fontName="SansSerif" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -368,7 +368,7 @@ where ft.ID = $P{ftId}]]>
 				<text><![CDATA[Port of Discharge]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Transparent" x="0" y="280" width="100" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="9713ea0a-0bc3-433c-873a-ae1924ccceb4"/>
+				<reportElement mode="Transparent" x="146" y="280" width="110" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="9713ea0a-0bc3-433c-873a-ae1924ccceb4"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
 					<font fontName="SansSerif" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -376,7 +376,7 @@ where ft.ID = $P{ftId}]]>
 				<text><![CDATA[Delivery Terms]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Transparent" x="146" y="280" width="110" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="05d52fa4-8eea-449e-b9c8-0d3828a7b4e1"/>
+				<reportElement mode="Transparent" x="285" y="280" width="126" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="05d52fa4-8eea-449e-b9c8-0d3828a7b4e1"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
 					<font fontName="SansSerif" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -384,7 +384,7 @@ where ft.ID = $P{ftId}]]>
 				<text><![CDATA[Financial Instrument Value]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Transparent" x="285" y="280" width="126" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="26fbc9a5-0c9a-492f-ac6b-ad5d9daf3635"/>
+				<reportElement mode="Transparent" x="431" y="282" width="124" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="26fbc9a5-0c9a-492f-ac6b-ad5d9daf3635"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
 					<font fontName="SansSerif" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -392,15 +392,15 @@ where ft.ID = $P{ftId}]]>
 				<text><![CDATA[Financial Instrument Currency]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Transparent" x="0" y="320" width="100" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="b4db5252-495c-4888-bd05-70fda0cde271"/>
+				<reportElement mode="Transparent" x="0" y="320" width="130" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="b4db5252-495c-4888-bd05-70fda0cde271"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
 					<font fontName="SansSerif" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[Exchange Rate]]></text>
+				<text><![CDATA[Financial Instrument Expiry Value]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="0" y="260" width="100" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="cdf78f89-3446-4dda-8ae9-e6e02ac5bcb1"/>
+				<reportElement mode="Transparent" x="0" y="260" width="130" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="cdf78f89-3446-4dda-8ae9-e6e02ac5bcb1"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -442,7 +442,7 @@ where ft.ID = $P{ftId}]]>
 				<textFieldExpression><![CDATA[$F{beneficiary_country}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="431" y="262" width="100" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="28e2b08d-eb0a-4ae4-9a7e-56a0765bca98"/>
+				<reportElement mode="Transparent" x="431" y="262" width="124" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="28e2b08d-eb0a-4ae4-9a7e-56a0765bca98"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -456,7 +456,7 @@ where ft.ID = $P{ftId}]]>
 				<textFieldExpression><![CDATA[$F{beneficiary_iban}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="0" y="300" width="100" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="69f24405-b806-4bb7-b56a-9dedff579ce5"/>
+				<reportElement mode="Transparent" x="146" y="300" width="110" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="69f24405-b806-4bb7-b56a-9dedff579ce5"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -470,7 +470,7 @@ where ft.ID = $P{ftId}]]>
 				<textFieldExpression><![CDATA[$F{delivery_term}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="146" y="300" width="110" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="dca65de3-d5f1-4928-8410-ccb4d81312b0"/>
+				<reportElement mode="Transparent" x="285" y="300" width="126" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="dca65de3-d5f1-4928-8410-ccb4d81312b0"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -484,7 +484,7 @@ where ft.ID = $P{ftId}]]>
 				<textFieldExpression><![CDATA[$F{fin_ins_value}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="285" y="300" width="126" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="f4c2eefa-ae0e-4fea-8e76-7075d243a99c"/>
+				<reportElement mode="Transparent" x="431" y="302" width="124" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="f4c2eefa-ae0e-4fea-8e76-7075d243a99c"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -498,7 +498,7 @@ where ft.ID = $P{ftId}]]>
 				<textFieldExpression><![CDATA[$F{fin_ins_currency}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="431" y="302" width="100" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="5b388fe3-b009-4947-a1d7-162829210f6b"/>
+				<reportElement mode="Transparent" x="0" y="300" width="130" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="5b388fe3-b009-4947-a1d7-162829210f6b"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -510,20 +510,6 @@ where ft.ID = $P{ftId}]]>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{port_of_discharge}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="0" y="340" width="100" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="0f48206b-9954-45ab-887d-9455994c9451"/>
-				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
-					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{exchange_rate}]]></textFieldExpression>
 			</textField>
 			<subreport>
 				<reportElement x="0" y="100" width="555" height="100" uuid="e7ad6113-4759-4f07-9cd2-faf1fa3a4bd3">
@@ -555,6 +541,19 @@ where ft.ID = $P{ftId}]]>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "ft-import-report_subreport5.jasper"]]></subreportExpression>
 			</subreport>
+			<textField>
+				<reportElement x="0" y="340" width="130" height="20" uuid="cb1e57ef-3e9c-4bb1-b4f9-890a06730682"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fin_ins_expiry_date}]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnHeader>
 	<summary>
