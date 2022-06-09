@@ -115,7 +115,7 @@ public class GDExport {
     @Column(name = "CONSIGNMENT_TYPE", length = 20)
     private String consignmentType;
 
-    @Column(name = "PORT_OF_SHIPMENT", length = 10, nullable = false)
+    @Column(name = "PORT_OF_SHIPMENT", length = 10)
     private String portOfShipment;
 
     @Column(name = "Place_OF_DELIVERY", length = 100, nullable = false)

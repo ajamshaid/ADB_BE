@@ -36,14 +36,14 @@ public class GD {
     @Column(name = "COLLECTORATE", length = 100, nullable = false)
     private String collectorate;
 
-    @Column(name = "BL_AWB_NUM", length = 50, nullable = false)
+    @Column(name = "BL_AWB_NUM", length = 50)
     private String blAwbNumber;
 
-    @Column(name = "BL_AWB_DATE", nullable = false)
+    @Column(name = "BL_AWB_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date blAwbDate;
 
-    @Column(name = "VIR_AIR_NUM", length = 50, nullable = false)
+    @Column(name = "VIR_AIR_NUM", length = 50)
     private String virAirNumber;
 
    /// Consigner and Consignee Information
@@ -72,7 +72,7 @@ public class GD {
     @Column(name = "GROSS_WEIGHT",length = 20, nullable = false)
     private String grossWeight;
 
-    @Column(name = "PORT_OF_SHIPMENT", length = 10, nullable = false)
+    @Column(name = "PORT_OF_SHIPMENT", length = 10)
     private String portOfShipment;
 
     @Column(name = "PORT_OF_DELIVERY", length = 10, nullable = true)
@@ -81,7 +81,7 @@ public class GD {
     @Column(name = "PORT_OF_DISCHARGE", length = 10, nullable = true)
     private String portOfDischarge;
 
-    @Column(name = "TERMINAL_LOCATION", length = 70, nullable = false)
+    @Column(name = "TERMINAL_LOCATION", length = 70)
     private String terminalLocation;
 
     @Column(name = "CONSIGNMENT_TYPE", length = 20)

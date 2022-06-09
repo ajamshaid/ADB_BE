@@ -68,8 +68,8 @@ public class FinancialTransactionImportDTO implements BaseDTO<FinancialTransacti
             entity.setFinInsExpiryDate(AppUtility.convertDateFromString(this.getFinancialTranInformation().getExpiryDate()));
         }
         if(!AppUtility.isEmpty(this.getCashMargin())) {
-            entity.setCashMarginPercentage(this.getCashMargin().getCashMarginPercentage());
-            entity.setCashMarginValue(this.getCashMargin().getCashMarginValue());
+            entity.setCashmarginPercentage(this.getCashMargin().getCashmarginPercentage());
+            entity.setCashmarginValue(this.getCashMargin().getCashmarginValue());
         }
 
         //CC Data
@@ -140,8 +140,8 @@ public class FinancialTransactionImportDTO implements BaseDTO<FinancialTransacti
             }
 
      //      if (AppConstants.PAYMENT_MODE.IMPORT_OPEN_ACCOUNT.equals(entity.getModeOfPayment())) {
-                this.setCashMargin(new CashMarginDTO(entity.getCashMarginPercentage()
-                        , entity.getCashMarginValue()));
+                this.setCashMargin(new CashMarginDTO(entity.getCashmarginPercentage()
+                        , entity.getCashmarginValue()));
      //       }
 
       //      if (!AppUtility.isEmpty(entity.getCcData()) && AppConstants.PAYMENT_MODE.IMPORT_CC.equals(entity.getModeOfPayment())) {
@@ -187,12 +187,12 @@ public class FinancialTransactionImportDTO implements BaseDTO<FinancialTransacti
     @Data
     @NoArgsConstructor
     private class CashMarginDTO {
-        private BigDecimal cashMarginPercentage;
-        private BigDecimal cashMarginValue;
+        private BigDecimal cashmarginPercentage;
+        private BigDecimal cashmarginValue;
 
         public CashMarginDTO(BigDecimal cashMarginPercentage, BigDecimal cashMarginValue) {
-            this.cashMarginPercentage = cashMarginPercentage;
-            this.cashMarginValue = cashMarginValue;
+            this.cashmarginPercentage = cashMarginPercentage;
+            this.cashmarginValue = cashMarginValue;
         }
     }
 }

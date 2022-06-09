@@ -90,10 +90,10 @@ public class FinancialTransaction {
     //for Payment mode -> Open Account (Cash Margin)
 
     @Column(name = "CASH_MARGIN_PERCENTAGE",precision=7, scale=4)
-    private BigDecimal cashMarginPercentage;
+    private BigDecimal cashmarginPercentage;
 
     @Column(name = "CASH_MARGIN_VALUE", precision=19, scale=4)
-    private BigDecimal cashMarginValue;
+    private BigDecimal cashmarginValue;
 
     // LC and CC Data
     @OneToOne(mappedBy = "financialTransaction", fetch = FetchType.LAZY , cascade = CascadeType.ALL, orphanRemoval=true)
