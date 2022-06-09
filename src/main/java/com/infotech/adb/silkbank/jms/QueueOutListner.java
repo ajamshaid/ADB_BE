@@ -51,7 +51,7 @@ public class QueueOutListner {
                     referenceService.updateFinancialTransaction(ft);
                 } catch (Exception ex) {
                     log.error(ex.getMessage());
-                    ex.printStackTrace();
+              //      ex.printStackTrace();
                 }
             } else if (MQUtility.MSG_TYPE_BDA_IMPORT.equals(replyMessage.getType())) {
                 // IF Message 5.1.3  BDA Import
@@ -62,7 +62,7 @@ public class QueueOutListner {
                     referenceService.saveBDA(bda);
                 } catch (Exception ex) {
                     log.error(ex.getMessage());
-                    ex.printStackTrace();
+                //    ex.printStackTrace();
                 }
             }  else if (MQUtility.MSG_TYPE_FIN_TRANS_EXPORT.equals(replyMessage.getType())) {
                 // IF Message 5.2.1  Export Share Financial Transaction Data with PSW
@@ -73,7 +73,7 @@ public class QueueOutListner {
                     referenceService.updateFinancialTransaction(ft);
                 } catch (Exception ex) {
                     log.error(ex.getMessage());
-                    ex.printStackTrace();
+                  //  ex.printStackTrace();
                 }
             } else if (MQUtility.MSG_TYPE_BCA_EXPORT.equals(replyMessage.getType())) {
                 // IF Message 5.2.3  BCA Export
@@ -84,7 +84,7 @@ public class QueueOutListner {
                     referenceService.saveBCA(bca);
                 } catch (Exception ex) {
                     log.error(ex.getMessage());
-                    ex.printStackTrace();
+                //    ex.printStackTrace();
                 }
             }else if (MQUtility.MSG_TYPE_CANCELLATION_OF_FT.equals(replyMessage.getType())) {
                 // IF Message 8.1  Cancellation of FT
@@ -95,7 +95,7 @@ public class QueueOutListner {
                     referenceService.updateCancellationOfFT(cft);
                 } catch (Exception ex) {
                     log.error(ex.getMessage());
-                    ex.printStackTrace();
+                 //   ex.printStackTrace();
                 }
             }else if (MQUtility.MSG_TYPE_REVERSAL_OF_BDA_BCA.equals(replyMessage.getType())) {
                 // IF Message 9.1 Reversal of BDA/BCA
@@ -106,7 +106,7 @@ public class QueueOutListner {
                     referenceService.updateReversalBDABCA(entity);
                 } catch (Exception ex) {
                     log.error(ex.getMessage());
-                    ex.printStackTrace();
+               //     ex.printStackTrace();
                 }
             } else {
                 MQUtility.MqMessage reqMessage = MQUtility.objectLockingMap.get(replyMessage.getId());
@@ -124,7 +124,7 @@ public class QueueOutListner {
                         }
                     } catch (InterruptedException e) {
                         log.error(e.getMessage());
-                        e.printStackTrace();
+                     //   e.printStackTrace();
                     }
                 }
             }
