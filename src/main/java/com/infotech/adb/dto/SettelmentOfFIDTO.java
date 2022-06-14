@@ -22,6 +22,7 @@ public class SettelmentOfFIDTO implements BaseDTO<SettelmentOfFIDTO, SettelmentO
     private BigDecimal finInsValue;
     private BigDecimal totalValueOfSharedBCABDA;
     private BigDecimal balance;
+    private String status;
 
     private String lastModifiedBy;
     private Date lastModifiedDate;
@@ -39,6 +40,7 @@ public class SettelmentOfFIDTO implements BaseDTO<SettelmentOfFIDTO, SettelmentO
         entity.setFinInsUniqueNumber(this.getFinInsUniqueNumber());
         entity.setFinInsValue(this.getFinInsValue());
         entity.setBalance(this.getBalance());
+        entity.setStatus(this.getStatus());
         entity.setTotalValueOfSharedBCABDA(this.getTotalValueOfSharedBCABDA());
 
         entity.setLastModifiedBy(this.getLastModifiedBy());
@@ -64,6 +66,7 @@ public class SettelmentOfFIDTO implements BaseDTO<SettelmentOfFIDTO, SettelmentO
             this.setFinInsValue(entity.getFinInsValue());
             this.setBalance(entity.getBalance());
             this.setTotalValueOfSharedBCABDA(entity.getTotalValueOfSharedBCABDA());
+            this.setStatus(entity.getStatus());
             this.setLastModifiedBy(entity.getLastModifiedBy());
             this.setLastModifiedDate(entity.getLastModifiedDate());
 

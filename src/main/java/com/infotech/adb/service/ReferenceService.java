@@ -728,10 +728,10 @@ public class ReferenceService {
     /*************************************
      * Settlement Of FI  METHODS
      **************************************/
-    public List<SettelmentOfFI> getLastModifiedSettlementOfFI() {
-        log.info("getAllCOB method called..");
+    public List<SettelmentOfFI> getLastModifiedSettlementOfFI(String status) {
+        log.info("getLastModifiedSettlementOfFI method called..");
         List<SettelmentOfFI> refList = null;
-        refList = this.settlementOfFIRepository.findAllByOrderByLastModifiedDateDesc();
+        refList = this.settlementOfFIRepository.findByStatusOrderByLastModifiedDateDesc(status);
         return refList;
     }
 
