@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BDA-register-report" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d0d1dc21-36e6-4546-8845-a6d1ef08daf1">
+	<property name="ireport.zoom" value="1.9487171000000014"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.columns" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.rows" value="true"/>
+	<parameter name="fromDate" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="toDate" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+	bda.importer_name AS importer_name,
+	bda.iban AS iban,
+	bda.fin_ins_unique_number AS fin_ins_uniq_num,
+	bda.bda_unique_number,
+	bda.importer_ntn AS importer_ntn,
+	bda.bda_date AS bda_date,
+	bda.total_bda_amount_currency AS total_bda_amount_currency,
+	bda.total_bda_amount_fcy AS total_bda_amount_fcy,
+	bda.balance_bda_amount_fcy AS balance_bda_amount_fcy,
+	bda.remarks AS remarks
+FROM
+	bda bda
+WHERE
+	bda.STATUS = 'Pushed To PSW'
+	AND CAST( bda.last_modified_date AS date ) BETWEEN $P{fromDate}
+	AND $P{toDate}]]>
+	</queryString>
+	<field name="importer_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="iban" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fin_ins_uniq_num" class="java.lang.String"/>
+	<field name="bda_unique_number" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="importer_ntn" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="bda_date" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="total_bda_amount_currency" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="total_bda_amount_fcy" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="balance_bda_amount_fcy" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="remarks" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<title>
+		<band height="29" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="802" height="20" uuid="d7e4e30b-3826-4b10-b654-38a51a57313d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[BDA Register Report]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="72" height="20" uuid="5bfef53a-6787-4483-afcd-dc25ed40370a"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[IMPORTER NAME]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="72" y="0" width="65" height="20" uuid="12b576f8-d689-4f0c-8e3b-09b374a27260"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[IBAN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="247" y="0" width="69" height="20" uuid="35ebc65f-9456-4fa2-89d5-7265ecc20ae5"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[BDA NO.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="316" y="0" width="86" height="20" uuid="fd9085f9-69fb-495b-9144-2eaf10b52e9d"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[IMPORTER NTN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="402" y="0" width="73" height="20" uuid="d368b0db-f76d-4376-8347-dd146cda5858"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[BDA DATE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="475" y="0" width="90" height="20" uuid="ae9a2833-f1f7-437d-a01c-33621338438d"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL BDA AMOUNT CURRENCY]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="565" y="0" width="91" height="20" uuid="834724be-a706-42b5-bfc2-cd4e2701bdcb"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL BDA AMPOUNT(FCY)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="656" y="0" width="90" height="20" uuid="fb050803-fd20-41b7-b1e8-a41d2257b23c"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[BALANCE BDA AMOUNT (FCY)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="746" y="0" width="56" height="20" uuid="7abcf2b0-673b-4006-9e68-e770706210a1"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REMARKS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="137" y="0" width="110" height="20" uuid="6ef6abd3-239e-414a-ba10-5adaadf47c8c"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FINANCIAL INSTRUMENT]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="72" height="20" uuid="d607bdf3-2b8e-4209-8699-2a5a2e0c4f12"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{importer_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="72" y="0" width="65" height="20" uuid="d11fc96f-b929-4b83-bf17-87e630a11e90"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{iban}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="137" y="0" width="110" height="20" uuid="f81c413b-eb3b-4232-a0e3-79589a16fad1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fin_ins_uniq_num}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="247" y="0" width="69" height="20" uuid="9367caea-f390-4b4b-b3e1-e2d56cac0dd6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bda_unique_number}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="316" y="0" width="86" height="20" uuid="e21e288a-c61d-44dc-bc7e-8100799b9c0d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{importer_ntn}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="402" y="0" width="73" height="20" uuid="a7a4b6b5-dcc1-4fa4-a0cf-538cfca3863f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bda_date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="475" y="0" width="90" height="20" uuid="f0693984-5929-4282-b8d1-68eb7f16d932"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_bda_amount_currency}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="565" y="0" width="91" height="20" uuid="01bf56f1-9c38-4287-bcba-6536082bcbed"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_bda_amount_fcy}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="656" y="0" width="90" height="20" uuid="eef00fa9-2d9f-45b3-96f2-ffe7f4bd07f2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{balance_bda_amount_fcy}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="746" y="0" width="56" height="20" uuid="f69ac463-c88c-4975-928c-2aae2de5bbdf"/>
+				<box>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{remarks}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

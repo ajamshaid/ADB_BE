@@ -143,6 +143,46 @@ public class ReportService {
         return this.generateGenericReportXLS("export-overdue-report", map, dataSource.getConnection() );
     }
 
+
+    public ByteArrayInputStream buildFIRegisterPrint(String fromDate, String toDate)
+            throws IOException, JRException, SQLException {
+        log.info("buildExportOverduePrint method called..");
+        ;
+        Map<String, Object> map = new HashMap<>();
+        ZonedDateTime zonedFromDate = null, zonedToDate = null;
+        if (!AppUtility.isEmpty(fromDate)) {
+            zonedFromDate = AppUtility.getZonedDateTimeFromFormattedString(fromDate, AppConstants.DateFormats.DATE_FORMAT_ONE);
+        }
+        if (!AppUtility.isEmpty(toDate)) {
+            zonedToDate = AppUtility.getZonedDateTimeFromFormattedString(toDate, AppConstants.DateFormats.DATE_FORMAT_ONE);
+        }
+        map.put("fromDate", AppUtility.formatZonedDateTime(AppConstants.DateFormats.YEAR_MONTH_DATE, zonedFromDate));
+        map.put("toDate", AppUtility.formatZonedDateTime(AppConstants.DateFormats.YEAR_MONTH_DATE, zonedToDate));
+        map.put("reportName", PrintReportEnums.FI_REGISTER_REPORT);
+
+        return this.generateGenericReportXLS("FI-register-report", map, dataSource.getConnection() );
+    }
+
+
+    public ByteArrayInputStream buildBDARegisterPrint(String fromDate, String toDate)
+            throws IOException, JRException, SQLException {
+        log.info("buildExportOverduePrint method called..");
+        ;
+        Map<String, Object> map = new HashMap<>();
+        ZonedDateTime zonedFromDate = null, zonedToDate = null;
+        if (!AppUtility.isEmpty(fromDate)) {
+            zonedFromDate = AppUtility.getZonedDateTimeFromFormattedString(fromDate, AppConstants.DateFormats.DATE_FORMAT_ONE);
+        }
+        if (!AppUtility.isEmpty(toDate)) {
+            zonedToDate = AppUtility.getZonedDateTimeFromFormattedString(toDate, AppConstants.DateFormats.DATE_FORMAT_ONE);
+        }
+        map.put("fromDate", AppUtility.formatZonedDateTime(AppConstants.DateFormats.YEAR_MONTH_DATE, zonedFromDate));
+        map.put("toDate", AppUtility.formatZonedDateTime(AppConstants.DateFormats.YEAR_MONTH_DATE, zonedToDate));
+        map.put("reportName", PrintReportEnums.BDA_REGISTER_REPORT);
+
+        return this.generateGenericReportXLS("BDA-Register-report", map, dataSource.getConnection() );
+    }
+
     private ByteArrayInputStream generateGenericReport(String reportName, Map<String, Object> parameters, Connection connection)
             throws JRException, IOException, SQLException {
         String reportPath = getClass().getClassLoader().getResource("reports/" + reportName + ".jrxml").getPath();

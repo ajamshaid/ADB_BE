@@ -181,4 +181,44 @@ public class ReportAPI {
         }
         return ResponseUtility.buildReportResponseObject(new InputStreamResource(bis));
     }
+
+    @RequestMapping(value = "/print-fi-register", method = RequestMethod.GET)
+    public ResponseEntity<?> printFIRegister(HttpServletRequest request,
+                                                @RequestParam(value = "fromDate") String fromDate,
+                                                @RequestParam(value = "toDate") String toDate)
+            throws DataValidationException, NoDataFoundException, CustomException {
+        log.info("printFIRegister API initiated...");
+        //String stateId = request.getHeader(AppConstants.STATE_ID_HEADER);
+
+        if (AppUtility.isEmpty(fromDate)) {
+            throw new DataValidationException(messageBundle.getString("validation.error"));
+        }
+        ByteArrayInputStream bis = null;
+        try {
+            bis = reportService.buildFIRegisterPrint(fromDate,toDate);
+        } catch (Exception e) {
+            ResponseUtility.exceptionResponse(e);
+        }
+        return ResponseUtility.buildReportResponseObject(new InputStreamResource(bis));
+    }
+
+    @RequestMapping(value = "/print-bda-register", method = RequestMethod.GET)
+    public ResponseEntity<?> printBDARegister(HttpServletRequest request,
+                                                @RequestParam(value = "fromDate") String fromDate,
+                                                @RequestParam(value = "toDate") String toDate)
+            throws DataValidationException, NoDataFoundException, CustomException {
+        log.info("printBDARegister API initiated...");
+        //String stateId = request.getHeader(AppConstants.STATE_ID_HEADER);
+
+        if (AppUtility.isEmpty(fromDate)) {
+            throw new DataValidationException(messageBundle.getString("validation.error"));
+        }
+        ByteArrayInputStream bis = null;
+        try {
+            bis = reportService.buildBDARegisterPrint(fromDate,toDate);
+        } catch (Exception e) {
+            ResponseUtility.exceptionResponse(e);
+        }
+        return ResponseUtility.buildReportResponseObject(new InputStreamResource(bis));
+    }
 }
