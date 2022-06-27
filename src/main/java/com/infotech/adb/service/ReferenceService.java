@@ -3,6 +3,7 @@ package com.infotech.adb.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.infotech.adb.dto.*;
 import com.infotech.adb.exceptions.CustomException;
+import com.infotech.adb.exceptions.DBConstraintViolationException;
 import com.infotech.adb.exceptions.DataValidationException;
 import com.infotech.adb.exceptions.NoDataFoundException;
 import com.infotech.adb.model.entity.*;
@@ -750,6 +751,9 @@ public class ReferenceService {
 
     public SettelmentOfFI createSettlementOfFI(SettelmentOfFI entity) {
         log.info("createSettlementOfFI method called..");
+        if(settlementOfFIRepository.existsByBdaBcaUniqueIdNumber(entity.getBdaBcaUniqueIdNumber())){
+            throw new DBConstraintViolationException("Settlement already created");
+        }
         return settlementOfFIRepository.save(entity);
     }
 

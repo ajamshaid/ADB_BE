@@ -109,7 +109,7 @@ public class SettelmentOfFIAPI {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public CustomResponse createSettlementOfFI(HttpServletRequest request,
                                                     @RequestBody SettelmentOfFIDTO reqDTO)
-            throws PSWAPIException, DataValidationException, NoDataFoundException {
+            throws PSWAPIException, DataValidationException, NoDataFoundException, CustomException {
 
         if (AppUtility.isEmpty(reqDTO)) {
             throw new DataValidationException(messageBundle.getString("validation.error"));
@@ -122,7 +122,7 @@ public class SettelmentOfFIAPI {
                 customResponse = ResponseUtility.successResponse(entity, "200", "Record Created Successfully");
         }
         catch (Exception e) {
-            e.printStackTrace();
+           ResponseUtility.exceptionResponse(e,AppConstants.DBConstraints.UNIQ_BDA_BCA_NUMBER);
         }
         return customResponse;
     }

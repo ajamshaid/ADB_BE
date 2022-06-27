@@ -224,12 +224,18 @@ public class PSWAPIConsumerService {
     public ResponseUtility.APIResponse shareBDAInformationImport(BDADTO dto)
             throws HttpClientErrorException, JsonProcessingException {
 
+        boolean isUpdate = false;
+        if(!AppUtility.isEmpty(dto.getBdaUniqueIdNumber())
+                && AppConstants.RecordStatuses.PUSHED_TO_PSW.equals(dto.getStatus())) {
+            isUpdate = true;
+        }
         RequestParameter<BDADTO> requestParameter = new RequestParameter<>(
                 UUID.randomUUID()
                 , AppConstants.AD_ID
                 , AppConstants.PSW.ID, "03"
-                , AppConstants.PSW.METHOD_ID_SHARE_BDA_INFO_IMPORT
-                , AppConstants.AD_SIGNATURE);
+                , AppConstants.AD_SIGNATURE
+                ,isUpdate  ? AppConstants.PSW.METHOD_ID_SHARE_BDA_INFO_IMPORT_UPDATE
+                : AppConstants.PSW.METHOD_ID_SHARE_BDA_INFO_IMPORT);
         requestParameter.setData(dto);
 
         return executeRequest(requestParameter, "5.1.3 – Sharing of BDA Information Import by AD with PSW");
@@ -285,11 +291,18 @@ public class PSWAPIConsumerService {
     public ResponseUtility.APIResponse shareBCAInformationExport(BCADTO dto)
             throws HttpClientErrorException, JsonProcessingException {
 
+        boolean isUpdate = false;
+        if(!AppUtility.isEmpty(dto.getBcaUniqueIdNumber())
+                && AppConstants.RecordStatuses.PUSHED_TO_PSW.equals(dto.getStatus())) {
+            isUpdate = true;
+        }
+
         RequestParameter<BCADTO> requestParameter = new RequestParameter<>(
                 UUID.randomUUID()
                 , AppConstants.AD_ID
                 , AppConstants.PSW.ID, "03"
-                , AppConstants.PSW.METHOD_ID_SHARE_BCA_INFO_EXPORT
+                , isUpdate ? AppConstants.PSW.METHOD_ID_SHARE_BCA_INFO_EXPORT_UPDATE
+                :AppConstants.PSW.METHOD_ID_SHARE_BCA_INFO_EXPORT
                 , AppConstants.AD_SIGNATURE);
         requestParameter.setData(dto);
 

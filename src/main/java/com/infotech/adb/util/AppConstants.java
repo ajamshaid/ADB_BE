@@ -85,7 +85,10 @@ public class AppConstants {
         public final static String METHOD_ID_SHARE_FIN_TRANS_DATA_EXPORT_UPDATE= "1548"; //MGS-1 5.2.1
 
         public final static String METHOD_ID_SHARE_BDA_INFO_IMPORT= "1522"; //MGS-3 5.1.3
+        public final static String METHOD_ID_SHARE_BDA_INFO_IMPORT_UPDATE= "1546"; //MGS-3 5.1.3
+
         public final static String METHOD_ID_SHARE_BCA_INFO_EXPORT= "1526"; //MGS-3 5.2.3
+        public final static String METHOD_ID_SHARE_BCA_INFO_EXPORT_UPDATE= "1547"; //MGS-3 5.2.3
 
         //Cash Margin Message
         public final static String METHOD_ID_SHARE_GD_CLEARANCE_MESSAGE= "1541"; //MGS-1 6.1
@@ -123,6 +126,7 @@ public class AppConstants {
 
         public static final String UNIQ_IBAN = "UNIQ_IBAN";
         public static final String UNIQ_USERNAME = "UNIQ_USERNAME";
+        public  static final String UNIQ_BDA_BCA_NUMBER = "UNIQ_BDA_BCA_NUMBER";
     }
     public static class PSWResponseCodes {
 

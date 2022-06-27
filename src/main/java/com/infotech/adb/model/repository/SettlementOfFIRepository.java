@@ -20,6 +20,8 @@ public interface SettlementOfFIRepository extends JpaRepository<SettelmentOfFI, 
 
     List<SettelmentOfFI> findByStatusOrderByLastModifiedDateDesc(String status);
 
+    boolean existsByBdaBcaUniqueIdNumber(String bdaBcaUniqueNumber);
+
     @Modifying
     @Query("update SettelmentOfFI en set en.status = :status where en.id = :id")
     int updateStatus(@Param("id") Long id, @Param("status") String status);
