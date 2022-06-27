@@ -64,6 +64,7 @@ public class GDAPI {
 
     @RequestMapping(value = "/search-gd", method = RequestMethod.GET)
     public CustomResponse searchGD(HttpServletRequest request,
+                                   @RequestParam(value = "finInsUniqueNumber", required = false) String finInsUniqueNumber,
                                    @RequestParam(value = "name", required = false) String name,
                                    @RequestParam(value = "gdNumber", required = false) String gdNumber,
                                    @RequestParam(value = "ntnFtn", required = false) String ntnftn,
@@ -73,7 +74,7 @@ public class GDAPI {
 
         List<GD> gdList = null;
         try {
-            gdList = referenceService.searchGD(name,gdNumber,ntnftn,fromDate, toDate);
+            gdList = referenceService.searchGD(finInsUniqueNumber,name,gdNumber,ntnftn,fromDate, toDate);
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e);
         }
@@ -115,6 +116,7 @@ public class GDAPI {
 
     @RequestMapping(value = "/search-gd-export", method = RequestMethod.GET)
     public CustomResponse searchGDExport(HttpServletRequest request,
+                                         @RequestParam(value = "finInsUniqueNumber", required = false) String finInsUniqueNumber,
                                          @RequestParam(value = "name", required = false) String name,
                                          @RequestParam(value = "gdNumber", required = false) String gdNumber,
                                          @RequestParam(value = "ntnFtn", required = false) String ntnftn,
@@ -124,7 +126,7 @@ public class GDAPI {
 
         List<GDExport> gdExportList = null;
         try {
-            gdExportList = referenceService.searchGDExport(name,gdNumber,ntnftn,fromDate, toDate);
+            gdExportList = referenceService.searchGDExport(finInsUniqueNumber,name,gdNumber,ntnftn,fromDate, toDate);
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e);
         }

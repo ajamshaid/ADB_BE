@@ -475,7 +475,7 @@ public class ReferenceService {
         return gdRepository.save(entity);
     }
 
-    public List<GD> searchGD(String name, String gdNumber, String ntnFtn, String fromDate, String toDate) throws ParseException {
+    public List<GD> searchGD(String finInsUniqueNumber ,String name, String gdNumber, String ntnFtn, String fromDate, String toDate) throws ParseException {
         log.info("searchCancellationOfFt method called..");
         Date date1 = null, date2 = null;
 
@@ -489,7 +489,7 @@ public class ReferenceService {
         } else {
             date2 = new Date();
         }
-        return gdRepository.searchGD(name, gdNumber, ntnFtn, date1, date2);
+        return gdRepository.searchGD(finInsUniqueNumber,name, gdNumber, ntnFtn, date1, date2);
     }
 
 
@@ -515,7 +515,7 @@ public class ReferenceService {
         return gdExportRepository.save(entity);
     }
 
-    public List<GDExport> searchGDExport(String name, String gdNumber, String ntnFtn, String fromDate, String toDate) throws ParseException {
+    public List<GDExport> searchGDExport(String finInsUniqueNumber,String name, String gdNumber, String ntnFtn, String fromDate, String toDate) throws ParseException {
         log.info("searchCancellationOfFt method called..");
         Date date1 = null, date2 = null;
 
@@ -529,7 +529,7 @@ public class ReferenceService {
         } else {
             date2 = new Date();
         }
-        return gdExportRepository.searchGDExport(name, gdNumber, ntnFtn, date1, date2);
+        return gdExportRepository.searchGDExport(finInsUniqueNumber,name, gdNumber, ntnFtn, date1, date2);
     }
 
     /*************************************
@@ -728,10 +728,17 @@ public class ReferenceService {
     /*************************************
      * Settlement Of FI  METHODS
      **************************************/
-    public List<SettelmentOfFI> getLastModifiedSettlementOfFI(String status) {
+    public List<SettelmentOfFI> getLastModifiedSettlementOfFIByStatus(String status) {
         log.info("getLastModifiedSettlementOfFI method called..");
         List<SettelmentOfFI> refList = null;
         refList = this.settlementOfFIRepository.findByStatusOrderByLastModifiedDateDesc(status);
+        return refList;
+    }
+
+    public List<SettelmentOfFI> getLastModifiedSettlementOfFI() {
+        log.info("getLastModifiedSettlementOfFI method called..");
+        List<SettelmentOfFI> refList = null;
+        refList = this.settlementOfFIRepository.findAllByOrderByLastModifiedDateDesc();
         return refList;
     }
 
@@ -741,9 +748,21 @@ public class ReferenceService {
         return ref.get();
     }
 
+    public SettelmentOfFI createSettlementOfFI(SettelmentOfFI entity) {
+        log.info("createSettlementOfFI method called..");
+        return settlementOfFIRepository.save(entity);
+    }
+
     public ResponseUtility.APIResponse updateSettlementOfFIAndShare(SettelmentOfFIDTO dto) throws JsonProcessingException {
-        this.updateSettlementOfFI(dto.convertToEntity());
-        return pswAPIConsumerService.settlementOfFinInstrument(dto);
+
+        SettelmentOfFI entity = this.updateSettlementOfFI(dto.convertToEntity());
+        ResponseUtility.APIResponse pswResponse = pswAPIConsumerService.settlementOfFinInstrument(dto);
+
+        String respCode = pswResponse.getMessage().getCode();
+        if (respCode.equals("" + HttpStatus.OK.value())) {
+            settlementOfFIRepository.updateStatus(entity.getId(), AppConstants.RecordStatuses.PUSHED_TO_PSW);
+        }
+        return pswResponse;
     }
 
     @Transactional
@@ -754,9 +773,6 @@ public class ReferenceService {
 
     public List<SettelmentOfFI> searchSettlementOfFI(String tradeType, String traderNTN, String fromDate, String toDate, List<String> status) throws ParseException {
         log.info("searchSettlementOfFI method called..");
-        if (AppUtility.isEmpty(traderNTN)) {
-            traderNTN = "%";
-        }
         Date date1 = null, date2 = null;
 
         if (!AppUtility.isEmpty(fromDate)) {

@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public interface GDExportRepository extends JpaRepository<GDExport, Long> {
 
-    @Query("from GDExport r where r.consigneeName like %:name% and r.gdNumber like %:gdnumber% and r.ntnFtn like %:ntnFtn% and (r.lastModifiedDate between :fromDate and :toDate) order by r.lastModifiedDate desc , r.lastModifiedBy desc")
-    List<GDExport> searchGDExport(@Param("name") String name, @Param("gdnumber") String gdNumber,
+    @Query("from GDExport r left join GDFinancialInstrument gdft on gdft.gdExport.id = r.id where gdft.finInsUniqueNumber like %:finInsUniqueNumber% and r.consigneeName like %:name% and r.gdNumber like %:gdnumber% and r.ntnFtn like %:ntnFtn% and (r.lastModifiedDate between :fromDate and :toDate) order by r.lastModifiedDate desc , r.lastModifiedBy desc")
+    List<GDExport> searchGDExport(@Param("finInsUniqueNumber") String finInsUniqueNumber,@Param("name") String name, @Param("gdnumber") String gdNumber,
                                   @Param("ntnFtn") String ntnFtn, @Param("fromDate") Date fromDate, @Param("toDate") Date toDate);
 }

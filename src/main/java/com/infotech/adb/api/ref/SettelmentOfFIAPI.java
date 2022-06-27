@@ -3,12 +3,14 @@ package com.infotech.adb.api.ref;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.infotech.adb.dto.GDClearanceDTO;
+import com.infotech.adb.dto.ReversalOfBdaBcaDTO;
 import com.infotech.adb.dto.SettelmentOfFIDTO;
 import com.infotech.adb.exceptions.CustomException;
 import com.infotech.adb.exceptions.DataValidationException;
 import com.infotech.adb.exceptions.NoDataFoundException;
 import com.infotech.adb.exceptions.PSWAPIException;
 import com.infotech.adb.model.entity.GDClearance;
+import com.infotech.adb.model.entity.ReversalOfBdaBca;
 import com.infotech.adb.model.entity.SettelmentOfFI;
 import com.infotech.adb.service.ReferenceService;
 import com.infotech.adb.util.AppConstants;
@@ -35,13 +37,12 @@ public class SettelmentOfFIAPI {
     private ReferenceService referenceService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public CustomResponse getLastModifiedSettlementOfFI(@RequestParam(value = "isNew", required = false) boolean isNew)
+    public CustomResponse getLastModifiedSettlementOfFI()
             throws CustomException, NoDataFoundException {
 
         List<SettelmentOfFI> refList = null;
         try {
-            refList = referenceService.getLastModifiedSettlementOfFI(isNew ? AppConstants.RecordStatuses.CREATED_BY_MQ
-                    : AppConstants.RecordStatuses.PUSHED_TO_PSW);
+            refList = referenceService.getLastModifiedSettlementOfFI();
         } catch (Exception e) {
             throw new CustomException(e);
         }
@@ -75,10 +76,8 @@ public class SettelmentOfFIAPI {
         CustomResponse customResponse = null;
         try {
             if (pushToPSW) {
-                reqDTO.setStatus(AppConstants.RecordStatuses.PUSHED_TO_PSW);
                 customResponse = ResponseUtility.translatePSWAPIResponse(referenceService.updateSettlementOfFIAndShare(reqDTO));
             } else {
-                reqDTO.setStatus(AppConstants.RecordStatuses.CREATED_BY_MQ);
                 entity = referenceService.updateSettlementOfFI(reqDTO.convertToEntity());
                 customResponse = ResponseUtility.successResponse(entity, "200", "Record Updated Successfully");
             }
@@ -97,13 +96,34 @@ public class SettelmentOfFIAPI {
                                                @RequestParam(value = "isNew", defaultValue = "true", required = false) boolean isNew)
             throws CustomException, NoDataFoundException {
 
-        List<SettelmentOfFI> settelmentOfFIList = null;
+        List<SettelmentOfFI> settlementOfFIList = null;
         try {
-            settelmentOfFIList = referenceService.searchSettlementOfFI(tradeType, traderNTN, fromDate, toDate
+            settlementOfFIList = referenceService.searchSettlementOfFI(tradeType, traderNTN, fromDate, toDate
                     , AppConstants.RecordStatuses.getSearchStatesList(isNew));
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e);
         }
-        return ResponseUtility.buildResponseList(settelmentOfFIList, new SettelmentOfFIDTO());
+        return ResponseUtility.buildResponseList(settlementOfFIList, new SettelmentOfFIDTO());
+    }
+
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public CustomResponse createSettlementOfFI(HttpServletRequest request,
+                                                    @RequestBody SettelmentOfFIDTO reqDTO)
+            throws PSWAPIException, DataValidationException, NoDataFoundException {
+
+        if (AppUtility.isEmpty(reqDTO)) {
+            throw new DataValidationException(messageBundle.getString("validation.error"));
+        }
+        CustomResponse customResponse = null;
+        SettelmentOfFI entity = null;
+        reqDTO.setStatus(AppConstants.RecordStatuses.NEW);
+        try {
+                entity = referenceService.createSettlementOfFI(reqDTO.convertToEntity());
+                customResponse = ResponseUtility.successResponse(entity, "200", "Record Created Successfully");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return customResponse;
     }
 }

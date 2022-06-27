@@ -24,7 +24,7 @@ public interface SettlementOfFIRepository extends JpaRepository<SettelmentOfFI, 
     @Query("update SettelmentOfFI en set en.status = :status where en.id = :id")
     int updateStatus(@Param("id") Long id, @Param("status") String status);
 
-    @Query("from SettelmentOfFI r where r.status in (:statuses) and r.tradeType like %:tradeType% and r.traderNTN like %:traderNTN% and (r.lastModifiedDate between :fromDate and :toDate) order by r.lastModifiedDate desc , r.lastModifiedBy desc")
+    @Query("from SettelmentOfFI r where r.status in (:statuses) and r.tradeType like %:tradeType% and r.traderNTN like %:traderNTN% and (r.lastModifiedDate between :fromDate and :toDate) order by lastModifiedDate desc , r.lastModifiedBy desc")
     List<SettelmentOfFI> searchSettlementOfFI(@Param("tradeType") String tradeType, @Param("traderNTN") String traderNTN
             , @Param("fromDate") Date fromDate, @Param("toDate") Date toDate , @Param("statuses") List<String> statuses);
 

@@ -49,6 +49,6 @@ public class SettelmentOfFI {
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastModifiedDate;
 
-    @Column(name = "STATUS",length = 20, nullable = false)
+    @Column(name = "STATUS",length = 20, columnDefinition = "varchar(255) default 'NEW'",nullable = false)
     private String status;
 }
