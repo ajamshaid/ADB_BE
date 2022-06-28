@@ -108,7 +108,7 @@ public class PSWAPIConsumerService {
                 , AppConstants.PSW.METHOD_ID_UPDATE_TRADER_ACCT_STATUS
                 , AppConstants.AD_SIGNATURE);
         requestParameter.setData(dto);
-
+        System.out.println("\nRequestParameter Json:" + requestParameter.toJson());
         return executeRequest(requestParameter, "4.4 - Trader Profile Active/Inactive Message by AD to PSW");
     }
 
