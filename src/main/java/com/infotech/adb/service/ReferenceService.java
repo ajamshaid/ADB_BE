@@ -749,7 +749,7 @@ public class ReferenceService {
         return ref.get();
     }
 
-    public SettelmentOfFI createSettlementOfFI(SettelmentOfFI entity) {
+    public SettelmentOfFI createSettlementOfFI(SettelmentOfFI entity) throws DBConstraintViolationException {
         log.info("createSettlementOfFI method called..");
         if(settlementOfFIRepository.existsByBdaBcaUniqueIdNumber(entity.getBdaBcaUniqueIdNumber())){
             throw new DBConstraintViolationException("Settlement already created");
@@ -763,7 +763,7 @@ public class ReferenceService {
         ResponseUtility.APIResponse pswResponse = pswAPIConsumerService.settlementOfFinInstrument(dto);
 
         String respCode = pswResponse.getMessage().getCode();
-        if (respCode.equals("" + HttpStatus.OK.value())) {
+        if (respCode.equals("" + HttpStatus.OK.value()) || respCode.equals("213") ) {
             settlementOfFIRepository.updateStatus(entity.getId(), AppConstants.RecordStatuses.PUSHED_TO_PSW);
         }
         return pswResponse;

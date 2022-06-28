@@ -5,10 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.infotech.adb.dto.GDClearanceDTO;
 import com.infotech.adb.dto.ReversalOfBdaBcaDTO;
 import com.infotech.adb.dto.SettelmentOfFIDTO;
-import com.infotech.adb.exceptions.CustomException;
-import com.infotech.adb.exceptions.DataValidationException;
-import com.infotech.adb.exceptions.NoDataFoundException;
-import com.infotech.adb.exceptions.PSWAPIException;
+import com.infotech.adb.exceptions.*;
 import com.infotech.adb.model.entity.GDClearance;
 import com.infotech.adb.model.entity.ReversalOfBdaBca;
 import com.infotech.adb.model.entity.SettelmentOfFI;
@@ -121,8 +118,10 @@ public class SettelmentOfFIAPI {
                 entity = referenceService.createSettlementOfFI(reqDTO.convertToEntity());
                 customResponse = ResponseUtility.successResponse(entity, "200", "Record Created Successfully");
         }
-        catch (Exception e) {
-           ResponseUtility.exceptionResponse(e,AppConstants.DBConstraints.UNIQ_BDA_BCA_NUMBER);
+        catch (DBConstraintViolationException ex) {
+           throw ex;
+        }catch (Exception e){
+            ResponseUtility.exceptionResponse(e);
         }
         return customResponse;
     }
