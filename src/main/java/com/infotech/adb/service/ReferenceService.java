@@ -757,6 +757,7 @@ public class ReferenceService {
         return settlementOfFIRepository.save(entity);
     }
 
+    @Transactional
     public ResponseUtility.APIResponse updateSettlementOfFIAndShare(SettelmentOfFIDTO dto) throws JsonProcessingException {
 
         SettelmentOfFI entity = this.updateSettlementOfFI(dto.convertToEntity());
