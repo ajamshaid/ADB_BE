@@ -479,7 +479,6 @@ public class ReferenceService {
     public List<GD> searchGD(String finInsUniqueNumber ,String name, String gdNumber, String ntnFtn, String fromDate, String toDate) throws ParseException {
         log.info("searchCancellationOfFt method called..");
         Date date1 = null, date2 = null;
-
         if (!AppUtility.isEmpty(fromDate)) {
             date1 = new SimpleDateFormat("dd-MM-yyyy").parse(fromDate);
         } else {
@@ -492,7 +491,6 @@ public class ReferenceService {
         }
         return gdRepository.searchGD(finInsUniqueNumber,name, gdNumber, ntnFtn, date1, date2);
     }
-
 
     /*************************************
      * GD Export METHODS

@@ -24,9 +24,10 @@ public class RestTemplateResponseErrorHandler implements ResponseErrorHandler {
     @Override
     public void handleError(ClientHttpResponse httpResponse)
             throws IOException {
-
-
         if (httpResponse.getStatusCode().series() == HttpStatus.Series.SERVER_ERROR) {
+            log.error("RestTemplateResponseErrorHandler -> Internal Server Error :"+httpResponse.getRawStatusCode());
+            log.error("InterServerError -> httpResponse :"+httpResponse);
+            log.debug("InterServerError -> httpResponse ->body :"+httpResponse.getBody());
             // handle SERVER_ERROR
         } else if (httpResponse.getStatusCode()
                 .series() == HttpStatus.Series.CLIENT_ERROR) {

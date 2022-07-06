@@ -233,9 +233,9 @@ public class PSWAPIConsumerService {
                 UUID.randomUUID()
                 , AppConstants.AD_ID
                 , AppConstants.PSW.ID, "03"
-                , AppConstants.AD_SIGNATURE
                 ,isUpdate  ? AppConstants.PSW.METHOD_ID_SHARE_BDA_INFO_IMPORT_UPDATE
-                : AppConstants.PSW.METHOD_ID_SHARE_BDA_INFO_IMPORT);
+                : AppConstants.PSW.METHOD_ID_SHARE_BDA_INFO_IMPORT
+                , AppConstants.AD_SIGNATURE);
         requestParameter.setData(dto);
 
         return executeRequest(requestParameter, "5.1.3 – Sharing of BDA Information Import by AD with PSW");

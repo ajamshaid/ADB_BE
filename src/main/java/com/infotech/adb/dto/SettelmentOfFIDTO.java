@@ -1,13 +1,16 @@
 package com.infotech.adb.dto;
 
 import com.infotech.adb.model.entity.SettelmentOfFI;
+import com.infotech.adb.util.AppUtility;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
@@ -19,7 +22,6 @@ public class SettelmentOfFIDTO implements BaseDTO<SettelmentOfFIDTO, SettelmentO
     private String traderName;
     private String finInsUniqueNumber;
     private List<String> bcaBdaUniqueIdNumber;
-//    private String bcaBdaUniqueIdNumber;
     private BigDecimal finInsValue;
     private BigDecimal totalValueOfSharedBCABDA;
     private BigDecimal balance;
@@ -34,8 +36,7 @@ public class SettelmentOfFIDTO implements BaseDTO<SettelmentOfFIDTO, SettelmentO
         SettelmentOfFI entity = new SettelmentOfFI();
 
         entity.setId(this.getId());
-        entity.setBdaBcaUniqueIdNumber(this.getBcaBdaUniqueIdNumber().get(0));
-//        entity.setBdaBcaUniqueIdNumber(this.getBcaBdaUniqueIdNumber());
+        entity.setBdaBcaUniqueIdNumber(this.getBcaBdaUniqueIdNumber().stream().collect(Collectors.joining(",")));
         entity.setTradeType(this.getTradeTranType());
         entity.setTraderNTN(this.getTraderNTN());
         entity.setTraderName(this.getTraderName());
@@ -44,7 +45,6 @@ public class SettelmentOfFIDTO implements BaseDTO<SettelmentOfFIDTO, SettelmentO
         entity.setBalance(this.getBalance());
         entity.setStatus(this.getStatus());
         entity.setTotalValueOfSharedBCABDA(this.getTotalValueOfSharedBCABDA());
-
         entity.setLastModifiedBy(this.getLastModifiedBy());
         entity.setLastModifiedDate(this.getLastModifiedDate());
 
@@ -53,15 +53,11 @@ public class SettelmentOfFIDTO implements BaseDTO<SettelmentOfFIDTO, SettelmentO
 
     @Override
     public void convertToDTO(SettelmentOfFI entity, boolean partialFill) {
-        if(entity != null){
+        if (entity != null) {
 
             this.setId(entity.getId());
-            List<String> unqNumList = new ArrayList<>();
-
-            unqNumList.add(entity.getBdaBcaUniqueIdNumber());
-
-            this.setBcaBdaUniqueIdNumber(unqNumList);
-//            this.setBcaBdaUniqueIdNumber(entity.getBdaBcaUniqueIdNumber());
+            if (!AppUtility.isEmpty(entity.getBdaBcaUniqueIdNumber()))
+                this.setBcaBdaUniqueIdNumber(Arrays.asList(entity.getBdaBcaUniqueIdNumber().split(",")));
             this.setFinInsUniqueNumber(entity.getFinInsUniqueNumber());
             this.setTradeTranType(entity.getTradeType());
             this.setTraderName(entity.getTraderName());
