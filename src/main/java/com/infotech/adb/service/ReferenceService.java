@@ -553,8 +553,8 @@ public class ReferenceService {
         //     dto.setCobUniqueIdNumber(uniqNo);
 
         this.updateCOB(dto.convertToEntity());
-        // return pswAPIConsumerService.shareCOBApprovalRejectionMsg(dto);
-        return pswAPIConsumerService.shareCOBApprovalRejectionMsgByOldAD(dto);
+         return pswAPIConsumerService.shareCOBApprovalRejectionMsg(dto);
+ //       return pswAPIConsumerService.shareCOBApprovalRejectionMsgByOldAD(dto);
     }
 
     @Transactional
