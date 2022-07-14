@@ -180,7 +180,7 @@ public class ReportService {
         map.put("toDate", AppUtility.formatZonedDateTime(AppConstants.DateFormats.YEAR_MONTH_DATE, zonedToDate));
         map.put("reportName", PrintReportEnums.BDA_REGISTER_REPORT);
 
-        return this.generateGenericReportXLS("BDA-Register-report", map, dataSource.getConnection() );
+        return this.generateGenericReportXLS("BDA-register-report", map, dataSource.getConnection() );
     }
 
     private ByteArrayInputStream generateGenericReport(String reportName, Map<String, Object> parameters, Connection connection)
