@@ -18,11 +18,13 @@
 	ft.fin_ins_uniq_num_core,
 	ft.iban,
 	ft.fin_ins_uniq_num,
-	pi.fin_ins_expiry_date AS Expiry_date,
+	pi.fin_ins_expiry_date AS expiry_date,
+	pi.fin_ins_value AS amount,
 	ft.mode_of_payment,
 	pi.fin_ins_currency,
 	gd_exp.gd_number,
 	gd_ft.fin_ins_consumed_value,
+	gd_exp.bl_awb_date AS date_of_shipment,
 	pi.port_of_discharge
 FROM
 	financial_transaction ft
@@ -50,7 +52,8 @@ WHERE
 	<field name="fin_ins_uniq_num" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="Expiry_date" class="java.sql.Timestamp"/>
+	<field name="expiry_date" class="java.sql.Timestamp"/>
+	<field name="amount" class="java.math.BigDecimal"/>
 	<field name="mode_of_payment" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -63,6 +66,7 @@ WHERE
 	<field name="fin_ins_consumed_value" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="date_of_shipment" class="java.sql.Timestamp"/>
 	<field name="port_of_discharge" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -337,13 +341,6 @@ WHERE
 				<textFieldExpression><![CDATA[$F{fin_ins_uniq_num}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="439" y="0" width="35" height="15" uuid="e934d49e-b963-4617-9ea3-bfc6c0c932da"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="5"/>
-				</textElement>
-				<text><![CDATA[]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="618" y="0" width="102" height="15" uuid="9b2a536f-5d85-4c55-8b18-5487dd72a8fd"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="5"/>
@@ -396,18 +393,6 @@ WHERE
 				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="284" y="0" width="50" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="7ee6448d-f6ca-4df2-a7b7-68ada8c9528a"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
-					<font fontName="SansSerif" size="4" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{Expiry_date}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="720" y="0" width="39" height="15" uuid="8cb0766e-84b4-4055-a3e4-a72f034633f7"/>
-				<text><![CDATA[]]></text>
-			</staticText>
-			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="759" y="0" width="43" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="b9786d43-dbc0-4e53-b790-84cbc14f729b"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
 					<font fontName="SansSerif" size="4" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
@@ -415,10 +400,34 @@ WHERE
 				</textElement>
 				<textFieldExpression><![CDATA[$F{port_of_discharge}]]></textFieldExpression>
 			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="439" y="0" width="35" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="77c90026-8924-41da-b0cc-7844ffe9f3a1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="SansSerif" size="4" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{amount}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="720" y="0" width="39" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="017411f7-1a5c-4b96-a031-4cc26e985bdb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="SansSerif" size="4" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{date_of_shipment}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="284" y="0" width="50" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="d4288f1f-43dc-4d4a-b502-8de9e15a5197"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="SansSerif" size="4" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{expiry_date}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="1">
+		<band height="13">
 			<line>
 				<reportElement x="0" y="0" width="802" height="1" uuid="18c82bb2-ae11-4ea0-9edc-67d32f21faa8"/>
 			</line>
