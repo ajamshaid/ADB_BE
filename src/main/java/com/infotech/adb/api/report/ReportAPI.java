@@ -31,7 +31,7 @@ public class ReportAPI {
     public ResponseEntity<?> printGD(HttpServletRequest request,
                                       @PathVariable(value = "gdId") Long gdId)
             throws DataValidationException, NoDataFoundException, CustomException {
-        log.info("printSAD API initiated...");
+        log.info("printGD API initiated...");
         //String stateId = request.getHeader(AppConstants.STATE_ID_HEADER);
 
         if (AppUtility.isEmpty(gdId)) {
@@ -50,7 +50,7 @@ public class ReportAPI {
     public ResponseEntity<?> printFT(HttpServletRequest request,
                                      @PathVariable(value = "ftId") Long ftId)
             throws DataValidationException, NoDataFoundException, CustomException {
-        log.info("printSAD API initiated...");
+        log.info("printFT API initiated...");
         //String stateId = request.getHeader(AppConstants.STATE_ID_HEADER);
 
         if (AppUtility.isEmpty(ftId)) {
@@ -69,7 +69,7 @@ public class ReportAPI {
     public ResponseEntity<?> printBCA(HttpServletRequest request,
                                      @PathVariable(value = "id") Long id)
             throws DataValidationException, NoDataFoundException, CustomException {
-        log.info("printSAD API initiated...");
+        log.info("printBCA API initiated...");
         //String stateId = request.getHeader(AppConstants.STATE_ID_HEADER);
 
         if (AppUtility.isEmpty(id)) {
@@ -88,7 +88,7 @@ public class ReportAPI {
     public ResponseEntity<?> printFTImport(HttpServletRequest request,
                                      @PathVariable(value = "ftId") Long ftId)
             throws DataValidationException, NoDataFoundException, CustomException {
-        log.info("printSAD API initiated...");
+        log.info("printFTImport API initiated...");
         //String stateId = request.getHeader(AppConstants.STATE_ID_HEADER);
 
         if (AppUtility.isEmpty(ftId)) {
@@ -107,7 +107,7 @@ public class ReportAPI {
     public ResponseEntity<?> printBDA(HttpServletRequest request,
                                       @PathVariable(value = "id") Long id)
             throws DataValidationException, NoDataFoundException, CustomException {
-        log.info("printSAD API initiated...");
+        log.info("printBDA API initiated...");
         //String stateId = request.getHeader(AppConstants.STATE_ID_HEADER);
 
         if (AppUtility.isEmpty(id)) {
@@ -127,7 +127,7 @@ public class ReportAPI {
                                        @RequestParam(value = "fromDate") String fromDate,
                                        @RequestParam(value = "toDate") String toDate)
             throws DataValidationException, NoDataFoundException, CustomException {
-        log.info("printSAD API initiated...");
+        log.info("printITRS API initiated...");
         //String stateId = request.getHeader(AppConstants.STATE_ID_HEADER);
 
         if (AppUtility.isEmpty(fromDate)) {
@@ -147,7 +147,7 @@ public class ReportAPI {
                                        @RequestParam(value = "fromDate") String fromDate,
                                        @RequestParam(value = "toDate") String toDate)
             throws DataValidationException, NoDataFoundException, CustomException {
-        log.info("printSAD API initiated...");
+        log.info("printBCARealized API initiated...");
         //String stateId = request.getHeader(AppConstants.STATE_ID_HEADER);
 
         if (AppUtility.isEmpty(fromDate)) {
@@ -167,7 +167,7 @@ public class ReportAPI {
                                        @RequestParam(value = "fromDate") String fromDate,
                                        @RequestParam(value = "toDate") String toDate)
             throws DataValidationException, NoDataFoundException, CustomException {
-        log.info("printSAD API initiated...");
+        log.info("printExportOverdue API initiated...");
         //String stateId = request.getHeader(AppConstants.STATE_ID_HEADER);
 
         if (AppUtility.isEmpty(fromDate)) {
@@ -216,6 +216,26 @@ public class ReportAPI {
         ByteArrayInputStream bis = null;
         try {
             bis = reportService.buildBDARegisterPrint(fromDate,toDate);
+        } catch (Exception e) {
+            ResponseUtility.exceptionResponse(e);
+        }
+        return ResponseUtility.buildReportResponseObject(new InputStreamResource(bis));
+    }
+
+    @RequestMapping(value = "/print-shipped-status", method = RequestMethod.GET)
+    public ResponseEntity<?> printShippedStatusRegister(HttpServletRequest request,
+                                              @RequestParam(value = "fromDate") String fromDate,
+                                              @RequestParam(value = "toDate") String toDate)
+            throws DataValidationException, NoDataFoundException, CustomException {
+        log.info("printShippedStatusRegister API initiated...");
+        //String stateId = request.getHeader(AppConstants.STATE_ID_HEADER);
+
+        if (AppUtility.isEmpty(fromDate)) {
+            throw new DataValidationException(messageBundle.getString("validation.error"));
+        }
+        ByteArrayInputStream bis = null;
+        try {
+            bis = reportService.buildShippedStatusPrint(fromDate,toDate);
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e);
         }

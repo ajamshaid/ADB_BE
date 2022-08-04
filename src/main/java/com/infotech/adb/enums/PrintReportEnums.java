@@ -11,5 +11,6 @@ public enum PrintReportEnums {
     EXPORT_OVERDUE_REPORT,
     FI_REGISTER_REPORT,
     BDA_REGISTER_REPORT,
+    SHIPPED_STATUS_REPORT,
 
 }

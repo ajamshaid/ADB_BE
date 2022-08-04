@@ -33,7 +33,7 @@ public class ReportService {
 
     public ByteArrayInputStream buildGDPrint(Long gdId)
             throws IOException, JRException, SQLException {
-        log.info("buildSADPrint method called..");
+        log.info("buildGDPrint method called..");
 
         Map<String, Object> map = new HashMap<>();
         map.put("gdId", gdId);
@@ -44,7 +44,7 @@ public class ReportService {
 
     public ByteArrayInputStream buildFTPrint(Long ftId)
             throws IOException, JRException, SQLException {
-        log.info("buildSADPrint method called..");
+        log.info("buildFTPrint method called..");
         ;
         Map<String, Object> map = new HashMap<>();
         map.put("ftId", ftId);
@@ -55,7 +55,7 @@ public class ReportService {
 
     public ByteArrayInputStream buildBCAPrint(Long id)
             throws IOException, JRException, SQLException {
-        log.info("buildSADPrint method called..");
+        log.info("buildBCAPrint method called..");
         ;
         Map<String, Object> map = new HashMap<>();
         map.put("id", id);
@@ -66,7 +66,7 @@ public class ReportService {
 
     public ByteArrayInputStream buildFTImportPrint(Long id)
             throws IOException, JRException, SQLException {
-        log.info("buildSADPrint method called..");
+        log.info("buildFTImportPrint method called..");
         ;
         Map<String, Object> map = new HashMap<>();
         map.put("ftId", id);
@@ -77,7 +77,7 @@ public class ReportService {
 
     public ByteArrayInputStream buildBDAPrint(Long id)
             throws IOException, JRException, SQLException {
-        log.info("buildSADPrint method called..");
+        log.info("buildBDAPrint method called..");
         ;
         Map<String, Object> map = new HashMap<>();
         map.put("id", id);
@@ -146,7 +146,7 @@ public class ReportService {
 
     public ByteArrayInputStream buildFIRegisterPrint(String fromDate, String toDate)
             throws IOException, JRException, SQLException {
-        log.info("buildExportOverduePrint method called..");
+        log.info("buildFIRegisterPrint method called..");
         ;
         Map<String, Object> map = new HashMap<>();
         ZonedDateTime zonedFromDate = null, zonedToDate = null;
@@ -166,7 +166,7 @@ public class ReportService {
 
     public ByteArrayInputStream buildBDARegisterPrint(String fromDate, String toDate)
             throws IOException, JRException, SQLException {
-        log.info("buildExportOverduePrint method called..");
+        log.info("buildBDARegisterPrint method called..");
         ;
         Map<String, Object> map = new HashMap<>();
         ZonedDateTime zonedFromDate = null, zonedToDate = null;
@@ -181,6 +181,25 @@ public class ReportService {
         map.put("reportName", PrintReportEnums.BDA_REGISTER_REPORT);
 
         return this.generateGenericReportXLS("BDA-register-report", map, dataSource.getConnection() );
+    }
+
+    public ByteArrayInputStream buildShippedStatusPrint(String fromDate, String toDate)
+            throws IOException, JRException, SQLException {
+        log.info("buildShipmentStatusPrint method called..");
+        ;
+        Map<String, Object> map = new HashMap<>();
+        ZonedDateTime zonedFromDate = null, zonedToDate = null;
+        if (!AppUtility.isEmpty(fromDate)) {
+            zonedFromDate = AppUtility.getZonedDateTimeFromFormattedString(fromDate, AppConstants.DateFormats.DATE_FORMAT_ONE);
+        }
+        if (!AppUtility.isEmpty(toDate)) {
+            zonedToDate = AppUtility.getZonedDateTimeFromFormattedString(toDate, AppConstants.DateFormats.DATE_FORMAT_ONE);
+        }
+        map.put("fromDate", AppUtility.formatZonedDateTime(AppConstants.DateFormats.YEAR_MONTH_DATE, zonedFromDate));
+        map.put("toDate", AppUtility.formatZonedDateTime(AppConstants.DateFormats.YEAR_MONTH_DATE, zonedToDate));
+        map.put("reportName", PrintReportEnums.SHIPPED_STATUS_REPORT);
+
+        return this.generateGenericReportXLS("DAP-V11-report", map, dataSource.getConnection() );
     }
 
     private ByteArrayInputStream generateGenericReport(String reportName, Map<String, Object> parameters, Connection connection)
