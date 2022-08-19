@@ -13,6 +13,7 @@
 	ft.fin_ins_uniq_num,
 	pi.beneficiary_name,
 	pi.beneficiary_country,
+	pi.fin_ins_value,
 	gd_exp.gd_number,
 	pi.fin_ins_expiry_date AS expiry_date,
 	gd_exp.bl_awb_date AS date_of_shipment,
@@ -52,6 +53,9 @@ WHERE
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="beneficiary_country" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fin_ins_value" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="gd_number" class="java.lang.String">
@@ -369,7 +373,7 @@ WHERE
 				</textElement>
 				<text><![CDATA[Silkbank Ltd.]]></text>
 			</staticText>
-			<textField isBlankWhenNull="true">
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
 				<reportElement x="393" y="0" width="40" height="20" uuid="b2a07458-4f19-437c-be4e-a4a083bbc459"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="5"/>
@@ -404,7 +408,7 @@ WHERE
 				</textElement>
 				<textFieldExpression><![CDATA[$F{beneficiary_country}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
 				<reportElement x="365" y="0" width="28" height="20" uuid="30ec3016-de1b-4b0f-aca7-99fcf37ad5ea"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="5"/>
@@ -459,6 +463,14 @@ WHERE
 					<font size="5"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{date_of_realized}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="203" y="0" width="37" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="31e61631-c1bc-4fa8-a175-f35c12c1e249"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="SansSerif" size="5" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fin_ins_value}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
