@@ -42,10 +42,10 @@ public class GDClearance {
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastModifiedDate;
 
-    @Column(name = "STATUS",length = 20, nullable = false)
+    @Column(name = "STATUS",length = 20)
     private String status;
 
-    @Column(name = "ARCHIVED_STATUS",length = 20, nullable = false)
+    @Column(name = "ARCHIVED_STATUS",length = 20)
     private String archivedStatus;
 
 }

@@ -74,8 +74,10 @@ public class GDClearanceAPI {
         CustomResponse customResponse = null;
         try {
             if (pushToPSW) {
+                reqDTO.setStatus(AppConstants.RecordStatuses.PUSHED_TO_PSW);
                 customResponse = ResponseUtility.translatePSWAPIResponse(referenceService.updateGDClearanceAndShare(reqDTO));
             } else {
+                reqDTO.setStatus(AppConstants.RecordStatuses.CREATED_BY_MQ);
                 entity = referenceService.updateGDClearance(reqDTO.convertToEntity());
                 customResponse = ResponseUtility.successResponse(entity,"200","Record Added Successfully");
             }
@@ -97,8 +99,10 @@ public class GDClearanceAPI {
         CustomResponse customResponse = null;
         try {
             if (pushToPSW) {
+                reqDTO.setStatus(AppConstants.RecordStatuses.PUSHED_TO_PSW);
                 customResponse = ResponseUtility.translatePSWAPIResponse(referenceService.updateGDClearanceAndShare(reqDTO));
             } else {
+                reqDTO.setStatus(AppConstants.RecordStatuses.CREATED_BY_MQ);
                 entity = referenceService.updateGDClearance(reqDTO.convertToEntity());
                 customResponse = ResponseUtility.successResponse(entity,"200","Record Updated Successfully");
             }

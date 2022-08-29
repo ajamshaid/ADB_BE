@@ -17,6 +17,8 @@ public class GDClearanceDTO implements BaseDTO<GDClearanceDTO, GDClearance> {
     private String Iban;
     private String gdNumber;
     private String clearanceStatus;
+    private String archivedStatus;
+    private String status;
 
     private String lastModifiedBy;
     private Date lastModifiedDate;
@@ -33,7 +35,9 @@ public class GDClearanceDTO implements BaseDTO<GDClearanceDTO, GDClearance> {
         entity.setTraderName(this.getTraderName());
         entity.setIban(this.getIban());
         entity.setGdNumber(this.getGdNumber());
+        entity.setArchivedStatus(this.getArchivedStatus());
         entity.setClearanceStatus(this.getClearanceStatus());
+        entity.setStatus(this.getStatus());
         entity.setLastModifiedBy(this.getLastModifiedBy());
         entity.setLastModifiedDate(this.getLastModifiedDate());
 
@@ -52,6 +56,8 @@ public class GDClearanceDTO implements BaseDTO<GDClearanceDTO, GDClearance> {
             this.setTraderName(entity.getTraderName());
             this.setTraderNTN(entity.getTraderNTN());
             this.setGdNumber(entity.getGdNumber());
+            this.setArchivedStatus(entity.getArchivedStatus());
+            this.setStatus(entity.getStatus());
             this.setClearanceStatus(entity.getClearanceStatus());
 
 
