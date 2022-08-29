@@ -23,7 +23,7 @@ public interface GDClearanceRepository extends JpaRepository<GDClearance, Long> 
     @Query("update GDClearance en set en.status = :status where en.id = :id")
     int updateStatus(@Param("id") Long id, @Param("status") String status);
 
-    @Query("from GDClearance r where r.archivedStatus in (:statuses) and r.tradeType like %:tradeType% and r.traderNTN like %:traderNTN% and (r.lastModifiedDate between :fromDate and :toDate) order by r.lastModifiedDate desc , r.lastModifiedBy desc")
+    @Query("from GDClearance r where r.status in (:statuses) and r.tradeType like %:tradeType% and r.traderNTN like %:traderNTN% and (r.lastModifiedDate between :fromDate and :toDate) order by r.lastModifiedDate desc , r.lastModifiedBy desc")
     List<GDClearance> searchGDClearance(@Param("tradeType") String tradeType, @Param("traderNTN") String traderNTN
             , @Param("fromDate") Date fromDate, @Param("toDate") Date toDate , @Param("statuses") List<String> statuses);
 }
