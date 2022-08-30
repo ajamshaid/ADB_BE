@@ -741,6 +741,12 @@ public class ReferenceService {
         return refList;
     }
 
+    public List<SettelmentOfFI> getAllSettlementOfFiByStatus(List<String> status) {
+        log.info("getAllSettlementOfFiByStatus method called..");
+        return this.settlementOfFIRepository.listByStatus(status);
+    }
+
+
     public SettelmentOfFI getSettlementOfFIById(Long id) {
         log.info("getCOBById method called..");
         Optional<SettelmentOfFI> ref = settlementOfFIRepository.findById(id);
@@ -789,6 +795,11 @@ public class ReferenceService {
             date2 = new Date();
         }
         return settlementOfFIRepository.searchSettlementOfFI(tradeType, traderNTN, date1, date2, status);
+    }
+
+    public void deleteSettlementOfFiById(Long id) {
+        log.info("deleteSettlementOfFiById method called..");
+        settlementOfFIRepository.deleteById(id);
     }
 
     /*************************************

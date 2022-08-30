@@ -34,12 +34,13 @@ public class SettelmentOfFIAPI {
     private ReferenceService referenceService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public CustomResponse getLastModifiedSettlementOfFI()
+    public CustomResponse getLastModifiedSettlementOfFI(
+            @RequestParam(value = "isNew", defaultValue = "true", required = false) boolean isNew)
             throws CustomException, NoDataFoundException {
 
         List<SettelmentOfFI> refList = null;
         try {
-            refList = referenceService.getLastModifiedSettlementOfFI();
+            refList = referenceService.getAllSettlementOfFiByStatus(AppConstants.RecordStatuses.getSearchStatesList(isNew));
         } catch (Exception e) {
             throw new CustomException(e);
         }
@@ -105,7 +106,7 @@ public class SettelmentOfFIAPI {
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public CustomResponse createSettlementOfFI(HttpServletRequest request,
-                                                    @RequestBody SettelmentOfFIDTO reqDTO)
+                                               @RequestBody SettelmentOfFIDTO reqDTO)
             throws PSWAPIException, DataValidationException, NoDataFoundException, CustomException {
 
         if (AppUtility.isEmpty(reqDTO)) {
@@ -115,14 +116,31 @@ public class SettelmentOfFIAPI {
         SettelmentOfFI entity = null;
         reqDTO.setStatus(AppConstants.RecordStatuses.NEW);
         try {
-                entity = referenceService.createSettlementOfFI(reqDTO.convertToEntity());
-                customResponse = ResponseUtility.successResponse(entity, "200", "Record Created Successfully");
-        }
-        catch (DBConstraintViolationException ex) {
-           throw ex;
-        }catch (Exception e){
+            entity = referenceService.createSettlementOfFI(reqDTO.convertToEntity());
+            customResponse = ResponseUtility.successResponse(entity, "200", "Record Created Successfully");
+        } catch (DBConstraintViolationException ex) {
+            throw ex;
+        } catch (Exception e) {
             ResponseUtility.exceptionResponse(e);
         }
+        return customResponse;
+    }
+
+    @RequestMapping(value = "/del/{id}", method = RequestMethod.DELETE)
+    public CustomResponse deleteSettlementOfFiById(HttpServletRequest request,
+                                                   @PathVariable(value = "id") Long id)
+            throws CustomException, DataValidationException, NoDataFoundException {
+
+        if (AppUtility.isEmpty(id)) {
+            throw new DataValidationException(messageBundle.getString("id.not.found"));
+        }
+        try {
+            referenceService.deleteSettlementOfFiById(id);
+        } catch (Exception e) {
+            ResponseUtility.exceptionResponse(e);
+        }
+        CustomResponse customResponse = null;
+        customResponse = ResponseUtility.successResponse(null, "200", "Settlement deleted Successfully");
         return customResponse;
     }
 }
