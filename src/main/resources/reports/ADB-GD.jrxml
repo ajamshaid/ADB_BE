@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ADB-GD" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="62a2deec-8cf4-4d1e-ae5a-7bf948dfc137">
 	<property name="ireport.zoom" value="3.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="384"/>
+	<property name="ireport.y" value="437"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["reports/"]]></defaultValueExpression>
 	</parameter>
@@ -1372,6 +1372,13 @@ WHERE
 						</textElement>
 						<text><![CDATA[58.MACHINE NO. & DATE]]></text>
 					</staticText>
+					<textField>
+						<reportElement x="0" y="16" width="73" height="13" uuid="a35bd443-e226-4cf9-890b-84cc8481c3d6"/>
+						<textElement verticalAlignment="Middle">
+							<font size="5"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{gd_number}]]></textFieldExpression>
+					</textField>
 				</frame>
 				<frame>
 					<reportElement x="73" y="40" width="73" height="103" uuid="4a66ef9f-66d1-4058-9b3a-6f168dc4f153"/>
