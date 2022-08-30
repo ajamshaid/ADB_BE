@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ADB-GD" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="62a2deec-8cf4-4d1e-ae5a-7bf948dfc137">
-	<property name="ireport.zoom" value="2.143588810000023"/>
+	<property name="ireport.zoom" value="3.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="432"/>
+	<property name="ireport.y" value="384"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["reports/"]]></defaultValueExpression>
 	</parameter>
@@ -17,10 +17,10 @@
 	*
 FROM
 	gd gd
-	JOIN payment_information pi ON pi.fin_transaction_id = gd.fin_transaction_id
+	LEFT JOIN payment_information pi ON pi.fin_transaction_id = gd.fin_transaction_id
 	LEFT JOIN gd_package pck ON pck.gd_id = gd.id
 WHERE
-	gd.ID = 102]]>
+	gd.ID = $P{gdId}]]>
 	</queryString>
 	<field name="id" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -253,20 +253,19 @@ WHERE
 						<text><![CDATA[10.IMPORTER'S/CONDIGNEE'S/PASSENGER NAME & ADDRESS]]></text>
 					</staticText>
 					<textField isBlankWhenNull="true">
-						<reportElement x="0" y="12" width="166" height="10" uuid="d61c99fb-24e2-4bea-b36f-306bffc0f871"/>
-						<box leftPadding="2"/>
-						<textElement>
-							<font size="7"/>
-						</textElement>
-						<textFieldExpression><![CDATA[$F{consignor_name}]]></textFieldExpression>
-					</textField>
-					<textField isBlankWhenNull="true">
 						<reportElement x="0" y="22" width="279" height="28" uuid="c9dea68d-86df-4dba-b3f3-afc8e7343819"/>
 						<box leftPadding="2"/>
 						<textElement>
 							<font size="7"/>
 						</textElement>
 						<textFieldExpression><![CDATA[$F{consignee_address}]]></textFieldExpression>
+					</textField>
+					<textField>
+						<reportElement x="0" y="9" width="154" height="14" uuid="0f1c972e-0fe8-470b-b1b8-fd7f0c8c6582"/>
+						<textElement verticalAlignment="Middle">
+							<font size="7"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{consignee_name}]]></textFieldExpression>
 					</textField>
 				</frame>
 				<frame>
@@ -687,7 +686,7 @@ WHERE
 						</textElement>
 						<text><![CDATA[31.NUMBER OF PACKAGES]]></text>
 					</staticText>
-					<textField>
+					<textField isBlankWhenNull="true">
 						<reportElement x="0" y="8" width="154" height="13" uuid="6fe832e5-1808-4cf9-8fd5-b0674ca951ae"/>
 						<textElement verticalAlignment="Middle">
 							<font size="5"/>
@@ -841,6 +840,14 @@ WHERE
 						</textElement>
 						<text><![CDATA[30.MARKS/ CONTAINER NOS.]]></text>
 					</staticText>
+					<textField isBlankWhenNull="true">
+						<reportElement x="2" y="10" width="127" height="12" uuid="a1f979f6-4319-440d-b734-d283ac322ad1"/>
+						<box leftPadding="2"/>
+						<textElement>
+							<font size="7"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{bl_awb_num}]]></textFieldExpression>
+					</textField>
 				</frame>
 				<staticText>
 					<reportElement mode="Transparent" x="367" y="244" width="59" height="7" forecolor="#000000" backcolor="#FFFFFF" uuid="e42f2664-f307-45a4-9af8-624ae7b342c3"/>

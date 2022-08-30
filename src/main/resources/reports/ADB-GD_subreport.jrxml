@@ -6,11 +6,12 @@
 	<parameter name="fin_trans_ID" class="java.lang.Long"/>
 	<queryString>
 		<![CDATA[SELECT
-     *
+	*
 FROM
-     item_information ii
-JOIN payment_information pi on ii.fin_transaction_id = pi.fin_transaction_id
-where ii.fin_transaction_id = $P{fin_trans_ID}]]>
+	item_information ii
+	LEFT JOIN payment_information pi ON ii.fin_transaction_id = pi.fin_transaction_id
+WHERE
+	ii.fin_transaction_id = $P{fin_trans_ID}]]>
 	</queryString>
 	<field name="id" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
