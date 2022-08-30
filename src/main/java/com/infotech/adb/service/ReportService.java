@@ -202,6 +202,17 @@ public class ReportService {
         return this.generateGenericReportXLS("DAP-V11-report", map, dataSource.getConnection() );
     }
 
+    public ByteArrayInputStream buildSettelmentOfFiPrint(Long id)
+            throws IOException, JRException, SQLException {
+        log.info("buildSettelmentOfFiPrint method called..");
+        ;
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", id);
+        map.put("reportName", PrintReportEnums.SETTLEMENT_OF_FI_PRINT);
+
+        return this.generateGenericReport("settkement-of-fi-print", map, dataSource.getConnection() );
+    }
+
     private ByteArrayInputStream generateGenericReport(String reportName, Map<String, Object> parameters, Connection connection)
             throws JRException, IOException, SQLException {
         String reportPath = getClass().getClassLoader().getResource("reports/" + reportName + ".jrxml").getPath();

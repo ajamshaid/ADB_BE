@@ -12,5 +12,6 @@ public enum PrintReportEnums {
     FI_REGISTER_REPORT,
     BDA_REGISTER_REPORT,
     SHIPPED_STATUS_REPORT,
+    SETTLEMENT_OF_FI_PRINT,
 
 }
