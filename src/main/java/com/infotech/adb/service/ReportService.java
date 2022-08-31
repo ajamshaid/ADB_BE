@@ -143,7 +143,6 @@ public class ReportService {
         return this.generateGenericReportXLS("export-overdue-report", map, dataSource.getConnection() );
     }
 
-
     public ByteArrayInputStream buildFIRegisterPrint(String fromDate, String toDate)
             throws IOException, JRException, SQLException {
         log.info("buildFIRegisterPrint method called..");
@@ -162,7 +161,6 @@ public class ReportService {
 
         return this.generateGenericReportXLS("FI-register-report", map, dataSource.getConnection() );
     }
-
 
     public ByteArrayInputStream buildBDARegisterPrint(String fromDate, String toDate)
             throws IOException, JRException, SQLException {
