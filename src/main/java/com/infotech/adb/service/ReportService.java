@@ -200,7 +200,7 @@ public class ReportService {
         return this.generateGenericReportXLS("DAP-V11-report", map, dataSource.getConnection() );
     }
 
-    public ByteArrayInputStream buildSettelmentOfFiPrint(Long id)
+    public ByteArrayInputStream buildSettlementOfFiPrint(Long id)
             throws IOException, JRException, SQLException {
         log.info("buildSettelmentOfFiPrint method called..");
         ;
@@ -209,6 +209,25 @@ public class ReportService {
         map.put("reportName", PrintReportEnums.SETTLEMENT_OF_FI_PRINT);
 
         return this.generateGenericReport("settkement-of-fi-print", map, dataSource.getConnection() );
+    }
+
+    public ByteArrayInputStream buildSettlementOfFiReport(String fromDate, String toDate)
+            throws IOException, JRException, SQLException {
+        log.info("buildSettlementOfFiReport method called..");
+        ;
+        Map<String, Object> map = new HashMap<>();
+        ZonedDateTime zonedFromDate = null, zonedToDate = null;
+        if (!AppUtility.isEmpty(fromDate)) {
+            zonedFromDate = AppUtility.getZonedDateTimeFromFormattedString(fromDate, AppConstants.DateFormats.DATE_FORMAT_ONE);
+        }
+        if (!AppUtility.isEmpty(toDate)) {
+            zonedToDate = AppUtility.getZonedDateTimeFromFormattedString(toDate, AppConstants.DateFormats.DATE_FORMAT_ONE);
+        }
+        map.put("fromDate", AppUtility.formatZonedDateTime(AppConstants.DateFormats.YEAR_MONTH_DATE, zonedFromDate));
+        map.put("toDate", AppUtility.formatZonedDateTime(AppConstants.DateFormats.YEAR_MONTH_DATE, zonedToDate));
+        map.put("reportName", PrintReportEnums.SETTLEMENT_OF_FI_REPORT);
+
+        return this.generateGenericReportXLS("Settlement-of-fi-report", map, dataSource.getConnection() );
     }
 
     private ByteArrayInputStream generateGenericReport(String reportName, Map<String, Object> parameters, Connection connection)

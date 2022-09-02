@@ -254,7 +254,27 @@ public class ReportAPI {
         }
         ByteArrayInputStream bis = null;
         try {
-            bis = reportService.buildSettelmentOfFiPrint(id);
+            bis = reportService.buildSettlementOfFiPrint(id);
+        } catch (Exception e) {
+            ResponseUtility.exceptionResponse(e);
+        }
+        return ResponseUtility.buildReportResponseObject(new InputStreamResource(bis));
+    }
+
+    @RequestMapping(value = "print-settlement-fi", method = RequestMethod.GET)
+    public ResponseEntity<?> printSettlementOfFiReport(HttpServletRequest request,
+                                                        @RequestParam(value = "fromDate") String fromDate,
+                                                        @RequestParam(value = "toDate") String toDate)
+            throws DataValidationException, NoDataFoundException, CustomException {
+        log.info("printSettlementOfFiReport API initiated...");
+        //String stateId = request.getHeader(AppConstants.STATE_ID_HEADER);
+
+        if (AppUtility.isEmpty(fromDate)) {
+            throw new DataValidationException(messageBundle.getString("validation.error"));
+        }
+        ByteArrayInputStream bis = null;
+        try {
+            bis = reportService.buildSettlementOfFiReport(fromDate,toDate);
         } catch (Exception e) {
             ResponseUtility.exceptionResponse(e);
         }
