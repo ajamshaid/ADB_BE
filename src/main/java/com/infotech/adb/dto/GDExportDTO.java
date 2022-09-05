@@ -21,7 +21,7 @@ public class GDExportDTO implements BaseDTO<GDExportDTO, GDExport> {
     private String consignmentCategory;
     private String collectorate;
     private String blAwbNumber;
-    private Date blAwbDate;
+    private String blAwbDate;
     private String virAirNumber;
     private String lastModifiedBy;
     private Date lastModifiedDate;
@@ -51,7 +51,7 @@ public class GDExportDTO implements BaseDTO<GDExportDTO, GDExport> {
         entity.setConsignmentCategory(this.getConsignmentCategory());
         entity.setCollectorate(this.getCollectorate());
         entity.setBlAwbNumber(this.getBlAwbNumber());
-        entity.setBlAwbDate(this.getBlAwbDate());
+        entity.setBlAwbDate(AppUtility.convertDateFromString(this.getBlAwbDate()));
         entity.setVirAirNumber(this.getVirAirNumber());
         entity.setLastModifiedBy(this.getLastModifiedBy());
         entity.setLastModifiedDate(this.getLastModifiedDate());
@@ -157,7 +157,7 @@ public class GDExportDTO implements BaseDTO<GDExportDTO, GDExport> {
             this.setConsignmentCategory(entity.getConsignmentCategory());
             this.setCollectorate(entity.getCollectorate());
             this.setBlAwbNumber(entity.getBlAwbNumber());
-            this.setBlAwbDate(entity.getBlAwbDate());//AppUtility.formatedDate(entity.getBlAwbDate()));
+            this.setBlAwbDate(AppUtility.formatedDate(entity.getBlAwbDate()));
             this.setVirAirNumber(entity.getVirAirNumber());
 
             this.setLastModifiedBy(entity.getLastModifiedBy());
