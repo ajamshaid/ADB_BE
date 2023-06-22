@@ -21,19 +21,19 @@ public class GD {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "GD_NUMBER", length = 100, nullable = false)
+    @Column(name = "GD_NUMBER", length = 100)
     private String gdNumber;
 
-    @Column(name = "GD_STATUS", length = 3, nullable = false)
+    @Column(name = "GD_STATUS", length = 3)
     private String gdStatus;
 
-    @Column(name = "GD_TYPE", length = 30, nullable = false)
+    @Column(name = "GD_TYPE", length = 30)
     private String gdType;
 
-    @Column(name = "CONSIGNMENT_CATEGORY", length = 50, nullable = false)
+    @Column(name = "CONSIGNMENT_CATEGORY", length = 50)
     private String consignmentCategory;
 
-    @Column(name = "COLLECTORATE", length = 100, nullable = false)
+    @Column(name = "COLLECTORATE", length = 100)
     private String collectorate;
 
     @Column(name = "BL_AWB_NUM", length = 50)
@@ -46,39 +46,39 @@ public class GD {
     @Column(name = "VIR_AIR_NUM", length = 50)
     private String virAirNumber;
 
-   /// Consigner and Consignee Information
-    @Column(name = "NTN_FTN", length = 9, nullable = false)
+    /// Consigner and Consignee Information
+    @Column(name = "NTN_FTN", length = 9)
     private String ntnFtn;
 
-    @Column(name = "STRN", length = 13, nullable = false)
+    @Column(name = "STRN", length = 13)
     private String strn;
 
-    @Column(name = "CONSIGNEE_NAME", length = 100, nullable = false)
+    @Column(name = "CONSIGNEE_NAME", length = 100)
     private String consigneeName;
 
-    @Column(name = "CONSIGNEE_ADDRESS", length = 300, nullable = false)
+    @Column(name = "CONSIGNEE_ADDRESS", length = 300)
     private String consigneeAddress;
 
-    @Column(name = "CONSIGNOR_NAME", length = 100, nullable = false)
+    @Column(name = "CONSIGNOR_NAME", length = 100)
     private String consignorName;
 
-    @Column(name = "CONSIGNOR_ADDRESS", length = 300, nullable = false)
+    @Column(name = "CONSIGNOR_ADDRESS", length = 300)
     private String consignorAddress;
 
 
-    @Column(name = "NET_WEIGHT",length = 20, nullable = false)
+    @Column(name = "NET_WEIGHT",length = 20)
     private String netWeight;
 
-    @Column(name = "GROSS_WEIGHT",length = 20, nullable = false)
+    @Column(name = "GROSS_WEIGHT",length = 20)
     private String grossWeight;
 
     @Column(name = "PORT_OF_SHIPMENT", length = 10)
     private String portOfShipment;
 
-    @Column(name = "PORT_OF_DELIVERY", length = 10, nullable = true)
+    @Column(name = "PORT_OF_DELIVERY", length = 10)
     private String portOfDelivery;
 
-    @Column(name = "PORT_OF_DISCHARGE", length = 10, nullable = true)
+    @Column(name = "PORT_OF_DISCHARGE", length = 10)
     private String portOfDischarge;
 
     @Column(name = "TERMINAL_LOCATION", length = 70)
@@ -118,6 +118,6 @@ public class GD {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name="COB_GD_FT_ID", nullable=true)
+    @JoinColumn(name="COB_GD_FT_ID")
     private COBGdFt cobGdFt;
 }

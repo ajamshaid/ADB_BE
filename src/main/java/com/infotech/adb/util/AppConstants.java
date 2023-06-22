@@ -58,13 +58,10 @@ public class AppConstants {
 
         public final static String BASE_URL = "https://ext.psw.gov.pk";
 
-       /* public final static String BASE_URL = "https://sit.psw.gov.pk";
-        public final static String CLIENT_SECRET = "Nwpm2dByDNoe";
-*/
         public final static String API_AUTH = "/auth/connect/token";
         public final static String AUT_GRANT_TYPE = "client_credentials";
-        public final static String CLIENT_ID = "ADSAUDX35";
-        public final static String CLIENT_SECRET = "bt7cfXWE";//"Nwpm2dByDNoe";
+        public final static String CLIENT_ID = "2XXABC";
+        public final static String CLIENT_SECRET = "2XXABC";//"Nwpm2dByDNoe";
 
         public final static String API_UPDATE_URL = "/api/dealers/a/d/i/edi";
         public final static String METHOD_ID_UPDATE_INFO_AND_PM = "1512";//MGS-4.3

@@ -80,9 +80,9 @@ WHERE
 	<title>
 		<band height="25" splitType="Stretch">
 			<staticText>
-				<reportElement x="310" y="0" width="174" height="20" forecolor="#999999" uuid="36333f8d-7af0-4855-b33a-9dcdfc7df2b9"/>
+				<reportElement x="258" y="0" width="281" height="25" forecolor="#999999" uuid="36333f8d-7af0-4855-b33a-9dcdfc7df2b9"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="14" isBold="true"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Export - Overdue Report]]></text>
 			</staticText>
