@@ -33,6 +33,13 @@ public class COBGdFt {
     @Column(name = "LAST_MODIFIED_BY",length = 30, nullable = true)
     private String lastModifiedBy;
 
+    @Column(name = "COB_STATUS",length = 30, nullable = false)
+    private String cobStatus;
+
+    @Column(name = "STATUS",length = 30, nullable = false)
+    private String status;
+
+
     @Column(name = "LAST_MODIFIED_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastModifiedDate;

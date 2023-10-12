@@ -13,6 +13,8 @@ public class  COBGdFtDTO implements BaseDTO<COBGdFtDTO, COBGdFt>{
     public String cobUniqueIdNumber;
     public String tradeTranType;
     public String iban;
+    public String cobStatus;
+    public String status;
 
     private String lastModifiedBy;
     private Date lastModifiedDate;
@@ -29,6 +31,8 @@ public class  COBGdFtDTO implements BaseDTO<COBGdFtDTO, COBGdFt>{
         this.cobUniqueIdNumber = entity.getCobUniqueIdNumber();
         this.tradeTranType = entity.getTradeTranType();
         this.iban = entity.getNewBankIBAN();
+        this.cobStatus = entity.getCobStatus();
+        this.cobStatus = entity.getStatus();
 
 
         this.setLastModifiedBy(entity.getLastModifiedBy());

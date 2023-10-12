@@ -1,23 +1,24 @@
 package com.infotech.adb.api.ref;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.infotech.adb.dto.COBGdFtDTO;
 import com.infotech.adb.dto.COBGdFtExportDTO;
 import com.infotech.adb.dto.COBGdFtImportDTO;
+import com.infotech.adb.dto.ChangeBankRequestDTO;
 import com.infotech.adb.exceptions.CustomException;
 import com.infotech.adb.exceptions.DataValidationException;
 import com.infotech.adb.exceptions.NoDataFoundException;
+import com.infotech.adb.exceptions.PSWAPIException;
 import com.infotech.adb.model.entity.COBGdFt;
+import com.infotech.adb.model.entity.ChangeOfBank;
 import com.infotech.adb.service.ReferenceService;
 import com.infotech.adb.util.AppUtility;
 import com.infotech.adb.util.CustomResponse;
 import com.infotech.adb.util.ResponseUtility;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.ResourceBundle;
@@ -68,6 +69,28 @@ public class COBGdFtAPI {
             dto = new COBGdFtExportDTO();
         }
         return ResponseUtility.buildResponseObject(entity, dto,true);
+    }
+
+    @RequestMapping(value = "/", method = RequestMethod.PUT)
+    public CustomResponse updateCOBGdFt(@RequestBody ChangeBankRequestDTO reqDTO, @RequestParam(value = "pushToPSW",defaultValue = "false", required = false) Boolean pushToPSW)
+            throws PSWAPIException, DataValidationException, NoDataFoundException {
+
+        if (AppUtility.isEmpty(reqDTO) || AppUtility.isEmpty(reqDTO.getId())) {
+            throw new DataValidationException(messageBundle.getString("validation.error"));
+        }
+        ChangeOfBank entity = null;
+        CustomResponse customResponse = null;
+        try {
+            if (pushToPSW) {
+                customResponse = ResponseUtility.translatePSWAPIResponse(referenceService.updateCOBGdFtAndShare(reqDTO));
+            } else {
+                entity = referenceService.updateCOB(reqDTO.convertToEntity());
+                customResponse = ResponseUtility.successResponse(entity,"200","Record Updated Successfully");
+            }
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return customResponse;
     }
 
 }

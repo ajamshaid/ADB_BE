@@ -819,6 +819,18 @@ public class ReferenceService {
     }
 
     @Transactional
+    public ResponseUtility.APIResponse updateCOBGdFtAndShare(ChangeBankRequestDTO dto) throws JsonProcessingException {
+
+        //   String uniqNo = AppUtility.generateUniqPSWNumberFormat("COB", this.getNextCounter("COB"));
+        //     dto.setCobUniqueIdNumber(uniqNo);
+
+        this.updateCOB(dto.convertToEntity());
+        cobGdFtRepository.updateCOBGdFtStatus(dto.getCobStatus(), "PushedToPSW", dto.getId());
+        return pswAPIConsumerService.shareCOBApprovalRejectionMsgByOldAD(dto);
+        //       return pswAPIConsumerService.shareCOBApprovalRejectionMsgByOldAD(dto);
+    }
+
+    @Transactional
     public COBGdFt updateCOBGdFt(COBGdFt entity) {
         log.info("updateCOB method called..");
         return cobGdFtRepository.save(entity);
