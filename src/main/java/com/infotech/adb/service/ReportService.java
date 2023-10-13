@@ -230,6 +230,25 @@ public class ReportService {
         return this.generateGenericReportXLS("Settlement-of-fi-report", map, dataSource.getConnection() );
     }
 
+    public ByteArrayInputStream buildGdImportReport(String fromDate, String toDate)
+            throws IOException, JRException, SQLException {
+        log.info("buildGdImportReport method called..");
+        ;
+        Map<String, Object> map = new HashMap<>();
+        ZonedDateTime zonedFromDate = null, zonedToDate = null;
+        if (!AppUtility.isEmpty(fromDate)) {
+            zonedFromDate = AppUtility.getZonedDateTimeFromFormattedString(fromDate, AppConstants.DateFormats.DATE_FORMAT_ONE);
+        }
+        if (!AppUtility.isEmpty(toDate)) {
+            zonedToDate = AppUtility.getZonedDateTimeFromFormattedString(toDate, AppConstants.DateFormats.DATE_FORMAT_ONE);
+        }
+        map.put("fromDate", AppUtility.formatZonedDateTime(AppConstants.DateFormats.YEAR_MONTH_DATE, zonedFromDate));
+        map.put("toDate", AppUtility.formatZonedDateTime(AppConstants.DateFormats.YEAR_MONTH_DATE, zonedToDate));
+        map.put("reportName", PrintReportEnums.GD_IMPORT_REPORT);
+
+        return this.generateGenericReportXLS("gd-filed-imp-report", map, dataSource.getConnection() );
+    }
+
     private ByteArrayInputStream generateGenericReport(String reportName, Map<String, Object> parameters, Connection connection)
             throws JRException, IOException, SQLException {
         String reportPath = getClass().getClassLoader().getResource("reports/" + reportName + ".jrxml").getPath();

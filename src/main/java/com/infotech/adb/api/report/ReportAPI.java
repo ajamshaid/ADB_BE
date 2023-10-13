@@ -280,4 +280,24 @@ public class ReportAPI {
         }
         return ResponseUtility.buildReportResponseObject(new InputStreamResource(bis));
     }
+
+    @RequestMapping(value = "print-gd-imp", method = RequestMethod.GET)
+    public ResponseEntity<?> printGdImportReport(HttpServletRequest request,
+                                                       @RequestParam(value = "fromDate") String fromDate,
+                                                       @RequestParam(value = "toDate") String toDate)
+            throws DataValidationException, NoDataFoundException, CustomException {
+        log.info("printGdImportReport API initiated...");
+        //String stateId = request.getHeader(AppConstants.STATE_ID_HEADER);
+
+        if (AppUtility.isEmpty(fromDate)) {
+            throw new DataValidationException(messageBundle.getString("validation.error"));
+        }
+        ByteArrayInputStream bis = null;
+        try {
+            bis = reportService.buildGdImportReport(fromDate,toDate);
+        } catch (Exception e) {
+            ResponseUtility.exceptionResponse(e);
+        }
+        return ResponseUtility.buildReportResponseObject(new InputStreamResource(bis));
+    }
 }

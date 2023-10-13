@@ -14,5 +14,6 @@ public enum PrintReportEnums {
     SHIPPED_STATUS_REPORT,
     SETTLEMENT_OF_FI_PRINT,
     SETTLEMENT_OF_FI_REPORT,
+    GD_IMPORT_REPORT,
 
 }
