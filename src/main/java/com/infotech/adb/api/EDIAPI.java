@@ -44,7 +44,7 @@ public class EDIAPI {
     private static final ResourceBundle messageBundle = ResourceBundle.getBundle("messages");
 
 
-    private ObjectMapper getObjectMapper(){
+    private ObjectMapper getObjectMapper() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         return mapper;
@@ -85,7 +85,7 @@ public class EDIAPI {
 
 
             // @TODO Dummy code to Skip Signature for GD Parsing....Remove once Signature is Verified.
-            if(processingCode.equals("101") || processingCode.equals("102") || processingCode.equals("307") ){
+            if (processingCode.equals("101") || processingCode.equals("102") || processingCode.equals("307")) {
                 isSignatureVerified = true;
             }
 
@@ -120,8 +120,8 @@ public class EDIAPI {
                         customResponse = this.shareOfCOBGDnFIInfo(data, requestParameter);
                         break;
                     case "308": // 7.5  Message 5 – Sharing of Change of Bank request approval/rejection message
-                     //   with Old AD by PSW
-                            customResponse = this.chageOfBankRequestWithOldAd(data, requestParameter);
+                        //   with Old AD by PSW
+                        customResponse = this.chageOfBankRequestWithOldAd(data, requestParameter);
                         break;
                     default: // Default Custom response
                         log.info("No Case Matched for processing code:" + processingCode);
@@ -158,7 +158,7 @@ public class EDIAPI {
         );
 
         ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
-        logRequestService.saveLogRequest("4.1 - Verify Trader Profile From AD", RequestMethod.POST.name(), requestParameter,requestTime, responseBody);
+        logRequestService.saveLogRequest("4.1 - Verify Trader Profile From AD", RequestMethod.POST.name(), requestParameter, requestTime, responseBody);
         return customResponse;
     }
 
@@ -194,7 +194,7 @@ public class EDIAPI {
         );
 
         ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
-        logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter,requestTime, responseBody);
+        logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter, requestTime, responseBody);
         return customResponse;
     }
 
@@ -218,9 +218,9 @@ public class EDIAPI {
         if (!AppUtility.isEmpty(dto)) {
             try {
                 referenceService.updateGD(dto.convertToEntity());
-            }catch (Exception ex){
+            } catch (Exception ex) {
                 log.error(ex.getMessage());
-                logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter,requestTime, ResponseUtility.APIFailureResponse(ex.getMessage()));
+                logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter, requestTime, ResponseUtility.APIFailureResponse(ex.getMessage()));
                 throw new DataValidationException(ex);
             }
         }
@@ -233,7 +233,7 @@ public class EDIAPI {
         ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
 
 
-        logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter,requestTime, responseBody);
+        logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter, requestTime, responseBody);
         return customResponse;
     }
 
@@ -243,7 +243,7 @@ public class EDIAPI {
      2. AD receive the information and shares the acknowledgement with PSW.
      **************************/
     public CustomResponse shareExportGDFinInfoToBank(String data, RequestParameter requestParameter)
-            throws NoDataFoundException, JsonProcessingException , DataValidationException{
+            throws NoDataFoundException, JsonProcessingException, DataValidationException {
 
         String logMessage = "5.2.2 - Sharing of [Export] GD and Financial Information with AD by PSW";
 
@@ -257,21 +257,21 @@ public class EDIAPI {
         if (!AppUtility.isEmpty(dto)) {
             try {
                 referenceService.updateGDExport(dto.convertToEntity());
-            }catch (Exception ex){
+            } catch (Exception ex) {
                 log.error(ex.getMessage());
-                logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter,requestTime, ResponseUtility.APIFailureResponse(ex.getMessage()));
+                logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter, requestTime, ResponseUtility.APIFailureResponse(ex.getMessage()));
                 throw new DataValidationException(ex);
             }
         }
 
-        CustomResponse customResponse  = ResponseUtility.successResponse("{}", AppConstants.PSWResponseCodes.OK,
+        CustomResponse customResponse = ResponseUtility.successResponse("{}", AppConstants.PSWResponseCodes.OK,
                 "Updated [Export] GD and financial information."
                 , requestParameter, false);
 
         ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
 
 
-        logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter,requestTime, responseBody);
+        logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter, requestTime, responseBody);
         return customResponse;
     }
 
@@ -293,14 +293,14 @@ public class EDIAPI {
         if (!AppUtility.isEmpty(dto)) {
             referenceService.updateCOB(dto.convertToEntity());
         }
-        CustomResponse customResponse  = ResponseUtility.successResponse(null,AppConstants.PSWResponseCodes.OK,
+        CustomResponse customResponse = ResponseUtility.successResponse(null, AppConstants.PSWResponseCodes.OK,
                 "Change of bank request received."
-                ,requestParameter, false);
+                , requestParameter, false);
 
         ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
         String logMessage = "7.1 – Sharing of Change of Bank request with AD";
 
-        logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter,requestTime, responseBody);
+        logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter, requestTime, responseBody);
         return customResponse;
     }
 
@@ -313,40 +313,53 @@ public class EDIAPI {
         JsonNode node = getObjectMapper().readTree(data);
         String tradeType = node.get("tradeTranType").textValue();
 
-        if("01".equals(tradeType)) {
+        if ("01".equals(tradeType)) {
 
             COBGdFtImportDTO dto = getObjectMapper().readValue(data, COBGdFtImportDTO.class);
             dto.setLastModifiedBy(AppConstants.PSW.ID);
             dto.setLastModifiedDate(AppUtility.getCurrentTimeStamp());
             System.out.println("IN coming COB GD FT DTO Object is:" + dto);
             dto.getFinancialInstrumentInfo().setStatus(AppConstants.RecordStatuses.CREATED_BY_PSW);
+            // Setting BDA Status
+            if (!AppUtility.isEmpty(dto.getBankAdviceInfo())) {
+                for (BDADTO bda : dto.getBankAdviceInfo()) {
+                    bda.setStatus(AppConstants.RecordStatuses.CREATED_BY_PSW);
+                }
+            }
+
             if (!AppUtility.isEmpty(dto)) {
                 referenceService.updateCOBGdFt(dto.convertToEntity());
             }
-        }else if("02".equals(tradeType)) {
+        } else if ("02".equals(tradeType)) {
             System.out.println("------------I am export COB----------");
             COBGdFtExportDTO dto = getObjectMapper().readValue(data, COBGdFtExportDTO.class);
             dto.setLastModifiedBy(AppConstants.PSW.ID);
             dto.setLastModifiedDate(AppUtility.getCurrentTimeStamp());
 
             System.out.println("IN coming COB GD FT DTO Object is:" + dto);
-
             dto.getFinancialInstrumentInfo().setStatus(AppConstants.RecordStatuses.CREATED_BY_PSW);
+            // Setting BCA Status
+            if (!AppUtility.isEmpty(dto.getBankAdviceInfo())) {
+                for (BCADTO bca : dto.getBankAdviceInfo()) {
+                    bca.setStatus(AppConstants.RecordStatuses.CREATED_BY_PSW);
+                }
+            }
             if (!AppUtility.isEmpty(dto)) {
                 referenceService.updateCOBGdFt(dto.convertToEntity());
             }
         }
         Date requestTime = AppUtility.getCurrentTimeStamp();
-        CustomResponse customResponse  = ResponseUtility.successResponse(null,AppConstants.PSWResponseCodes.OK,
+        CustomResponse customResponse = ResponseUtility.successResponse(null, AppConstants.PSWResponseCodes.OK,
                 "Change of bank request with GD and financial information received."
-                ,requestParameter, true);
+                , requestParameter, true);
 
         ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
         String logMessage = "7.3 - Sharing of GD and Financial Information with the other selected Bank";
 
-        logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter,requestTime, responseBody);
+        logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter, requestTime, responseBody);
         return customResponse;
     }
+
     /**************************
      // 7.5.	Message 5 – Sharing of Change of Bank request approval/rejection message with Old AD by PSW
      **************************/
@@ -364,14 +377,14 @@ public class EDIAPI {
         if (!AppUtility.isEmpty(dto)) {
             referenceService.updateCOB(dto.convertToEntity());
         }
-        CustomResponse customResponse  = ResponseUtility.successResponse(null,AppConstants.PSWResponseCodes.OK,
+        CustomResponse customResponse = ResponseUtility.successResponse(null, AppConstants.PSWResponseCodes.OK,
                 "Change of bank request status acknowledged"
-                ,requestParameter, false);
+                , requestParameter, false);
 
         ResponseUtility.APIResponse responseBody = (ResponseUtility.APIResponse) customResponse.getBody();
         String logMessage = "7.5 – Sharing of Change of Bank request approval/rejection message with Old AD by PSW";
 
-        logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter,requestTime, responseBody);
+        logRequestService.saveLogRequest(logMessage, RequestMethod.POST.name(), requestParameter, requestTime, responseBody);
         return customResponse;
     }
 }
