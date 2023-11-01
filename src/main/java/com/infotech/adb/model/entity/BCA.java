@@ -97,6 +97,9 @@ public class BCA {
     @Column(name = "EDS_Pkr", precision = 24, scale = 4)
     public BigDecimal edsPkr;
 
+    @Column(name = "EDS_UNI_REF_NUM")
+    public String edsUniqueReferenceNumber;
+
     @Column(name = "BCA_AMOUNT_FCY", precision = 24, scale = 4)
     public BigDecimal bcaAmountFcy;
 

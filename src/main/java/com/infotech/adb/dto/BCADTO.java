@@ -77,6 +77,7 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
             entity.setAgentCommissionFcy(this.getDeductions().getAgentCommissionFcy());
             entity.setWithholdingTaxPkr(this.getDeductions().getWithholdingTaxPkr());
             entity.setEdsPkr(this.getDeductions().getEdsPkr());
+            entity.setEdsUniqueReferenceNumber(this.getDeductions().getEdsUniqueReferenceNumber());
         }
         if(!AppUtility.isEmpty(this.getNetAmountRealized())) {
             entity.setBcaAmountFcy(this.getNetAmountRealized().getBcaFc());
@@ -123,7 +124,7 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
                     , entity.getInvoiceDate(), entity.getInvoiceAmount()));
 
             this.setDeductions(new Deductions(entity.getForeignBankChargesFcy(), entity.getAgentCommissionFcy()
-                    , entity.getWithholdingTaxPkr(), entity.getEdsPkr()));
+                    , entity.getWithholdingTaxPkr(), entity.getEdsPkr(), entity.getEdsUniqueReferenceNumber()));
 
             this.setNetAmountRealized(new NetAmountRealized(entity.getBcaAmountFcy(), entity.getFcyExchangeRate(), entity.getBcaPkr()
                     , entity.getDateOfRealized(), entity.getAdjustFromSpecialFcyAcc(), entity.getCurrency()
@@ -192,13 +193,15 @@ public class BCADTO implements BaseDTO<BCADTO, BCA> {
         public BigDecimal agentCommissionFcy;
         public BigDecimal withholdingTaxPkr;
         public BigDecimal edsPkr;
+        public String edsUniqueReferenceNumber;
 
         public Deductions(BigDecimal foreignBankChargesFcy, BigDecimal agentCommissionFcy
-                , BigDecimal withholdingTaxPkr, BigDecimal edsPkr) {
+                , BigDecimal withholdingTaxPkr, BigDecimal edsPkr, String edsUniqueReferenceNumber) {
             this.foreignBankChargesFcy = foreignBankChargesFcy;
             this.agentCommissionFcy = agentCommissionFcy;
             this.withholdingTaxPkr = withholdingTaxPkr;
             this.edsPkr = edsPkr;
+            this.edsUniqueReferenceNumber = edsUniqueReferenceNumber;
         }
     }
     @Data
